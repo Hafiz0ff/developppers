@@ -241,9 +241,9 @@ export default function HomePage() {
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
 
-          {/* 2. CIAN-STYLE SEARCH CARD WITH CLEAN GLASSMORPHISM */}
+          {/* 2. CIAN-STYLE SEARCH CARD WITH CLEAN GLASSMORPHISM (20% TRANSPARENCY) */}
           <div className="relative max-w-4xl mx-auto">
-            <div className="bg-white/95 backdrop-blur-xl border border-white/60 sm:border-slate-200/90 rounded-2xl p-5 sm:p-6 shadow-2xl shadow-slate-950/15">
+            <div className="bg-white/80 backdrop-blur-2xl border border-white/70 rounded-2xl p-5 sm:p-6 shadow-2xl shadow-slate-950/20">
               {/* Segment Tabs (CIAN Underline Style) */}
               <div className="flex items-center gap-6 overflow-x-auto pb-0 mb-5 border-b border-slate-200">
                 {[
@@ -354,8 +354,8 @@ export default function HomePage() {
               </div>
 
               {/* Quick Filter Chips */}
-              <div className="mt-4 pt-3.5 border-t border-slate-100 flex flex-wrap items-center gap-2 text-xs">
-                <span className="font-semibold text-slate-400 mr-1 text-[11px] uppercase tracking-wider">
+              <div className="mt-4 pt-3.5 border-t border-slate-200/50 flex flex-wrap items-center gap-2 text-xs">
+                <span className="font-semibold text-slate-500 mr-1 text-[11px] uppercase tracking-wider">
                   Быстрый выбор:
                 </span>
                 {[
@@ -371,7 +371,7 @@ export default function HomePage() {
                     <button
                       key={chip.label}
                       type="button"
-                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-100/80 hover:bg-emerald-50 hover:text-emerald-700 hover:border-emerald-200 border border-slate-200/60 text-slate-600 text-xs font-medium transition-all"
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/70 hover:bg-white hover:text-emerald-700 hover:border-emerald-200 border border-slate-200/60 text-slate-700 text-xs font-medium transition-all shadow-2xs"
                     >
                       <ChipIcon className="h-3.5 w-3.5 text-emerald-600" />
                       {chip.label}
