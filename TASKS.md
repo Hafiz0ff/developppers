@@ -7,10 +7,13 @@
 - [x] Create base layout & navigation
 
 ## Phase 2: Developer Backoffice & Catalog 🎯
-- [ ] Developer profile management (Logo, description, contacts)
-- [ ] Complex / Project creation (ЖК «Сирдарё Плаза», etc.)
-- [ ] Flat/Unit management & Basic Chessboard layout (Шахматка)
-- [ ] Public Developer showcase page (`/developers/[slug]`)
+- [x] Protected Developer Backoffice layout (`/developer-admin`)
+- [x] Developer profile management (`/developer-admin/profile` — logo, cover, contacts, Khujand address)
+- [x] Complex / Project creation & editing (`/developer-admin/projects/new`, `/projects/[id]/edit`)
+- [x] Interactive Unit Chessboard component with 2 modes (visual grid + filter list) and status toggling (`/components/modules/chessboard.tsx`)
+- [x] Backoffice unit management page (`/developer-admin/projects/[id]/units`)
+- [x] Public Developer showcase page (`/developers/[slug]`)
+- [x] Public Complex showcase page with buyer chessboard (`/projects/[slug]`)
 
 ## Phase 3: Secondary Market (Classifieds) 📦
 - [ ] Free ad posting form for citizens
