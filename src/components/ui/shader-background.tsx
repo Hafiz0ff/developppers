@@ -14,27 +14,28 @@ export interface ShaderBackgroundProps
   children?: React.ReactNode;
 }
 
-// Deep, vibrant luxury emerald / cyan / mint palette
+// Airy luxury light pastel emerald / mint / pearl white palette (CIAN & Stripe style)
 const DEFAULT_PALETTES: Record<ShaderVariant, [number, number, number][]> = {
   aurora: [
-    [0.02, 0.62, 0.45], // Emerald #059669
-    [0.05, 0.75, 0.68], // Vibrant Teal #0D9488
-    [0.01, 0.16, 0.14], // Deep Midnight Forest #022C22
-    [0.18, 0.88, 0.78], // Mint Crest Highlight #2DD4BF
+    [0.65, 0.92, 0.82], // Soft pastel mint #A7F3D0
+    [0.78, 0.94, 0.88], // Light sage #D1FAE5
+    [0.97, 0.98, 0.99], // Pure pearl off-white #F8FAFC
+    [0.82, 0.95, 0.93], // Soft cyan silk #CCFBF1
   ],
   "gradient-mesh": [
-    [0.03, 0.58, 0.42], // Emerald #059669
-    [0.08, 0.72, 0.65], // Bright Teal #14B8A6
-    [0.02, 0.20, 0.18], // Deep Jade #04362E
-    [0.22, 0.92, 0.82], // Electric Mint #2DD4BF
+    [0.72, 0.93, 0.85], // Pastel mint
+    [0.85, 0.96, 0.92], // Light teal mist
+    [0.96, 0.98, 0.99], // Off-white
+    [0.88, 0.94, 0.98], // Sky tint
   ],
   "light-leak": [
-    [0.05, 0.65, 0.58], // Teal #0D9488
-    [0.96, 0.85, 0.52], // Soft warm sunbeam #FCD34D
-    [0.02, 0.28, 0.24], // Forest base #064E3B
-    [1.0, 1.0, 1.0],    // White flare
+    [0.75, 0.92, 0.86], // Mint
+    [0.98, 0.95, 0.85], // Warm cream sunbeam
+    [0.97, 0.98, 0.99], // Off-white base
+    [1.0, 1.0, 1.0],    // Pure white
   ],
 };
+
 
 function hexToRgb(hex: string): [number, number, number] {
   const clean = hex.replace("#", "");
@@ -430,12 +431,13 @@ export function ShaderBackground({
 
   const fallbackGradients: Record<ShaderVariant, string> = {
     aurora:
-      "bg-gradient-to-tr from-emerald-950 via-teal-900 to-emerald-800",
+      "bg-gradient-to-tr from-emerald-50 via-teal-50/70 to-slate-50",
     "gradient-mesh":
-      "bg-gradient-to-br from-emerald-950 via-teal-950 to-slate-950",
+      "bg-gradient-to-br from-emerald-50/80 via-slate-50 to-teal-50/60",
     "light-leak":
-      "bg-[radial-gradient(ellipse_at_top_right,rgba(16,185,129,0.4),rgba(4,47,46,0.9),transparent_70%)]",
+      "bg-[radial-gradient(ellipse_at_top_right,rgba(167,243,208,0.35),rgba(248,250,252,0.9),transparent_70%)]",
   };
+
 
   return (
     <div
