@@ -1,128 +1,322 @@
-# Sogd Realty (Суғд Эстейт) 🏢🏔️
+<div align="center">
 
-Портал недвижимости для **Согдийской области Таджикистана** (Худжанд, Б. Гафуров, Исфара, Истаравшан, Канибадам, Гулистон, Пенджикент и др.), объединяющий:
-1. **Каталог новостроек от застройщиков** (ЖК, блоки, планировки квартир, цены за м², рассрочка от 0%).
-2. **Доску частных объявлений и вторичного рынка** (квартиры во вторичке, традиционные дома — *ҳавлӣ* с земельными участками, коммерция, аренда).
-3. **Двухвалютную систему расчета**: поддержка цен в таджикских сомони (**TJS**) и долларах США (**USD**) с переключением в реальном времени.
-4. **Аутентификацию на базе Better Auth + Drizzle ORM (PostgreSQL)** с ролями: *покупатель/пользователь*, *риелтор*, *застройщик*, *администратор*.
+<img src="https://raw.githubusercontent.com/Hafiz0ff/developppers/main/public/logo.svg" alt="Sogd Realty Logo" width="80" height="80">
+
+# 🏙️ Sogd Realty
+
+**Премиальная платформа недвижимости для Согдийской области**
+
+[![Live Demo](https://img.shields.io/badge/🌐_Live_Demo-sogd--realty.vercel.app-059669?style=for-the-badge)](https://sogd-realty.vercel.app)
+[![Next.js](https://img.shields.io/badge/Next.js-16.4-black?style=for-the-badge&logo=next.js)](https://nextjs.org)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178C6?style=for-the-badge&logo=typescript)](https://typescriptlang.org)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-v4-06B6D4?style=for-the-badge&logo=tailwindcss)](https://tailwindcss.com)
+[![Vercel](https://img.shields.io/badge/Deployed_on-Vercel-000?style=for-the-badge&logo=vercel)](https://vercel.com)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge)](./LICENSE)
+
+*Современная платформа для поиска и продажи недвижимости в Худжанде и Согдийской области Таджикистана — с кабинетом застройщика, интерактивной шахматкой и мультивалютной поддержкой (TJS / USD).*
+
+</div>
 
 ---
 
-## 🛠 Стек технологий
+## ✨ Возможности
 
-- **Фреймворк**: [Next.js](https://nextjs.org/) (App Router, React 19, TypeScript)
-- **База данных и ORM**: PostgreSQL + [Drizzle ORM](https://orm.drizzle.team/) + `drizzle-kit`
-- **Аутентификация**: [Better Auth](https://better-auth.com/) (с Drizzle Adapter и хранением в PostgreSQL)
-- **Стилизация и UI**: Tailwind CSS v4 + [Shadcn UI](https://ui.shadcn.com/) (Radix / Base UI) + Lucide Icons
-- **Управление пакетами**: `pnpm`
+| Раздел | Описание |
+|---|---|
+| 🏢 **Каталог ЖК** | Витрина новостроек с фильтрацией по городу, стадии и цене |
+| 🗃️ **Шахматка квартир** | Интерактивная визуализация этажей и статусов квартир в реальном времени |
+| 🏠 **Вторичный рынок** | Объявления частных продавцов с фото и описанием |
+| 🏗️ **Кабинет застройщика** | Управление проектами, корпусами, квартирами и бронированиями |
+| 💱 **Мультивалютность** | Мгновенное переключение TJS ⇄ USD с актуальным курсом |
+| 🎨 **WebGL-шейдеры** | Премиальные фоновые эффекты (aurora / gradient-mesh / light-leak) |
+| 🔐 **Аутентификация** | Безопасный вход для застройщиков через Better Auth |
+| 📱 **Mobile-first** | Адаптивный дизайн под все размеры экранов |
 
 ---
 
-## 🗄 Спроектированная схема базы данных (`src/db/schema/`)
+## 🛠️ Технологический стек
 
-### 1. Перечисления (`enums.ts`)
-- `sogd_city`: `khujand`, `gafurov`, `guliston`, `buston`, `isfara`, `istaravshan`, `konibodom`, `panjakent`, `spitamen`, `zafarobod`, `rasulov`, `mastchoh`, `asht`, `shahriston`, `ayni`, `devashtich`, `kuhistoni_mastchoh`.
-- `user_role`: `user` (покупатель/частник), `realtor` (риелтор/агентство), `developer` (застройщик), `admin` (администратор).
-- `currency`: `TJS`, `USD`.
-- `project_status`: `planned` (проектирование), `under_construction` (строится), `ready` (сдан).
-- `building_class`: `economy`, `comfort`, `business`, `premium`.
-- `finishing_type`: `rough` (черновая/коробка), `pre_finishing` (предчистовая/белый каркас), `turnkey` (под ключ).
-- `unit_type`: `studio`, `apartment`, `penthouse`, `commercial`, `parking`.
-- `deal_type`: `sale` (продажа), `rent_long` (долгосрочная аренда), `rent_daily` (посуточно).
-- `property_type`: `apartment` (квартира), `house` (дом / ҳавлӣ), `commercial`, `land` (замин), `garage`.
+```
+Frontend          Backend / ORM        Инфраструктура
+─────────────     ──────────────       ──────────────
+Next.js 16.4      Drizzle ORM          Vercel (Hobby)
+React 19          PostgreSQL           Supabase (Free)
+TypeScript 5      Better Auth          GitHub
+Tailwind CSS v4   Zod validation
+Shadcn/UI
+WebGL (custom)
+```
 
-### 2. Пользователи и Авторизация (`auth.ts`)
-- **`user`**: `id`, `name`, `email`, `role`, `phone`, `phone_verified`, `city`, `agency_name`, `is_verified_realtor`, `bio`.
-- **`session`**, **`account`**, **`verification`**: стандартные таблицы Better Auth с каскадным удалением.
+### Полный список зависимостей
 
-### 3. Застройщики (`developers.ts`)
-- **`developers`**: название, `slug`, логотип, обложка, описание, год основания, количество сданных и строящихся домов, рейтинг, статус верификации, город офиса, адрес в Согде, контакты (телефон, WhatsApp, Telegram, сайт).
-- **`developer_members`**: связь пользователей/менеджеров отдела продаж с компанией-застройщиком.
-
-### 4. Жилые комплексы / Новостройки (`projects.ts`)
-- **`projects`**: привязка к `developer_id`, название, `slug`, статус строительства, класс жилья, отделка, город Согда, микрорайон/ориентир (напр. *19 мкр, набережная Сырдарьи*), координаты, этажность, высота потолков, сроки сдачи (квартал, год), минимальная цена за м² и за квартиру (в TJS и USD), условия рассрочки (срок в месяцах, первый взнос %), инфраструктура (лифт, подземный паркинг, детплощадка, автономное отопление), фотогалерея, ход строительства, проектные документы.
-
-### 5. Квартиры и планировки в ЖК (`units.ts`)
-- **`units`**: привязка к `project_id`, номер квартиры, тип (`apartment`, `penthouse` и т.д.), комнатность, общая площадь (м²), жилая, кухня, этаж, секция, цены в TJS и USD, цена за м² в TJS и USD, статус (`available`, `reserved`, `sold`), вид из окон, балкон/терраса, ссылка на план планировки.
-
-### 6. Вторичный рынок и частные объявления (`classifieds.ts`)
-- **`classifieds`**: привязка к `user_id`, заголовок, `slug`, описание, тип сделки, тип недвижимости, статус модерации, город Согда, микрорайон/махалля/джамоат (напр. *18 мкр, Махалля Раззок, Джамоат Унчи*), ориентир, площадь, сотки для домов/земли, этаж/этажность, материал стен, ремонт, коммунальные параметры (городская вода, резервуар *хауз*, свет/3-фазы, отопление, септик), цены в TJS и USD, базовая валюта продавца, признак торга, контакты продавца (имя, телефон, WhatsApp).
-
-### 7. Избранное (`favorites.ts`)
-- **`favorites`**: привязка `user_id` к `project_id` или `classified_id`.
+| Категория | Пакет | Версия |
+|---|---|---|
+| Framework | `next` | `^16.4.0` |
+| UI | `react`, `react-dom` | `^19.3.0` |
+| Styling | `tailwindcss` | `^4.0` |
+| Components | `@shadcn/ui` | latest |
+| ORM | `drizzle-orm` | latest |
+| Auth | `better-auth` | latest |
+| DB Driver | `postgres` | latest |
+| Validation | `zod` | latest |
 
 ---
 
 ## 🚀 Быстрый старт
 
-### 1. Установка зависимостей
+### Предварительные требования
+
+- **Node.js** ≥ 20.x
+- **pnpm** ≥ 10.x — `npm install -g pnpm`
+- **PostgreSQL** (или аккаунт [Supabase](https://supabase.com))
+
+### 1. Клонирование
+
 ```bash
-cd sogd-realty
+git clone https://github.com/Hafiz0ff/developppers.git
+cd developppers
+```
+
+### 2. Установка зависимостей
+
+```bash
 pnpm install
 ```
 
-### 2. Настройка переменных окружения
-Скопируйте пример окружения:
+### 3. Переменные окружения
+
+Скопируй шаблон и заполни значения:
+
 ```bash
 cp .env.example .env.local
 ```
 
-Отредактируйте `.env.local`:
 ```env
-DATABASE_URL="postgresql://postgres:postgres@localhost:5432/sogd_realty"
-BETTER_AUTH_SECRET="your-secure-random-secret-key-at-least-32-chars"
-BETTER_AUTH_URL="http://localhost:3000"
-NEXT_PUBLIC_APP_URL="http://localhost:3000"
-NEXT_PUBLIC_USD_TO_TJS_RATE="10.95"
+# База данных (Supabase / любой PostgreSQL)
+DATABASE_URL=postgresql://user:password@host:5432/dbname
+
+# Аутентификация
+BETTER_AUTH_SECRET=your_random_secret_32_chars_min
+BETTER_AUTH_URL=http://localhost:3000
+
+# Публичные переменные
+NEXT_PUBLIC_APP_URL=http://localhost:3000
+NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=sb_publishable_...
+NEXT_PUBLIC_USD_TO_TJS_RATE=10.95
 ```
 
-### 3. Генерация и применение миграций базы данных
+> ⚠️ **Никогда не коммить `.env.local`** — он уже добавлен в `.gitignore`.
+
+### 4. Миграция базы данных
+
 ```bash
-# Генерация SQL миграций
-pnpm db:generate
-
-# Применение схемы в PostgreSQL (push)
-pnpm db:push
-
-# Запуск Drizzle Studio для визуального просмотра таблиц
-pnpm db:studio
+pnpm db:push      # применить схему
+pnpm db:seed      # заполнить тестовыми данными
 ```
 
-### 4. Наполнение базы реалистичными данными для Согда
-```bash
-pnpm db:seed
-```
+### 5. Запуск в режиме разработки
 
-### 5. Запуск сервера разработки
 ```bash
 pnpm dev
 ```
-Откройте [http://localhost:3000](http://localhost:3000) в браузере.
+
+Открой [http://localhost:3000](http://localhost:3000) в браузере.
+
+### 6. Сборка для продакшена
+
+```bash
+pnpm build
+pnpm start
+```
 
 ---
 
-## 🔑 Авторизация (Better Auth)
+## 📁 Структура проекта
 
-API эндпоинты аутентификации доступны по маршруту:
-`/api/auth/[...all]`
-
-Клиентский вызов:
-```tsx
-import { signIn, signUp, useSession, signOut } from "@/lib/auth-client";
-
-// Вход по Email и паролю
-const { data, error } = await signIn.email({ email, password });
-
-// Регистрация с ролью и телефоном
-const { data, error } = await signUp.email({
-  email,
-  password,
-  name: "Дилшод Назаров",
-  role: "realtor", // "user" | "realtor" | "developer"
-  phone: "+992928881234",
-  city: "khujand",
-});
-
-// Получение сессии
-const { data: session } = useSession();
 ```
+sogd-realty/
+├── src/
+│   ├── app/                    # Next.js App Router
+│   │   ├── page.tsx            # Главная страница (Hero + каталог ЖК)
+│   │   ├── layout.tsx          # Root Layout (шапка, шрифты, провайдеры)
+│   │   ├── globals.css         # Tailwind v4 + CSS-переменные темы
+│   │   ├── projects/
+│   │   │   └── [slug]/         # Страница конкретного ЖК (шахматка)
+│   │   ├── backoffice/         # Закрытый кабинет застройщика
+│   │   │   ├── projects/       # CRUD проектов
+│   │   │   ├── units/          # CRUD квартир
+│   │   │   └── classifieds/    # Модерация объявлений
+│   │   └── api/                # API Route Handlers
+│   │       ├── auth/           # Better Auth endpoints
+│   │       ├── projects/       # REST: ЖК
+│   │       ├── units/          # REST: квартиры
+│   │       └── classifieds/    # REST: вторичный рынок
+│   ├── components/
+│   │   ├── ui/                 # Shadcn + кастомные компоненты
+│   │   │   ├── shader-background.tsx  # WebGL-шейдеры (aurora / mesh / light-leak)
+│   │   │   └── ...             # Button, Card, Select, Badge, ...
+│   │   ├── header.tsx          # Шапка с валютным переключателем
+│   │   ├── project-card.tsx    # Карточка ЖК
+│   │   ├── unit-card.tsx       # Карточка квартиры
+│   │   └── chessboard.tsx      # Интерактивная шахматка
+│   ├── db/
+│   │   ├── schema.ts           # Drizzle ORM схема (таблицы, связи)
+│   │   ├── index.ts            # Подключение к БД
+│   │   └── seed.ts             # Скрипт наполнения тестовыми данными
+│   ├── lib/
+│   │   ├── auth.ts             # Конфиг Better Auth
+│   │   ├── auth-client.ts      # Клиентский хук аутентификации
+│   │   └── utils.ts            # Утилиты (cn, formatPrice, ...)
+│   └── types/                  # TypeScript типы и интерфейсы
+├── public/                     # Статические ресурсы
+├── postcss.config.mjs          # PostCSS (@tailwindcss/postcss)
+├── next.config.ts              # Next.js конфигурация
+├── drizzle.config.ts           # Drizzle Kit конфигурация
+├── TASKS.md                    # Roadmap задач
+├── RULES.md                    # Правила разработки
+└── package.json
+```
+
+---
+
+## 🗄️ Схема базы данных
+
+```mermaid
+erDiagram
+    DEVELOPERS ||--o{ PROJECTS : owns
+    PROJECTS ||--o{ BUILDINGS : has
+    BUILDINGS ||--o{ UNITS : contains
+    PROJECTS {
+        uuid id PK
+        text name
+        text slug UK
+        text city
+        text stage
+        text cover_url
+        text description
+        timestamp created_at
+    }
+    BUILDINGS {
+        uuid id PK
+        uuid project_id FK
+        text name
+        int floors
+    }
+    UNITS {
+        uuid id PK
+        uuid building_id FK
+        int floor
+        int number
+        text status
+        int rooms
+        numeric area_m2
+        numeric price_tjs
+    }
+    CLASSIFIEDS {
+        uuid id PK
+        text title
+        text city
+        text type
+        int rooms
+        numeric price_tjs
+        text contact_phone
+        timestamp created_at
+    }
+```
+
+---
+
+## 🎨 WebGL-шейдеры
+
+Компонент [`ShaderBackground`](./src/components/ui/shader-background.tsx) предоставляет три варианта премиальных фоновых эффектов, реализованных на чистом WebGL (0 новых зависимостей):
+
+| Вариант | Описание | Применение |
+|---|---|---|
+| `aurora` | Переливающееся северное сияние | Hero-секция главной страницы |
+| `gradient-mesh` | Анимированная градиентная сетка | Общие фоны |
+| `light-leak` | Мягкие световые блики | Страница ЖК |
+
+**Оптимизации:**
+- `IntersectionObserver` — пауза анимации вне viewport (экономия батареи)
+- `prefers-reduced-motion` — автоотключение для пользователей с вестибулярными нарушениями
+- DPR ≤ 1.5 — ограничение разрешения на hi-DPI экранах
+- CSS gradient fallback — при отсутствии WebGL / режиме экономии энергии
+
+---
+
+## 🌐 Окружения
+
+| Окружение | URL | Ветка |
+|---|---|---|
+| **Production** | [sogd-realty.vercel.app](https://sogd-realty.vercel.app) | `main` |
+| **Local Dev** | http://localhost:3000 | любая |
+
+---
+
+## 🔑 Переменные окружения (справочник)
+
+| Переменная | Обязательная | Описание |
+|---|---|---|
+| `DATABASE_URL` | ✅ | Строка подключения PostgreSQL |
+| `BETTER_AUTH_SECRET` | ✅ | Секрет JWT-токенов (мин. 32 символа) |
+| `BETTER_AUTH_URL` | ✅ | Базовый URL приложения для Auth |
+| `NEXT_PUBLIC_APP_URL` | ✅ | Публичный URL (для OpenGraph и т.д.) |
+| `NEXT_PUBLIC_SUPABASE_URL` | ✅ | URL Supabase-проекта |
+| `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | ✅ | Публичный ключ Supabase |
+| `NEXT_PUBLIC_USD_TO_TJS_RATE` | ✅ | Курс USD → TJS (например `10.95`) |
+
+---
+
+## 📋 Доступные команды
+
+```bash
+pnpm dev          # Режим разработки (порт 3000)
+pnpm build        # Продакшн-сборка
+pnpm start        # Запуск продакшн-сервера
+pnpm lint         # ESLint проверка
+pnpm db:push      # Применить схему Drizzle к БД
+pnpm db:studio    # Открыть Drizzle Studio (GUI для БД)
+pnpm db:seed      # Заполнить БД тестовыми данными
+```
+
+---
+
+## 🗺️ Roadmap
+
+- [x] Phase 1 — Публичный каталог ЖК и квартир
+- [x] Phase 2 — Кабинет застройщика + Шахматка
+- [x] Phase 3 — Вторичный рынок (частные объявления)
+- [x] Phase 4 — Деплой на Vercel + Supabase
+- [x] Phase 5 — WebGL-шейдеры (премиальный UI)
+- [ ] Phase 6 — Поиск по карте (Яндекс.Карты / Leaflet)
+- [ ] Phase 7 — Мобильное приложение (React Native / Expo)
+- [ ] Phase 8 — Аналитика для застройщика (графики продаж)
+- [ ] Phase 9 — Интеграция с ипотечными калькуляторами
+
+---
+
+## 🤝 Разработка
+
+Pull request-ы приветствуются! Перед отправкой:
+
+1. Создай ветку `feature/your-feature` от `main`
+2. Убедись, что `pnpm build` проходит без ошибок
+3. Следуй правилам из [`RULES.md`](./RULES.md)
+4. Напиши осмысленный commit-сообщение в стиле [Conventional Commits](https://conventionalcommits.org)
+
+---
+
+## 📄 Лицензия
+
+Распространяется под лицензией **MIT**. Подробности в файле [LICENSE](./LICENSE).
+
+---
+
+<div align="center">
+
+Сделано с ❤️ в **Худжанде, Таджикистан** 🇹🇯
+
+[🌐 Демо](https://sogd-realty.vercel.app) · [🐛 Баги](https://github.com/Hafiz0ff/developppers/issues) · [💡 Предложения](https://github.com/Hafiz0ff/developppers/issues)
+
+</div>
