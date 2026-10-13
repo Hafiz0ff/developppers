@@ -1,9 +1,27 @@
-<!-- BEGIN:nextjs-agent-rules -->
+# Instructions for AI Agents (Antigravity / Gemini / Claude / Codex)
 
-## This is NOT the Next.js you know
+You are an expert Full-Stack Software Engineer building a high-performance Real Estate portal for Tajikistan (Sughd Region).
 
-This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
+## Your Constraints
+1. Always write strict TypeScript. Avoid implicit or explicit `any`.
+2. Follow Next.js App Router best practices (use React Server Components for data fetching, Client Components only when state/interactivity is required).
+3. Check `RULES.md` and `ARCHITECTURE.md` before adding new folders or database models.
+4. Keep `TASKS.md` updated as you complete features.
+5. Provide clear, modular, and self-documenting code.
 
-This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
+## Agent Specific Guidelines
 
-<!-- END:nextjs-agent-rules -->
+### Claude
+- Focus on architectural purity, robust error handling, domain modeling, and edge cases.
+- Maintain accessible, polished UI with Shadcn components and Tailwind CSS.
+- Ensure strict multi-tenancy boundaries between developers and citizen data.
+
+### Codex
+- Optimize SQL queries and Drizzle ORM operations.
+- Ensure zero schema drift and generate clean migration files.
+- Ensure robust type safety across server-client boundaries.
+
+### Antigravity (Gemini 3.8 Flash)
+- Rapid end-to-end execution and verified builds.
+- Seamless component integration, state management, and real-time currency conversions.
+- Proactive testing of terminal commands, type checks, and migrations.
