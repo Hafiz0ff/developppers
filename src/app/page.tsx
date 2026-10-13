@@ -35,25 +35,31 @@ import {
   Trees,
   Store,
   Layers,
+  Sparkles,
+  TrendingUp,
+  KeyRound,
+  FileSpreadsheet,
+  Check,
+  Car,
+  Waves,
+  Flame,
 } from "lucide-react";
 
-
-// Демонстрационные данные каталога новостроек
+// Демонстрационные данные каталога новостроек (CIAN Style)
 const FEATURED_PROJECTS = [
   {
     id: "proj_sirdaryo_plaza",
     name: "ЖК «Сирдарё Плаза»",
     slug: "sirdaryo-plaza",
     developerName: "Рахш Сохтмон",
-    developerLogo:
-      "https://images.unsplash.com/photo-1541888946425-d0fbb186241b?w=100&h=100&fit=crop",
+    developerInitials: "РС",
     status: "Строится (4 кв. 2026)",
     buildingClass: "Бизнес-класс",
     city: "г. Худжанд",
     district: "19 мкр, Набережная Сырдарьи",
     floors: 16,
     coverImage:
-      "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=1000&h=650&fit=crop",
+      "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=1200&h=750&fit=crop",
     pricePerMeterTjs: 6570,
     pricePerMeterUsd: 600,
     minPriceTjs: 348210,
@@ -68,15 +74,14 @@ const FEATURED_PROJECTS = [
     name: "ЖК «Суғдиён Сити»",
     slug: "sugdiyon-city",
     developerName: "Сайҳун Девелопмент",
-    developerLogo:
-      "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=100&h=100&fit=crop",
+    developerInitials: "СД",
     status: "Строится (2 кв. 2027)",
     buildingClass: "Комфорт-класс",
     city: "г. Худжанд",
     district: "18 мкр, пр. Гафурова",
     floors: 12,
     coverImage:
-      "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1000&h=650&fit=crop",
+      "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1200&h=750&fit=crop",
     pricePerMeterTjs: 5475,
     pricePerMeterUsd: 500,
     minPriceTjs: 262800,
@@ -88,7 +93,7 @@ const FEATURED_PROJECTS = [
   },
 ];
 
-// Демонстрационные данные частных объявлений (вторичка, дома, коммерция)
+// Частные объявления (Avito / CIAN Style)
 const RECENT_CLASSIFIEDS = [
   {
     id: "c1",
@@ -159,205 +164,236 @@ export default function HomePage() {
   const { formatPrice, currency } = useCurrency();
   const [activeTab, setActiveTab] = useState<"new" | "resale" | "rent" | "houses">("new");
   const [selectedCity, setSelectedCity] = useState("khujand");
-  const [roomsFilter, setRoomsFilter] = useState("all");
+  const [selectedRooms, setSelectedRooms] = useState<string>("all");
+  const [priceFrom, setPriceFrom] = useState("");
+  const [priceTo, setPriceTo] = useState("");
+  const [revealedPhones, setRevealedPhones] = useState<Record<string, boolean>>({});
+
+  const togglePhone = (id: string) => {
+    setRevealedPhones((prev) => ({ ...prev, [id]: !prev[id] }));
+  };
+
+  const roomOptions = [
+    { id: "all", label: "Все" },
+    { id: "studio", label: "Студия" },
+    { id: "1", label: "1" },
+    { id: "2", label: "2" },
+    { id: "3", label: "3" },
+    { id: "4+", label: "4+" },
+  ];
 
   return (
-    <div className="flex flex-col gap-12 pb-20">
-      {/* HERO SECTION WITH SHADER BACKGROUND */}
-      <section className="relative pt-16 pb-14 border-b overflow-hidden">
-        {/* Living Fluid Aurora Shader Layer */}
+    <div className="flex flex-col gap-14 pb-24">
+      {/* 1. HERO SECTION WITH VIBRANT LIVING SHADER (CIAN STYLE) */}
+      <section className="relative min-h-[580px] sm:min-h-[640px] pt-14 pb-16 flex flex-col justify-center overflow-hidden bg-[#022c22]">
+        {/* Dynamic WebGL Simplex Noise Aurora Mesh Layer */}
         <ShaderBackground
           variant="aurora"
-          speed={0.7}
-          intensity={0.95}
+          speed={0.65}
+          intensity={1.0}
           className="absolute inset-0 -z-10 h-full w-full"
         />
 
+        {/* Ambient Overlay for High Text Contrast */}
+        <div className="absolute inset-0 bg-black/25 backdrop-blur-[1px] -z-10 pointer-events-none" />
+        <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-background to-transparent -z-10 pointer-events-none" />
+
         <div className="container mx-auto px-4 relative z-10">
-          <div className="max-w-3xl mx-auto text-center space-y-4 mb-10">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-800 dark:text-emerald-300 text-xs font-semibold backdrop-blur-md">
-              <ShieldCheck className="h-4 w-4 text-emerald-600" />
+          <div className="max-w-3xl mx-auto text-center space-y-4 mb-9">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/20 border border-emerald-400/30 text-emerald-300 text-xs font-semibold backdrop-blur-md shadow-xs">
+              <ShieldCheck className="h-4 w-4 text-emerald-400" />
               Единый портал недвижимости Согдийской области
             </div>
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-foreground">
-              Недвижимость в Худжанде и Согдийской области
+            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white drop-shadow-sm">
+              Недвижимость в Худжанде и Согде
             </h1>
-            <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto font-normal">
-              Каталог современных новостроек от надежных застройщиков без комиссии, а также
-              частные объявления вторичного жилья, домов (ҳавлӣ) и участков.
+            <p className="text-base sm:text-lg text-emerald-100/90 max-w-2xl mx-auto font-normal leading-relaxed drop-shadow-xs">
+              Новостройки напрямую от застройщиков без комиссии, а также вторичное жильё,
+              традиционные дома (ҳавлӣ) и коммерческие объекты.
             </p>
           </div>
 
-          {/* Interactive Search Card with Glassmorphism */}
+          {/* 2. CIAN-STYLE SEARCH CARD WITH GLASSMORPHISM */}
           <div className="relative max-w-4xl mx-auto">
-            <div className="bg-card/90 dark:bg-card/85 backdrop-blur-md border border-emerald-100 dark:border-emerald-900/40 rounded-2xl p-5 sm:p-7 shadow-xl shadow-emerald-900/5">
-            {/* Tabs */}
-            <div className="flex items-center gap-2 overflow-x-auto pb-3 mb-5 border-b">
-              <button
-                type="button"
-                onClick={() => setActiveTab("new")}
-                className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold transition-all whitespace-nowrap ${
-                  activeTab === "new"
-                    ? "bg-emerald-600 text-white shadow-xs"
-                    : "text-muted-foreground hover:text-foreground hover:bg-muted"
-                }`}
-              >
-                <Building2 className="h-4 w-4" />
-                Новостройки (ЖК)
-              </button>
-              <button
-                type="button"
-                onClick={() => setActiveTab("resale")}
-                className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold transition-all whitespace-nowrap ${
-                  activeTab === "resale"
-                    ? "bg-emerald-600 text-white shadow-xs"
-                    : "text-muted-foreground hover:text-foreground hover:bg-muted"
-                }`}
-              >
-                <Home className="h-4 w-4" />
-                Купить вторичку
-              </button>
-              <button
-                type="button"
-                onClick={() => setActiveTab("houses")}
-                className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold transition-all whitespace-nowrap ${
-                  activeTab === "houses"
-                    ? "bg-emerald-600 text-white shadow-xs"
-                    : "text-muted-foreground hover:text-foreground hover:bg-muted"
-                }`}
-              >
-                <Trees className="h-4 w-4" />
-                Дома и Ҳавлӣ
-              </button>
-              <button
-                type="button"
-                onClick={() => setActiveTab("rent")}
-                className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold transition-all whitespace-nowrap ${
-                  activeTab === "rent"
-                    ? "bg-emerald-600 text-white shadow-xs"
-                    : "text-muted-foreground hover:text-foreground hover:bg-muted"
-                }`}
-              >
-                <Store className="h-4 w-4" />
-                Аренда и коммерция
-              </button>
-            </div>
-
-            {/* Filter Inputs Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
-              {/* City selector */}
-              <div>
-                <label className="text-xs font-semibold text-muted-foreground mb-1.5 block">
-                  Город / Район Согда
-                </label>
-                <Select
-                  value={selectedCity}
-                  onValueChange={(val) => {
-                    if (val) setSelectedCity(val);
-                  }}
+            <div className="bg-white/95 dark:bg-card/95 backdrop-blur-2xl border border-white/40 dark:border-white/10 rounded-2xl p-5 sm:p-7 shadow-2xl shadow-emerald-950/40">
+              {/* Segment Tabs (CIAN Style) */}
+              <div className="flex items-center gap-2 overflow-x-auto pb-3 mb-5 border-b">
+                <button
+                  type="button"
+                  onClick={() => setActiveTab("new")}
+                  className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold transition-all whitespace-nowrap ${
+                    activeTab === "new"
+                      ? "bg-emerald-600 text-white shadow-sm"
+                      : "text-muted-foreground hover:text-foreground hover:bg-muted/70"
+                  }`}
                 >
-                  <SelectTrigger className="w-full h-10">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {SOGD_CITIES.map((c) => (
-                      <SelectItem key={c.value} value={c.value}>
-                        {c.nameRu}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-
-              {/* Rooms count */}
-              <div>
-                <label className="text-xs font-semibold text-muted-foreground mb-1.5 block">
-                  Комнаты
-                </label>
-                <Select
-                  value={roomsFilter}
-                  onValueChange={(val) => {
-                    if (val) setRoomsFilter(val);
-                  }}
+                  <Building2 className="h-4 w-4" />
+                  Новостройки (ЖК)
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setActiveTab("resale")}
+                  className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold transition-all whitespace-nowrap ${
+                    activeTab === "resale"
+                      ? "bg-emerald-600 text-white shadow-sm"
+                      : "text-muted-foreground hover:text-foreground hover:bg-muted/70"
+                  }`}
                 >
-                  <SelectTrigger className="w-full h-10">
-                    <SelectValue placeholder="Любая" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">Любая комнатность</SelectItem>
-                    <SelectItem value="1">1-комнатные</SelectItem>
-                    <SelectItem value="2">2-комнатные</SelectItem>
-                    <SelectItem value="3">3-комнатные</SelectItem>
-                    <SelectItem value="4">4+ комнат</SelectItem>
-                  </SelectContent>
-                </Select>
+                  <Home className="h-4 w-4" />
+                  Купить вторичку
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setActiveTab("houses")}
+                  className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold transition-all whitespace-nowrap ${
+                    activeTab === "houses"
+                      ? "bg-emerald-600 text-white shadow-sm"
+                      : "text-muted-foreground hover:text-foreground hover:bg-muted/70"
+                  }`}
+                >
+                  <Trees className="h-4 w-4" />
+                  Дома и Ҳавлӣ
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setActiveTab("rent")}
+                  className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold transition-all whitespace-nowrap ${
+                    activeTab === "rent"
+                      ? "bg-emerald-600 text-white shadow-sm"
+                      : "text-muted-foreground hover:text-foreground hover:bg-muted/70"
+                  }`}
+                >
+                  <Store className="h-4 w-4" />
+                  Аренда & Коммерция
+                </button>
               </div>
 
-              {/* Price range */}
-              <div>
-                <label className="text-xs font-semibold text-muted-foreground mb-1.5 block">
-                  Цена до ({currency === "TJS" ? "сомони" : "$"})
-                </label>
-                <Input
-                  placeholder={currency === "TJS" ? "до 500 000 сом." : "до $50 000"}
-                  className="w-full h-10"
-                />
-              </div>
-
-              {/* Submit button */}
-              <div className="flex items-end">
-                <Button className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold h-10 shadow-md shadow-emerald-600/20 gap-2">
-                  <Search className="h-4 w-4" />
-                  Найти
-                </Button>
-              </div>
-            </div>
-
-            {/* Quick district tags for Khujand */}
-            {selectedCity === "khujand" && (
-              <div className="mt-4 pt-3.5 border-t flex flex-wrap items-center gap-1.5 text-xs text-muted-foreground">
-                <span className="font-semibold text-foreground mr-1">Микрорайоны:</span>
-                {[
-                  "18 мкр",
-                  "19 мкр",
-                  "20 мкр",
-                  "34 мкр",
-                  "Панчшанбе",
-                  "Шелкокомбинат",
-                  "Правый берег",
-                ].map((dist) => (
-                  <button
-                    key={dist}
-                    type="button"
-                    className="px-2.5 py-1 rounded-md bg-muted/60 hover:bg-muted hover:text-foreground transition-colors"
+              {/* Filter Inputs Grid (CIAN Layout) */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-3.5 items-end">
+                {/* 1. City / Region (col-span-3) */}
+                <div className="lg:col-span-3">
+                  <label className="text-xs font-semibold text-muted-foreground mb-1.5 block">
+                    Город / Район
+                  </label>
+                  <Select
+                    value={selectedCity}
+                    onValueChange={(val) => {
+                      if (val) setSelectedCity(val);
+                    }}
                   >
-                    {dist}
+                    <SelectTrigger className="w-full h-11 rounded-xl bg-background border">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {SOGD_CITIES.map((c) => (
+                        <SelectItem key={c.value} value={c.value}>
+                          {c.nameRu}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                {/* 2. Room Multi-buttons (col-span-3) */}
+                <div className="lg:col-span-3">
+                  <label className="text-xs font-semibold text-muted-foreground mb-1.5 block">
+                    Комнатность
+                  </label>
+                  <div className="flex items-center h-11 border rounded-xl p-1 bg-muted/40 gap-1">
+                    {roomOptions.map((opt) => (
+                      <button
+                        key={opt.id}
+                        type="button"
+                        onClick={() => setSelectedRooms(opt.id)}
+                        className={`flex-1 h-full rounded-lg text-xs font-bold transition-all ${
+                          selectedRooms === opt.id
+                            ? "bg-emerald-600 text-white shadow-xs"
+                            : "text-muted-foreground hover:text-foreground"
+                        }`}
+                      >
+                        {opt.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* 3. Price Range From - To (col-span-3) */}
+                <div className="lg:col-span-3">
+                  <label className="text-xs font-semibold text-muted-foreground mb-1.5 block">
+                    Цена ({currency === "TJS" ? "сомони" : "$"})
+                  </label>
+                  <div className="flex items-center gap-1.5">
+                    <Input
+                      placeholder="от"
+                      value={priceFrom}
+                      onChange={(e) => setPriceFrom(e.target.value)}
+                      className="h-11 rounded-xl bg-background text-xs"
+                    />
+                    <Input
+                      placeholder="до"
+                      value={priceTo}
+                      onChange={(e) => setPriceTo(e.target.value)}
+                      className="h-11 rounded-xl bg-background text-xs"
+                    />
+                  </div>
+                </div>
+
+                {/* 4. Action Button (col-span-3) */}
+                <div className="lg:col-span-3">
+                  <Button className="w-full h-11 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl shadow-lg shadow-emerald-600/30 gap-2 text-sm">
+                    <Search className="h-4 w-4" />
+                    Найти 342 объекта
+                  </Button>
+                </div>
+              </div>
+
+              {/* Quick Filter Chips (CIAN Style) */}
+              <div className="mt-4 pt-3.5 border-t flex flex-wrap items-center gap-2 text-xs">
+                <span className="font-semibold text-muted-foreground mr-1 text-[11px] uppercase tracking-wider">
+                  Быстрый выбор:
+                </span>
+                {[
+                  { label: "🔥 Рассрочка 0%", icon: Flame },
+                  { label: "🌊 Вид на Сырдарью", icon: Waves },
+                  { label: "📍 18 и 19 мкр", icon: MapPin },
+                  { label: "🏡 Дома с хаузом", icon: Trees },
+                  { label: "🏢 Сданные ЖК", icon: CheckCircle2 },
+                  { label: "🚗 С паркингом", icon: Car },
+                ].map((chip) => (
+                  <button
+                    key={chip.label}
+                    type="button"
+                    className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-muted/60 hover:bg-emerald-50 dark:hover:bg-emerald-950/30 hover:text-emerald-700 dark:hover:text-emerald-400 border border-transparent hover:border-emerald-200 dark:hover:border-emerald-800 transition-all text-xs font-medium"
+                  >
+                    {chip.label}
                   </button>
                 ))}
               </div>
-            )}
-          </div>
+            </div>
           </div>
         </div>
       </section>
 
-
-      {/* NEW BUILDINGS CATALOG (НОВОСТРОЙКИ) */}
+      {/* 3. NEW BUILDINGS & RESIDENTIAL COMPLEXES (CIAN STYLE) */}
       <section id="new-buildings" className="container mx-auto px-4">
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-2 mb-6">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 mb-7">
           <div>
-            <div className="text-xs uppercase font-bold tracking-wider text-emerald-600 mb-1">
-              Каталог ЖК Согда
+            <div className="inline-flex items-center gap-1.5 text-xs uppercase font-bold tracking-wider text-emerald-600 mb-1">
+              <Sparkles className="h-3.5 w-3.5" />
+              Каталог новостроек Согда
             </div>
-            <h2 className="text-2xl sm:text-3xl font-extrabold text-foreground">
-              Новостройки от застройщиков
+            <h2 className="text-2xl sm:text-3xl font-extrabold text-foreground tracking-tight">
+              Премиальные ЖК и застройщики Худжанда
             </h2>
+            <p className="text-xs sm:text-sm text-muted-foreground mt-0.5">
+              Жилые комплексы с официальной документацией, беспроцентной рассрочкой и интерактивной шахматкой
+            </p>
           </div>
           <Link
             href="#new-buildings"
-            className="text-sm font-semibold text-emerald-600 hover:text-emerald-700 flex items-center gap-1"
+            className="text-sm font-semibold text-emerald-600 hover:text-emerald-700 flex items-center gap-1 shrink-0"
           >
-            Все 14 комплексов в Согде
+            Все 14 комплексов
             <ChevronRight className="h-4 w-4" />
           </Link>
         </div>
@@ -366,47 +402,48 @@ export default function HomePage() {
           {FEATURED_PROJECTS.map((proj) => (
             <Card
               key={proj.id}
-              className="overflow-hidden border hover:border-emerald-500/50 transition-all hover:shadow-lg group"
+              className="overflow-hidden border border-border/80 hover:border-emerald-500/50 transition-all hover:shadow-xl group rounded-2xl"
             >
-              <div className="relative h-64 w-full overflow-hidden bg-muted">
-                {/* Image */}
+              <div className="relative h-72 w-full overflow-hidden bg-muted">
+                {/* Photo with hover zoom */}
                 <img
                   src={proj.coverImage}
                   alt={proj.name}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                 />
 
                 {/* Status Badges */}
-                <div className="absolute top-3 left-3 flex flex-wrap gap-1.5">
-                  <Badge className="bg-emerald-600 text-white font-semibold text-xs shadow-xs">
+                <div className="absolute top-3.5 left-3.5 flex flex-wrap gap-2">
+                  <Badge className="bg-emerald-600 text-white font-bold text-xs shadow-md">
                     {proj.status}
                   </Badge>
-                  <Badge variant="secondary" className="backdrop-blur-md bg-background/80 text-foreground font-semibold text-xs">
+                  <Badge variant="secondary" className="backdrop-blur-md bg-background/85 text-foreground font-semibold text-xs shadow-xs">
                     {proj.buildingClass}
                   </Badge>
                 </div>
 
                 {/* Installment Badge */}
-                <div className="absolute bottom-3 left-3 bg-background/95 backdrop-blur-md text-emerald-700 dark:text-emerald-400 font-semibold text-xs px-2.5 py-1 rounded-md shadow-xs flex items-center gap-1.5">
+                <div className="absolute bottom-3.5 left-3.5 bg-background/95 backdrop-blur-md text-emerald-700 dark:text-emerald-400 font-bold text-xs px-3 py-1.5 rounded-lg shadow-md flex items-center gap-1.5">
                   <Percent className="h-3.5 w-3.5" />
                   {proj.installment} ({proj.downPayment})
                 </div>
 
-                {/* Developer tag */}
-                <div className="absolute top-3 right-3 bg-background/90 backdrop-blur-md px-2.5 py-1 rounded-md text-xs font-semibold text-foreground shadow-xs flex items-center gap-1.5">
-                  <Building2 className="h-3.5 w-3.5 text-emerald-600" />
-                  {proj.developerName}
+                {/* Developer tag with Avatar */}
+                <div className="absolute top-3.5 right-3.5 bg-background/95 backdrop-blur-md px-3 py-1.5 rounded-xl text-xs font-bold text-foreground shadow-md flex items-center gap-2">
+                  <DeveloperAvatar name={proj.developerName} size="sm" className="h-6 w-6 text-[10px]" />
+                  <span>{proj.developerName}</span>
+                  <CheckCircle2 className="h-3.5 w-3.5 text-emerald-600" />
                 </div>
               </div>
 
-              <CardContent className="p-5 space-y-4">
+              <CardContent className="p-6 space-y-4">
                 <div>
-                  <h3 className="text-xl font-bold text-foreground group-hover:text-emerald-600 transition-colors">
+                  <h3 className="text-xl font-extrabold text-foreground group-hover:text-emerald-600 transition-colors">
                     {proj.name}
                   </h3>
-                  <p className="text-xs text-muted-foreground flex items-center gap-1 mt-1">
+                  <p className="text-xs text-muted-foreground flex items-center gap-1 mt-1 font-medium">
                     <MapPin className="h-3.5 w-3.5 text-emerald-600 shrink-0" />
-                    {proj.city}, {proj.district}
+                    {proj.city}, {proj.district} • {proj.floors} этажей
                   </p>
                 </div>
 
@@ -415,18 +452,18 @@ export default function HomePage() {
                   {proj.tags.map((tag) => (
                     <span
                       key={tag}
-                      className="text-[11px] font-medium px-2 py-0.5 rounded-md bg-muted text-muted-foreground"
+                      className="text-[11px] font-semibold px-2.5 py-1 rounded-md bg-muted text-muted-foreground"
                     >
                       {tag}
                     </span>
                   ))}
                 </div>
 
-                {/* Price block */}
-                <div className="pt-3 border-t flex items-center justify-between">
+                {/* Price block (CIAN Style) */}
+                <div className="pt-3.5 border-t flex items-center justify-between">
                   <div>
                     <div className="text-[11px] text-muted-foreground">Цена за м²:</div>
-                    <div className="text-sm font-semibold text-foreground">
+                    <div className="text-base font-bold text-foreground">
                       от{" "}
                       {formatPrice(
                         proj.pricePerMeterTjs,
@@ -437,45 +474,56 @@ export default function HomePage() {
                   </div>
                   <div className="text-right">
                     <div className="text-[11px] text-muted-foreground">Квартиры от:</div>
-                    <div className="text-lg font-extrabold text-emerald-600">
+                    <div className="text-xl font-extrabold text-emerald-600">
                       от {formatPrice(proj.minPriceTjs, proj.minPriceUsd)}
                     </div>
                   </div>
                 </div>
 
+                {/* Action Buttons */}
                 <div className="pt-2 flex items-center gap-3">
                   <Link href={`/projects/${proj.slug}`} className="flex-1">
-                    <Button className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs h-9 px-4">
+                    <Button className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs h-10 px-4 rounded-xl shadow-xs">
                       Смотреть {proj.availableUnitsCount} квартир
                     </Button>
                   </Link>
-                  <Button variant="outline" size="sm" className="text-xs font-semibold h-9 px-3.5">
-                    Отдел продаж
-                  </Button>
+                  <a
+                    href="https://wa.me/992927005555"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    <Button variant="outline" size="sm" className="text-xs font-semibold h-10 px-3.5 rounded-xl gap-1.5">
+                      <MessageCircle className="h-4 w-4 text-emerald-600" />
+                      Отдел продаж
+                    </Button>
+                  </a>
                 </div>
-
               </CardContent>
             </Card>
           ))}
         </div>
       </section>
 
-      {/* SECONDARY MARKET & HOUSES (ВТОРИЧКА И ЧАСТНЫЕ ОБЪЯВЛЕНИЯ) */}
+      {/* 4. SECONDARY MARKET & HOUSES (AVITO / CIAN STYLE) */}
       <section id="classifieds" className="container mx-auto px-4">
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-2 mb-6">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 mb-7">
           <div>
-            <div className="text-xs uppercase font-bold tracking-wider text-emerald-600 mb-1">
-              Частные объявления
+            <div className="inline-flex items-center gap-1.5 text-xs uppercase font-bold tracking-wider text-emerald-600 mb-1">
+              <Home className="h-3.5 w-3.5" />
+              Вторичный рынок и дома
             </div>
-            <h2 className="text-2xl sm:text-3xl font-extrabold text-foreground">
-              Вторичное жилье, дома (ҳавлӣ) и аренда
+            <h2 className="text-2xl sm:text-3xl font-extrabold text-foreground tracking-tight">
+              Свежие объявления в Худжанде и пригороде
             </h2>
+            <p className="text-xs sm:text-sm text-muted-foreground mt-0.5">
+              Квартиры от собственников, традиционные дома (ҳавлӣ), дачи и коммерция
+            </p>
           </div>
           <Link
             href="#classifieds"
-            className="text-sm font-semibold text-emerald-600 hover:text-emerald-700 flex items-center gap-1"
+            className="text-sm font-semibold text-emerald-600 hover:text-emerald-700 flex items-center gap-1 shrink-0"
           >
-            Смотреть все объявления
+            Смотреть все 186 объявлений
             <ChevronRight className="h-4 w-4" />
           </Link>
         </div>
@@ -484,59 +532,59 @@ export default function HomePage() {
           {RECENT_CLASSIFIEDS.map((item) => (
             <Card
               key={item.id}
-              className="overflow-hidden border hover:border-emerald-500/50 transition-all hover:shadow-md flex flex-col justify-between"
+              className="overflow-hidden border border-border/80 hover:border-emerald-500/50 transition-all hover:shadow-lg flex flex-col justify-between rounded-2xl group"
             >
               <div>
-                <div className="relative h-48 w-full overflow-hidden bg-muted">
+                <div className="relative h-52 w-full overflow-hidden bg-muted">
                   <img
                     src={item.image}
                     alt={item.title}
-                    className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   />
-                  <div className="absolute top-2.5 left-2.5 flex gap-1">
-                    <Badge className="bg-emerald-600 text-white text-[11px] font-semibold">
+                  <div className="absolute top-3 left-3 flex gap-1.5">
+                    <Badge className="bg-emerald-600 text-white text-[11px] font-bold shadow-xs">
                       {item.dealType}
                     </Badge>
-                    <Badge variant="secondary" className="backdrop-blur-md bg-background/80 text-[11px]">
+                    <Badge variant="secondary" className="backdrop-blur-md bg-background/85 text-[11px] font-semibold">
                       {item.propertyType}
                     </Badge>
                   </div>
                   {item.isNegotiable && (
-                    <div className="absolute bottom-2.5 right-2.5 bg-background/90 backdrop-blur-md text-[10px] font-semibold px-2 py-0.5 rounded shadow-xs">
+                    <div className="absolute bottom-3 right-3 bg-background/95 backdrop-blur-md text-[10px] font-bold px-2.5 py-1 rounded-md shadow-xs">
                       Торг уместен
                     </div>
                   )}
                 </div>
 
-                <CardContent className="p-4 space-y-3">
+                <CardContent className="p-5 space-y-3">
                   <div>
-                    <div className="text-lg font-extrabold text-emerald-600">
+                    <div className="text-xl font-extrabold text-emerald-600">
                       {formatPrice(item.priceTjs, item.priceUsd)}
                     </div>
-                    <h4 className="font-bold text-sm text-foreground line-clamp-1 mt-0.5">
+                    <h4 className="font-bold text-sm text-foreground line-clamp-1 mt-1">
                       {item.title}
                     </h4>
-                    <p className="text-xs text-muted-foreground flex items-center gap-1 mt-1">
+                    <p className="text-xs text-muted-foreground flex items-center gap-1 mt-1 font-medium">
                       <MapPin className="h-3.5 w-3.5 text-emerald-600 shrink-0" />
                       {item.city}, {item.district} ({item.landmark})
                     </p>
                   </div>
 
                   {/* Specs */}
-                  <div className="flex items-center gap-3 text-xs text-muted-foreground border-y py-2">
-                    <span className="font-medium text-foreground">{item.rooms} комн.</span>
+                  <div className="flex items-center gap-3 text-xs text-muted-foreground border-y py-2.5 font-medium">
+                    <span className="font-bold text-foreground">{item.rooms} комн.</span>
                     <span>•</span>
-                    <span className="font-medium text-foreground">{item.area} м²</span>
+                    <span className="font-bold text-foreground">{item.area} м²</span>
                     <span>•</span>
                     <span>{item.floor || item.landArea}</span>
                   </div>
 
-                  {/* Tags */}
+                  {/* Features */}
                   <div className="flex flex-wrap gap-1">
                     {item.features.map((f) => (
                       <span
                         key={f}
-                        className="text-[10px] px-1.5 py-0.5 rounded bg-muted text-muted-foreground"
+                        className="text-[10px] font-semibold px-2 py-0.5 rounded bg-muted text-muted-foreground"
                       >
                         {f}
                       </span>
@@ -545,30 +593,33 @@ export default function HomePage() {
                 </CardContent>
               </div>
 
-              {/* Contacts */}
-              <div className="p-4 pt-0 border-t mt-3 flex items-center justify-between text-xs">
+              {/* Contacts with Interactive Show Phone Button */}
+              <div className="p-5 pt-0 border-t mt-3 flex items-center justify-between text-xs">
                 <div>
-                  <span className="text-[11px] text-muted-foreground block">
+                  <span className="text-[10px] text-muted-foreground block font-medium">
                     {item.sellerType}
                   </span>
-                  <span className="font-semibold text-foreground font-mono">
-                    {item.phone}
+                  <span className="font-bold text-foreground font-mono text-xs">
+                    {revealedPhones[item.id] ? item.phone : `${item.phone.slice(0, 8)} •• ••`}
                   </span>
                 </div>
-                <div className="flex items-center gap-1.5">
+                <div className="flex items-center gap-2">
+                  <Button
+                    size="xs"
+                    variant={revealedPhones[item.id] ? "secondary" : "outline"}
+                    onClick={() => togglePhone(item.id)}
+                    className="h-8 px-2.5 text-xs font-semibold gap-1 rounded-lg"
+                  >
+                    <Phone className="h-3.5 w-3.5 text-emerald-600" />
+                    {revealedPhones[item.id] ? "Скрыть" : "Показать"}
+                  </Button>
                   <a
                     href={`https://wa.me/${item.whatsapp.replace(/\D/g, "")}`}
                     target="_blank"
                     rel="noreferrer"
-                    className="h-8 w-8 rounded-full bg-emerald-500/10 text-emerald-600 hover:bg-emerald-600 hover:text-white flex items-center justify-center transition-colors"
+                    className="h-8 w-8 rounded-lg bg-emerald-500/10 text-emerald-600 hover:bg-emerald-600 hover:text-white flex items-center justify-center transition-colors"
                   >
                     <MessageCircle className="h-4 w-4" />
-                  </a>
-                  <a
-                    href={`tel:${item.phone}`}
-                    className="h-8 w-8 rounded-full bg-muted hover:bg-foreground hover:text-background flex items-center justify-center transition-colors"
-                  >
-                    <Phone className="h-4 w-4" />
                   </a>
                 </div>
               </div>
@@ -577,7 +628,71 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* DEVELOPERS SECTION (ЗАСТРОЙЩИКИ СОГДА) */}
+      {/* 5. PLATFORM B2B SERVICES BANNER (CIAN ECOSYSTEM) */}
+      <section className="container mx-auto px-4">
+        <div className="bg-gradient-to-br from-emerald-950 via-teal-950 to-slate-950 border border-emerald-500/30 rounded-3xl p-6 sm:p-10 text-white shadow-xl relative overflow-hidden">
+          <div className="max-w-2xl mb-8 relative z-10">
+            <Badge className="bg-emerald-500/20 text-emerald-300 border-emerald-400/30 mb-3 text-xs font-semibold">
+              Экосистема Sogd Realty
+            </Badge>
+            <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight">
+              Инструменты для всех участников рынка недвижимости
+            </h2>
+            <p className="text-xs sm:text-sm text-emerald-100/80 mt-2 leading-relaxed">
+              Мы объединяем покупателей, застройщиков и частных маклеров в единую современную цифровую среду.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5 relative z-10">
+            {/* 1. For Buyers */}
+            <div className="bg-white/10 backdrop-blur-md border border-white/10 rounded-2xl p-5 space-y-3 hover:bg-white/15 transition-colors">
+              <div className="h-10 w-10 rounded-xl bg-emerald-500/20 text-emerald-300 flex items-center justify-center">
+                <Home className="h-5 w-5" />
+              </div>
+              <h4 className="font-bold text-base">Для покупателей</h4>
+              <p className="text-xs text-emerald-100/80 leading-relaxed">
+                Поиск новостроек и вторички без переплат. Интерактивная поэтажная шахматка и прямой контакт с отделами продаж.
+              </p>
+              <Link href="#new-buildings" className="inline-flex items-center text-xs font-bold text-emerald-300 hover:underline gap-1 pt-1">
+                Перейти в каталог ЖК
+                <ChevronRight className="h-3.5 w-3.5" />
+              </Link>
+            </div>
+
+            {/* 2. For Developers */}
+            <div className="bg-white/10 backdrop-blur-md border border-white/10 rounded-2xl p-5 space-y-3 hover:bg-white/15 transition-colors">
+              <div className="h-10 w-10 rounded-xl bg-teal-500/20 text-teal-300 flex items-center justify-center">
+                <Building2 className="h-5 w-5" />
+              </div>
+              <h4 className="font-bold text-base">Для застройщиков</h4>
+              <p className="text-xs text-emerald-100/80 leading-relaxed">
+                Цифровой кабинет застройщика: визуальное управление шахматкой квартир, бронирование и автоматические заявки в Telegram.
+              </p>
+              <Link href="/developer-admin" className="inline-flex items-center text-xs font-bold text-teal-300 hover:underline gap-1 pt-1">
+                Кабинет застройщика
+                <ChevronRight className="h-3.5 w-3.5" />
+              </Link>
+            </div>
+
+            {/* 3. For Realtors & CRM */}
+            <div className="bg-white/10 backdrop-blur-md border border-white/10 rounded-2xl p-5 space-y-3 hover:bg-white/15 transition-colors">
+              <div className="h-10 w-10 rounded-xl bg-emerald-400/20 text-emerald-200 flex items-center justify-center">
+                <TrendingUp className="h-5 w-5" />
+              </div>
+              <h4 className="font-bold text-base">Для маклеров и CRM</h4>
+              <p className="text-xs text-emerald-100/80 leading-relaxed">
+                Личный кабинет с аналитикой просмотров и звонков, выгрузка отчетов в Excel и Open API для связки с AmoCRM/Bitrix24.
+              </p>
+              <Link href="/profile/analytics" className="inline-flex items-center text-xs font-bold text-emerald-200 hover:underline gap-1 pt-1">
+                Открыть аналитику и API
+                <ChevronRight className="h-3.5 w-3.5" />
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 6. VERIFIED DEVELOPERS */}
       <section id="developers" className="container mx-auto px-4">
         <div className="bg-muted/40 border rounded-2xl p-6 sm:p-8">
           <div className="max-w-2xl mb-6">
@@ -592,10 +707,7 @@ export default function HomePage() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="bg-background border rounded-xl p-4 flex items-center gap-4 hover:border-emerald-500/30 transition-colors">
-              <DeveloperAvatar
-                name="Рахш Сохтмон"
-                size="md"
-              />
+              <DeveloperAvatar name="Рахш Сохтмон" size="md" />
               <div className="space-y-1">
                 <div className="flex items-center gap-2">
                   <h4 className="font-bold text-base text-foreground">Рахш Сохтмон</h4>
@@ -613,10 +725,7 @@ export default function HomePage() {
             </div>
 
             <div className="bg-background border rounded-xl p-4 flex items-center gap-4 hover:border-emerald-500/30 transition-colors">
-              <DeveloperAvatar
-                name="Сайҳун Девелопмент"
-                size="md"
-              />
+              <DeveloperAvatar name="Сайҳун Девелопмент" size="md" />
               <div className="space-y-1">
                 <div className="flex items-center gap-2">
                   <h4 className="font-bold text-base text-foreground">Сайҳун Девелопмент</h4>
@@ -633,68 +742,90 @@ export default function HomePage() {
               </div>
             </div>
           </div>
-
         </div>
       </section>
 
-      {/* FOOTER */}
-      <footer className="border-t pt-10 mt-10 text-xs text-muted-foreground">
-        <div className="container mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
-          <div>
-            <div className="flex items-center gap-2 mb-3">
-              <div className="h-8 w-8 rounded-lg bg-emerald-600 flex items-center justify-center text-white font-bold">
-                <Building2 className="h-4 w-4" />
+      {/* 7. STRUCTURED SEO FOOTER (CIAN.RU STYLE GRID) */}
+      <footer className="border-t pt-12 mt-6 text-xs text-muted-foreground bg-muted/20">
+        <div className="container mx-auto px-4 space-y-10">
+          {/* SEO Grid on 4 Columns */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+            {/* By Cities */}
+            <div>
+              <h5 className="font-bold text-foreground mb-3 uppercase tracking-wider text-[11px]">
+                Города Согдийской области
+              </h5>
+              <ul className="space-y-2 text-xs">
+                <li><Link href="#classifieds" className="hover:text-emerald-600 transition-colors">Недвижимость в Худжанде (Хуҷанд)</Link></li>
+                <li><Link href="#classifieds" className="hover:text-emerald-600 transition-colors">Дома в Б. Гафурове (Бобоҷон Ғафуров)</Link></li>
+                <li><Link href="#classifieds" className="hover:text-emerald-600 transition-colors">Квартиры в Исфаре (Исфара)</Link></li>
+                <li><Link href="#classifieds" className="hover:text-emerald-600 transition-colors">Недвижимость в Истаравшане</Link></li>
+                <li><Link href="#classifieds" className="hover:text-emerald-600 transition-colors">Квартиры в Гулистоне (Қайроққум)</Link></li>
+                <li><Link href="#classifieds" className="hover:text-emerald-600 transition-colors">Участки в Канибадаме (Конибодом)</Link></li>
+                <li><Link href="#classifieds" className="hover:text-emerald-600 transition-colors">Дома в Пенджикенте (Панҷакент)</Link></li>
+              </ul>
+            </div>
+
+            {/* By Districts of Khujand */}
+            <div>
+              <h5 className="font-bold text-foreground mb-3 uppercase tracking-wider text-[11px]">
+                Микрорайоны Худжанда
+              </h5>
+              <ul className="space-y-2 text-xs">
+                <li><Link href="#classifieds" className="hover:text-emerald-600 transition-colors">Новостройки в 19 микрорайоне</Link></li>
+                <li><Link href="#classifieds" className="hover:text-emerald-600 transition-colors">Квартиры в 18 микрорайоне</Link></li>
+                <li><Link href="#classifieds" className="hover:text-emerald-600 transition-colors">Жилье на Набережной Сырдарьи</Link></li>
+                <li><Link href="#classifieds" className="hover:text-emerald-600 transition-colors">Квартиры в 20 и 34 мкр</Link></li>
+                <li><Link href="#classifieds" className="hover:text-emerald-600 transition-colors">Район рынка «Панчшанбе»</Link></li>
+                <li><Link href="#classifieds" className="hover:text-emerald-600 transition-colors">Шелкокомбинат и Правый берег</Link></li>
+                <li><Link href="#classifieds" className="hover:text-emerald-600 transition-colors">Махалля Раззок и Центр</Link></li>
+              </ul>
+            </div>
+
+            {/* By Property Categories */}
+            <div>
+              <h5 className="font-bold text-foreground mb-3 uppercase tracking-wider text-[11px]">
+                Категории недвижимости
+              </h5>
+              <ul className="space-y-2 text-xs">
+                <li><Link href="#new-buildings" className="hover:text-emerald-600 transition-colors">Каталог ЖК с поэтажной шахматкой</Link></li>
+                <li><Link href="#classifieds" className="hover:text-emerald-600 transition-colors">1-комнатные квартиры в Худжанде</Link></li>
+                <li><Link href="#classifieds" className="hover:text-emerald-600 transition-colors">2-комнатные квартиры с евроремонтом</Link></li>
+                <li><Link href="#classifieds" className="hover:text-emerald-600 transition-colors">Традиционные дома (Ҳавлӣ) с садом</Link></li>
+                <li><Link href="#classifieds" className="hover:text-emerald-600 transition-colors">Земельные участки под застройку</Link></li>
+                <li><Link href="#classifieds" className="hover:text-emerald-600 transition-colors">Коммерческие помещения и магазины</Link></li>
+                <li><Link href="/profile/analytics" className="hover:text-emerald-600 transition-colors">B2B Open API для риелторов</Link></li>
+              </ul>
+            </div>
+
+            {/* Contacts & Support */}
+            <div>
+              <h5 className="font-bold text-foreground mb-3 uppercase tracking-wider text-[11px]">
+                Контакты и офис
+              </h5>
+              <p className="text-xs mb-2 leading-relaxed">
+                Центральный офис по Согдийской области:
+              </p>
+              <p className="font-semibold text-foreground">г. Худжанд, пр. И. Сомони 142</p>
+              <p className="font-mono font-bold text-emerald-600 text-sm mt-2">+992 92 777 0001</p>
+              <p className="font-mono text-muted-foreground mt-0.5">support@sogd-realty.tj</p>
+              <div className="pt-3">
+                <Badge variant="outline" className="text-[10px] bg-background">
+                  🇹🇯 Худжанд • Согд • Таджикистан
+                </Badge>
               </div>
-              <span className="font-extrabold text-foreground text-sm tracking-tight">
-                SOGD<span className="text-emerald-600">REALTY</span>
-              </span>
-            </div>
-            <p className="text-xs text-muted-foreground leading-relaxed">
-              Главный портал недвижимости Согдийской области Таджикистана. Новостройки,
-              квартиры от собственников, дома (хавли) и коммерческие площади.
-            </p>
-          </div>
-
-          <div>
-            <h5 className="font-bold text-foreground mb-3">Города и центры</h5>
-            <ul className="space-y-1.5 text-xs">
-              <li>Худжанд (Хуҷанд)</li>
-              <li>Бободжон Гафуров (Б. Ғафуров)</li>
-              <li>Исфара (Исфара)</li>
-              <li>Истаравшан (Истаравшан)</li>
-              <li>Канибадам (Конибодом)</li>
-              <li>Гулистон (Қайроққум)</li>
-              <li>Пенджикент (Панҷакент)</li>
-            </ul>
-          </div>
-
-          <div>
-            <h5 className="font-bold text-foreground mb-3">Разделы портала</h5>
-            <ul className="space-y-1.5 text-xs">
-              <li>Каталог новостроек и ЖК</li>
-              <li>Квартиры во вторичном фонде</li>
-              <li>Традиционные дома (Ҳавлӣ)</li>
-              <li>Земельные участки (Замин)</li>
-              <li>База застройщиков Согда</li>
-              <li>Ипотека и рассрочка от 0%</li>
-            </ul>
-          </div>
-
-          <div>
-            <h5 className="font-bold text-foreground mb-3">Контакты и поддержка</h5>
-            <p className="text-xs mb-2">Техническая поддержка и сотрудничество для застройщиков и агентств:</p>
-            <p className="font-mono font-semibold text-foreground">+992 92 777 0001</p>
-            <p className="font-mono text-muted-foreground">support@sogd-realty.tj</p>
-            <div className="mt-3">
-              <Badge variant="outline" className="text-[10px]">
-                Худжанд • Согдийская область • Таджикистан
-              </Badge>
             </div>
           </div>
-        </div>
 
-        <div className="container mx-auto px-4 pt-4 border-t text-center text-[11px] text-muted-foreground">
-          © 2026 SOGD REALTY. Все права защищены. Разработано на Next.js, Tailwind CSS, Shadcn UI и Drizzle ORM.
+          <div className="pt-6 border-t flex flex-col sm:flex-row items-center justify-between gap-3 text-[11px] text-muted-foreground">
+            <div>
+              © 2026 SOGD REALTY. Все права защищены. Разработано по стандартам CIAN.ru и Avito.
+            </div>
+            <div className="flex items-center gap-4">
+              <Link href="/developer-admin" className="hover:underline">Кабинет застройщика</Link>
+              <Link href="/profile/analytics" className="hover:underline">Аналитика & Open API</Link>
+            </div>
+          </div>
         </div>
       </footer>
     </div>

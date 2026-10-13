@@ -14,25 +14,25 @@ export interface ShaderBackgroundProps
   children?: React.ReactNode;
 }
 
-// Premium emerald / teal / silk white palette for Sogd Realty
+// Deep, vibrant luxury emerald / cyan / mint palette
 const DEFAULT_PALETTES: Record<ShaderVariant, [number, number, number][]> = {
   aurora: [
-    [0.02, 0.59, 0.41], // Emerald #059669
-    [0.05, 0.58, 0.53], // Teal #0D9488
-    [0.08, 0.72, 0.65], // Vibrant mint/cyan #14B8A6
-    [1.0, 1.0, 1.0],    // Silk white #FFFFFF
+    [0.02, 0.62, 0.45], // Emerald #059669
+    [0.05, 0.75, 0.68], // Vibrant Teal #0D9488
+    [0.01, 0.16, 0.14], // Deep Midnight Forest #022C22
+    [0.18, 0.88, 0.78], // Mint Crest Highlight #2DD4BF
   ],
   "gradient-mesh": [
-    [0.02, 0.59, 0.41], // Emerald #059669
-    [0.05, 0.58, 0.53], // Deep teal #0D9488
-    [0.18, 0.83, 0.75], // Mint highlight #2DD4BF
-    [0.96, 0.99, 0.98], // Pearl white #F5FBF9
+    [0.03, 0.58, 0.42], // Emerald #059669
+    [0.08, 0.72, 0.65], // Bright Teal #14B8A6
+    [0.02, 0.20, 0.18], // Deep Jade #04362E
+    [0.22, 0.92, 0.82], // Electric Mint #2DD4BF
   ],
   "light-leak": [
-    [0.05, 0.58, 0.53], // Teal #0D9488
-    [0.96, 0.85, 0.55], // Soft sunbeam amber
-    [0.02, 0.59, 0.41], // Emerald #059669
-    [1.0, 1.0, 1.0],    // White
+    [0.05, 0.65, 0.58], // Teal #0D9488
+    [0.96, 0.85, 0.52], // Soft warm sunbeam #FCD34D
+    [0.02, 0.28, 0.24], // Forest base #064E3B
+    [1.0, 1.0, 1.0],    // White flare
   ],
 };
 
@@ -57,7 +57,7 @@ const VERTEX_SHADER_SRC = `
   }
 `;
 
-// Fluid silk waves shader (aurora)
+// Liquid Aurora with Simplex Noise Flow (60 FPS, striking visuals)
 const AURORA_FRAGMENT_SHADER = `
   precision mediump float;
   uniform float u_time;
@@ -70,45 +70,70 @@ const AURORA_FRAGMENT_SHADER = `
   uniform float u_intensity;
   varying vec2 v_uv;
 
+  vec3 permute(vec3 x) { return mod(((x*34.0)+1.0)*x, 289.0); }
+
+  float snoise(vec2 v){
+    const vec4 C = vec4(0.211324865405187, 0.366025403784439,
+             -0.577350269189626, 0.024390243902439);
+    vec2 i  = floor(v + dot(v, C.yy) );
+    vec2 x0 = v -   i + dot(i, C.xx);
+    vec2 i1 = (x0.x > x0.y) ? vec2(1.0, 0.0) : vec2(0.0, 1.0);
+    vec4 x12 = x0.xyxy + C.xxzz;
+    x12.xy -= i1;
+    i = mod(i, 289.0);
+    vec3 p = permute( permute( i.y + vec3(0.0, i1.y, 1.0 ))
+    + i.x + vec3(0.0, i1.x, 1.0 ));
+    vec3 m = max(0.5 - vec3(dot(x0,x0), dot(x12.xy,x12.xy),
+      dot(x12.zw,x12.zw)), 0.0);
+    m = m*m ;
+    m = m*m ;
+    vec3 x = 2.0 * fract(p * C.www) - 1.0;
+    vec3 h = abs(x) - 0.5;
+    vec3 ox = floor(x + 0.5);
+    vec3 a0 = x - ox;
+    m *= 1.79284291400159 - 0.85373472095314 * ( a0*a0 + h*h );
+    vec3 g;
+    g.x  = a0.x  * x0.x  + h.x  * x0.y;
+    g.yz = a0.yz * x12.xz + h.yz * x12.yw;
+    return 130.0 * dot(m, g);
+  }
+
   void main() {
     vec2 uv = v_uv;
     float aspect = u_resolution.x / max(u_resolution.y, 1.0);
     vec2 p = uv;
     p.x *= aspect;
 
-    float t = u_time * 0.35;
+    float t = u_time * 0.45;
 
-    // Fluid undulating wave layers
-    float w1 = sin(p.x * 1.8 + t * 0.7 + sin(p.y * 2.2 + t * 0.4) * 1.2);
-    float w2 = cos(p.y * 2.0 - t * 0.5 + cos(p.x * 1.9 + t * 0.6) * 1.0);
-    float w3 = sin((p.x + p.y) * 1.4 + t * 0.8);
+    // Organic liquid turbulence
+    float n1 = snoise(p * 1.6 + vec2(t * 0.28, -t * 0.18));
+    float n2 = snoise(p * 2.4 - vec2(t * 0.22, t * 0.32) + vec2(n1 * 0.4));
+    float n3 = snoise(p * 3.2 + vec2(-t * 0.35, t * 0.25) + vec2(n2 * 0.3));
 
-    // Mouse interactive ripple
+    float wave = (n1 * 0.52 + n2 * 0.34 + n3 * 0.14) * 0.5 + 0.5;
+
+    // Interactive mouse ripple
     vec2 m = u_mouse;
     m.x *= aspect;
     float mDist = length(p - m);
-    float mInfluence = smoothstep(0.8, 0.0, mDist) * 0.25;
+    float mInf = smoothstep(0.8, 0.0, mDist) * 0.25;
+    wave = clamp(wave + mInf, 0.0, 1.0);
 
-    float waveSum = (w1 + w2 + w3) / 3.0 + mInfluence;
-    float norm = clamp(waveSum * 0.5 + 0.5, 0.0, 1.0);
+    // Rich color mixing
+    vec3 col = mix(u_c3, u_c1, smoothstep(0.08, 0.52, wave));
+    col = mix(col, u_c2, smoothstep(0.38, 0.78, wave + n2 * 0.18));
+    col = mix(col, u_c4, pow(smoothstep(0.62, 0.96, wave), 2.2) * 0.9);
 
-    // Harmonious gradient blending
-    vec3 col = mix(u_c1, u_c2, smoothstep(0.15, 0.65, norm));
-    col = mix(col, u_c3, smoothstep(0.45, 0.85, norm + 0.15 * sin(t + p.x)));
-
-    // Silk white light crest
-    float crest = pow(smoothstep(0.6, 0.95, norm), 2.2);
-    col = mix(col, u_c4, crest * 0.8);
-
-    // Soft border fading
-    float vig = 1.0 - length(v_uv - 0.5) * 0.45;
+    // Soft border vignette
+    float vig = 1.0 - length(v_uv - 0.5) * 0.35;
     vig = clamp(vig, 0.0, 1.0);
 
-    gl_FragColor = vec4(col, clamp(u_intensity * vig, 0.0, 1.0));
+    gl_FragColor = vec4(col * u_intensity * vig, 1.0);
   }
 `;
 
-// Smooth orbital gradient mesh
+// Dynamic Mesh Gradient
 const GRADIENT_MESH_FRAGMENT_SHADER = `
   precision mediump float;
   uniform float u_time;
@@ -123,36 +148,33 @@ const GRADIENT_MESH_FRAGMENT_SHADER = `
 
   void main() {
     vec2 uv = v_uv;
-    float t = u_time * 0.3;
+    float t = u_time * 0.4;
 
-    // 4 orbital attractor centers
-    vec2 p1 = vec2(0.25 + 0.2 * sin(t * 0.6), 0.25 + 0.2 * cos(t * 0.4));
-    vec2 p2 = vec2(0.75 + 0.2 * cos(t * 0.5), 0.35 + 0.2 * sin(t * 0.7));
-    vec2 p3 = vec2(0.50 + 0.25 * sin(t * 0.8), 0.80 + 0.15 * cos(t * 0.5));
-    vec2 p4 = vec2(0.20 + 0.15 * cos(t * 0.3), 0.75 + 0.2 * sin(t * 0.6));
+    vec2 p1 = vec2(0.25 + 0.22 * sin(t * 0.6), 0.25 + 0.22 * cos(t * 0.4));
+    vec2 p2 = vec2(0.75 + 0.22 * cos(t * 0.5), 0.35 + 0.22 * sin(t * 0.7));
+    vec2 p3 = vec2(0.50 + 0.28 * sin(t * 0.8), 0.80 + 0.18 * cos(t * 0.5));
+    vec2 p4 = vec2(0.20 + 0.18 * cos(t * 0.3), 0.75 + 0.22 * sin(t * 0.6));
 
     float d1 = length(uv - p1);
     float d2 = length(uv - p2);
     float d3 = length(uv - p3);
     float d4 = length(uv - p4);
 
-    float w1 = 1.0 / (d1 * d1 + 0.09);
-    float w2 = 1.0 / (d2 * d2 + 0.09);
-    float w3 = 1.0 / (d3 * d3 + 0.09);
-    float w4 = 1.0 / (d4 * d4 + 0.09);
+    float w1 = 1.0 / (d1 * d1 + 0.08);
+    float w2 = 1.0 / (d2 * d2 + 0.08);
+    float w3 = 1.0 / (d3 * d3 + 0.08);
+    float w4 = 1.0 / (d4 * d4 + 0.08);
 
     float total = w1 + w2 + w3 + w4;
     vec3 col = (u_c1 * w1 + u_c2 * w2 + u_c3 * w3 + u_c4 * w4) / total;
 
-    // Silk sheen highlight
     float sheen = pow(smoothstep(0.4, 0.9, 1.0 - d3), 3.0);
-    col = mix(col, u_c4, sheen * 0.4);
+    col = mix(col, u_c4, sheen * 0.5);
 
-    gl_FragColor = vec4(col, clamp(u_intensity * 0.9, 0.0, 1.0));
+    gl_FragColor = vec4(col * u_intensity, 1.0);
   }
 `;
 
-// Subtle light leak
 const LIGHT_LEAK_FRAGMENT_SHADER = `
   precision mediump float;
   uniform float u_time;
@@ -167,7 +189,7 @@ const LIGHT_LEAK_FRAGMENT_SHADER = `
 
   void main() {
     vec2 uv = v_uv;
-    float t = u_time * 0.25;
+    float t = u_time * 0.28;
 
     vec2 lightPos1 = vec2(0.2 + 0.15 * sin(t * 0.5), 0.1 + 0.1 * cos(t * 0.4));
     vec2 lightPos2 = vec2(0.85 + 0.1 * cos(t * 0.3), 0.2 + 0.15 * sin(t * 0.6));
@@ -181,12 +203,12 @@ const LIGHT_LEAK_FRAGMENT_SHADER = `
     float flare1 = 1.0 / (dist1 * 3.2 + 0.4);
     float flare2 = 1.0 / (dist2 * 4.5 + 0.5);
 
-    vec3 col = u_c4;
-    col += u_c2 * flare1 * 0.65 * (0.8 + 0.2 * rays1);
-    col += u_c1 * flare2 * 0.75;
-    col += u_c3 * (1.0 - dist1 * 0.8) * 0.25;
+    vec3 col = u_c3;
+    col += u_c2 * flare1 * 0.7 * (0.8 + 0.2 * rays1);
+    col += u_c1 * flare2 * 0.8;
+    col += u_c4 * (1.0 - dist1 * 0.8) * 0.3;
 
-    gl_FragColor = vec4(col, clamp((flare1 * 0.5 + flare2 * 0.4) * u_intensity, 0.0, 0.85));
+    gl_FragColor = vec4(col * u_intensity, clamp((flare1 * 0.6 + flare2 * 0.5) * u_intensity, 0.0, 1.0));
   }
 `;
 
@@ -217,7 +239,7 @@ export function ShaderBackground({
   const [hasWebGL, setHasWebGL] = useState<boolean | null>(null);
 
   useEffect(() => {
-    // 1. Accessibility: Check for prefers-reduced-motion
+    // 1. Accessibility check
     if (typeof window !== "undefined") {
       const prefersReducedMotion = window.matchMedia(
         "(prefers-reduced-motion: reduce)"
@@ -237,7 +259,7 @@ export function ShaderBackground({
     try {
       gl =
         canvas.getContext("webgl", {
-          alpha: true,
+          alpha: false,
           antialias: false,
           powerPreference: "low-power",
         }) ||
@@ -288,7 +310,7 @@ export function ShaderBackground({
 
     gl.useProgram(program);
 
-    // Quad geometry covering viewport
+    // Fullscreen quad
     const quadBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, quadBuffer);
     gl.bufferData(
@@ -301,7 +323,7 @@ export function ShaderBackground({
     gl.enableVertexAttribArray(posAttr);
     gl.vertexAttribPointer(posAttr, 2, gl.FLOAT, false, 0, 0);
 
-    // Uniform locations
+    // Uniforms
     const uTime = gl.getUniformLocation(program, "u_time");
     const uRes = gl.getUniformLocation(program, "u_resolution");
     const uMouse = gl.getUniformLocation(program, "u_mouse");
@@ -311,7 +333,6 @@ export function ShaderBackground({
     const uC4 = gl.getUniformLocation(program, "u_c4");
     const uIntensity = gl.getUniformLocation(program, "u_intensity");
 
-    // Colors
     let palette: [number, number, number][] = DEFAULT_PALETTES[variant];
     if (colorPalette && colorPalette.length === 4) {
       palette = colorPalette.map(hexToRgb);
@@ -324,7 +345,7 @@ export function ShaderBackground({
     gl.uniform1f(uIntensity, intensity);
     gl.uniform2f(uMouse, 0.5, 0.5);
 
-    // 4. Resize Handling with clamped DPR for mobile performance
+    // 4. Resize Handling
     let animId = 0;
     let isVisible = true;
     let startTime = performance.now();
@@ -351,7 +372,6 @@ export function ShaderBackground({
     const resizeObserver = new ResizeObserver(() => resize());
     resizeObserver.observe(container);
 
-    // Mouse move listener with smooth damping
     const handleMouseMove = (e: MouseEvent) => {
       if (!container) return;
       const rect = container.getBoundingClientRect();
@@ -361,7 +381,7 @@ export function ShaderBackground({
 
     window.addEventListener("mousemove", handleMouseMove, { passive: true });
 
-    // 5. IntersectionObserver: Pause when out of screen (battery saving)
+    // 5. Battery saver: Pause when scrolled off screen
     const intersectionObserver = new IntersectionObserver(
       (entries) => {
         const entry = entries[0];
@@ -378,13 +398,12 @@ export function ShaderBackground({
     );
     intersectionObserver.observe(container);
 
-    // 6. 60 FPS Animation loop
+    // 6. 60 FPS Loop
     const loop = () => {
       if (!isVisible || !gl) return;
       const elapsed = (performance.now() - startTime) * 0.001 * speed;
       gl.uniform1f(uTime, elapsed);
 
-      // Smooth mouse interpolation
       mouseX += (targetMouseX - mouseX) * 0.05;
       mouseY += (targetMouseY - mouseY) * 0.05;
       gl.uniform2f(uMouse, mouseX, mouseY);
@@ -409,14 +428,13 @@ export function ShaderBackground({
     };
   }, [variant, speed, intensity, colorPalette]);
 
-  // Fallback CSS Gradient classes when WebGL is disabled or on reduced motion
   const fallbackGradients: Record<ShaderVariant, string> = {
     aurora:
-      "bg-gradient-to-tr from-emerald-100/90 via-teal-50 to-white dark:from-emerald-950 dark:via-teal-900/40 dark:to-slate-950",
+      "bg-gradient-to-tr from-emerald-950 via-teal-900 to-emerald-800",
     "gradient-mesh":
-      "bg-gradient-to-br from-emerald-100/80 via-teal-100/40 to-white dark:from-emerald-900/40 dark:via-slate-900 dark:to-teal-900/30",
+      "bg-gradient-to-br from-emerald-950 via-teal-950 to-slate-950",
     "light-leak":
-      "bg-[radial-gradient(ellipse_at_top_right,rgba(16,185,129,0.2),rgba(255,255,255,0.9),transparent_70%)]",
+      "bg-[radial-gradient(ellipse_at_top_right,rgba(16,185,129,0.4),rgba(4,47,46,0.9),transparent_70%)]",
   };
 
   return (
@@ -425,7 +443,6 @@ export function ShaderBackground({
       className={cn("relative overflow-hidden", className)}
       {...props}
     >
-      {/* Canvas Element */}
       <canvas
         ref={canvasRef}
         aria-hidden="true"
@@ -435,7 +452,6 @@ export function ShaderBackground({
         )}
       />
 
-      {/* Fallback CSS Gradient layer */}
       <div
         aria-hidden="true"
         className={cn(
@@ -445,7 +461,6 @@ export function ShaderBackground({
         )}
       />
 
-      {/* Content wrapper */}
       <div className="relative z-10 w-full h-full">{children}</div>
     </div>
   );
