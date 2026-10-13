@@ -40,9 +40,6 @@ import {
   KeyRound,
   FileSpreadsheet,
   Check,
-  Car,
-  Waves,
-  Flame,
 } from "lucide-react";
 
 // Демонстрационные данные каталога новостроек (CIAN Style)
@@ -245,7 +242,7 @@ export default function HomePage() {
           <div className="relative max-w-4xl mx-auto">
             <div className="bg-white/[0.49] backdrop-blur-2xl border border-white/60 rounded-2xl p-5 sm:p-6 shadow-2xl shadow-slate-950/20">
               {/* Segment Tabs (CIAN Underline Style) */}
-              <div className="flex items-center gap-6 overflow-x-auto pb-0 mb-5 border-b border-slate-200">
+              <div className="flex items-center gap-6 overflow-x-auto overflow-y-hidden [scrollbar-width:none] [&::-webkit-scrollbar]:hidden pb-0 mb-5 border-b border-slate-200/80">
                 {[
                   { id: "new", label: "Новостройки (ЖК)", icon: Building2 },
                   { id: "resale", label: "Купить вторичку", icon: Home },
@@ -272,12 +269,12 @@ export default function HomePage() {
                 })}
               </div>
 
-              {/* Filter Inputs Grid */}
+              {/* Filter Inputs Grid - Strict h-12 (48px) alignment */}
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-3.5 items-end">
                 {/* 1. City / Region (col-span-3) */}
                 <div className="lg:col-span-3">
-                  <label className="text-xs font-semibold text-slate-600 mb-1.5 block">
-                    Город / Район
+                  <label className="text-xs font-semibold text-slate-700 mb-1.5 block">
+                    Город
                   </label>
                   <Select
                     value={selectedCity}
@@ -285,7 +282,7 @@ export default function HomePage() {
                       if (val) setSelectedCity(val);
                     }}
                   >
-                    <SelectTrigger className="w-full h-11 rounded-xl bg-white border border-slate-200 text-sm font-medium">
+                    <SelectTrigger className="w-full h-12 rounded-xl bg-white/90 border border-slate-200 text-sm font-medium px-3.5 shadow-2xs">
                       <SelectValue placeholder="Худжанд">
                         {SOGD_CITIES.find((c) => c.value === selectedCity)?.nameRu || "Худжанд"}
                       </SelectValue>
@@ -302,10 +299,10 @@ export default function HomePage() {
 
                 {/* 2. Room Buttons (col-span-3) */}
                 <div className="lg:col-span-3">
-                  <label className="text-xs font-semibold text-slate-600 mb-1.5 block">
+                  <label className="text-xs font-semibold text-slate-700 mb-1.5 block">
                     Комнатность
                   </label>
-                  <div className="flex items-center h-11 border border-slate-200 rounded-xl bg-slate-50/70 p-1 gap-1">
+                  <div className="flex items-center h-12 border border-slate-200 rounded-xl bg-white/90 p-1 gap-1 shadow-2xs">
                     {roomOptions.map((opt) => (
                       <button
                         key={opt.id}
@@ -313,8 +310,8 @@ export default function HomePage() {
                         onClick={() => setSelectedRooms(opt.id)}
                         className={`flex-1 h-full rounded-lg text-xs font-semibold transition-all ${
                           selectedRooms === opt.id
-                            ? "bg-white text-emerald-700 shadow-xs border border-slate-200/60 font-bold"
-                            : "text-slate-500 hover:text-slate-800"
+                            ? "bg-emerald-600 text-white shadow-xs font-bold"
+                            : "text-slate-600 hover:text-slate-900 hover:bg-slate-100/70"
                         }`}
                       >
                         {opt.label}
@@ -325,59 +322,55 @@ export default function HomePage() {
 
                 {/* 3. Price Range From - To (col-span-3) */}
                 <div className="lg:col-span-3">
-                  <label className="text-xs font-semibold text-slate-600 mb-1.5 block">
-                    Цена ({currency === "TJS" ? "сомони" : "$"})
+                  <label className="text-xs font-semibold text-slate-700 mb-1.5 block">
+                    Цена
                   </label>
-                  <div className="flex items-center gap-1.5">
+                  <div className="flex items-center gap-2 h-12">
                     <Input
                       placeholder="от"
                       value={priceFrom}
                       onChange={(e) => setPriceFrom(e.target.value)}
-                      className="h-11 rounded-xl bg-white border border-slate-200 text-xs"
+                      className="h-12 rounded-xl bg-white/90 border border-slate-200 text-xs px-3 shadow-2xs"
                     />
                     <Input
                       placeholder="до"
                       value={priceTo}
                       onChange={(e) => setPriceTo(e.target.value)}
-                      className="h-11 rounded-xl bg-white border border-slate-200 text-xs"
+                      className="h-12 rounded-xl bg-white/90 border border-slate-200 text-xs px-3 shadow-2xs"
                     />
                   </div>
                 </div>
 
                 {/* 4. Action Button (col-span-3) */}
                 <div className="lg:col-span-3">
-                  <Button className="w-full h-11 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-xl shadow-md shadow-emerald-600/20 gap-2 text-sm">
+                  <Button className="w-full h-12 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-xl shadow-md shadow-emerald-600/20 gap-2 text-sm transition-all active:scale-[0.99]">
                     <Search className="h-4 w-4" />
                     Найти 342 объекта
                   </Button>
                 </div>
               </div>
 
-              {/* Quick Filter Chips */}
+              {/* Quick Filter Chips (Text-only, compact) */}
               <div className="mt-4 pt-3.5 border-t border-slate-200/50 flex flex-wrap items-center gap-2 text-xs">
                 <span className="font-semibold text-slate-500 mr-1 text-[11px] uppercase tracking-wider">
                   Быстрый выбор:
                 </span>
                 {[
-                  { label: "Рассрочка 0%", icon: Flame },
-                  { label: "Вид на Сырдарью", icon: Waves },
-                  { label: "18 и 19 мкр", icon: MapPin },
-                  { label: "Дома с хаузом", icon: Trees },
-                  { label: "Сданные ЖК", icon: CheckCircle2 },
-                  { label: "С паркингом", icon: Car },
-                ].map((chip) => {
-                  const ChipIcon = chip.icon;
-                  return (
-                    <button
-                      key={chip.label}
-                      type="button"
-                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/70 hover:bg-white hover:text-emerald-700 hover:border-emerald-200 border border-slate-200/60 text-slate-700 text-xs font-medium transition-all shadow-2xs"
-                    >
-                      <ChipIcon className="h-3.5 w-3.5 text-emerald-600" />
-                      {chip.label}
-                    </button>
-                  );
-                })}
+                  "Рассрочка 0%",
+                  "Вид на Сырдарью",
+                  "18 и 19 мкр",
+                  "Дома с хаузом",
+                  "Сданные ЖК",
+                  "С паркингом",
+                ].map((chipText) => (
+                  <button
+                    key={chipText}
+                    type="button"
+                    className="inline-flex items-center px-3 py-1.5 rounded-lg bg-white/70 hover:bg-white hover:text-emerald-700 hover:border-emerald-300 border border-slate-200/60 text-slate-700 text-xs font-medium transition-all shadow-2xs"
+                  >
+                    {chipText}
+                  </button>
+                ))}
               </div>
             </div>
           </div>
