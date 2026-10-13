@@ -226,17 +226,17 @@ export default function HomePage() {
   return (
     <div className="flex flex-col gap-6 sm:gap-8 pb-24 bg-[#F8FAFC]">
       {/* 1. COMPACT HERO SECTION WITH PANORAMIC BACKGROUND */}
-      <section className="relative pt-6 pb-8 md:pt-8 md:pb-10 border-b border-slate-200/80 bg-slate-950 overflow-hidden">
+      <section className="relative pt-6 pb-8 md:pt-8 md:pb-10 border-b border-slate-200/80 bg-slate-900 overflow-hidden">
         {/* Background Layer: Panoramic Landscape with Soft Contrast Overlay */}
-        <div className="absolute inset-0 -z-10 h-full w-full pointer-events-none overflow-hidden">
+        <div className="absolute inset-0 z-0 h-full w-full pointer-events-none overflow-hidden">
           <img
-            src="/images/hero-bg.jpg"
+            src="/images/hero-bg.png"
             alt="Maskani Real Estate Panorama"
-            className="w-full h-full object-cover object-center scale-105"
+            className="w-full h-full object-cover object-center"
           />
-          {/* Soft contrast overlays for crisp search card legibility */}
-          <div className="absolute inset-0 bg-slate-950/25 backdrop-blur-[2px]" />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-slate-950/30" />
+          {/* Subtle contrast overlay preserving natural warmth and mountain visibility */}
+          <div className="absolute inset-0 bg-black/20" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-black/20" />
         </div>
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
