@@ -29,7 +29,6 @@ import {
   Phone,
   MessageCircle,
   Eye,
-  SlidersHorizontal,
   ChevronRight,
   ShieldCheck,
   Trees,
@@ -269,7 +268,7 @@ export default function HomePage() {
                 })}
               </div>
 
-              {/* Filter Inputs Grid - Strict h-12 (48px) alignment */}
+              {/* Filter Inputs Grid - strict 40px alignment */}
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-3.5 items-end">
                 {/* 1. City / Region (col-span-3) */}
                 <div className="lg:col-span-3">
@@ -282,7 +281,7 @@ export default function HomePage() {
                       if (val) setSelectedCity(val);
                     }}
                   >
-                    <SelectTrigger className="w-full h-12 rounded-xl bg-white/90 border border-slate-200 text-sm font-medium px-3.5 shadow-2xs">
+                    <SelectTrigger className="w-full h-10 rounded-xl bg-white border border-slate-200 text-sm font-medium px-3 shadow-none">
                       <SelectValue placeholder="Худжанд">
                         {SOGD_CITIES.find((c) => c.value === selectedCity)?.nameRu || "Худжанд"}
                       </SelectValue>
@@ -302,16 +301,16 @@ export default function HomePage() {
                   <label className="text-xs font-semibold text-slate-700 mb-1.5 block">
                     Комнатность
                   </label>
-                  <div className="flex items-center h-12 border border-slate-200 rounded-xl bg-white/90 p-1 gap-1 shadow-2xs">
+                  <div className="flex h-10 items-center gap-1 rounded-xl border border-slate-200 bg-white p-1">
                     {roomOptions.map((opt) => (
                       <button
                         key={opt.id}
                         type="button"
                         onClick={() => setSelectedRooms(opt.id)}
-                        className={`flex-1 h-full rounded-lg text-xs font-semibold transition-all ${
+                        className={`h-full flex-1 rounded-lg px-2.5 text-xs font-medium transition-all ${
                           selectedRooms === opt.id
-                            ? "bg-emerald-600 text-white shadow-xs font-bold"
-                            : "text-slate-600 hover:text-slate-900 hover:bg-slate-100/70"
+                            ? "bg-emerald-600 text-white"
+                            : "text-slate-600 hover:bg-slate-100"
                         }`}
                       >
                         {opt.label}
@@ -325,25 +324,25 @@ export default function HomePage() {
                   <label className="text-xs font-semibold text-slate-700 mb-1.5 block">
                     Цена
                   </label>
-                  <div className="flex items-center gap-2 h-12">
+                  <div className="flex h-10 items-center gap-2">
                     <Input
                       placeholder="от"
                       value={priceFrom}
                       onChange={(e) => setPriceFrom(e.target.value)}
-                      className="h-12 rounded-xl bg-white/90 border border-slate-200 text-xs px-3 shadow-2xs"
+                      className="h-10 w-24 rounded-xl border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500"
                     />
                     <Input
                       placeholder="до"
                       value={priceTo}
                       onChange={(e) => setPriceTo(e.target.value)}
-                      className="h-12 rounded-xl bg-white/90 border border-slate-200 text-xs px-3 shadow-2xs"
+                      className="h-10 w-24 rounded-xl border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500"
                     />
                   </div>
                 </div>
 
                 {/* 4. Action Button (col-span-3) */}
                 <div className="lg:col-span-3">
-                  <Button className="w-full h-12 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-xl shadow-md shadow-emerald-600/20 gap-2 text-sm transition-all active:scale-[0.99]">
+                  <Button className="flex h-10 w-full items-center justify-center gap-2 rounded-xl bg-emerald-600 px-5 text-sm font-medium text-white shadow-sm transition-all hover:bg-emerald-700">
                     <Search className="h-4 w-4" />
                     Найти 342 объекта
                   </Button>
@@ -366,7 +365,7 @@ export default function HomePage() {
                   <button
                     key={chipText}
                     type="button"
-                    className="inline-flex items-center px-3 py-1.5 rounded-lg bg-white/70 hover:bg-white hover:text-emerald-700 hover:border-emerald-300 border border-slate-200/60 text-slate-700 text-xs font-medium transition-all shadow-2xs"
+                    className="inline-flex items-center rounded-lg border border-slate-200/80 bg-white/80 px-3 py-1 text-xs text-slate-700 transition-all hover:bg-white"
                   >
                     {chipText}
                   </button>

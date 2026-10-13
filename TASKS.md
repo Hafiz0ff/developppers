@@ -107,3 +107,6 @@
 
 
 
+
+## Search widget polish
+- [x] Align homepage search controls to a consistent 40px height, simplify room selector and quick filter chips
