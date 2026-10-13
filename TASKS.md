@@ -14,6 +14,8 @@
 - [x] Backoffice unit management page (`/developer-admin/projects/[id]/units`)
 - [x] Public Developer showcase page (`/developers/[slug]`)
 - [x] Public Complex showcase page with buyer chessboard (`/projects/[slug]`)
+- [x] Public Demo Deployment on Vercel + Supabase (`https://sogd-realty.vercel.app`)
+- [x] Cloud Database Seeding (`pnpm db:seed`) with 108 units, projects, and developers
 
 ## Phase 3: Secondary Market (Classifieds) 📦
 - [ ] Free ad posting form for citizens

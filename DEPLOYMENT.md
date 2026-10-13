@@ -1,8 +1,14 @@
-# Руководство по развертыванию демо-версии (Vercel + Neon / Supabase) 🚀
+# Руководство по развертыванию демо-версии (Vercel + Supabase) 🚀
 
-В этой инструкции описано, как за 5 минут развернуть публичный рабочий демо-стенд **Sogd Realty** на [Vercel](https://vercel.com/) с бесплатной облачной базой данных PostgreSQL на [Neon.tech](https://neon.tech/) или [Supabase](https://supabase.com/).
+## 🌐 Рабочий боевой стенд (Live Production Demo)
+
+- **Production URL**: [https://sogd-realty.vercel.app](https://sogd-realty.vercel.app)
+- **Vercel Project**: `sogd-realty` (HafizOff's Projects)
+- **Database**: Supabase PostgreSQL 17 (Регион: `ap-southeast-2` Sydney)
+- **Project Ref**: `ogefoumgwlcufbnvqeny`
 
 ---
+
 
 ## 📋 Шаг 1. Создание облачной базы данных (Neon или Supabase)
 
