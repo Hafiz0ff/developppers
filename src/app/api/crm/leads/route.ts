@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/db";
 import { crmLeads } from "@/db/schema";
 import { eq, desc } from "drizzle-orm";
+import { notifyAgentAboutNewLead } from "@/lib/telegram";
 
 // Демо-набор начальных лидов для полноценного тестирования и работы
 const DEFAULT_DEMO_LEADS = [
@@ -148,6 +149,23 @@ export async function POST(req: NextRequest) {
     }
 
     inMemoryLeads = [newLead, ...inMemoryLeads];
+
+    // Отправляем мгновенное Telegram-уведомление маклеру / агентству
+    try {
+      const baseUrl = req.nextUrl?.origin || "https://sogd-realty.vercel.app";
+      notifyAgentAboutNewLead({
+        clientName: newLead.clientName,
+        clientPhone: newLead.clientPhone,
+        classifiedTitle: newLead.classifiedTitle,
+        budget: newLead.budget,
+        commission: newLead.commission,
+        source: newLead.source,
+        notes: newLead.notes,
+        crmUrl: `${baseUrl}/profile/crm`,
+      }).catch((err) => console.error("[Telegram Push Error]:", err));
+    } catch {
+      // Ignored
+    }
 
     return NextResponse.json({ success: true, lead: newLead });
   } catch (error) {

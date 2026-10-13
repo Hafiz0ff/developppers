@@ -66,3 +66,21 @@
   - [x] `GET /api/crm/collections`, `POST /api/crm/collections`
   - [x] `GET /api/crm/collections/[shareCode]`
 
+## Phase 7: Instant Telegram Push Notifications & Profile Settings 🤖
+- [x] User database schema extension (`telegram_chat_id` and `telegram_notifications_enabled` in `users`)
+- [x] Telegram Bot client (`src/lib/telegram.ts`):
+  - [x] `sendTelegramMessage` helper via Telegram Bot API
+  - [x] Rich HTML formatting with lead details, budget, channel icon, and direct CRM links
+  - [x] Fail-safe fallback when token is missing (console simulation without runtime crash)
+- [x] Automated webhook/trigger:
+  - [x] Auto-notify broker/admin on new leads (`phone_click`, `whatsapp_click`, `manual`)
+- [x] Profile & Integration Settings UI (`/profile/settings`):
+  - [x] Step-by-step connection guide for `@SogdRealtyBot`
+  - [x] Chat ID input with test push button
+  - [x] Notifications toggle switch
+  - [x] Synchronized navigation between CRM, Analytics, and Settings
+- [x] REST API endpoints:
+  - [x] `GET /api/profile/telegram` — fetch user chat ID and bot config
+  - [x] `POST /api/profile/telegram` — save settings and send test notification
+
+

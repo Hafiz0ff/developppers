@@ -27,6 +27,10 @@
 | 🗃️ **Шахматка квартир** | Интерактивная визуализация этажей и статусов квартир в реальном времени |
 | 🏠 **Вторичный рынок** | Объявления частных продавцов с фото и описанием |
 | 🏗️ **Кабинет застройщика** | Управление проектами, корпусами, квартирами и бронированиями |
+| 📊 **B2B Канбан CRM** | Учет клиентов, авто-создание лидов при звонках и калькулятор комиссии |
+| 📲 **WhatsApp-витрины** | Персональные ссылки `/p/[code]` для клиентов без рекламы и прямых контактов |
+| 🤖 **Telegram Push-уведомления** | Мгновенные оповещения в Telegram-бот о звонках и откликах |
+| 📈 **Аналитика & Open API** | Воронка конверсий (CTR, показы) и интеграция с AmoCRM / Bitrix24 |
 | 💱 **Мультивалютность** | Мгновенное переключение TJS ⇄ USD с актуальным курсом |
 | 🎨 **WebGL-шейдеры** | Премиальные фоновые эффекты (aurora / gradient-mesh / light-leak) |
 | 🔐 **Аутентификация** | Безопасный вход для застройщиков через Better Auth |
@@ -138,43 +142,40 @@ pnpm start
 sogd-realty/
 ├── src/
 │   ├── app/                    # Next.js App Router
-│   │   ├── page.tsx            # Главная страница (Hero + каталог ЖК)
-│   │   ├── layout.tsx          # Root Layout (шапка, шрифты, провайдеры)
+│   │   ├── page.tsx            # Главная (Hero с фоновым переключателем + Каталог)
+│   │   ├── layout.tsx          # Root Layout (шапка, шрифты, провайдеры валюты)
 │   │   ├── globals.css         # Tailwind v4 + CSS-переменные темы
-│   │   ├── projects/
-│   │   │   └── [slug]/         # Страница конкретного ЖК (шахматка)
-│   │   ├── backoffice/         # Закрытый кабинет застройщика
-│   │   │   ├── projects/       # CRUD проектов
-│   │   │   ├── units/          # CRUD квартир
-│   │   │   └── classifieds/    # Модерация объявлений
+│   │   ├── projects/[slug]/    # Страница конкретного ЖК (шахматка, корпус)
+│   │   ├── developers/[slug]/  # Страница застройщика с портфолио
+│   │   ├── developer-admin/    # Кабинет застройщика (CRUD проектов, шахматки)
+│   │   ├── profile/            # Личный кабинет риелтора / маклера
+│   │   │   ├── crm/            # Канбан-воронка лидов & калькулятор комиссии
+│   │   │   ├── analytics/      # Аналитика конверсий, графики & Open API
+│   │   │   └── settings/       # Настройки профиля & Telegram Bot интеграция
+│   │   ├── p/[share_code]/     # Персональная мобильная витрина для WhatsApp
 │   │   └── api/                # API Route Handlers
-│   │       ├── auth/           # Better Auth endpoints
-│   │       ├── projects/       # REST: ЖК
-│   │       ├── units/          # REST: квартиры
-│   │       └── classifieds/    # REST: вторичный рынок
-│   ├── components/
-│   │   ├── ui/                 # Shadcn + кастомные компоненты
-│   │   │   ├── shader-background.tsx  # WebGL-шейдеры (aurora / mesh / light-leak)
-│   │   │   └── ...             # Button, Card, Select, Badge, ...
-│   │   ├── header.tsx          # Шапка с валютным переключателем
-│   │   ├── project-card.tsx    # Карточка ЖК
-│   │   ├── unit-card.tsx       # Карточка квартиры
-│   │   └── chessboard.tsx      # Интерактивная шахматка
+│   │       ├── crm/leads/      # REST: лиды маклера (CRUD + Telegram push)
+│   │       ├── crm/collections/# REST: персональные подборки
+│   │       ├── profile/telegram# REST: Telegram Chat ID и тест бота
+│   │       ├── v1/external/    # Open API: экспорт аналитики и импорт фидов
+│   │       └── auth/[...all]/  # Better Auth endpoints
+│   ├── components/             # React компоненты
+│   │   ├── ui/                 # Shadcn + ShaderBackground WebGL
+│   │   ├── layout/             # Header, Navigation, Footer
+│   │   └── modules/            # Интерактивная шахматка квартир
 │   ├── db/
-│   │   ├── schema.ts           # Drizzle ORM схема (таблицы, связи)
-│   │   ├── index.ts            # Подключение к БД
+│   │   ├── schema/             # Drizzle ORM (auth, crm, projects, units, analytics)
+│   │   ├── index.ts            # Подключение к PostgreSQL (Supabase / Neon)
 │   │   └── seed.ts             # Скрипт наполнения тестовыми данными
 │   ├── lib/
+│   │   ├── telegram.ts         # Telegram Bot API клиент для уведомлений
+│   │   ├── catalog-data.ts     # Каталог объектов недвижимости
 │   │   ├── auth.ts             # Конфиг Better Auth
-│   │   ├── auth-client.ts      # Клиентский хук аутентификации
-│   │   └── utils.ts            # Утилиты (cn, formatPrice, ...)
-│   └── types/                  # TypeScript типы и интерфейсы
-├── public/                     # Статические ресурсы
-├── postcss.config.mjs          # PostCSS (@tailwindcss/postcss)
-├── next.config.ts              # Next.js конфигурация
-├── drizzle.config.ts           # Drizzle Kit конфигурация
+│   │   └── utils.ts            # Утилиты форматирования валют (TJS / USD)
+│   └── context/                # Контексты (валюта, стейт)
+├── public/                     # Статика и концептуальные фоны
 ├── TASKS.md                    # Roadmap задач
-├── RULES.md                    # Правила разработки
+├── RULES.md                    # Архитектурные стандарты
 └── package.json
 ```
 
@@ -261,10 +262,11 @@ erDiagram
 | `DATABASE_URL` | ✅ | Строка подключения PostgreSQL |
 | `BETTER_AUTH_SECRET` | ✅ | Секрет JWT-токенов (мин. 32 символа) |
 | `BETTER_AUTH_URL` | ✅ | Базовый URL приложения для Auth |
-| `NEXT_PUBLIC_APP_URL` | ✅ | Публичный URL (для OpenGraph и т.д.) |
-| `NEXT_PUBLIC_SUPABASE_URL` | ✅ | URL Supabase-проекта |
-| `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | ✅ | Публичный ключ Supabase |
+| `NEXT_PUBLIC_APP_URL` | ✅ | Публичный URL (для OpenGraph и шеринга) |
 | `NEXT_PUBLIC_USD_TO_TJS_RATE` | ✅ | Курс USD → TJS (например `10.95`) |
+| `TELEGRAM_BOT_TOKEN` | ⚙️ | Токен Telegram-бота для мгновенных уведомлений |
+| `TELEGRAM_BOT_USERNAME` | ⚙️ | Юзернейм бота (по умолчанию `SogdRealtyBot`) |
+| `TELEGRAM_CHAT_ID` | ⚙️ | Дефолтный Chat ID администратора/агентства |
 
 ---
 
@@ -289,10 +291,10 @@ pnpm db:seed      # Заполнить БД тестовыми данными
 - [x] Phase 3 — Вторичный рынок (частные объявления)
 - [x] Phase 4 — Деплой на Vercel + Supabase
 - [x] Phase 5 — WebGL-шейдеры (премиальный UI)
-- [ ] Phase 6 — Поиск по карте (Яндекс.Карты / Leaflet)
-- [ ] Phase 7 — Мобильное приложение (React Native / Expo)
-- [ ] Phase 8 — Аналитика для застройщика (графики продаж)
-- [ ] Phase 9 — Интеграция с ипотечными калькуляторами
+- [x] Phase 6 — Hybrid B2B CRM (Канбан-воронка + WhatsApp-витрины)
+- [x] Phase 7 — Telegram Bot Push-уведомления о лидах
+- [ ] Phase 8 — Интерактивная карта объектов (Яндекс.Карты / Leaflet)
+- [ ] Phase 9 — Мобильное приложение (React Native / Expo)
 
 ---
 

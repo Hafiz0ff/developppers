@@ -18,6 +18,8 @@ export const users = pgTable("user", {
   agencyName: text("agency_name"), // Для риелторов или агентств
   isVerifiedRealtor: boolean("is_verified_realtor").default(false).notNull(),
   bio: text("bio"),
+  telegramChatId: text("telegram_chat_id"),
+  telegramNotificationsEnabled: boolean("telegram_notifications_enabled").default(true).notNull(),
 });
 
 export const sessions = pgTable("session", {

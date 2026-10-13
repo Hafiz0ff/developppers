@@ -220,10 +220,12 @@ export function Header() {
                       Аналитика & Open API
                     </DropdownMenuItem>
                   </Link>
-                  <DropdownMenuItem className="cursor-pointer">
-                    <User className="mr-2 h-4 w-4" />
-                    Мой профиль
-                  </DropdownMenuItem>
+                  <Link href="/profile/settings">
+                    <DropdownMenuItem className="cursor-pointer">
+                      <User className="mr-2 h-4 w-4" />
+                      Настройки & Telegram
+                    </DropdownMenuItem>
+                  </Link>
                   <DropdownMenuItem className="cursor-pointer">
                     <Home className="mr-2 h-4 w-4" />
                     Мои объявления
