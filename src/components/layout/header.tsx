@@ -27,6 +27,7 @@ import {
   Briefcase,
   ChevronDown,
   TrendingUp,
+  Users,
 } from "lucide-react";
 
 
@@ -108,11 +109,18 @@ export function Header() {
               Застройщики
             </Link>
             <Link
+              href="/profile/crm"
+              className="text-foreground/80 hover:text-emerald-600 transition-colors flex items-center gap-1.5 font-medium"
+            >
+              <Users className="h-4 w-4 text-emerald-600" />
+              CRM Воронка
+            </Link>
+            <Link
               href="/profile/analytics"
               className="text-emerald-700 dark:text-emerald-400 hover:text-emerald-600 transition-colors flex items-center gap-1.5 font-semibold"
             >
               <TrendingUp className="h-4 w-4 text-emerald-600" />
-              Аналитика & CRM
+              Аналитика & API
             </Link>
           </nav>
 
@@ -200,10 +208,16 @@ export function Header() {
                     </div>
                   </DropdownMenuLabel>
                   <DropdownMenuSeparator />
-                  <Link href="/profile/analytics">
+                  <Link href="/profile/crm">
                     <DropdownMenuItem className="cursor-pointer text-emerald-700 dark:text-emerald-400 font-semibold">
+                      <Users className="mr-2 h-4 w-4 text-emerald-600" />
+                      Канбан CRM & Подборки
+                    </DropdownMenuItem>
+                  </Link>
+                  <Link href="/profile/analytics">
+                    <DropdownMenuItem className="cursor-pointer text-slate-700 dark:text-slate-300">
                       <TrendingUp className="mr-2 h-4 w-4 text-emerald-600" />
-                      Аналитика & CRM
+                      Аналитика & Open API
                     </DropdownMenuItem>
                   </Link>
                   <DropdownMenuItem className="cursor-pointer">

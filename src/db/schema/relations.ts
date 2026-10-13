@@ -7,6 +7,7 @@ import { classifieds } from "./classifieds";
 import { favorites } from "./favorites";
 import { classifiedAnalytics } from "./analytics";
 import { apiKeys } from "./api-keys";
+import { crmLeads, crmCollections } from "./crm";
 
 export const usersRelations = relations(users, ({ many }) => ({
   sessions: many(sessions),
@@ -106,4 +107,12 @@ export const favoritesRelations = relations(favorites, ({ one }) => ({
     references: [classifieds.id],
   }),
 }));
+
+export const crmLeadsRelations = relations(crmLeads, ({ one }) => ({
+  classified: one(classifieds, {
+    fields: [crmLeads.classifiedId],
+    references: [classifieds.id],
+  }),
+}));
+
 

@@ -168,8 +168,51 @@ export default function HomePage() {
   const [priceTo, setPriceTo] = useState("");
   const [revealedPhones, setRevealedPhones] = useState<Record<string, boolean>>({});
 
-  const togglePhone = (id: string) => {
-    setRevealedPhones((prev) => ({ ...prev, [id]: !prev[id] }));
+  const togglePhone = async (item: (typeof RECENT_CLASSIFIEDS)[0]) => {
+    const isRevealing = !revealedPhones[item.id];
+    setRevealedPhones((prev) => ({ ...prev, [item.id]: isRevealing }));
+
+    if (isRevealing) {
+      try {
+        fetch("/api/crm/leads", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            clientName: "Посетитель сайта (Звонок)",
+            clientPhone: "+992 (просмотр номера)",
+            classifiedId: item.id,
+            classifiedTitle: item.title,
+            budget: item.priceUsd,
+            commissionPercent: 2,
+            source: "phone_click",
+            notes: `Посетитель открыл номер телефона на объявлении: ${item.title} (${item.city}, ${item.district}).`,
+          }),
+        }).catch(() => {});
+      } catch {
+        // Ignored
+      }
+    }
+  };
+
+  const handleWhatsappLead = (item: (typeof RECENT_CLASSIFIEDS)[0]) => {
+    try {
+      fetch("/api/crm/leads", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          clientName: "Посетитель сайта (WhatsApp)",
+          clientPhone: "+992 (переход в WA)",
+          classifiedId: item.id,
+          classifiedTitle: item.title,
+          budget: item.priceUsd,
+          commissionPercent: 2,
+          source: "whatsapp_click",
+          notes: `Посетитель нажал кнопку WhatsApp для связи по объекту: ${item.title}.`,
+        }),
+      }).catch(() => {});
+    } catch {
+      // Ignored
+    }
   };
 
   const roomOptions = [
@@ -633,7 +676,7 @@ export default function HomePage() {
                   <Button
                     size="xs"
                     variant={revealedPhones[item.id] ? "secondary" : "outline"}
-                    onClick={() => togglePhone(item.id)}
+                    onClick={() => togglePhone(item)}
                     className="h-8 px-2.5 text-xs font-semibold gap-1 rounded-lg border-slate-200"
                   >
                     <Phone className="h-3.5 w-3.5 text-emerald-600" />
@@ -643,6 +686,7 @@ export default function HomePage() {
                     href={`https://wa.me/${item.whatsapp.replace(/\D/g, "")}`}
                     target="_blank"
                     rel="noreferrer"
+                    onClick={() => handleWhatsappLead(item)}
                     className="h-8 w-8 rounded-lg bg-emerald-50 text-emerald-600 hover:bg-emerald-600 hover:text-white flex items-center justify-center transition-colors border border-emerald-100"
                   >
                     <MessageCircle className="h-4 w-4" />
@@ -705,14 +749,20 @@ export default function HomePage() {
               <div className="h-10 w-10 rounded-xl bg-emerald-100/70 text-emerald-700 flex items-center justify-center">
                 <TrendingUp className="h-5 w-5" />
               </div>
-              <h4 className="font-bold text-slate-900 text-base">Для маклеров и CRM</h4>
+              <h4 className="font-bold text-slate-900 text-base">Для маклеров и агентств</h4>
               <p className="text-xs text-slate-600 leading-relaxed">
-                Личный кабинет с аналитикой просмотров и звонков, выгрузка отчетов в Excel и Open API для AmoCRM/Bitrix24.
+                Легкая Канбан-воронка лидов, персональные подборки объектов в WhatsApp без контактов собственников и Open API.
               </p>
-              <Link href="/profile/analytics" className="inline-flex items-center text-xs font-semibold text-emerald-700 hover:underline gap-1 pt-1">
-                Аналитика и Open API
-                <ChevronRight className="h-3.5 w-3.5" />
-              </Link>
+              <div className="flex items-center gap-3 pt-1">
+                <Link href="/profile/crm" className="inline-flex items-center text-xs font-bold text-emerald-700 hover:underline gap-1">
+                  Канбан CRM & Подборки
+                  <ChevronRight className="h-3.5 w-3.5" />
+                </Link>
+                <span className="text-slate-300">•</span>
+                <Link href="/profile/analytics" className="inline-flex items-center text-xs font-semibold text-slate-600 hover:underline gap-1">
+                  Open API
+                </Link>
+              </div>
             </div>
           </div>
         </div>

@@ -43,3 +43,26 @@
 - [x] Hero search living shader (`/`) and luxury complex ambient light leak (`/projects/[slug]`)
 - [x] Sans-serif typography standard (Inter / Apple System) and typography polish
 - [x] Fallback avatar for developer logos (`DeveloperAvatar`)
+
+## Phase 6: Hybrid B2B CRM (Kanban Pipeline & WhatsApp Generator) 📊
+- [x] Database schema (`crm_leads` and `crm_collections` in Drizzle ORM)
+- [x] Interactive Kanban Board (`/profile/crm`):
+  - [x] Drag-and-drop state transitions (`Новые отклики` → `В работе` → `Показ` → `Сделка` → `Архив`)
+  - [x] Financial metrics widget (Сделок в работе, Объем пайплайна $, Ожидаемая комиссия $, Заработано в этом месяце $)
+  - [x] Modal for creating and editing client cards with instant commission calculator (Budget × Commission%)
+  - [x] Direct one-click Call and WhatsApp buttons with prefilled messages
+  - [x] Search and filtering across leads
+- [x] WhatsApp Client Collection Generator (`/p/[share_code]`):
+  - [x] Public mobile-first showcase without owner contacts or 3rd-party ads
+  - [x] Verified Broker header card with direct call and WhatsApp actions
+  - [x] Selected property cards with photo galleries, specs, and price in USD/TJS
+  - [x] Share link generator with one-click clipboard copy and direct WhatsApp share
+  - [x] Browser print / PDF commercial proposal generator (`@media print`)
+- [x] Automatic lead generation on classified card interactions:
+  - [x] Phone reveal trigger auto-posts lead to `/api/crm/leads`
+  - [x] WhatsApp click trigger auto-posts lead to `/api/crm/leads`
+- [x] REST API endpoints:
+  - [x] `GET /api/crm/leads`, `POST /api/crm/leads`, `PATCH /api/crm/leads`, `DELETE /api/crm/leads`
+  - [x] `GET /api/crm/collections`, `POST /api/crm/collections`
+  - [x] `GET /api/crm/collections/[shareCode]`
+

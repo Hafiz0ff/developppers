@@ -29,6 +29,7 @@ import {
   Sparkles,
   ArrowUpRight,
   Layers,
+  Users,
 } from "lucide-react";
 
 type PeriodFilter = "today" | "7d" | "30d" | "all";
@@ -332,6 +333,16 @@ export default function BrokerAnalyticsPage() {
               </button>
             ))}
           </div>
+
+          <Link href="/profile/crm">
+            <Button
+              size="sm"
+              className="gap-2 text-xs font-semibold h-9 px-3.5 bg-emerald-600 hover:bg-emerald-700 text-white shadow-xs"
+            >
+              <Users className="h-3.5 w-3.5" />
+              Канбан CRM & Воронка
+            </Button>
+          </Link>
 
           <Button
             onClick={handleExportCSV}
