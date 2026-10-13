@@ -34,6 +34,7 @@
 | 💱 **Мультивалютность** | Мгновенное переключение TJS ⇄ USD с актуальным курсом |
 | 🎨 **WebGL-шейдеры** | Премиальные фоновые эффекты (aurora / gradient-mesh / light-leak) |
 | 🔐 **Аутентификация** | Безопасный вход для застройщиков через Better Auth |
+| 📲 **PWA Приложение** | Установка на экран смартфона (iOS/Android), Service Worker и offline-кэш |
 | 📱 **Mobile-first** | Адаптивный дизайн под все размеры экранов |
 
 ---
@@ -293,8 +294,9 @@ pnpm db:seed      # Заполнить БД тестовыми данными
 - [x] Phase 5 — WebGL-шейдеры (премиальный UI)
 - [x] Phase 6 — Hybrid B2B CRM (Канбан-воронка + WhatsApp-витрины)
 - [x] Phase 7 — Telegram Bot Push-уведомления о лидах
-- [ ] Phase 8 — Интерактивная карта объектов (Яндекс.Карты / Leaflet)
-- [ ] Phase 9 — Мобильное приложение (React Native / Expo)
+- [x] Phase 8 — PWA (Progressive Web App): Манифест, Service Worker, Apple Touch Icons, баннер установки
+- [ ] Phase 9 — Интерактивная карта объектов (Яндекс.Карты / Leaflet)
+- [ ] Phase 10 — Мобильное приложение (React Native / Expo)
 
 ---
 

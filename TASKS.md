@@ -83,4 +83,27 @@
   - [x] `GET /api/profile/telegram` — fetch user chat ID and bot config
   - [x] `POST /api/profile/telegram` — save settings and send test notification
 
+## Phase 8: Progressive Web App (PWA) 📱
+- [x] Web Manifest (`src/app/manifest.ts` & `public/manifest.json`):
+  - [x] App name, short name, descriptions, standalone mode, theme colors (`#0D9488` / `#F8FAFC`)
+  - [x] Maskable and standard icons (192x192, 512x512)
+- [x] Icons generation:
+  - [x] Brand SVG logo (`public/icons/icon.svg`)
+  - [x] High-res PNG icons (`192x192`, `512x512`, `maskable-192`, `maskable-512`)
+  - [x] iOS Apple Touch Icon (`apple-touch-icon.png` 180x180)
+- [x] Service Worker (`public/sw.js`):
+  - [x] Static shell precaching (offline navigation support)
+  - [x] Stale-while-revalidate for brand assets and icons
+  - [x] Automated cache cleanup on worker activate
+- [x] Metadata & Viewport (`src/app/layout.tsx`):
+  - [x] `themeColor: "#0D9488"`
+  - [x] `appleWebApp: { capable: true, statusBarStyle: "black-translucent", title: "Sogd Realty" }`
+  - [x] Native `<link rel="manifest" href="/manifest.webmanifest" />`
+- [x] Install Banner (`src/components/modules/pwa-install-prompt.tsx`):
+  - [x] Captures `beforeinstallprompt` event
+  - [x] Native prompt trigger for Chrome/Edge/Android
+  - [x] iOS Safari step-by-step guidance modal (Share ➔ Add to Home Screen)
+  - [x] Dismissal cooldown memory (stored in `localStorage`)
+
+
 
