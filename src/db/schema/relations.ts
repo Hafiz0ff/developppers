@@ -5,6 +5,8 @@ import { projects } from "./projects";
 import { units } from "./units";
 import { classifieds } from "./classifieds";
 import { favorites } from "./favorites";
+import { classifiedAnalytics } from "./analytics";
+import { apiKeys } from "./api-keys";
 
 export const usersRelations = relations(users, ({ many }) => ({
   sessions: many(sessions),
@@ -13,7 +15,9 @@ export const usersRelations = relations(users, ({ many }) => ({
   developerMembers: many(developerMembers),
   createdDevelopers: many(developers),
   favorites: many(favorites),
+  apiKeys: many(apiKeys),
 }));
+
 
 export const sessionsRelations = relations(sessions, ({ one }) => ({
   user: one(users, {
@@ -71,6 +75,21 @@ export const classifiedsRelations = relations(classifieds, ({ one, many }) => ({
     references: [users.id],
   }),
   favorites: many(favorites),
+  analytics: many(classifiedAnalytics),
+}));
+
+export const classifiedAnalyticsRelations = relations(classifiedAnalytics, ({ one }) => ({
+  classified: one(classifieds, {
+    fields: [classifiedAnalytics.classifiedId],
+    references: [classifieds.id],
+  }),
+}));
+
+export const apiKeysRelations = relations(apiKeys, ({ one }) => ({
+  user: one(users, {
+    fields: [apiKeys.userId],
+    references: [users.id],
+  }),
 }));
 
 export const favoritesRelations = relations(favorites, ({ one }) => ({
@@ -87,3 +106,4 @@ export const favoritesRelations = relations(favorites, ({ one }) => ({
     references: [classifieds.id],
   }),
 }));
+

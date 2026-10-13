@@ -26,7 +26,9 @@ import {
   ShieldCheck,
   Briefcase,
   ChevronDown,
+  TrendingUp,
 } from "lucide-react";
+
 
 export function Header() {
   const { currency, setCurrency } = useCurrency();
@@ -105,7 +107,15 @@ export function Header() {
               <Briefcase className="h-4 w-4 text-emerald-600" />
               Застройщики
             </Link>
+            <Link
+              href="/profile/analytics"
+              className="text-emerald-700 dark:text-emerald-400 hover:text-emerald-600 transition-colors flex items-center gap-1.5 font-semibold"
+            >
+              <TrendingUp className="h-4 w-4 text-emerald-600" />
+              Аналитика & CRM
+            </Link>
           </nav>
+
 
           {/* Right Controls: Currency, Add Button, Auth */}
           <div className="flex items-center gap-2.5">
@@ -190,6 +200,12 @@ export function Header() {
                     </div>
                   </DropdownMenuLabel>
                   <DropdownMenuSeparator />
+                  <Link href="/profile/analytics">
+                    <DropdownMenuItem className="cursor-pointer text-emerald-700 dark:text-emerald-400 font-semibold">
+                      <TrendingUp className="mr-2 h-4 w-4 text-emerald-600" />
+                      Аналитика & CRM
+                    </DropdownMenuItem>
+                  </Link>
                   <DropdownMenuItem className="cursor-pointer">
                     <User className="mr-2 h-4 w-4" />
                     Мой профиль
@@ -198,6 +214,7 @@ export function Header() {
                     <Home className="mr-2 h-4 w-4" />
                     Мои объявления
                   </DropdownMenuItem>
+
                   {userRole === "developer" && (
                     <DropdownMenuItem className="cursor-pointer">
                       <Building2 className="mr-2 h-4 w-4" />
