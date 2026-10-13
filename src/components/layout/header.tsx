@@ -99,7 +99,7 @@ export function Header() {
               href="#houses"
               className="text-foreground/80 hover:text-emerald-600 transition-colors"
             >
-              Дома и Ҳавлӣ
+              Дома
             </Link>
             <Link
               href="#developers"
@@ -108,50 +108,32 @@ export function Header() {
               <Briefcase className="h-4 w-4 text-emerald-600" />
               Застройщики
             </Link>
-            <Link
-              href="/profile/crm"
-              className="text-foreground/80 hover:text-emerald-600 transition-colors flex items-center gap-1.5 font-medium"
-            >
-              <Users className="h-4 w-4 text-emerald-600" />
-              CRM Воронка
-            </Link>
-            <Link
-              href="/profile/analytics"
-              className="text-emerald-700 dark:text-emerald-400 hover:text-emerald-600 transition-colors flex items-center gap-1.5 font-semibold"
-            >
-              <TrendingUp className="h-4 w-4 text-emerald-600" />
-              Аналитика & API
-            </Link>
           </nav>
 
 
           {/* Right Controls: Currency, Add Button, Auth */}
           <div className="flex items-center gap-2.5">
             {/* Currency Selector */}
-            <div className="flex items-center border rounded-lg p-0.5 bg-muted/50 text-xs font-semibold">
-              <button
-                type="button"
-                onClick={() => setCurrency("TJS")}
-                className={`px-2 py-1 rounded-md transition-all ${
-                  currency === "TJS"
-                    ? "bg-background text-emerald-600 shadow-xs font-bold"
-                    : "text-muted-foreground hover:text-foreground"
-                }`}
-              >
-                TJS (сомони)
-              </button>
-              <button
-                type="button"
-                onClick={() => setCurrency("USD")}
-                className={`px-2 py-1 rounded-md transition-all ${
-                  currency === "USD"
-                    ? "bg-background text-emerald-600 shadow-xs font-bold"
-                    : "text-muted-foreground hover:text-foreground"
-                }`}
-              >
-                USD ($)
-              </button>
-            </div>
+            <DropdownMenu>
+              <DropdownMenuTrigger className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg border border-border bg-muted/50 text-xs font-semibold hover:bg-muted transition-colors outline-hidden">
+                {currency}
+                <ChevronDown className="h-3 w-3 text-muted-foreground" />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-36">
+                <DropdownMenuItem
+                  onClick={() => setCurrency("TJS")}
+                  className={`cursor-pointer text-xs ${currency === "TJS" ? "text-emerald-700 font-semibold" : ""}`}
+                >
+                  TJS (Сомони)
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() => setCurrency("USD")}
+                  className={`cursor-pointer text-xs ${currency === "USD" ? "text-emerald-700 font-semibold" : ""}`}
+                >
+                  USD (Доллар $)
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
 
             {/* Post Ad Button */}
             <Button

@@ -162,7 +162,7 @@ export default function HomePage() {
   const { formatPrice, currency } = useCurrency();
   const [activeTab, setActiveTab] = useState<"new" | "resale" | "rent" | "houses">("new");
   const [selectedCity, setSelectedCity] = useState("khujand");
-  const [heroBgMode, setHeroBgMode] = useState<"shader" | "variant-1" | "variant-2">("variant-1");
+  const heroBgMode = "variant-1";
   const [selectedRooms, setSelectedRooms] = useState<string>("all");
   const [priceFrom, setPriceFrom] = useState("");
   const [priceTo, setPriceTo] = useState("");
@@ -227,87 +227,33 @@ export default function HomePage() {
   return (
     <div className="flex flex-col gap-12 sm:gap-16 pb-24 bg-[#F8FAFC]">
       {/* 1. AIRY LIGHT HERO SECTION WITH SWITCHABLE BACKGROUND */}
-      <section className="relative pt-10 pb-16 md:pt-14 md:pb-20 border-b border-slate-200/80 bg-slate-50 overflow-hidden">
-        {/* Background Layer: Shader OR Image Concept */}
-        {heroBgMode === "shader" ? (
-          <ShaderBackground
-            variant="aurora"
-            speed={0.5}
-            intensity={0.65}
-            className="absolute inset-0 -z-10 h-full w-full opacity-75 pointer-events-none"
+    <section className="relative pt-6 pb-12 md:pt-10 md:pb-16 border-b border-slate-200/80 bg-slate-50 overflow-hidden">
+        {/* Background Layer: Variant-1 Concept Image */}
+        <div className="absolute inset-0 -z-10 h-full w-full pointer-events-none overflow-hidden">
+          <img
+            src="/images/hero-variant-1.jpg"
+            alt="Hero Concept Illustration"
+            className="w-full h-full object-cover object-center opacity-30"
           />
-        ) : (
-          <div className="absolute inset-0 -z-10 h-full w-full pointer-events-none overflow-hidden">
-            <img
-              src={
-                heroBgMode === "variant-1"
-                  ? "/images/hero-variant-1.jpg"
-                  : "/images/hero-variant-2.jpg"
-              }
-              alt="Hero Concept Illustration"
-              className="w-full h-full object-cover object-center opacity-30"
-            />
-            <div className="absolute inset-0 bg-gradient-to-b from-white/70 via-white/50 to-[#F8FAFC]/90 backdrop-blur-[1px]" />
+          <div className="absolute inset-0 bg-gradient-to-b from-white/70 via-white/50 to-[#F8FAFC]/90 backdrop-blur-[1px]" />
+        </div>
+
+        {/* Marquee Ticker Strip */}
+        <div className="overflow-hidden bg-emerald-50/80 border-y border-emerald-100 py-1.5 mb-8">
+          <div className="flex whitespace-nowrap animate-marquee">
+            {[0, 1].map((i) => (
+              <span key={i} className="inline-flex items-center gap-6 px-6 text-xs font-medium uppercase tracking-wider text-emerald-800/80">
+                <span>✦ Новостройки напрямую от застройщиков без комиссии</span>
+                <span>✦ Вторичное жильё и традиционные дома (Ҳавлӣ)</span>
+                <span>✦ Интерактивные поэтажные шахматки</span>
+                <span>✦ Двухвалютный перерасчёт TJS / USD</span>
+                <span>✦ B2B CRM и аналитика для маклеров</span>
+              </span>
+            ))}
           </div>
-        )}
+        </div>
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          {/* Background Variant Selector Pills */}
-          <div className="flex justify-center mb-6">
-            <div className="inline-flex items-center gap-1.5 p-1 rounded-xl bg-white/90 border border-slate-200 shadow-sm text-xs backdrop-blur-md">
-              <span className="text-[11px] font-semibold text-slate-400 px-2 uppercase tracking-wider">
-                Фон Hero:
-              </span>
-              <button
-                type="button"
-                onClick={() => setHeroBgMode("variant-1")}
-                className={`px-2.5 py-1 rounded-lg font-medium transition-all ${
-                  heroBgMode === "variant-1"
-                    ? "bg-emerald-600 text-white font-semibold shadow-xs"
-                    : "text-slate-600 hover:text-slate-900"
-                }`}
-              >
-                1. UI Dashboard
-              </button>
-              <button
-                type="button"
-                onClick={() => setHeroBgMode("variant-2")}
-                className={`px-2.5 py-1 rounded-lg font-medium transition-all ${
-                  heroBgMode === "variant-2"
-                    ? "bg-emerald-600 text-white font-semibold shadow-xs"
-                    : "text-slate-600 hover:text-slate-900"
-                }`}
-              >
-                2. Экосистема Согда
-              </button>
-              <button
-                type="button"
-                onClick={() => setHeroBgMode("shader")}
-                className={`px-2.5 py-1 rounded-lg font-medium transition-all ${
-                  heroBgMode === "shader"
-                    ? "bg-emerald-600 text-white font-semibold shadow-xs"
-                    : "text-slate-600 hover:text-slate-900"
-                }`}
-              >
-                3. WebGL Шейдер
-              </button>
-            </div>
-          </div>
-
-          <div className="max-w-3xl mx-auto text-center space-y-3.5 mb-8 sm:mb-10">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 border border-emerald-200/80 text-emerald-800 text-xs font-medium">
-              <ShieldCheck className="h-3.5 w-3.5 text-emerald-600" />
-              Единый портал недвижимости Согдийской области
-            </div>
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-slate-900 leading-tight">
-              Недвижимость в Худжанде и Согде
-            </h1>
-            <p className="text-sm sm:text-base md:text-lg text-slate-600 max-w-2xl mx-auto font-normal leading-relaxed">
-              Новостройки напрямую от застройщиков без комиссии, а также вторичное жильё,
-              традиционные дома (ҳавлӣ) и коммерческие объекты.
-            </p>
-          </div>
-
 
           {/* 2. CIAN-STYLE SEARCH CARD WITH CLEAN GLASSMORPHISM */}
           <div className="relative max-w-4xl mx-auto">
@@ -900,6 +846,7 @@ export default function HomePage() {
             <div className="flex items-center gap-4 text-slate-500">
               <Link href="/developer-admin" className="hover:text-emerald-700">Кабинет застройщика</Link>
               <Link href="/profile/analytics" className="hover:text-emerald-700">Аналитика & Open API</Link>
+              <Link href="/profile/crm" className="hover:text-emerald-700 font-medium text-emerald-700/70">Маклерам и Агентствам (B2B CRM)</Link>
             </div>
           </div>
         </div>
