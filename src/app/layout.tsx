@@ -16,7 +16,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ru" className="h-full antialiased font-sans">
-      <body className="min-h-full flex flex-col bg-background text-foreground">
+      <body className="min-h-full flex flex-col bg-background text-foreground font-sans">
         <CurrencyProvider>
           <Header />
           <main className="flex-1">{children}</main>
@@ -25,3 +25,5 @@ export default function RootLayout({
     </html>
   );
 }
+
+

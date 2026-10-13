@@ -14,25 +14,25 @@ export interface ShaderBackgroundProps
   children?: React.ReactNode;
 }
 
-// Default luxury emerald / Sughd palette: deep emerald, vibrant teal, sky highlight, deep slate
+// Premium emerald / teal / silk white palette for Sogd Realty
 const DEFAULT_PALETTES: Record<ShaderVariant, [number, number, number][]> = {
   aurora: [
-    [0.05, 0.58, 0.53], // Emerald #0D9488
-    [0.02, 0.38, 0.28], // Deep forest #065F46
-    [0.06, 0.73, 0.65], // Bright teal #10B981
-    [0.01, 0.17, 0.14], // Midnight #022C22
+    [0.02, 0.59, 0.41], // Emerald #059669
+    [0.05, 0.58, 0.53], // Teal #0D9488
+    [0.08, 0.72, 0.65], // Vibrant mint/cyan #14B8A6
+    [1.0, 1.0, 1.0],    // Silk white #FFFFFF
   ],
   "gradient-mesh": [
-    [0.05, 0.58, 0.53], // #0D9488 (Teal)
-    [0.13, 0.77, 0.65], // #22C55E (Mint/Emerald)
-    [0.02, 0.29, 0.24], // #044E3F
-    [0.08, 0.12, 0.19], // Slate night #131F30
+    [0.02, 0.59, 0.41], // Emerald #059669
+    [0.05, 0.58, 0.53], // Deep teal #0D9488
+    [0.18, 0.83, 0.75], // Mint highlight #2DD4BF
+    [0.96, 0.99, 0.98], // Pearl white #F5FBF9
   ],
   "light-leak": [
-    [0.15, 0.68, 0.6], // Vibrant cyan-teal
-    [0.92, 0.76, 0.35], // Warm gold sun reflection
-    [0.05, 0.45, 0.38], // Deep jade
-    [0.02, 0.1, 0.08], // Base
+    [0.05, 0.58, 0.53], // Teal #0D9488
+    [0.96, 0.85, 0.55], // Soft sunbeam amber
+    [0.02, 0.59, 0.41], // Emerald #059669
+    [1.0, 1.0, 1.0],    // White
   ],
 };
 
@@ -57,10 +57,12 @@ const VERTEX_SHADER_SRC = `
   }
 `;
 
+// Fluid silk waves shader (aurora)
 const AURORA_FRAGMENT_SHADER = `
   precision mediump float;
   uniform float u_time;
   uniform vec2 u_resolution;
+  uniform vec2 u_mouse;
   uniform vec3 u_c1;
   uniform vec3 u_c2;
   uniform vec3 u_c3;
@@ -68,79 +70,50 @@ const AURORA_FRAGMENT_SHADER = `
   uniform float u_intensity;
   varying vec2 v_uv;
 
-  float wave(vec2 uv, float t, float freq, float speed) {
-    return sin(uv.x * freq + t * speed) * cos(uv.y * (freq * 0.7) - t * (speed * 0.8));
-  }
-
   void main() {
     vec2 uv = v_uv;
+    float aspect = u_resolution.x / max(u_resolution.y, 1.0);
+    vec2 p = uv;
+    p.x *= aspect;
+
     float t = u_time * 0.35;
 
-    // Undulating wave coordinates
-    float w1 = wave(uv, t, 3.2, 0.8) * 0.25;
-    float w2 = wave(uv + vec2(0.5, 0.2), t * 1.2, 4.5, -0.6) * 0.2;
-    float w3 = wave(uv - vec2(0.3, 0.7), t * 0.7, 2.1, 0.5) * 0.3;
+    // Fluid undulating wave layers
+    float w1 = sin(p.x * 1.8 + t * 0.7 + sin(p.y * 2.2 + t * 0.4) * 1.2);
+    float w2 = cos(p.y * 2.0 - t * 0.5 + cos(p.x * 1.9 + t * 0.6) * 1.0);
+    float w3 = sin((p.x + p.y) * 1.4 + t * 0.8);
 
-    vec2 p = uv + vec2(w1 + w2, w2 + w3);
+    // Mouse interactive ripple
+    vec2 m = u_mouse;
+    m.x *= aspect;
+    float mDist = length(p - m);
+    float mInfluence = smoothstep(0.8, 0.0, mDist) * 0.25;
 
-    // Layered color gradients
-    vec3 col = mix(u_c4, u_c2, clamp(p.y * 1.2, 0.0, 1.0));
-    col = mix(col, u_c1, clamp(w1 * 2.5 + (1.0 - p.x), 0.0, 1.0));
-    col = mix(col, u_c3, clamp((w2 + w3) * 3.0, 0.0, 1.0));
+    float waveSum = (w1 + w2 + w3) / 3.0 + mInfluence;
+    float norm = clamp(waveSum * 0.5 + 0.5, 0.0, 1.0);
 
-    // Soft celestial vignette
-    float vignette = 1.0 - length((uv - 0.5) * 1.2);
-    vignette = clamp(vignette, 0.0, 1.0);
+    // Harmonious gradient blending
+    vec3 col = mix(u_c1, u_c2, smoothstep(0.15, 0.65, norm));
+    col = mix(col, u_c3, smoothstep(0.45, 0.85, norm + 0.15 * sin(t + p.x)));
 
-    gl_FragColor = vec4(col * u_intensity, vignette * 0.9);
+    // Silk white light crest
+    float crest = pow(smoothstep(0.6, 0.95, norm), 2.2);
+    col = mix(col, u_c4, crest * 0.8);
+
+    // Soft border fading
+    float vig = 1.0 - length(v_uv - 0.5) * 0.45;
+    vig = clamp(vig, 0.0, 1.0);
+
+    gl_FragColor = vec4(col, clamp(u_intensity * vig, 0.0, 1.0));
   }
 `;
 
+// Smooth orbital gradient mesh
 const GRADIENT_MESH_FRAGMENT_SHADER = `
   precision mediump float;
   uniform float u_time;
   uniform vec2 u_resolution;
-  uniform vec3 u_c1;
-  uniform vec3 u_c2;
-  uniform vec3 u_c3;
-  uniform vec3 u_c4;
-  uniform float u_intensity;
-  varying vec2 v_uv;
-
-  void main() {
-    vec2 uv = v_uv;
-    float t = u_time * 0.4;
-
-    // 4 orbital attractor points
-    vec2 p1 = vec2(0.3 + 0.2 * sin(t * 0.7), 0.3 + 0.2 * cos(t * 0.5));
-    vec2 p2 = vec2(0.7 + 0.2 * cos(t * 0.6), 0.4 + 0.2 * sin(t * 0.8));
-    vec2 p3 = vec2(0.5 + 0.25 * sin(t * 0.9), 0.8 + 0.15 * cos(t * 0.7));
-    vec2 p4 = vec2(0.2 + 0.15 * cos(t * 0.4), 0.7 + 0.2 * sin(t * 0.6));
-
-    float d1 = length(uv - p1);
-    float d2 = length(uv - p2);
-    float d3 = length(uv - p3);
-    float d4 = length(uv - p4);
-
-    float w1 = 1.0 / (d1 * d1 + 0.08);
-    float w2 = 1.0 / (d2 * d2 + 0.08);
-    float w3 = 1.0 / (d3 * d3 + 0.08);
-    float w4 = 1.0 / (d4 * d4 + 0.08);
-
-    float total = w1 + w2 + w3 + w4;
-    vec3 col = (u_c1 * w1 + u_c2 * w2 + u_c3 * w3 + u_c4 * w4) / total;
-
-    // Organic grain micro-texture to avoid color banding
-    float grain = fract(sin(dot(uv.xy, vec2(12.9898, 78.233))) * 43758.5453) * 0.03 - 0.015;
-
-    gl_FragColor = vec4((col + grain) * u_intensity, 0.85);
-  }
-`;
-
-const LIGHT_LEAK_FRAGMENT_SHADER = `
-  precision mediump float;
-  uniform float u_time;
-  uniform vec2 u_resolution;
+  uniform vec2 u_mouse;
   uniform vec3 u_c1;
   uniform vec3 u_c2;
   uniform vec3 u_c3;
@@ -152,26 +125,68 @@ const LIGHT_LEAK_FRAGMENT_SHADER = `
     vec2 uv = v_uv;
     float t = u_time * 0.3;
 
-    // Light source centers that gently pan
+    // 4 orbital attractor centers
+    vec2 p1 = vec2(0.25 + 0.2 * sin(t * 0.6), 0.25 + 0.2 * cos(t * 0.4));
+    vec2 p2 = vec2(0.75 + 0.2 * cos(t * 0.5), 0.35 + 0.2 * sin(t * 0.7));
+    vec2 p3 = vec2(0.50 + 0.25 * sin(t * 0.8), 0.80 + 0.15 * cos(t * 0.5));
+    vec2 p4 = vec2(0.20 + 0.15 * cos(t * 0.3), 0.75 + 0.2 * sin(t * 0.6));
+
+    float d1 = length(uv - p1);
+    float d2 = length(uv - p2);
+    float d3 = length(uv - p3);
+    float d4 = length(uv - p4);
+
+    float w1 = 1.0 / (d1 * d1 + 0.09);
+    float w2 = 1.0 / (d2 * d2 + 0.09);
+    float w3 = 1.0 / (d3 * d3 + 0.09);
+    float w4 = 1.0 / (d4 * d4 + 0.09);
+
+    float total = w1 + w2 + w3 + w4;
+    vec3 col = (u_c1 * w1 + u_c2 * w2 + u_c3 * w3 + u_c4 * w4) / total;
+
+    // Silk sheen highlight
+    float sheen = pow(smoothstep(0.4, 0.9, 1.0 - d3), 3.0);
+    col = mix(col, u_c4, sheen * 0.4);
+
+    gl_FragColor = vec4(col, clamp(u_intensity * 0.9, 0.0, 1.0));
+  }
+`;
+
+// Subtle light leak
+const LIGHT_LEAK_FRAGMENT_SHADER = `
+  precision mediump float;
+  uniform float u_time;
+  uniform vec2 u_resolution;
+  uniform vec2 u_mouse;
+  uniform vec3 u_c1;
+  uniform vec3 u_c2;
+  uniform vec3 u_c3;
+  uniform vec3 u_c4;
+  uniform float u_intensity;
+  varying vec2 v_uv;
+
+  void main() {
+    vec2 uv = v_uv;
+    float t = u_time * 0.25;
+
     vec2 lightPos1 = vec2(0.2 + 0.15 * sin(t * 0.5), 0.1 + 0.1 * cos(t * 0.4));
     vec2 lightPos2 = vec2(0.85 + 0.1 * cos(t * 0.3), 0.2 + 0.15 * sin(t * 0.6));
 
-    // Rays radiating from corner
     float dist1 = length(uv - lightPos1);
     float dist2 = length(uv - lightPos2);
 
     float angle1 = atan(uv.y - lightPos1.y, uv.x - lightPos1.x);
-    float rays1 = sin(angle1 * 7.0 + t * 0.8) * 0.5 + 0.5;
+    float rays1 = sin(angle1 * 6.0 + t * 0.6) * 0.5 + 0.5;
 
-    float flare1 = 1.0 / (dist1 * 3.0 + 0.4);
+    float flare1 = 1.0 / (dist1 * 3.2 + 0.4);
     float flare2 = 1.0 / (dist2 * 4.5 + 0.5);
 
     vec3 col = u_c4;
-    col += u_c2 * flare1 * 0.7 * (0.8 + 0.2 * rays1);
-    col += u_c1 * flare2 * 0.8;
-    col += u_c3 * (1.0 - dist1 * 0.8) * 0.3;
+    col += u_c2 * flare1 * 0.65 * (0.8 + 0.2 * rays1);
+    col += u_c1 * flare2 * 0.75;
+    col += u_c3 * (1.0 - dist1 * 0.8) * 0.25;
 
-    gl_FragColor = vec4(col * u_intensity, clamp(flare1 * 0.6 + flare2 * 0.5, 0.0, 0.85));
+    gl_FragColor = vec4(col, clamp((flare1 * 0.5 + flare2 * 0.4) * u_intensity, 0.0, 0.85));
   }
 `;
 
@@ -217,14 +232,14 @@ export function ShaderBackground({
     const container = containerRef.current;
     if (!canvas || !container) return;
 
-    // 2. Initialize WebGL with error boundary
+    // 2. Initialize WebGL
     let gl: WebGLRenderingContext | null = null;
     try {
       gl =
         canvas.getContext("webgl", {
           alpha: true,
           antialias: false,
-          powerPreference: "low-power", // battery optimization for mobile
+          powerPreference: "low-power",
         }) ||
         (canvas.getContext(
           "experimental-webgl"
@@ -273,7 +288,7 @@ export function ShaderBackground({
 
     gl.useProgram(program);
 
-    // Quad geometry covering full screen
+    // Quad geometry covering viewport
     const quadBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, quadBuffer);
     gl.bufferData(
@@ -289,6 +304,7 @@ export function ShaderBackground({
     // Uniform locations
     const uTime = gl.getUniformLocation(program, "u_time");
     const uRes = gl.getUniformLocation(program, "u_resolution");
+    const uMouse = gl.getUniformLocation(program, "u_mouse");
     const uC1 = gl.getUniformLocation(program, "u_c1");
     const uC2 = gl.getUniformLocation(program, "u_c2");
     const uC3 = gl.getUniformLocation(program, "u_c3");
@@ -306,16 +322,21 @@ export function ShaderBackground({
     gl.uniform3fv(uC3, palette[2]);
     gl.uniform3fv(uC4, palette[3]);
     gl.uniform1f(uIntensity, intensity);
+    gl.uniform2f(uMouse, 0.5, 0.5);
 
-    // 4. Resize Handling with clamped DPR
+    // 4. Resize Handling with clamped DPR for mobile performance
     let animId = 0;
     let isVisible = true;
     let startTime = performance.now();
+    let mouseX = 0.5;
+    let mouseY = 0.5;
+    let targetMouseX = 0.5;
+    let targetMouseY = 0.5;
 
     const resize = () => {
       if (!canvas || !container || !gl) return;
       const rect = container.getBoundingClientRect();
-      const dpr = Math.min(window.devicePixelRatio || 1, 1.5); // Mobile battery clamp
+      const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
       const w = Math.floor(rect.width * dpr);
       const h = Math.floor(rect.height * dpr);
       if (canvas.width !== w || canvas.height !== h) {
@@ -329,6 +350,16 @@ export function ShaderBackground({
     resize();
     const resizeObserver = new ResizeObserver(() => resize());
     resizeObserver.observe(container);
+
+    // Mouse move listener with smooth damping
+    const handleMouseMove = (e: MouseEvent) => {
+      if (!container) return;
+      const rect = container.getBoundingClientRect();
+      targetMouseX = (e.clientX - rect.left) / rect.width;
+      targetMouseY = 1.0 - (e.clientY - rect.top) / rect.height;
+    };
+
+    window.addEventListener("mousemove", handleMouseMove, { passive: true });
 
     // 5. IntersectionObserver: Pause when out of screen (battery saving)
     const intersectionObserver = new IntersectionObserver(
@@ -347,11 +378,17 @@ export function ShaderBackground({
     );
     intersectionObserver.observe(container);
 
-    // 6. Animation loop
+    // 6. 60 FPS Animation loop
     const loop = () => {
       if (!isVisible || !gl) return;
       const elapsed = (performance.now() - startTime) * 0.001 * speed;
       gl.uniform1f(uTime, elapsed);
+
+      // Smooth mouse interpolation
+      mouseX += (targetMouseX - mouseX) * 0.05;
+      mouseY += (targetMouseY - mouseY) * 0.05;
+      gl.uniform2f(uMouse, mouseX, mouseY);
+
       gl.drawArrays(gl.TRIANGLES, 0, 6);
       animId = requestAnimationFrame(loop);
     };
@@ -362,6 +399,7 @@ export function ShaderBackground({
       if (animId) cancelAnimationFrame(animId);
       resizeObserver.disconnect();
       intersectionObserver.disconnect();
+      window.removeEventListener("mousemove", handleMouseMove);
       if (gl) {
         gl.deleteBuffer(quadBuffer);
         gl.deleteProgram(program);
@@ -371,14 +409,14 @@ export function ShaderBackground({
     };
   }, [variant, speed, intensity, colorPalette]);
 
-  // Fallback CSS Gradient classes when WebGL is disabled or on low power mode
+  // Fallback CSS Gradient classes when WebGL is disabled or on reduced motion
   const fallbackGradients: Record<ShaderVariant, string> = {
     aurora:
-      "bg-gradient-to-tr from-emerald-950/40 via-teal-900/20 to-emerald-600/10",
+      "bg-gradient-to-tr from-emerald-100/90 via-teal-50 to-white dark:from-emerald-950 dark:via-teal-900/40 dark:to-slate-950",
     "gradient-mesh":
-      "bg-gradient-to-br from-emerald-900/30 via-slate-900/20 to-teal-800/20",
+      "bg-gradient-to-br from-emerald-100/80 via-teal-100/40 to-white dark:from-emerald-900/40 dark:via-slate-900 dark:to-teal-900/30",
     "light-leak":
-      "bg-[radial-gradient(ellipse_at_top_right,rgba(16,185,129,0.25),rgba(251,191,36,0.1),transparent_70%)]",
+      "bg-[radial-gradient(ellipse_at_top_right,rgba(16,185,129,0.2),rgba(255,255,255,0.9),transparent_70%)]",
   };
 
   return (
@@ -392,7 +430,7 @@ export function ShaderBackground({
         ref={canvasRef}
         aria-hidden="true"
         className={cn(
-          "absolute inset-0 h-full w-full pointer-events-none transition-opacity duration-1000",
+          "absolute inset-0 h-full w-full pointer-events-none transition-opacity duration-700",
           hasWebGL ? "opacity-100" : "opacity-0"
         )}
       />
@@ -401,9 +439,9 @@ export function ShaderBackground({
       <div
         aria-hidden="true"
         className={cn(
-          "absolute inset-0 pointer-events-none transition-opacity duration-1000",
+          "absolute inset-0 pointer-events-none transition-opacity duration-700",
           fallbackGradients[variant],
-          hasWebGL ? "opacity-20" : "opacity-100"
+          hasWebGL ? "opacity-0" : "opacity-100"
         )}
       />
 

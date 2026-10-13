@@ -8,6 +8,7 @@ import { SOGD_CITIES } from "@/lib/constants/locations";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ShaderBackground } from "@/components/ui/shader-background";
+import { DeveloperAvatar } from "@/components/ui/developer-avatar";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import {
@@ -34,8 +35,8 @@ import {
   Trees,
   Store,
   Layers,
-  Database,
 } from "lucide-react";
+
 
 // Демонстрационные данные каталога новостроек
 const FEATURED_PROJECTS = [
@@ -163,41 +164,35 @@ export default function HomePage() {
   return (
     <div className="flex flex-col gap-12 pb-20">
       {/* HERO SECTION WITH SHADER BACKGROUND */}
-      <section className="relative pt-12 pb-10 border-b overflow-hidden">
-        {/* Living Aurora / Mesh Shader Layer */}
+      <section className="relative pt-16 pb-14 border-b overflow-hidden">
+        {/* Living Fluid Aurora Shader Layer */}
         <ShaderBackground
           variant="aurora"
-          speed={0.65}
-          intensity={0.35}
-          className="absolute inset-0 -z-10 h-full w-full opacity-60 dark:opacity-45"
+          speed={0.7}
+          intensity={0.95}
+          className="absolute inset-0 -z-10 h-full w-full"
         />
 
         <div className="container mx-auto px-4 relative z-10">
-          <div className="max-w-3xl mx-auto text-center space-y-4 mb-8">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-700 dark:text-emerald-400 text-xs font-semibold backdrop-blur-xs">
-              <ShieldCheck className="h-3.5 w-3.5" />
+          <div className="max-w-3xl mx-auto text-center space-y-4 mb-10">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-800 dark:text-emerald-300 text-xs font-semibold backdrop-blur-md">
+              <ShieldCheck className="h-4 w-4 text-emerald-600" />
               Единый портал недвижимости Согдийской области
             </div>
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-foreground">
               Недвижимость в Худжанде и Согдийской области
             </h1>
-            <p className="text-base text-muted-foreground max-w-2xl mx-auto">
+            <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto font-normal">
               Каталог современных новостроек от надежных застройщиков без комиссии, а также
               частные объявления вторичного жилья, домов (ҳавлӣ) и участков.
             </p>
           </div>
 
-          {/* Interactive Search Card with Soft Shader Aura */}
+          {/* Interactive Search Card with Glassmorphism */}
           <div className="relative max-w-4xl mx-auto">
-            <ShaderBackground
-              variant="gradient-mesh"
-              speed={0.5}
-              intensity={0.4}
-              className="absolute -inset-1.5 rounded-3xl blur-md opacity-40 -z-10"
-            />
-            <div className="bg-card/95 backdrop-blur-md border rounded-2xl p-4 sm:p-6 shadow-xl shadow-emerald-950/5">
+            <div className="bg-card/90 dark:bg-card/85 backdrop-blur-md border border-emerald-100 dark:border-emerald-900/40 rounded-2xl p-5 sm:p-7 shadow-xl shadow-emerald-900/5">
             {/* Tabs */}
-            <div className="flex items-center gap-2 overflow-x-auto pb-3 mb-4 border-b">
+            <div className="flex items-center gap-2 overflow-x-auto pb-3 mb-5 border-b">
               <button
                 type="button"
                 onClick={() => setActiveTab("new")}
@@ -249,10 +244,10 @@ export default function HomePage() {
             </div>
 
             {/* Filter Inputs Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
               {/* City selector */}
               <div>
-                <label className="text-xs font-semibold text-muted-foreground mb-1 block">
+                <label className="text-xs font-semibold text-muted-foreground mb-1.5 block">
                   Город / Район Согда
                 </label>
                 <Select
@@ -261,7 +256,7 @@ export default function HomePage() {
                     if (val) setSelectedCity(val);
                   }}
                 >
-                  <SelectTrigger className="w-full">
+                  <SelectTrigger className="w-full h-10">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
@@ -276,7 +271,7 @@ export default function HomePage() {
 
               {/* Rooms count */}
               <div>
-                <label className="text-xs font-semibold text-muted-foreground mb-1 block">
+                <label className="text-xs font-semibold text-muted-foreground mb-1.5 block">
                   Комнаты
                 </label>
                 <Select
@@ -285,7 +280,7 @@ export default function HomePage() {
                     if (val) setRoomsFilter(val);
                   }}
                 >
-                  <SelectTrigger className="w-full">
+                  <SelectTrigger className="w-full h-10">
                     <SelectValue placeholder="Любая" />
                   </SelectTrigger>
                   <SelectContent>
@@ -300,18 +295,18 @@ export default function HomePage() {
 
               {/* Price range */}
               <div>
-                <label className="text-xs font-semibold text-muted-foreground mb-1 block">
+                <label className="text-xs font-semibold text-muted-foreground mb-1.5 block">
                   Цена до ({currency === "TJS" ? "сомони" : "$"})
                 </label>
                 <Input
                   placeholder={currency === "TJS" ? "до 500 000 сом." : "до $50 000"}
-                  className="w-full"
+                  className="w-full h-10"
                 />
               </div>
 
               {/* Submit button */}
               <div className="flex items-end">
-                <Button className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold h-9 shadow-sm gap-2">
+                <Button className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold h-10 shadow-md shadow-emerald-600/20 gap-2">
                   <Search className="h-4 w-4" />
                   Найти
                 </Button>
@@ -320,7 +315,7 @@ export default function HomePage() {
 
             {/* Quick district tags for Khujand */}
             {selectedCity === "khujand" && (
-              <div className="mt-4 pt-3 border-t flex flex-wrap items-center gap-1.5 text-xs text-muted-foreground">
+              <div className="mt-4 pt-3.5 border-t flex flex-wrap items-center gap-1.5 text-xs text-muted-foreground">
                 <span className="font-semibold text-foreground mr-1">Микрорайоны:</span>
                 {[
                   "18 мкр",
@@ -346,37 +341,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ARCHITECTURE OVERVIEW BANNER */}
-      <section className="container mx-auto px-4">
-        <div className="bg-emerald-50 dark:bg-emerald-950/20 border border-emerald-200 dark:border-emerald-800/40 rounded-xl p-4 sm:p-5 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-          <div className="flex items-start gap-3">
-            <div className="h-10 w-10 rounded-lg bg-emerald-600 text-white flex items-center justify-center shrink-0">
-              <Database className="h-5 w-5" />
-            </div>
-            <div>
-              <h3 className="font-bold text-sm sm:text-base text-foreground flex items-center gap-2">
-                Схема PostgreSQL & Drizzle ORM активна
-                <Badge variant="outline" className="text-[10px] bg-emerald-100 text-emerald-800 border-emerald-300">
-                  Ready
-                </Badge>
-              </h3>
-              <p className="text-xs text-muted-foreground mt-0.5">
-                Таблицы: <code className="font-mono font-semibold">users</code> (Better Auth),{" "}
-                <code className="font-mono font-semibold">developers</code>,{" "}
-                <code className="font-mono font-semibold">projects</code> (ЖК),{" "}
-                <code className="font-mono font-semibold">units</code> (квартиры),{" "}
-                <code className="font-mono font-semibold">classifieds</code> (вторичка),{" "}
-                <code className="font-mono font-semibold">favorites</code>. Двухвалютный расчет (TJS/USD).
-              </p>
-            </div>
-          </div>
-          <div className="flex items-center gap-2 text-xs font-semibold text-emerald-700 dark:text-emerald-300 shrink-0">
-            <span className="px-2.5 py-1 bg-background rounded-md border border-emerald-300 dark:border-emerald-700">
-              Текущая валюта: {currency === "TJS" ? "Сомони (TJS)" : "Доллар ($)"}
-            </span>
-          </div>
-        </div>
-      </section>
 
       {/* NEW BUILDINGS CATALOG (НОВОСТРОЙКИ) */}
       <section id="new-buildings" className="container mx-auto px-4">
@@ -479,14 +443,17 @@ export default function HomePage() {
                   </div>
                 </div>
 
-                <div className="pt-1 flex items-center gap-2">
-                  <Button className="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs">
-                    Смотреть {proj.availableUnitsCount} квартир
-                  </Button>
-                  <Button variant="outline" size="sm" className="text-xs font-semibold">
+                <div className="pt-2 flex items-center gap-3">
+                  <Link href={`/projects/${proj.slug}`} className="flex-1">
+                    <Button className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs h-9 px-4">
+                      Смотреть {proj.availableUnitsCount} квартир
+                    </Button>
+                  </Link>
+                  <Button variant="outline" size="sm" className="text-xs font-semibold h-9 px-3.5">
                     Отдел продаж
                   </Button>
                 </div>
+
               </CardContent>
             </Card>
           ))}
@@ -624,14 +591,11 @@ export default function HomePage() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="bg-background border rounded-xl p-4 flex items-center gap-4">
-              <div className="h-14 w-14 rounded-xl bg-muted flex items-center justify-center shrink-0 border overflow-hidden">
-                <img
-                  src="https://images.unsplash.com/photo-1541888946425-d0fbb186241b?w=100&h=100&fit=crop"
-                  alt="Рахш Сохтмон"
-                  className="w-full h-full object-cover"
-                />
-              </div>
+            <div className="bg-background border rounded-xl p-4 flex items-center gap-4 hover:border-emerald-500/30 transition-colors">
+              <DeveloperAvatar
+                name="Рахш Сохтмон"
+                size="md"
+              />
               <div className="space-y-1">
                 <div className="flex items-center gap-2">
                   <h4 className="font-bold text-base text-foreground">Рахш Сохтмон</h4>
@@ -648,14 +612,11 @@ export default function HomePage() {
               </div>
             </div>
 
-            <div className="bg-background border rounded-xl p-4 flex items-center gap-4">
-              <div className="h-14 w-14 rounded-xl bg-muted flex items-center justify-center shrink-0 border overflow-hidden">
-                <img
-                  src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=100&h=100&fit=crop"
-                  alt="Сайҳун Девелопмент"
-                  className="w-full h-full object-cover"
-                />
-              </div>
+            <div className="bg-background border rounded-xl p-4 flex items-center gap-4 hover:border-emerald-500/30 transition-colors">
+              <DeveloperAvatar
+                name="Сайҳун Девелопмент"
+                size="md"
+              />
               <div className="space-y-1">
                 <div className="flex items-center gap-2">
                   <h4 className="font-bold text-base text-foreground">Сайҳун Девелопмент</h4>
@@ -672,6 +633,7 @@ export default function HomePage() {
               </div>
             </div>
           </div>
+
         </div>
       </section>
 

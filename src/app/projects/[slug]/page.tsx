@@ -13,8 +13,10 @@ import { useCurrency } from "@/context/currency-context";
 import { Chessboard } from "@/components/modules/chessboard";
 import { Button } from "@/components/ui/button";
 import { ShaderBackground } from "@/components/ui/shader-background";
+import { DeveloperAvatar } from "@/components/ui/developer-avatar";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
+
 import {
   Building2,
   MapPin,
@@ -256,13 +258,12 @@ export default function PublicProjectPage() {
           <div className="space-y-6">
             <Card className="p-5 space-y-4 border-emerald-500/30">
               <div className="flex items-center gap-3">
-                <div className="h-12 w-12 rounded-xl overflow-hidden border bg-muted shrink-0">
-                  <img
-                    src={developer.logoUrl}
-                    alt={developer.name}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
+                <DeveloperAvatar
+                  name={developer.name}
+                  logoUrl={developer.logoUrl}
+                  size="md"
+                />
+
                 <div>
                   <h4 className="font-bold text-sm text-foreground">
                     {developer.name}
