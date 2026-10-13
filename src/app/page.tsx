@@ -162,7 +162,6 @@ export default function HomePage() {
   const { formatPrice, currency } = useCurrency();
   const [activeTab, setActiveTab] = useState<"new" | "resale" | "rent" | "houses">("new");
   const [selectedCity, setSelectedCity] = useState("khujand");
-  const heroBgMode = "variant-1";
   const [selectedRooms, setSelectedRooms] = useState<string>("all");
   const [priceFrom, setPriceFrom] = useState("");
   const [priceTo, setPriceTo] = useState("");
@@ -225,24 +224,26 @@ export default function HomePage() {
   ];
 
   return (
-    <div className="flex flex-col gap-12 sm:gap-16 pb-24 bg-[#F8FAFC]">
-      {/* 1. AIRY LIGHT HERO SECTION WITH SWITCHABLE BACKGROUND */}
-    <section className="relative pt-6 pb-12 md:pt-10 md:pb-16 border-b border-slate-200/80 bg-slate-50 overflow-hidden">
-        {/* Background Layer: Variant-1 Concept Image */}
+    <div className="flex flex-col gap-6 sm:gap-8 pb-24 bg-[#F8FAFC]">
+      {/* 1. COMPACT HERO SECTION WITH PANORAMIC BACKGROUND */}
+      <section className="relative pt-6 pb-8 md:pt-8 md:pb-10 border-b border-slate-200/80 bg-slate-950 overflow-hidden">
+        {/* Background Layer: Panoramic Landscape with Soft Contrast Overlay */}
         <div className="absolute inset-0 -z-10 h-full w-full pointer-events-none overflow-hidden">
           <img
-            src="/images/hero-variant-1.jpg"
-            alt="Hero Concept Illustration"
-            className="w-full h-full object-cover object-center opacity-30"
+            src="/images/hero-bg.jpg"
+            alt="Maskani Real Estate Panorama"
+            className="w-full h-full object-cover object-center scale-105"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-white/70 via-white/50 to-[#F8FAFC]/90 backdrop-blur-[1px]" />
+          {/* Soft contrast overlays for crisp search card legibility */}
+          <div className="absolute inset-0 bg-slate-950/25 backdrop-blur-[2px]" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-slate-950/30" />
         </div>
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
 
           {/* 2. CIAN-STYLE SEARCH CARD WITH CLEAN GLASSMORPHISM */}
           <div className="relative max-w-4xl mx-auto">
-            <div className="bg-white/95 backdrop-blur-xl border border-slate-200/90 rounded-2xl p-5 sm:p-6 shadow-xl shadow-slate-200/60">
+            <div className="bg-white/95 backdrop-blur-xl border border-white/60 sm:border-slate-200/90 rounded-2xl p-5 sm:p-6 shadow-2xl shadow-slate-950/15">
               {/* Segment Tabs (CIAN Underline Style) */}
               <div className="flex items-center gap-6 overflow-x-auto pb-0 mb-5 border-b border-slate-200">
                 {[
@@ -285,7 +286,9 @@ export default function HomePage() {
                     }}
                   >
                     <SelectTrigger className="w-full h-11 rounded-xl bg-white border border-slate-200 text-sm font-medium">
-                      <SelectValue />
+                      <SelectValue placeholder="Худжанд">
+                        {SOGD_CITIES.find((c) => c.value === selectedCity)?.nameRu || "Худжанд"}
+                      </SelectValue>
                     </SelectTrigger>
                     <SelectContent>
                       {SOGD_CITIES.map((c) => (

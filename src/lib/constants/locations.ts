@@ -9,7 +9,7 @@ export interface CityOption {
 export const SOGD_CITIES: CityOption[] = [
   {
     value: "khujand",
-    nameRu: "г. Худжанд",
+    nameRu: "Худжанд",
     nameTj: "ш. Хуҷанд",
     isRegionalCenter: true,
     popularDistricts: [
@@ -29,43 +29,43 @@ export const SOGD_CITIES: CityOption[] = [
   },
   {
     value: "gafurov",
-    nameRu: "Б. Гафуров (район)",
+    nameRu: "Б. Гафуров",
     nameTj: "н. Бобоҷон Ғафуров",
     popularDistricts: ["пгт. Гафуров", "Хистеварз", "Унчи", "Исфисор", "Овчи-Калача"],
   },
   {
     value: "guliston",
-    nameRu: "г. Гулистон (Кайраккум)",
+    nameRu: "Гулистон (Кайраккум)",
     nameTj: "ш. Гулистон",
     popularDistricts: ["Центр", "Побережье «Таджикского моря»", "1 мкр", "Зона отдыха"],
   },
   {
     value: "buston",
-    nameRu: "г. Бустон (Чкаловск)",
+    nameRu: "Бустон (Чкаловск)",
     nameTj: "ш. Бӯстон",
     popularDistricts: ["Центр", "Аэропорт", "1 мкр", "2 мкр"],
   },
   {
     value: "isfara",
-    nameRu: "г. Исфара",
+    nameRu: "Исфара",
     nameTj: "ш. Исфара",
     popularDistricts: ["Центр", "Навобод", "Ворух", "Чоркух", "Кулканд"],
   },
   {
     value: "istaravshan",
-    nameRu: "г. Истаравшан",
+    nameRu: "Истаравшан",
     nameTj: "ш. Истаравшан",
     popularDistricts: ["Центр", "Уротеппа", "Гули Сурх", "Сугдиён", "Калаи Муг"],
   },
   {
     value: "konibodom",
-    nameRu: "г. Канибадам",
+    nameRu: "Канибадам",
     nameTj: "ш. Конибодом",
     popularDistricts: ["Центр", "Ортиков", "Патар", "Шарипов"],
   },
   {
     value: "panjakent",
-    nameRu: "г. Пенджикент",
+    nameRu: "Пенджикент",
     nameTj: "ш. Панҷакент",
     popularDistricts: ["Центр", "Саразм", "Рудаки", "Сужина"],
   },
