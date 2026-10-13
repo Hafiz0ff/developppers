@@ -241,9 +241,9 @@ export default function HomePage() {
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
 
-          {/* 2. CIAN-STYLE SEARCH CARD WITH CLEAN GLASSMORPHISM (30% TRANSPARENCY / 70% OPACITY) */}
+          {/* 2. CIAN-STYLE SEARCH CARD WITH CLEAN GLASSMORPHISM (43% TRANSPARENCY / 57% OPACITY) */}
           <div className="relative max-w-4xl mx-auto">
-            <div className="bg-white/70 backdrop-blur-2xl border border-white/60 rounded-2xl p-5 sm:p-6 shadow-2xl shadow-slate-950/20">
+            <div className="bg-white/[0.57] backdrop-blur-2xl border border-white/60 rounded-2xl p-5 sm:p-6 shadow-2xl shadow-slate-950/20">
               {/* Segment Tabs (CIAN Underline Style) */}
               <div className="flex items-center gap-6 overflow-x-auto pb-0 mb-5 border-b border-slate-200">
                 {[
