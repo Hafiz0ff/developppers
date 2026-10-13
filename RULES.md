@@ -17,3 +17,14 @@
 1. Multi-Tenancy: Every Developer/Builder is scoped by `developer_id` or `slug`.
 2. Public vs Private: Classifieds and Developers share UI components, but have separated backend access roles.
 3. Performance: All images MUST use `next/image` with WebP/AVIF formats.
+
+## WebGL & Shader Optimization Standards
+1. **Strict Client Boundary**: All Canvas/WebGL components must be isolated with `'use client'` and safe for Next.js SSR.
+2. **Battery & Mobile Performance**:
+   - Must pause render loops (`cancelAnimationFrame`) when scrolled out of viewport using `IntersectionObserver`.
+   - Device pixel ratio clamped to `1.5` max to prevent mobile GPU overheating.
+   - Request `powerPreference: "low-power"` in WebGL context configuration.
+3. **Graceful Fallback & Accessibility**:
+   - Respect `prefers-reduced-motion` media queries by freezing animations.
+   - Seamless Tailwind CSS gradient fallback for devices without WebGL or in battery saver mode.
+

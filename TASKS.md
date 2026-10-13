@@ -26,3 +26,7 @@
 - [ ] Instant Telegram lead notifications to Developers
 - [ ] Interactive Map (Khujand & Sughd coordinates)
 - [ ] SEO optimization & Mobile responsive check
+- [x] Lightweight WebGL/Canvas shader effects (`/components/ui/shader-background.tsx` with `aurora`, `gradient-mesh`, `light-leak`)
+- [x] Battery & Mobile optimization (`IntersectionObserver` pause, DPR 1.5 clamp, Tailwind fallback)
+- [x] Hero search living shader (`/`) and luxury complex ambient light leak (`/projects/[slug]`)
+

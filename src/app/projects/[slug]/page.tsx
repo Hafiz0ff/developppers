@@ -12,6 +12,7 @@ import {
 import { useCurrency } from "@/context/currency-context";
 import { Chessboard } from "@/components/modules/chessboard";
 import { Button } from "@/components/ui/button";
+import { ShaderBackground } from "@/components/ui/shader-background";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import {
@@ -121,15 +122,30 @@ export default function PublicProjectPage() {
           </div>
         </div>
 
-        {/* PHOTO GALLERY */}
-        <div className="space-y-3">
+        {/* PHOTO GALLERY WITH LIGHT LEAK SHADER GLOW */}
+        <div className="relative space-y-3">
+          {/* Ambient Light Leak Aura behind luxury project hero */}
+          <ShaderBackground
+            variant="light-leak"
+            speed={0.4}
+            intensity={0.45}
+            className="absolute -inset-3 sm:-inset-6 rounded-3xl blur-2xl opacity-60 dark:opacity-30 -z-10 pointer-events-none"
+          />
+
           <div className="relative h-[360px] sm:h-[480px] w-full rounded-2xl overflow-hidden border bg-muted shadow-md">
             <img
               src={activeImage}
               alt={project.name}
               className="w-full h-full object-cover transition-all duration-300"
             />
-            <div className="absolute bottom-4 left-4 bg-background/90 backdrop-blur-md px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-2 shadow-xs">
+            {/* Subtle soft organic light sheen overlay */}
+            <ShaderBackground
+              variant="light-leak"
+              speed={0.3}
+              intensity={0.25}
+              className="absolute inset-0 pointer-events-none mix-blend-screen opacity-50"
+            />
+            <div className="absolute bottom-4 left-4 bg-background/90 backdrop-blur-md px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-2 shadow-xs z-10">
               <Percent className="h-3.5 w-3.5 text-emerald-600" />
               Рассрочка от застройщика до {project.installmentMonths} месяцев (Взнос от {project.installmentDownPaymentPercent}%)
             </div>

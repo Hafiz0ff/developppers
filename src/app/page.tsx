@@ -7,6 +7,7 @@ import { useCurrency } from "@/context/currency-context";
 import { SOGD_CITIES } from "@/lib/constants/locations";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { ShaderBackground } from "@/components/ui/shader-background";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import {
@@ -161,11 +162,19 @@ export default function HomePage() {
 
   return (
     <div className="flex flex-col gap-12 pb-20">
-      {/* HERO SECTION */}
-      <section className="relative bg-gradient-to-b from-emerald-950/10 via-background to-background pt-12 pb-8 border-b">
-        <div className="container mx-auto px-4">
+      {/* HERO SECTION WITH SHADER BACKGROUND */}
+      <section className="relative pt-12 pb-10 border-b overflow-hidden">
+        {/* Living Aurora / Mesh Shader Layer */}
+        <ShaderBackground
+          variant="aurora"
+          speed={0.65}
+          intensity={0.35}
+          className="absolute inset-0 -z-10 h-full w-full opacity-60 dark:opacity-45"
+        />
+
+        <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-3xl mx-auto text-center space-y-4 mb-8">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-700 dark:text-emerald-400 text-xs font-semibold">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-700 dark:text-emerald-400 text-xs font-semibold backdrop-blur-xs">
               <ShieldCheck className="h-3.5 w-3.5" />
               Единый портал недвижимости Согдийской области
             </div>
@@ -178,8 +187,15 @@ export default function HomePage() {
             </p>
           </div>
 
-          {/* Interactive Search Card */}
-          <div className="max-w-4xl mx-auto bg-card border rounded-2xl p-4 sm:p-6 shadow-xl shadow-emerald-950/5">
+          {/* Interactive Search Card with Soft Shader Aura */}
+          <div className="relative max-w-4xl mx-auto">
+            <ShaderBackground
+              variant="gradient-mesh"
+              speed={0.5}
+              intensity={0.4}
+              className="absolute -inset-1.5 rounded-3xl blur-md opacity-40 -z-10"
+            />
+            <div className="bg-card/95 backdrop-blur-md border rounded-2xl p-4 sm:p-6 shadow-xl shadow-emerald-950/5">
             {/* Tabs */}
             <div className="flex items-center gap-2 overflow-x-auto pb-3 mb-4 border-b">
               <button
@@ -325,6 +341,7 @@ export default function HomePage() {
                 ))}
               </div>
             )}
+          </div>
           </div>
         </div>
       </section>
