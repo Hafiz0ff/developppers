@@ -238,7 +238,7 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
 
           {/* 2. CIAN-STYLE SEARCH CARD WITH CLEAN GLASSMORPHISM (51% TRANSPARENCY / 49% OPACITY) */}
-          <div className="relative max-w-4xl mx-auto">
+          <div className="relative mx-auto w-full max-w-5xl">
             <div className="bg-white/[0.49] backdrop-blur-2xl border border-white/60 rounded-2xl p-5 sm:p-6 shadow-2xl shadow-slate-950/20">
               {/* Segment Tabs (CIAN Underline Style) */}
               <div className="flex items-center gap-6 overflow-x-auto overflow-y-hidden [scrollbar-width:none] [&::-webkit-scrollbar]:hidden pb-0 mb-5 border-b border-slate-200/80">
@@ -268,10 +268,10 @@ export default function HomePage() {
                 })}
               </div>
 
-              {/* Filter Inputs Grid - strict 40px alignment */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-3.5 items-end">
-                {/* 1. City / Region (col-span-3) */}
-                <div className="lg:col-span-3">
+              {/* Filter Inputs Grid - fixed control height and enough room for every option */}
+              <div className="grid grid-cols-1 items-end gap-3.5 sm:grid-cols-2 lg:grid-cols-[minmax(180px,1fr)_minmax(220px,1.2fr)_minmax(200px,1.1fr)_minmax(200px,1.15fr)]">
+                {/* 1. City / Region */}
+                <div className="min-w-0">
                   <label className="text-xs font-semibold text-slate-700 mb-1.5 block">
                     Город
                   </label>
@@ -296,12 +296,12 @@ export default function HomePage() {
                   </Select>
                 </div>
 
-                {/* 2. Room Buttons (col-span-3) */}
-                <div className="lg:col-span-3">
+                {/* 2. Room Buttons */}
+                <div className="min-w-0">
                   <label className="text-xs font-semibold text-slate-700 mb-1.5 block">
                     Комнатность
                   </label>
-                  <div className="flex h-10 items-center gap-1 rounded-xl border border-slate-200 bg-white p-1">
+                  <div className="flex h-10 min-w-0 items-center gap-1 rounded-xl border border-slate-200 bg-white p-1">
                     {roomOptions.map((opt) => (
                       <button
                         key={opt.id}
@@ -319,8 +319,8 @@ export default function HomePage() {
                   </div>
                 </div>
 
-                {/* 3. Price Range From - To (col-span-3) */}
-                <div className="lg:col-span-3">
+                {/* 3. Price Range From - To */}
+                <div className="min-w-0">
                   <label className="text-xs font-semibold text-slate-700 mb-1.5 block">
                     Цена
                   </label>
@@ -340,8 +340,8 @@ export default function HomePage() {
                   </div>
                 </div>
 
-                {/* 4. Action Button (col-span-3) */}
-                <div className="lg:col-span-3">
+                {/* 4. Action Button */}
+                <div className="min-w-0">
                   <Button className="flex h-10 w-full items-center justify-center gap-2 rounded-xl bg-emerald-600 px-5 text-sm font-medium text-white shadow-sm transition-all hover:bg-emerald-700">
                     <Search className="h-4 w-4" />
                     Найти 342 объекта
