@@ -65,7 +65,7 @@ export async function POST(req: NextRequest) {
       propertyIds = [],
       agentName = "Рустам Ахмедов (Маклер)",
       agentPhone = "+992 92 777 00 22",
-      agentAgency = "Sogd Realty Партнер",
+      agentAgency = "Maskani Партнер",
       agentAvatar,
       agentId = "agent-default",
     } = body;

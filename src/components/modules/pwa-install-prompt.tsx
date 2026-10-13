@@ -97,7 +97,7 @@ export function PwaInstallPrompt() {
 
   return (
     <aside
-      aria-label="Установка приложения Sogd Realty"
+      aria-label="Установка приложения Maskani"
       className="fixed bottom-4 left-4 right-4 sm:left-auto sm:right-6 sm:bottom-6 sm:max-w-md z-50 animate-in fade-in slide-in-from-bottom-5 duration-300"
     >
       <div className="bg-white/95 backdrop-blur-xl border border-emerald-500/30 rounded-2xl p-4 sm:p-5 shadow-2xl shadow-emerald-950/15 flex flex-col gap-3">
@@ -106,13 +106,13 @@ export function PwaInstallPrompt() {
           <div className="flex items-center gap-3">
             <img
               src="/icons/icon-192x192.png"
-              alt="Sogd Realty"
+              alt="Maskani"
               className="h-11 w-11 rounded-xl shadow-md border border-emerald-200 object-cover shrink-0"
             />
             <div>
               <div className="flex items-center gap-1.5">
                 <h4 className="font-bold text-sm text-slate-900">
-                  Установить Sogd Realty
+                  Установить Maskani
                 </h4>
                 <span className="text-[10px] font-bold uppercase tracking-wider bg-emerald-100 text-emerald-800 px-1.5 py-0.5 rounded">
                   PWA

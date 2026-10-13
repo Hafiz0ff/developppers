@@ -2,9 +2,10 @@ import type { MetadataRoute } from "next";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "Sogd Realty — Недвижимость Согда",
-    short_name: "Sogd Realty",
-    description: "Первичка, шахматка застройщиков, вторичка и B2B CRM в Согдийской области",
+    name: "Maskani — Недвижимость Таджикистана",
+    short_name: "Maskani",
+    description:
+      "Единая проптех-платформа: новостройки, интерактивная шахматка, вторичное жильё и B2B CRM",
     start_url: "/",
     display: "standalone",
     orientation: "portrait",

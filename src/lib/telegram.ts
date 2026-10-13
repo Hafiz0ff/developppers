@@ -1,5 +1,5 @@
 /**
- * Telegram Bot Notification Helper for Sogd Realty
+ * Telegram Bot Notification Helper for Maskani.tj
  * Sends instant push notifications to brokers and developers about new leads.
  */
 
@@ -62,7 +62,7 @@ export function formatLeadHtmlMessage(payload: LeadNotificationPayload): string 
     commission = 0,
     source,
     notes,
-    crmUrl = "https://sogd-realty.vercel.app/profile/crm",
+    crmUrl = "https://maskani.tj/profile/crm",
   } = payload;
 
   const sourceLabels: Record<string, string> = {
@@ -75,7 +75,7 @@ export function formatLeadHtmlMessage(payload: LeadNotificationPayload): string 
   const channelText = sourceLabels[source] || `📍 ${source}`;
 
   return [
-    `🔔 <b>Новый лид в Sogd Realty!</b>`,
+    `🔔 <b>Новый лид на Maskani.tj!</b>`,
     ``,
     `👤 <b>Клиент:</b> ${escapeHtml(clientName)}`,
     `📞 <b>Телефон:</b> <code>${escapeHtml(clientPhone)}</code>`,

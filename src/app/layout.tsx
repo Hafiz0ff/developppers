@@ -12,14 +12,14 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: "Sogd Realty — Портал недвижимости Согдийской области",
+  title: "Maskani — Недвижимость в Худжанде, Душанбе и по всему Таджикистану",
   description:
-    "Новостройки от застройщиков, вторичное жилье, дома (ҳавлӣ) и коммерческая недвижимость в Худжанде, Б. Гафурове, Исфаре, Истаравшане и других городах Согда.",
+    "Купить квартиру в новостройке от застройщика, дома (ҳавлӣ), вторичное жильё и коммерция. Интерактивные шахматки и B2B CRM для маклеров на Maskani.tj",
   manifest: "/manifest.webmanifest",
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",
-    title: "Sogd Realty",
+    title: "Maskani",
   },
   icons: {
     icon: [
@@ -45,7 +45,7 @@ export default function RootLayout({
         <link rel="manifest" href="/manifest.webmanifest" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-        <meta name="apple-mobile-web-app-title" content="Sogd Realty" />
+        <meta name="apple-mobile-web-app-title" content="Maskani" />
       </head>
       <body className="min-h-full flex flex-col bg-background text-foreground font-sans">
         <CurrencyProvider>

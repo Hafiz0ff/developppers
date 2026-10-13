@@ -95,7 +95,7 @@ export default function PublicDeveloperPage() {
             <div className="flex flex-wrap items-center gap-2.5 w-full md:w-auto">
               <a
                 href={`https://wa.me/${developer.whatsapp.replace(/\D/g, "")}?text=${encodeURIComponent(
-                  `Здравствуйте! Обращаюсь с портала Sogd Realty по поводу ваших жилых комплексов в Худжанде.`
+                  `Здравствуйте! Обращаюсь с портала Maskani.tj по поводу ваших жилых комплексов в Худжанде.`
                 )}`}
                 target="_blank"
                 rel="noreferrer"

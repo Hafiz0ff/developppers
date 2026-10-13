@@ -70,11 +70,11 @@ export function Header() {
               <Building2 className="h-5 w-5" />
             </div>
             <div className="flex flex-col">
-              <span className="font-extrabold text-lg leading-tight tracking-tight text-foreground flex items-center gap-1.5">
-                SOGD<span className="text-emerald-600">REALTY</span>
+              <span className="font-bold tracking-tight text-lg leading-tight text-emerald-950 flex items-center gap-0.5">
+                MASKANI
               </span>
               <span className="text-[10px] text-muted-foreground uppercase tracking-widest font-medium">
-                Согдийская область
+                Недвижимость Таджикистана
               </span>
             </div>
           </Link>

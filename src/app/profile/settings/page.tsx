@@ -395,7 +395,7 @@ export default function ProfileSettingsPage() {
                 Пример входящего пуша в Telegram:
               </h5>
               <div className="p-3.5 rounded-xl bg-slate-900 text-slate-100 text-[11px] font-mono leading-relaxed space-y-1 shadow-sm max-w-md">
-                <p className="text-emerald-400 font-bold">🔔 Новый лид в Sogd Realty!</p>
+                <p className="text-emerald-400 font-bold">🔔 Новый лид на Maskani.tj!</p>
                 <p>👤 <strong>Клиент:</strong> Дилшод Рахимов</p>
                 <p>📞 <strong>Телефон:</strong> +992 93 505 11 88</p>
                 <p>🏢 <strong>Объект:</strong> 3-комнатная квартира (18 мкр)</p>

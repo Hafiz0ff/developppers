@@ -841,7 +841,7 @@ export default function HomePage() {
 
           <div className="pt-6 border-t border-slate-200/80 flex flex-col sm:flex-row items-center justify-between gap-3 text-[11px] text-slate-400">
             <div>
-              © 2026 SOGD REALTY. Все права защищены. Разработано по стандартам CIAN.ru и Stripe.
+              © 2026 Maskani.tj. Все права защищены.
             </div>
             <div className="flex items-center gap-4 text-slate-500">
               <Link href="/developer-admin" className="hover:text-emerald-700">Кабинет застройщика</Link>
