@@ -62,7 +62,7 @@ export function Header() {
 
   return (
     <>
-      <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur-md supports-backdrop-filter:bg-background/80">
+      <header className="sticky top-0 z-50 w-full bg-background/95 backdrop-blur-md supports-backdrop-filter:bg-background/80">
         <div className="container mx-auto px-4 h-16 flex items-center justify-between gap-4">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2.5">
@@ -248,6 +248,25 @@ export function Header() {
                 Войти
               </Button>
             )}
+          </div>
+        </div>
+
+        {/* Compact Marquee Border Divider */}
+        <div className="w-full overflow-hidden bg-emerald-50/60 backdrop-blur-xs border-y border-emerald-100/80 py-1">
+          <div className="flex whitespace-nowrap animate-marquee">
+            {[0, 1].map((i) => (
+              <span
+                key={i}
+                className="inline-flex items-center gap-6 px-6 text-[11px] font-semibold tracking-widest uppercase text-emerald-900/75 select-none"
+              >
+                <span><span className="text-emerald-600 mr-2">✦</span>MASKANI.TJ — ЕДИНЫЙ ЖИЛИЩНЫЙ ПОРТАЛ ТАДЖИКИСТАНА</span>
+                <span><span className="text-emerald-600 mr-2">✦</span>НОВОСТРОЙКИ НАПРЯМУЮ ОТ ЗАСТРОЙЩИКОВ БЕЗ КОМИССИИ</span>
+                <span><span className="text-emerald-600 mr-2">✦</span>ИНТЕРАКТИВНЫЕ ПОЭТАЖНЫЕ ШАХМАТКИ</span>
+                <span><span className="text-emerald-600 mr-2">✦</span>ВТОРИЧНОЕ ЖИЛЬЁ И ТРАДИЦИОННЫЕ ДОМА</span>
+                <span><span className="text-emerald-600 mr-2">✦</span>ДВУХВАЛЮТНЫЙ ПЕРЕРАСЧЁТ TJS / USD</span>
+                <span><span className="text-emerald-600 mr-2">✦</span>B2B CRM И МГНОВЕННЫЕ TELEGRAM-УВЕДОМЛЕНИЯ ДЛЯ МАКЛЕРОВ</span>
+              </span>
+            ))}
           </div>
         </div>
       </header>

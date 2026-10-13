@@ -238,21 +238,6 @@ export default function HomePage() {
           <div className="absolute inset-0 bg-gradient-to-b from-white/70 via-white/50 to-[#F8FAFC]/90 backdrop-blur-[1px]" />
         </div>
 
-        {/* Marquee Ticker Strip */}
-        <div className="overflow-hidden bg-emerald-50/80 border-y border-emerald-100 py-1.5 mb-8">
-          <div className="flex whitespace-nowrap animate-marquee">
-            {[0, 1].map((i) => (
-              <span key={i} className="inline-flex items-center gap-6 px-6 text-xs font-medium uppercase tracking-wider text-emerald-800/80">
-                <span>✦ Новостройки напрямую от застройщиков без комиссии</span>
-                <span>✦ Вторичное жильё и традиционные дома (Ҳавлӣ)</span>
-                <span>✦ Интерактивные поэтажные шахматки</span>
-                <span>✦ Двухвалютный перерасчёт TJS / USD</span>
-                <span>✦ B2B CRM и аналитика для маклеров</span>
-              </span>
-            ))}
-          </div>
-        </div>
-
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
 
           {/* 2. CIAN-STYLE SEARCH CARD WITH CLEAN GLASSMORPHISM */}
