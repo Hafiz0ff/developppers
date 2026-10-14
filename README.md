@@ -75,47 +75,47 @@
 
 ```mermaid
 flowchart TD
-    User([👤 Покупатель / Инвестор]) --> WebApp[📱 Maskani Web & PWA]
-    Realtor([💼 Маклер / Агентство]) --> CRM[📊 B2B CRM /profile/crm]
-    Developer([🏗️ Девелопер]) --> DevAdmin[⚙️ Кабинет /developer-admin]
+    User(["👤 Покупатель / Инвестор"]) --> WebApp["📱 Maskani Web & PWA"]
+    Realtor(["💼 Маклер / Агентство"]) --> CRM["📊 B2B CRM /profile/crm"]
+    Developer(["🏗️ Девелопер"]) --> DevAdmin["⚙️ Кабинет /developer-admin"]
 
-    subgraph ClientLayer [Клиентский слой Next.js 16.4]
-        WebApp --> Hero[Главная витрина + WebGL Shaders]
-        WebApp --> Showcase6D[6D Apple-витрина ЖК /projects/slug]
-        WebApp --> Secondary[Вторичка и Ҳавлӣ 15 реальных объектов]
-        CRM --> Kanban[Канбан-пайплайн + Расчет комиссии 2%]
-        CRM --> ShareP[WhatsApp-витрины /p/share_code]
-        DevAdmin --> ChessboardEditor[Редактор шахматки и очередей]
+    subgraph ClientLayer ["Клиентский слой Next.js 16.4"]
+        WebApp --> Hero["Главная витрина + WebGL Shaders"]
+        WebApp --> Showcase6D["6D Apple-витрина ЖК /projects/slug"]
+        WebApp --> Secondary["Вторичка и Ҳавлӣ 15 реальных объектов"]
+        CRM --> Kanban["Канбан-пайплайн + Расчет комиссии 2%"]
+        CRM --> ShareP["WhatsApp-витрины /p/share_code"]
+        DevAdmin --> ChessboardEditor["Редактор шахматки и очередей"]
     end
 
-    subgraph StateAndContext [Локализация и Контексты]
-        LangCtx[LanguageContext: RU ⇄ TG]
-        CurrCtx[CurrencyContext: TJS ⇄ USD курс 10.95]
+    subgraph StateAndContext ["Локализация и Контексты"]
+        LangCtx["LanguageContext: RU ⇄ TG"]
+        CurrCtx["CurrencyContext: TJS ⇄ USD курс 10.95"]
         LangCtx --> ClientLayer
         CurrCtx --> ClientLayer
     end
 
-    subgraph BackendLayer [Серверные хендлеры и REST API]
-        LeadsAPI[/api/crm/leads]
-        CollectionsAPI[/api/crm/collections]
-        TelegramAPI[/api/profile/telegram]
-        OpenAPI[/api/v1/external/analytics]
+    subgraph BackendLayer ["Серверные хендлеры и REST API"]
+        LeadsAPI["/api/crm/leads"]
+        CollectionsAPI["/api/crm/collections"]
+        TelegramAPI["/api/profile/telegram"]
+        OpenAPI["/api/v1/external/analytics"]
     end
 
     ClientLayer --> BackendLayer
 
-    subgraph DatabaseLayer [Хранилище данных Drizzle ORM]
-        DB[(PostgreSQL / Supabase)]
-        Tables[14 таблиц: users, projects, units, parking, storage, docs, classifieds, crm_leads...]
+    subgraph DatabaseLayer ["Хранилище данных Drizzle ORM"]
+        DB[("PostgreSQL / Supabase")]
+        Tables["14 таблиц: users, projects, units, parking, storage, docs, classifieds, crm_leads"]
         DB --- Tables
     end
 
     BackendLayer --> DB
 
-    subgraph Integrations [Внешние сервисы]
-        TG[🤖 Telegram Bot API мгновенные Push-уведомления]
-        SomonCDN[🖼️ Somon.tj CDN медиасервер]
-        VercelEdge[⚡ Vercel Edge Network]
+    subgraph Integrations ["Внешние сервисы"]
+        TG["🤖 Telegram Bot API мгновенные Push-уведомления"]
+        SomonCDN["🖼️ Somon.tj CDN медиасервер"]
+        VercelEdge["⚡ Vercel Edge Network"]
     end
 
     BackendLayer --> TG
