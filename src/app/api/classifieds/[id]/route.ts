@@ -1,11 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
-import { eq } from "drizzle-orm";
+import { eq, or } from "drizzle-orm";
 import { db } from "@/db";
 import { classifieds } from "@/db/schema";
 import { canMutateClassified } from "@/lib/classifieds/access";
 import { classifiedInputSchema } from "@/lib/classifieds/schema";
-import { mapClassifiedToCard } from "@/lib/classifieds/map-card";
+import { mapClassifiedToCard, type ClassifiedCard } from "@/lib/classifieds/map-card";
 import { getClassifiedsActor } from "@/lib/classifieds/session";
+import { CATALOG_PROPERTIES } from "@/lib/catalog-data";
 
 export async function GET(
   _req: NextRequest,
@@ -13,16 +14,45 @@ export async function GET(
 ) {
   try {
     const { id } = await context.params;
-    const rows = await db.select().from(classifieds).where(eq(classifieds.id, id)).limit(1);
-    const row = rows[0];
-    if (!row) {
-      return NextResponse.json({ success: false, error: "not_found" }, { status: 404 });
+    let row: typeof classifieds.$inferSelect | undefined;
+    try {
+      const rows = await db
+        .select()
+        .from(classifieds)
+        .where(or(eq(classifieds.id, id), eq(classifieds.slug, id)))
+        .limit(1);
+      row = rows[0];
+    } catch {
+      // In case db query fails or table empty
     }
-    const actor = await getClassifiedsActor();
-    if (row.status !== "active" && actor?.id !== row.userId) {
-      return NextResponse.json({ success: false, error: "not_found" }, { status: 404 });
+
+    if (row) {
+      const actor = await getClassifiedsActor();
+      if (row.status !== "active" && actor?.id !== row.userId) {
+        return NextResponse.json({ success: false, error: "not_found" }, { status: 404 });
+      }
+      return NextResponse.json({ success: true, classified: mapClassifiedToCard(row), raw: row });
     }
-    return NextResponse.json({ success: true, classified: mapClassifiedToCard(row), raw: row });
+
+    // Check catalog demo properties fallback
+    const demoProp = CATALOG_PROPERTIES.find(
+      (p) =>
+        p.id === id ||
+        `classified-${p.id}` === id ||
+        id.toLowerCase().includes(p.id.toLowerCase())
+    );
+    if (demoProp) {
+      const card: ClassifiedCard = {
+        ...demoProp,
+        slug: `classified-${demoProp.id}`,
+        status: "active",
+        viewsCount: 48,
+        userId: "demo",
+      };
+      return NextResponse.json({ success: true, classified: card, raw: null });
+    }
+
+    return NextResponse.json({ success: false, error: "not_found" }, { status: 404 });
   } catch (error) {
     console.error("Classified GET error:", error);
     return NextResponse.json({ success: false, error: "internal_error" }, { status: 500 });

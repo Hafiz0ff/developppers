@@ -29,18 +29,10 @@ function ClassifiedsCatalogContent() {
         const res = await fetch(qs ? `/api/classifieds?${qs}` : "/api/classifieds");
         const json = (await res.json()) as { success: boolean; classifieds?: ClassifiedCardData[] };
 
-        if (json.success && json.classifieds && json.classifieds.length > 0) {
+        if (json.success && Array.isArray(json.classifieds)) {
           setItems(json.classifieds);
         } else {
-          // Fallback demo items mapped from catalog properties
-          const fallback: ClassifiedCardData[] = CATALOG_PROPERTIES.map((prop) => ({
-            ...prop,
-            slug: `classified-${prop.id}`,
-            status: "active",
-            viewsCount: 24,
-            userId: "demo",
-          }));
-          setItems(fallback);
+          setItems([]);
         }
       } catch {
         const fallback: ClassifiedCardData[] = CATALOG_PROPERTIES.map((prop) => ({
