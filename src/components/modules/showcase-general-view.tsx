@@ -13,6 +13,7 @@ import {
   Building,
   Navigation,
 } from "lucide-react";
+import { SunTrackCompass } from "./sun-track-widget";
 
 interface POI {
   id: string;
@@ -121,6 +122,11 @@ export function ShowcaseGeneralView({
 
       {/* Soft gradient vignette */}
       <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-black/30 pointer-events-none" />
+
+      {/* Cardinal Directions Compass in top right (Section 11.2) */}
+      <div className="absolute top-3 right-3 z-20">
+        <SunTrackCompass timeHours={12} />
+      </div>
 
       {/* 2. INTERACTIVE HIGHLIGHT OVERLAY FOR COMPLEX BUILDINGS (Section 6.1) */}
       <div

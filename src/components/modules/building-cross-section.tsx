@@ -24,6 +24,11 @@ import {
   Home,
   SlidersHorizontal,
 } from "lucide-react";
+import {
+  SunTrackCompass,
+  SunTrackBar,
+  getSunLightingStyle,
+} from "./sun-track-widget";
 
 interface BuildingCrossSectionProps {
   units: UnitData[];
@@ -58,6 +63,7 @@ export function BuildingCrossSection({
   const [selectedRooms, setSelectedRooms] = useState<string>("all");
   const [selectedFloor, setSelectedFloor] = useState<number | null>(null);
   const [activeUnit, setActiveUnit] = useState<UnitData | null>(null);
+  const [sunTime, setSunTime] = useState<number>(12);
 
   // Units in the active section
   const sectionUnits = useMemo(() => {
@@ -203,9 +209,33 @@ export function BuildingCrossSection({
         )}
       </div>
 
+      {/* 2.5. INSOLATION & SUN TRACK CONTROLS (Section 11 of Spec) */}
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 bg-slate-900/90 dark:bg-slate-900 border border-slate-800 rounded-2xl p-3 sm:p-3.5 shadow-sm text-white">
+        <div className="flex items-center gap-3">
+          <SunTrackCompass timeHours={sunTime} />
+          <div>
+            <div className="text-xs font-bold text-slate-100 flex items-center gap-1.5">
+              <span>Инсоляция фасада и стороны света</span>
+            </div>
+            <div className="text-[11px] text-slate-400">
+              Двигайте бегунок времени для оценки естественного освещения квартир
+            </div>
+          </div>
+        </div>
+
+        <SunTrackBar timeHours={sunTime} onChange={setSunTime} />
+      </div>
+
       {/* 3. VISUAL CROSS-SECTION ELEVATION GRID */}
-      <div className="bg-slate-950/90 dark:bg-slate-900 border rounded-2xl p-4 sm:p-6 overflow-x-auto shadow-inner">
-        <div className="min-w-[640px] space-y-2">
+      <div className="relative rounded-2xl overflow-hidden border border-slate-800 shadow-inner">
+        {/* Dynamic Insolation & Sun Lighting Layer (Section 11.1) */}
+        <div
+          className="absolute inset-0 pointer-events-none z-10 transition-all duration-300"
+          style={getSunLightingStyle(sunTime)}
+        />
+
+        <div className="bg-slate-950/90 dark:bg-slate-900 p-4 sm:p-6 overflow-x-auto">
+          <div className="min-w-[640px] space-y-2">
           {floors.map((floorNum) => {
             const floorUnits = unitsByFloor.get(floorNum) || [];
             const isSelectedFloor = selectedFloor === floorNum;
@@ -267,6 +297,7 @@ export function BuildingCrossSection({
           })}
         </div>
       </div>
+    </div>
 
       {/* 4. MODAL DIALOG WITH UNIT DETAILS ON CLICK (Section 8.3) */}
       <Dialog open={!!activeUnit} onOpenChange={(open) => !open && setActiveUnit(null)}>
