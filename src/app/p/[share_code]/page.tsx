@@ -130,7 +130,7 @@ export default function ClientCollectionPage({
         </p>
         <Link href="/">
           <Button className="bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl">
-            {isTg ? "Гузариш ба феҳристи асосии Sogd Realty" : "Перейти в главный каталог Sogd Realty"}
+            {isTg ? "Гузариш ба феҳристи асосии Maskani" : "Перейти в главный каталог Maskani"}
           </Button>
         </Link>
       </div>
@@ -147,7 +147,7 @@ export default function ClientCollectionPage({
             className="flex items-center gap-1.5 text-xs font-semibold text-slate-600 hover:text-emerald-600 transition-colors"
           >
             <ArrowLeft className="h-4 w-4" />
-            <span>Sogd Realty</span>
+            <span>Maskani</span>
           </Link>
 
           <div className="flex items-center gap-2">
@@ -473,8 +473,8 @@ export default function ClientCollectionPage({
         <div className="bg-slate-50 border border-slate-200 rounded-2xl p-6 text-center space-y-3 print:hidden">
           <p className="text-xs text-slate-500 font-medium max-w-lg mx-auto">
             {isTg
-              ? "Ин интихоби амвол шахсан барои шумо аз ҷониби мутахассиси амволи ғайриманқули платформаи Sogd Realty таҳия шудааст. Ҳамаи амволҳо дар ҳоли ҳозир дастрасанд."
-              : "Данная подборка сформирована персонально для вас специалистом по недвижимости платформы Sogd Realty. Все указанные объекты актуальны на момент формирования."}
+              ? "Ин интихоби амвол шахсан барои шумо аз ҷониби мутахассиси амволи ғайриманқули платформаи Maskani таҳия шудааст. Ҳамаи амволҳо дар ҳоли ҳозир дастрасанд."
+              : "Данная подборка сформирована персонально для вас специалистом по недвижимости платформы Maskani. Все указанные объекты актуальны на момент формирования."}
           </p>
           <div className="flex items-center justify-center gap-3 pt-1">
             <a href={whatsappUrl} target="_blank" rel="noreferrer">

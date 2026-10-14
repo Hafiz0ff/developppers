@@ -39,7 +39,7 @@ export async function GET(req: NextRequest) {
       // Ignored
     }
 
-    const botUsername = process.env.TELEGRAM_BOT_USERNAME || "SogdRealtyBot";
+    const botUsername = process.env.TELEGRAM_BOT_USERNAME || "MaskaniBot";
 
     return NextResponse.json({
       success: true,

@@ -1,112 +1,84 @@
-# Tasks & Roadmap — Sogd Realty
+# Tasks & Roadmap — Maskani.tj (Маскани)
 
-## Phase 1: Foundation & Database Setup ⏳
-- [x] Initialize Next.js project with Tailwind & Shadcn UI
-- [x] Setup PostgreSQL schema via Drizzle ORM
-- [x] Implement Auth (Superadmin, Developer, Citizen, Realtor)
-- [x] Create base layout & navigation
+## Phase 1: Каталог и Главная витрина (`/`) 🟢 [100%]
+- [x] Инициализация Next.js 16.4 с React 19, TypeScript и Tailwind CSS v4
+- [x] Полноценная билингвальность: Русский ⇄ Тоҷикӣ (*тоҷикии адабӣ* без калек)
+- [x] Динамическая мультивалютность: TJS ⇄ USD по официальному курсу НБТ (10.95 TJS)
+- [x] Умный поиск с быстрыми фильтрами по городам (Худжанд, Душанбе, Гулистон, Б. Гафуров, Истаравшан)
+- [x] Фильтрация по типам недвижимости (Новостройки, Вторичка, Ҳавлӣ, Коммерция) и комнатам (1, 2, 3, 4, 5+)
+- [x] Премиальный WebGL-шейдерный фон (`aurora`, `gradient-mesh`, `light-leak`) с IntersectionObserver авто-паузой
+- [x] Мобильная адаптация и единая 40px высота элементов поискового блока
 
-## Phase 2: Developer Backoffice & Catalog 🎯
-- [x] Protected Developer Backoffice layout (`/developer-admin`)
-- [x] Developer profile management (`/developer-admin/profile` — logo, cover, contacts, Khujand address)
-- [x] Complex / Project creation & editing (`/developer-admin/projects/new`, `/projects/[id]/edit`)
-- [x] Interactive Unit Chessboard component with 2 modes (visual grid + filter list) and status toggling (`/components/modules/chessboard.tsx`)
-- [x] Backoffice unit management page (`/developer-admin/projects/[id]/units`)
-- [x] Public Developer showcase page (`/developers/[slug]`)
-- [x] Public Complex showcase page with buyer chessboard (`/projects/[slug]`)
-- [x] Public Demo Deployment on Vercel + Supabase (`https://sogd-realty.vercel.app`)
-- [x] Cloud Database Seeding (`pnpm db:seed`) with 108 units, projects, and developers
+## Phase 2: 6D Apple-витрина новостроек (`/projects/[slug]`) 🟢 [100%]
+- [x] Интерактивная шахматка квартир в 2 режимах:
+  - [x] Поэтажная визуальная сетка фасада со статусами (Свободно / Бронь / Продано)
+  - [x] Компактный список с фильтрацией по комнатам, площади и цене
+- [x] Инсоляция (Солнцеход): интерактивный ползунок времени (09:00–18:00) с расчетом азимута и высоты солнца
+- [x] Карта инфраструктуры POI: школы, больницы, парки, мечети, ТЦ с точным расстоянием и временем ходьбы
+- [x] Паркинг и кладовые: интерактивный выбор машиномест (-1, -2 этажи, зарядки электрокаров) и келлеров
+- [x] Юридический блок: разрешительные документы застройщика с безопасным предпросмотром с водяными знаками
+- [x] Флагманский реальный кейс: Курортный комплекс «Qayroqum Avenue» на Таджикском Море
 
-## Phase 3: Secondary Market (Classifieds) 📦
-- [x] Classified schema with communications, area, and multi-currency (USD/TJS)
-- [x] Showcase on main page (`/` — apartments, houses/havli, commercial)
-- [ ] Free ad posting form for citizens
+## Phase 3: Доска объявлений (Вторичка и Ҳавлӣ) (`/classifieds`) 🟢 [100%]
+- [x] Интеграция 15 реальных объектов с Somon.tj с реальными CDN-фотографиями:
+  - [x] 8 квартир: 1-комн. Шёлкокомбинат, 2-комн. 8 мкр, 3-комн. 13 мкр (две), 4-комн. 18 мкр, 4-комн. 12 мкр, 3-комн. 13 мкр, 5-комн. Бофанда
+  - [x] 7 традиционных домов (ҳавлӣ): 5-комн. ул. Гагарина, 6-комн. кӯчаи Мир, 5-комн. Оби Тоза, 7-комн. Панҷшанбе, 4-комн. Сартӯқай, 8-комн. Куйбышев, 6-комн. Б. Ғафуров
+- [x] Параметры коммуникаций: водоснабжение, электричество, канализация/септик, газ, отопление, площадь в сотках
+- [x] Форма подачи объявления: валидация через Zod, антиспам OTP-проверка телефона (+992), лимит 3 объяв./24ч
 
-## Phase 4: B2B CRM & Broker Analytics Module 💼
-- [x] Database schema for listing analytics (`classified_analytics`: views, phone clicks, WhatsApp, chats, favorites, date)
-- [x] API keys schema for CRM integrations (`api_keys`: token hash, permissions, status)
-- [x] Realtor/Broker Analytics Dashboard (`/profile/analytics`):
-  - [x] Key performance indicator cards (Views, Leads, WhatsApp, Calls, Favorites, Conversion CTR)
-  - [x] Interactive timeline chart for daily traffic and leads
-  - [x] Channel breakdown (WhatsApp vs Phone vs Web Chat)
-  - [x] Date filters: `Сегодня`, `7 дней`, `30 дней`, `За всё время`
-  - [x] Instant Excel / CSV export with UTF-8 BOM encoding
-  - [x] Property performance table with conversion rates
-  - [x] API key generator, copy button, and cURL documentation
-- [x] REST API endpoints (`/api/v1/external/`):
-  - [x] `GET /api/v1/external/analytics` — aggregated metrics, channel shares, daily breakdown
-  - [x] `POST /api/v1/external/feed/import` — batch property import from external CRMs
+## Phase 4: Кабинет застройщика (`/developer-admin`) 🟢 [100%]
+- [x] Защищенный лейаут кабинета застройщика
+- [x] Профиль девелопера: логотип, баннер, реквизиты, лицензии, адрес и контакты
+- [x] CRUD жилых комплексов: создание, редактирование, статус строительства, фотогалерея
+- [x] Поквартирный редактор шахматки: этажи, номера, площади, цены в TJS и USD, переключение статусов
+- [x] Настройка инсоляции фасадов, POI локаций и проектных документов
 
-## Phase 5: UI/UX & WebGL Shaders 🚀
-- [x] Lightweight WebGL/Canvas shader effects (`/components/ui/shader-background.tsx` with `aurora`, `gradient-mesh`, `light-leak`)
-- [x] Battery & Mobile optimization (`IntersectionObserver` pause, DPR 1.5 clamp, Tailwind fallback)
-- [x] Hero search living shader (`/`) and luxury complex ambient light leak (`/projects/[slug]`)
-- [x] Sans-serif typography standard (Inter / Apple System) and typography polish
-- [x] Fallback avatar for developer logos (`DeveloperAvatar`)
+## Phase 5: Публичный реестр застройщиков (`/developers`, `/[slug]`) 🟢 [100%]
+- [x] Официальный каталог девелоперов Согдийской области (Спитамен Билдинг, Согд Сити Строй, Долина Согда, Баракат Инвест, Ориён Строй)
+- [x] Публичные карточки застройщиков с портфолио строящихся и сданных комплексов
+- [x] Прямые контакты отделов продаж без посредников
 
-## Phase 6: Hybrid B2B CRM (Kanban Pipeline & WhatsApp Generator) 📊
-- [x] Database schema (`crm_leads` and `crm_collections` in Drizzle ORM)
-- [x] Interactive Kanban Board (`/profile/crm`):
-  - [x] Drag-and-drop state transitions (`Новые отклики` → `В работе` → `Показ` → `Сделка` → `Архив`)
-  - [x] Financial metrics widget (Сделок в работе, Объем пайплайна $, Ожидаемая комиссия $, Заработано в этом месяце $)
-  - [x] Modal for creating and editing client cards with instant commission calculator (Budget × Commission%)
-  - [x] Direct one-click Call and WhatsApp buttons with prefilled messages
-  - [x] Search and filtering across leads
-- [x] WhatsApp Client Collection Generator (`/p/[share_code]`):
-  - [x] Public mobile-first showcase without owner contacts or 3rd-party ads
-  - [x] Verified Broker header card with direct call and WhatsApp actions
-  - [x] Selected property cards with photo galleries, specs, and price in USD/TJS
-  - [x] Share link generator with one-click clipboard copy and direct WhatsApp share
-  - [x] Browser print / PDF commercial proposal generator (`@media print`)
-- [x] Automatic lead generation on classified card interactions:
-  - [x] Phone reveal trigger auto-posts lead to `/api/crm/leads`
-  - [x] WhatsApp click trigger auto-posts lead to `/api/crm/leads`
-- [x] REST API endpoints:
-  - [x] `GET /api/crm/leads`, `POST /api/crm/leads`, `PATCH /api/crm/leads`, `DELETE /api/crm/leads`
-  - [x] `GET /api/crm/collections`, `POST /api/crm/collections`
-  - [x] `GET /api/crm/collections/[shareCode]`
+## Phase 6: B2B CRM и Аналитика маклера (`/profile/*`) 🟢 [100%]
+- [x] Интерактивная Канбан-доска (`/profile/crm`):
+  - [x] Drag-and-drop перемещение лидов: `Новый` ➔ `Квалификация` ➔ `Показ` ➔ `Бронь` ➔ `Сделка`
+  - [x] Автоматический расчет комиссии риелтора (2% от суммы сделки)
+  - [x] Виджет финансовых показателей: сделок в работе, объем пайплайна, ожидаемая комиссия
+- [x] Персональные клиентские витрины для WhatsApp (`/p/[share_code]`):
+  - [x] Закрытые подборки объектов без контактов собственников и сторонней рекламы
+  - [x] Брендированная шапка маклера с быстрыми кнопками звонка и WhatsApp
+  - [x] Экспорт коммерческого предложения в PDF (`@media print`)
+- [x] Мгновенные Telegram Push-уведомления (`src/lib/telegram.ts`):
+  - [x] Оповещения в Telegram-бот агента при кликах на телефон, WhatsApp или создании лида
+  - [x] Страница настроек подключения бота и Chat ID (`/profile/settings`)
+- [x] Аналитика и Open API (`/profile/analytics`):
+  - [x] Графики CTR, показов и воронки конверсий
+  - [x] Экспорт отчетов в CSV / Excel с UTF-8 BOM
+  - [x] REST API `/api/v1/external/analytics` для CRM (Битрикс24, amoCRM)
 
-## Phase 7: Instant Telegram Push Notifications & Profile Settings 🤖
-- [x] User database schema extension (`telegram_chat_id` and `telegram_notifications_enabled` in `users`)
-- [x] Telegram Bot client (`src/lib/telegram.ts`):
-  - [x] `sendTelegramMessage` helper via Telegram Bot API
-  - [x] Rich HTML formatting with lead details, budget, channel icon, and direct CRM links
-  - [x] Fail-safe fallback when token is missing (console simulation without runtime crash)
-- [x] Automated webhook/trigger:
-  - [x] Auto-notify broker/admin on new leads (`phone_click`, `whatsapp_click`, `manual`)
-- [x] Profile & Integration Settings UI (`/profile/settings`):
-  - [x] Step-by-step connection guide for `@SogdRealtyBot`
-  - [x] Chat ID input with test push button
-  - [x] Notifications toggle switch
-  - [x] Synchronized navigation between CRM, Analytics, and Settings
-- [x] REST API endpoints:
-  - [x] `GET /api/profile/telegram` — fetch user chat ID and bot config
-  - [x] `POST /api/profile/telegram` — save settings and send test notification
+## Phase 7: База данных Drizzle ORM (`src/db`) 🟢 [100%]
+- [x] 14 строго типизированных реляционных таблиц (PostgreSQL):
+  - [x] `users`, `sessions`, `accounts`, `verifications` (Better Auth)
+  - [x] `developers`, `projects`, `buildings`, `units`
+  - [x] `parking_spots`, `storage_units`, `project_documents`
+  - [x] `classifieds`, `crm_leads`, `crm_collections`, `classified_analytics`, `api_keys`
+- [x] Скрипт миграции и сидирования реальными объектами (`pnpm db:seed`)
+- [x] 88 автоматизированных модульных тестов (`pnpm test`), 100% passing
 
-## Phase 8: Progressive Web App (PWA) 📱
-- [x] Web Manifest (`src/app/manifest.ts` & `public/manifest.json`):
-  - [x] App name, short name, descriptions, standalone mode, theme colors (`#0D9488` / `#F8FAFC`)
-  - [x] Maskable and standard icons (192x192, 512x512)
-- [x] Icons generation:
-  - [x] Brand SVG logo (`public/icons/icon.svg`)
-  - [x] High-res PNG icons (`192x192`, `512x512`, `maskable-192`, `maskable-512`)
-  - [x] iOS Apple Touch Icon (`apple-touch-icon.png` 180x180)
-- [x] Service Worker (`public/sw.js`):
-  - [x] Static shell precaching (offline navigation support)
-  - [x] Stale-while-revalidate for brand assets and icons
-  - [x] Automated cache cleanup on worker activate
-- [x] Metadata & Viewport (`src/app/layout.tsx`):
-  - [x] `themeColor: "#0D9488"`
-  - [x] `appleWebApp: { capable: true, statusBarStyle: "black-translucent", title: "Sogd Realty" }`
-  - [x] Native `<link rel="manifest" href="/manifest.webmanifest" />`
-- [x] Install Banner (`src/components/modules/pwa-install-prompt.tsx`):
-  - [x] Captures `beforeinstallprompt` event
-  - [x] Native prompt trigger for Chrome/Edge/Android
-  - [x] iOS Safari step-by-step guidance modal (Share ➔ Add to Home Screen)
-  - [x] Dismissal cooldown memory (stored in `localStorage`)
+## Phase 8: Progressive Web App (PWA) 🟢 [100%]
+- [x] Web App Manifest (`public/manifest.json` и `src/app/manifest.ts`)
+- [x] Service Worker (`public/sw.js`) с оффлайн-кэшированием оболочки
+- [x] Полный набор иконок: SVG, 192x192, 512x512, maskable, Apple Touch Icon (180x180)
+- [x] Кастомный баннер установки на домашний экран (Safari iOS + Chrome Android)
 
+---
 
-
-
-## Search widget polish
-- [x] Align homepage search controls to a consistent 40px height, give the room selector enough width for all six options, and compact quick filter chips
+## 🔮 Предстоящие планы (Future Roadmap)
+- [ ] **Phase 9: Интерактивная гео-карта объектов**
+  - [ ] Полноэкранный просмотр ЖК и вторички на карте Согдийской области (Яндекс.Карты / Leaflet)
+  - [ ] Кластеризация маркеров и фильтрация по радиусу от текущего местоположения
+- [ ] **Phase 10: Мобильное приложение (React Native / Expo)**
+  - [ ] Нативное iOS и Android приложение в App Store и Google Play
+  - [ ] Нативные пуш-уведомления через Expo Notifications
+- [ ] **Phase 11: AI-помощник по поиску жилья**
+  - [ ] Подбор квартир на естественном языке (таджикский и русский)
+  - [ ] Telegram-бот с интерактивным опросником бюджета и локации

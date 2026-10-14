@@ -964,7 +964,7 @@ export default function HomePage() {
         <div className="bg-white border border-slate-200/80 rounded-2xl p-6 sm:p-10 shadow-sm">
           <div className="max-w-2xl mb-8">
             <Badge className="bg-emerald-50 text-emerald-800 border-emerald-200 mb-2.5 text-xs font-semibold">
-              {isTg ? "Экосистемаи Sogd Realty" : "Экосистема Sogd Realty"}
+              {isTg ? "Экосистемаи Maskani" : "Экосистема Maskani"}
             </Badge>
             <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">
               {isTg

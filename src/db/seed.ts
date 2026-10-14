@@ -17,7 +17,7 @@ import {
 } from "../lib/data/mock-db";
 
 export async function seed() {
-  console.log("🌱 [Sogd Realty] Начинаем сидирование базы данных Drizzle ORM...");
+  console.log("🌱 [Maskani] Начинаем сидирование базы данных Drizzle ORM...");
 
   try {
     // 1. Создаем тестовых пользователей с разными ролями
@@ -1095,7 +1095,7 @@ export async function seed() {
       .onConflictDoNothing();
 
     console.log("✓ API Ключи успешно созданы");
-    console.log("🎉 [Sogd Realty] База данных успешно наполнена всеми демонстрационными данными!");
+    console.log("🎉 [Maskani] База данных успешно наполнена всеми демонстрационными данными!");
   } catch (error) {
     console.error("❌ Ошибка при сидировании базы данных:", error);
     throw error;

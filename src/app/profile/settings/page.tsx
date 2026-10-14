@@ -35,7 +35,7 @@ export default function ProfileSettingsPage() {
 
   const [chatId, setChatId] = useState("");
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
-  const [botUsername, setBotUsername] = useState("SogdRealtyBot");
+  const [botUsername, setBotUsername] = useState("MaskaniBot");
   const [botConfigured, setBotConfigured] = useState(false);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);

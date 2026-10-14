@@ -372,7 +372,7 @@ export default function BrokerCrmPage() {
               <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight flex items-center gap-3">
                 {isTg ? "Воронкаи канбании мизоҷон ва муомилаҳо" : "Канбан-воронка лидов & Сделок"}
                 <Badge className="bg-emerald-50 text-emerald-800 border-emerald-200 text-xs font-semibold">
-                  Sogd CRM Lite
+                  Maskani CRM Lite
                 </Badge>
               </h2>
               <p className="text-xs sm:text-sm text-slate-500 mt-1">

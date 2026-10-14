@@ -157,8 +157,8 @@ export default function ClassifiedDetailPage() {
     if (navigator.share) {
       try {
         await navigator.share({
-          title: item?.title || "Sogd Realty",
-          text: item?.title || "Объявление на Sogd Realty",
+          title: item?.title || "Maskani",
+          text: item?.title || "Объявление на Maskani.tj",
           url,
         });
         return;
@@ -298,8 +298,8 @@ export default function ClassifiedDetailPage() {
 
   const prefilledWhatsappMsg = encodeURIComponent(
     isTg
-      ? `Ассалому алейкум! Ман оид ба эълони шумо дар Sogd Realty навишта истодаам: «${item.title}» бо нархи $${item.priceUsd?.toLocaleString()}. Оё эълон то ҳол фаъол аст?`
-      : `Здравствуйте! Пишу по поводу вашего объявления на Sogd Realty: «${item.title}» за $${item.priceUsd?.toLocaleString()}. Объявление еще актуально?`
+      ? `Ассалому алейкум! Ман оид ба эълони шумо дар Maskani.tj навишта истодаам: «${item.title}» бо нархи $${item.priceUsd?.toLocaleString()}. Оё эълон то ҳол фаъол аст?`
+      : `Здравствуйте! Пишу по поводу вашего объявления на Maskani.tj: «${item.title}» за $${item.priceUsd?.toLocaleString()}. Объявление еще актуально?`
   );
 
   return (
@@ -735,8 +735,8 @@ export default function ClassifiedDetailPage() {
 
               <p className="text-[11px] text-slate-400 text-center">
                 {tDual(
-                  "Скажите продавцу, что нашли объявление на Sogd Realty",
-                  "Ба фурӯшанда гӯед, ки эълонро дар Sogd Realty пайдо кардед"
+                  "Скажите продавцу, что нашли объявление на Maskani.tj",
+                  "Ба фурӯшанда гӯед, ки эълонро дар Maskani.tj пайдо кардед"
                 )}
               </p>
             </div>

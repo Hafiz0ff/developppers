@@ -1,5 +1,5 @@
-// Sogd Realty PWA Service Worker
-const CACHE_NAME = "sogd-realty-v1";
+// Maskani PWA Service Worker
+const CACHE_NAME = "maskani-v1";
 const STATIC_ASSETS = [
   "/",
   "/manifest.webmanifest",
@@ -54,7 +54,7 @@ self.addEventListener("fetch", (event) => {
         return caches.match("/").then((cached) => {
           return (
             cached ||
-            new Response("Вы находитесь в офлайн-режиме Sogd Realty", {
+            new Response("Шумо дар ҳолати офлайни Maskani қарор доред / Вы находитесь в офлайн-режиме Maskani", {
               headers: { "Content-Type": "text/html; charset=utf-8" },
             })
           );
