@@ -106,7 +106,7 @@ export function Header() {
               {t.nav.houses}
             </Link>
             <Link
-              href="/#developers"
+              href="/developers"
               className="text-foreground/80 hover:text-emerald-600 transition-colors flex items-center gap-1.5"
             >
               <Briefcase className="h-4 w-4 text-emerald-600" />

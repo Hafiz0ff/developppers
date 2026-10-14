@@ -1,10 +1,12 @@
 export interface DeveloperData {
   id: string;
   name: string;
+  nameTg?: string;
   slug: string;
   logoUrl: string;
   coverUrl: string;
   description: string;
+  descriptionTg?: string;
   foundedYear: number;
   completedProjectsCount: number;
   activeProjectsCount: number;
@@ -12,6 +14,7 @@ export interface DeveloperData {
   isVerified: boolean;
   city: string;
   officeAddress: string;
+  officeAddressTg?: string;
   phone: string;
   phoneSecondary?: string;
   whatsapp: string;
@@ -154,18 +157,22 @@ export const INITIAL_DEVELOPERS: DeveloperData[] = [
   {
     id: "dev_qayroqum",
     name: "«Qayroqum Avenue» Development",
+    nameTg: "«Qayroqum Avenue» Development",
     slug: "qayroqum-avenue-dev",
     logoUrl: "/images/qayroqum/qayroqum-9.jpg",
     coverUrl: "/images/qayroqum/qayroqum-10.jpg",
     description:
-      "Ширкати сохтмонии пешрафта дар вилояти Суғд. Бунёди маҷмааи муосири истиқоматии «Qayroqum Avenue» дар соҳили «Баҳри Тоҷик» бо мактаб, боғча, ҳавзи шиноварӣ ва таваққуфгоҳи 2-ошёна.",
+      "«Qayroqum Avenue» Development — ведущая девелоперская компания Согдийской области. Реализует масштабный курортный жилой комплекс на первой береговой линии «Таджикского моря» с собственной общеобразовательной школой, детсадом, бассейном, фитнес-центром и 2-уровневым подземным паркингом.",
+    descriptionTg:
+      "«Qayroqum Avenue» Development — ширкати сохтмонии пешрафта дар вилояти Суғд. Бунёди маҷмааи муосири истиқоматии курортӣ дар соҳили «Баҳри Тоҷик» бо мактаби хусусӣ, боғча, ҳавзи шиноварӣ, толори фитнес ва таваққуфгоҳи 2-ошёнаи зеризаминӣ.",
     foundedYear: 2021,
     completedProjectsCount: 3,
     activeProjectsCount: 1,
     rating: "4.95",
     isVerified: true,
     city: "guliston",
-    officeAddress: "ш. Гулистон (Қайроққум), шоҳроҳи Хуҷанд — Гулистон",
+    officeAddress: "г. Гулистон (Кайраккум), шоссе Худжанд — Гулистон",
+    officeAddressTg: "ш. Гулистон (Қайроққум), шоҳроҳи Хуҷанд — Гулистон",
     phone: "+992 92 000 0000",
     phoneSecondary: "+992 92 000 1111",
     whatsapp: "+992920000000",

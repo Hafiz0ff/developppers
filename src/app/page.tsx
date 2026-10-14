@@ -990,17 +990,26 @@ export default function HomePage() {
       {/* 6. VERIFIED DEVELOPERS */}
       <section id="developers" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
         <div className="bg-white border border-slate-200/80 rounded-2xl p-6 sm:p-8 shadow-sm">
-          <div className="max-w-2xl mb-6">
-            <h2 className="text-2xl font-bold text-slate-900 tracking-tight">
-              {isTg
-                ? "Ширкатҳои сохтмонии тасдиқшудаи вилояти Суғд"
-                : "Проверенные застройщики Согдийской области"}
-            </h2>
-            <p className="text-xs sm:text-sm text-slate-500 mt-1">
-              {isTg
-                ? "Ширкатҳое, ки маҷмааҳои истиқоматиро бо ҳуҷҷатҳои пурраи расмӣ, кафолат ва пардохти қисм-қисми бефоиз дар Хуҷанд ва Гулистон месозанд."
-                : "Компании, строящие жилые комплексы с официальной проектной документацией, гарантиями и беспроцентной рассрочкой в Худжанде и Гулистоне."}
-            </p>
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+            <div className="max-w-2xl">
+              <h2 className="text-2xl font-bold text-slate-900 tracking-tight">
+                {isTg
+                  ? "Ширкатҳои сохтмонии тасдиқшудаи вилояти Суғд"
+                  : "Проверенные застройщики Согдийской области"}
+              </h2>
+              <p className="text-xs sm:text-sm text-slate-500 mt-1">
+                {isTg
+                  ? "Ширкатҳое, ки маҷмааҳои истиқоматиро бо ҳуҷҷатҳои пурраи расмӣ, кафолат ва пардохти қисм-қисми бефоиз дар Хуҷанд ва Гулистон месозанд."
+                  : "Компании, строящие жилые комплексы с официальной проектной документацией, гарантиями и беспроцентной рассрочкой в Худжанде и Гулистоне."}
+              </p>
+            </div>
+            <Link
+              href="/developers"
+              className="text-sm font-semibold text-emerald-600 hover:text-emerald-700 flex items-center gap-1 shrink-0"
+            >
+              {isTg ? "Ҳамаи ширкатҳо" : "Все застройщики"}
+              <ChevronRight className="h-4 w-4" />
+            </Link>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5">

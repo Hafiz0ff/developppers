@@ -4,11 +4,14 @@ import { DeveloperData, ProjectData } from "./mock-db";
 export const TOJ_SOHTMON_DEVELOPER: DeveloperData = {
   id: "dev_toch_sohtmon",
   name: "«Тоҷ Сохтмон» (Toj Sohtmon)",
+  nameTg: "«Тоҷ Сохтмон» (Toj Sohtmon)",
   slug: "toch-sohtmon",
   logoUrl: "https://cdntj.somon.tj/media/cache1/0e/1f/0e1f8b6cdf50746a7f83a6899a2ad6a0.webp",
   coverUrl: "https://cdntj.somon.tj/media/cache1/11/aa/11aa128e44140ae41d3b074ebca6fb6c.webp",
   description:
     "Строительная компания «Тоҷ Сохтмон» (Toj Sohtmon) — одна из ведущих компаний Согдийской области, успешно работающая на рынке более 7 лет (с 2017 года). За это время компанией было реализовано несколько значимых проектов в Худжанде (включая «Рудаки Плаза») и ведется строительство в 17 локациях. Компания специализируется на монолитном строительстве с повышенной сейсмостойкостью до 9 баллов.",
+  descriptionTg:
+    "Ширкати сохтмонии «Тоҷ Сохтмон» (Toj Sohtmon) — яке аз ширкатҳои пешсафи вилояти Суғд, ки зиёда аз 7 сол дар бозор фаъолият мебарад. Ширкат бо сохтмони муосири монолитии сейсмотобовар то 9 балл ва лоиҳаҳои сармоягузории боэътимод дар шаҳри Хуҷанд маъруф аст.",
   foundedYear: 2017,
   completedProjectsCount: 5,
   activeProjectsCount: 17,
@@ -16,6 +19,7 @@ export const TOJ_SOHTMON_DEVELOPER: DeveloperData = {
   isVerified: true,
   city: "khujand",
   officeAddress: "г. Худжанд, 13-й микрорайон, д. 9А",
+  officeAddressTg: "ш. Хуҷанд, маҳаллаи 13-ум, бинои 9А",
   phone: "+992 92 011 5060",
   whatsapp: "+992920115060",
   telegram: "toch_sohtmon",
