@@ -14,6 +14,7 @@ import {
   Navigation,
 } from "lucide-react";
 import { SunTrackCompass } from "./sun-track-widget";
+import { useLanguage } from "@/context/language-context";
 
 interface POI {
   id: string;
@@ -34,6 +35,7 @@ export function ShowcaseGeneralView({
   projectName,
   onSelectBuilding,
 }: ShowcaseGeneralViewProps) {
+  const { tDual } = useLanguage();
   const [activePoi, setActivePoi] = useState<POI | null>(null);
   const isQayroqum = projectName.toLowerCase().includes("qayroqum");
 
@@ -41,113 +43,149 @@ export function ShowcaseGeneralView({
     ? [
         {
           id: "poi_q_sea",
-          name: "Соҳили «Баҳри Тоҷик» (Пляж ва набережная)",
+          name: tDual("Пляж и набережная «Таджикского моря»", "Соҳили «Баҳри Тоҷик» (Пляж ва соҳилбоғ)"),
           category: "park",
-          distance: "2 мин пиёда (100 м)",
+          distance: tDual("2 мин пешком (100 м)", "2 дақ. пиёда (100 м)"),
           xPercent: 48,
           yPercent: 78,
-          description: "Фароғатгоҳ, соҳили регзор ва сайругашт дар соҳили оби мусаффои Баҳри Тоҷик.",
+          description: tDual(
+            "Обустроенная курортная зона отдыха, песчаный пляж и набережная у воды.",
+            "Фароғатгоҳ, соҳили регзор ва сайругашт дар соҳили оби мусаффои Баҳри Тоҷик."
+          ),
         },
         {
           id: "poi_q_school",
-          name: "Мактаби муосир ва боғчаи хусусӣ",
+          name: tDual("Современная школа и частный детский сад", "Мактаби муосир ва кӯдакистони хусусӣ"),
           category: "school",
-          distance: "Дар ҳудуд (0 мин)",
+          distance: tDual("На территории комплекса (0 мин)", "Дар ҳудуди маҷмаа (0 дақ.)"),
           xPercent: 78,
           yPercent: 28,
-          description: "Мактаб ва боғчаи кӯдакона дар худи ҳудуди Qayroqum Avenue.",
+          description: tDual(
+            "Школа и детский сад на собственной закрытой территории Qayroqum Avenue.",
+            "Мактаб ва кӯдакистон дар худи ҳудуди пӯшидаи Qayroqum Avenue."
+          ),
         },
         {
           id: "poi_q_clinic",
-          name: "Клиникаи хусусӣ ва маркази ташхис",
+          name: tDual("Частная клиника и диагностический центр", "Клиникаи хусусӣ ва маркази ташхис"),
           category: "medical",
-          distance: "1 мин пиёда",
+          distance: tDual("1 мин пешком", "1 дақ. пиёда"),
           xPercent: 88,
           yPercent: 42,
-          description: "Ёрии таъҷилии тиббӣ ва табибони касбӣ барои сокинон.",
+          description: tDual(
+            "Круглосуточный медицинский пункт и квалифицированные врачи для резидентов.",
+            "Ёрии таъҷилии тиббӣ ва табибони касбӣ барои сокинон."
+          ),
         },
         {
           id: "poi_q_fitness",
-          name: "Толори фитнес ва ҳавзи шиноварӣ",
+          name: tDual("Фитнес-клуб и плавательный бассейн", "Толори фитнес ва ҳавзи шиноварӣ"),
           category: "park",
-          distance: "1 мин пиёда",
+          distance: tDual("1 мин пешком", "1 дақ. пиёда"),
           xPercent: 22,
           yPercent: 32,
-          description: "Ҳавзи пӯшидаи шиноварӣ ва толори муосири тренажёрӣ.",
+          description: tDual(
+            "Крытый подогреваемый бассейн и просторный тренажёрный зал.",
+            "Ҳавзи пӯшидаи шиноварӣ ва толори муосири тренажёрӣ."
+          ),
         },
         {
           id: "poi_q_shop",
-          name: "Супермаркет ва маркази савдо",
+          name: tDual("Супермаркет и торговая галерея", "Супермаркет ва маркази савдо"),
           category: "shop",
-          distance: "2 мин пиёда",
+          distance: tDual("2 мин пешком", "2 дақ. пиёда"),
           xPercent: 18,
           yPercent: 72,
-          description: "Супермаркети калон, дорухона ва нуқтаҳои савдо.",
+          description: tDual(
+            "Большой продуктовый супермаркет, аптека и магазины первой необходимости.",
+            "Супермаркети калон, дорухона ва нуқтаҳои савдо."
+          ),
         },
         {
           id: "poi_q_parking",
-          name: "Таваққуфгоҳи 2-ошёна бо нуқтаҳои барқӣ",
+          name: tDual("2-уровневый паркинг со станциями зарядки EV", "Таваққуфгоҳи 2-ошёна бо нуқтаҳои барқӣ"),
           category: "transport",
-          distance: "Дар зери бино",
+          distance: tDual("Под комплексом", "Дар зери бино"),
           xPercent: 82,
           yPercent: 62,
-          description: "Таваққуфгоҳи зеризаминии 2-ошёна барои 500+ мошин ва пуркунандаи электромобилҳо.",
+          description: tDual(
+            "Подземный охраняемый паркинг на 500+ машиномест и скоростные зарядные станции.",
+            "Таваққуфгоҳи зеризаминии 2-ошёна барои 500+ мошин ва пуркунандаи электромобилҳо."
+          ),
         },
       ]
     : [
         {
           id: "poi_waterfront",
-          name: "Набережная Сырдарьи и пляжная зона",
+          name: tDual("Набережная Сырдарьи и пляжная зона", "Соҳили Сирдарё ва минтақаи соҳилӣ"),
           category: "park",
-          distance: "2 мин пешком (150 м)",
+          distance: tDual("2 мин пешком (150 м)", "2 дақ. пиёда (150 м)"),
           xPercent: 48,
           yPercent: 78,
-          description: "Благоустроенный променад для прогулок, беговые и велосипедные дорожки.",
+          description: tDual(
+            "Благоустроенный променад для прогулок, беговые и велосипедные дорожки.",
+            "Гулгашти обод барои сайругашт, пайроҳаҳои давидан ва дучархасаворӣ."
+          ),
         },
         {
           id: "poi_park",
-          name: "Парк Камоли Худжанди",
+          name: tDual("Парк Камоли Худжанди", "Боғи Камоли Хуҷандӣ"),
           category: "park",
-          distance: "4 мин пешком (350 м)",
+          distance: tDual("4 мин пешком (350 м)", "4 дақ. пиёда (350 м)"),
           xPercent: 22,
           yPercent: 32,
-          description: "Исторический парк с тенистыми аллеями, фонтанами и амфитеатром.",
+          description: tDual(
+            "Исторический парк с тенистыми аллеями, фонтанами и амфитеатром.",
+            "Боғи таърихӣ бо гулгаштҳои сояафкан, фаввораҳо ва амфитеатр."
+          ),
         },
         {
           id: "poi_school",
-          name: "Средняя школа №28",
+          name: tDual("Средняя школа №28", "Мактаби таҳсилоти миёнаи №28"),
           category: "school",
-          distance: "5 мин пешком (420 м)",
+          distance: tDual("5 мин пешком (420 м)", "5 дақ. пиёда (420 м)"),
           xPercent: 78,
           yPercent: 28,
-          description: "Современная школа с углубленным изучением языков и спортивным комплексом.",
+          description: tDual(
+            "Современная школа с углубленным изучением языков и спортивным комплексом.",
+            "Мактаби замонавӣ бо омӯзиши амиқи забонҳо ва маҷмааи варзишӣ."
+          ),
         },
         {
           id: "poi_kindergarten",
-          name: "Детский сад «Парасту»",
+          name: tDual("Детский сад «Парасту»", "Кӯдакистони «Парасту»"),
           category: "kindergarten",
-          distance: "3 мин пешком (260 м)",
+          distance: tDual("3 мин пешком (260 м)", "3 дақ. пиёда (260 м)"),
           xPercent: 82,
           yPercent: 62,
-          description: "Ясли и группы дошкольной подготовки с закрытой охраняемой территорией.",
+          description: tDual(
+            "Ясли и группы дошкольной подготовки с закрытой охраняемой территорией.",
+            "Гурӯҳҳои омодагии томактабӣ бо ҳудуди пӯшидаи таҳти муҳофизат."
+          ),
         },
         {
           id: "poi_shop",
-          name: "Супермаркет «Амид» & Торговый центр",
+          name: tDual("Супермаркет «Амид» & Торговый центр", "Супермаркети «Амид» ва Маркази савдо"),
           category: "shop",
-          distance: "4 мин пешком (380 м)",
+          distance: tDual("4 мин пешком (380 м)", "4 дақ. пиёда (380 м)"),
           xPercent: 18,
           yPercent: 72,
-          description: "Крупный продуктовый супермаркет, аптека, кафе и банкоматы 24/7.",
+          description: tDual(
+            "Крупный продуктовый супермаркет, аптека, кафе и банкоматы 24/7.",
+            "Супермаркети бузурги маводи ғизоӣ, дорухона, ошхона ва банкоматҳо 24/7."
+          ),
         },
         {
           id: "poi_clinic",
-          name: "Медицинский центр и поликлиника",
+          name: tDual("Медицинский центр и поликлиника", "Маркази тиббӣ ва дармонгоҳ"),
           category: "medical",
-          distance: "7 мин пешком (600 м)",
+          distance: tDual("7 мин пешком (600 м)", "7 дақ. пиёда (600 м)"),
           xPercent: 88,
           yPercent: 42,
-          description: "Многопрофильная клиника, диагностика и скорая помощь.",
+          description: tDual(
+            "Многопрофильная клиника, диагностика и скорая помощь.",
+            "Дармонгоҳи бисёрсоҳавӣ, ташхисгоҳ ва ёрии таъҷилӣ."
+          ),
         },
       ];
 
@@ -193,7 +231,10 @@ export function ShowcaseGeneralView({
       <div
         onClick={() => onSelectBuilding && onSelectBuilding("Секция 1")}
         className="absolute top-[38%] left-[34%] w-[32%] h-[38%] rounded-2xl border-2 border-emerald-400 bg-emerald-500/25 backdrop-blur-[1px] hover:bg-emerald-500/40 hover:border-emerald-300 transition-all cursor-pointer group shadow-xl flex flex-col items-center justify-center p-3 text-center"
-        title="Нажмите, чтобы перейти к выбору секции и этажа"
+        title={tDual(
+          "Нажмите, чтобы перейти к выбору секции и этажа",
+          "Барои гузариш ба интихоби бахш ва ошёна пахш кунед"
+        )}
       >
         <div className="h-9 w-9 rounded-full bg-emerald-600 text-white flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
           <Building className="h-5 w-5" />
@@ -202,7 +243,7 @@ export function ShowcaseGeneralView({
           {projectName}
         </div>
         <div className="text-[10px] text-emerald-200 font-medium hidden sm:block">
-          Нажмите для перехода к срезу здания →
+          {tDual("Нажмите для перехода к срезу здания →", "Барои гузариш ба буриши бино пахш кунед →")}
         </div>
       </div>
 
@@ -261,7 +302,10 @@ export function ShowcaseGeneralView({
       <div className="absolute bottom-3 left-3 right-3 sm:left-4 sm:right-auto bg-slate-900/90 backdrop-blur-md border border-white/10 p-2.5 rounded-xl text-white text-xs shadow-lg flex items-center gap-3">
         <Navigation className="h-4 w-4 text-emerald-400 shrink-0" />
         <span className="text-[11px] text-slate-200">
-          Нажмите на <strong className="text-emerald-400 font-semibold">здание ЖК</strong> для выбора секции или на цветные точки для просмотра инфраструктуры.
+          {tDual(
+            "Нажмите на здание ЖК для выбора секции или на цветные точки для просмотра инфраструктуры.",
+            "Барои интихоби бахш ба бинои МИ ё ба нуқтаҳои ранга барои дидани инфрасохтор пахш кунед."
+          )}
         </span>
       </div>
     </div>

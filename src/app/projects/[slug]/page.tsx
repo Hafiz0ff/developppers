@@ -8,6 +8,7 @@ import {
   INITIAL_DEVELOPERS,
   INITIAL_UNITS,
   UnitData,
+  generateUnitsForAnyProject,
 } from "@/lib/data/mock-db";
 import { useCurrency } from "@/context/currency-context";
 import { Chessboard } from "@/components/modules/chessboard";
@@ -75,10 +76,7 @@ export default function PublicProjectPage() {
   const [isStorageModalOpen, setIsStorageModalOpen] = useState(false);
 
   const [units, setUnits] = useState<UnitData[]>(() => {
-    const filtered = INITIAL_UNITS.filter(
-      (u) => u.projectId === project.id || u.projectId === project.slug
-    );
-    return filtered.length > 0 ? filtered : INITIAL_UNITS;
+    return generateUnitsForAnyProject(project);
   });
 
   // Сбор всех доступных характеристик с фильтрацией пустых значений
