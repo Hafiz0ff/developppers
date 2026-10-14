@@ -103,16 +103,20 @@ test("Stage 2 DoD - Bilingual projects and real showcase case Qayroqum Avenue", 
   assert.ok(qayroqum.amenities.some((a) => a.includes("розыгрыш BMW") || a.includes("выиграть BMW")), "RU amenities must contain BMW raffle");
   assert.ok(qayroqum.amenities.some((a) => a.includes("60 месяцев")), "RU amenities must contain 60 months");
 
-  // Sirdaryo Plaza and Sugdiyon bilingual data
+  // Qayroqum Avenue must be #1
+  assert.equal(INITIAL_PROJECTS[0].slug, "qayroqum-avenue", "Qayroqum Avenue must be #1 in INITIAL_PROJECTS");
+
+  // Sirdaryo Plaza and Istiqlol Group bilingual data
   const sirdaryo = INITIAL_PROJECTS.find((p) => p.slug === "sirdaryo-plaza");
   assert.ok(sirdaryo?.nameTg === "МҶ «Сирдарё Плаза»");
   assert.ok(sirdaryo?.shortDescriptionTg && sirdaryo.shortDescriptionTg.length > 0);
   assert.ok(sirdaryo?.amenitiesTg && sirdaryo.amenitiesTg.length > 0);
 
-  const sugdiyon = INITIAL_PROJECTS.find((p) => p.slug === "sugdiyon-city");
-  assert.ok(sugdiyon?.nameTg === "МҶ «Суғдиён Сити»");
-  assert.ok(sugdiyon?.shortDescriptionTg && sugdiyon.shortDescriptionTg.length > 0);
-  assert.ok(sugdiyon?.amenitiesTg && sugdiyon.amenitiesTg.length > 0);
+  const kohiMunavvar = INITIAL_PROJECTS.find((p) => p.slug === "zhk-kohi-munavvar");
+  assert.ok(kohiMunavvar?.nameTg === "МҶ «Кохи Мунаввар»");
+  assert.ok(kohiMunavvar?.shortDescriptionTg && kohiMunavvar.shortDescriptionTg.length > 0);
+  assert.ok(kohiMunavvar?.amenitiesTg && kohiMunavvar.amenitiesTg.length > 0);
+  assert.ok(kohiMunavvar?.coordinates?.lat && kohiMunavvar?.coordinates?.lng, "Must have valid GPS coordinates");
 });
 
 test("Stage 5 DoD - Classifieds & CRM bilingual consistency and pure terminology", async () => {

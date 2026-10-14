@@ -18,6 +18,18 @@ export const DEFAULT_PROJECT_STATS: Record<string, ProjectStats> = {
     favoritesCount: 32,
     favoritesMonthCount: 24,
   },
+  "zhk-kohi-munavvar": {
+    viewsCount: 385,
+    viewsMonthCount: 294,
+    favoritesCount: 48,
+    favoritesMonthCount: 36,
+  },
+  "zhk-kohi-azim": {
+    viewsCount: 460,
+    viewsMonthCount: 375,
+    favoritesCount: 62,
+    favoritesMonthCount: 51,
+  },
   "sugdiyon-city": {
     viewsCount: 195,
     viewsMonthCount: 142,
