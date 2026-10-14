@@ -10,6 +10,7 @@ import {
   MapPropertyItem,
   SOGD_MAP_PRESETS,
   generateYandexMapsRouteUrl,
+  calculateDistanceKm,
 } from "@/lib/geo-utils";
 import { InteractiveMapWrapper } from "@/components/modules/interactive-map-wrapper";
 import {
@@ -29,6 +30,9 @@ import {
   X,
   ExternalLink,
   ArrowUpDown,
+  Locate,
+  Check,
+  RotateCcw,
 } from "lucide-react";
 
 export default function MapPage() {
@@ -46,13 +50,53 @@ export default function MapPage() {
   >("all");
   const [selectedRooms, setSelectedRooms] = useState<number | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
-  const [sortBy, setSortBy] = useState<"default" | "price-asc" | "price-desc" | "area-desc">("default");
+  const [sortBy, setSortBy] = useState<
+    "default" | "price-asc" | "price-desc" | "area-desc"
+  >("default");
+
+  // Advanced Stage 5 Filters
+  const [priceMin, setPriceMin] = useState<number | null>(null);
+  const [priceMax, setPriceMax] = useState<number | null>(null);
+  const [areaMin, setAreaMin] = useState<number | null>(null);
+  const [areaMax, setAreaMax] = useState<number | null>(null);
+  const [selectedStage, setSelectedStage] = useState<"all" | "ready" | "building">(
+    "all"
+  );
+  const [userLocation, setUserLocation] = useState<{
+    lat: number;
+    lng: number;
+  } | null>(null);
+  const [radiusKm, setRadiusKm] = useState<number | null>(null);
+  const [showFiltersModal, setShowFiltersModal] = useState(false);
+
+  // Selection & View State
   const [selectedPropertyId, setSelectedPropertyId] = useState<string | null>(null);
   const [hoveredPropertyId, setHoveredPropertyId] = useState<string | null>(null);
   const [mobileView, setMobileView] = useState<"map" | "list">("map");
-  const [isSheetExpanded, setIsSheetExpanded] = useState(false);
 
   const carouselRef = useRef<HTMLDivElement>(null);
+
+  // Count active filters (beyond city preset)
+  const activeFiltersCount = useMemo(() => {
+    let count = 0;
+    if (selectedCategory !== "all") count++;
+    if (selectedRooms !== null) count++;
+    if (priceMin !== null || priceMax !== null) count++;
+    if (areaMin !== null || areaMax !== null) count++;
+    if (selectedStage !== "all") count++;
+    if (radiusKm !== null && userLocation !== null) count++;
+    return count;
+  }, [
+    selectedCategory,
+    selectedRooms,
+    priceMin,
+    priceMax,
+    areaMin,
+    areaMax,
+    selectedStage,
+    radiusKm,
+    userLocation,
+  ]);
 
   // Read URL query parameters on initial mount
   useEffect(() => {
@@ -62,6 +106,12 @@ export default function MapPage() {
     const type = params.get("type");
     const rooms = params.get("rooms");
     const sort = params.get("sort");
+    const pMin = params.get("minPrice");
+    const pMax = params.get("maxPrice");
+    const aMin = params.get("minArea");
+    const aMax = params.get("maxArea");
+    const stage = params.get("stage");
+    const rad = params.get("radius");
 
     if (city && SOGD_MAP_PRESETS.some((p) => p.id === city)) setActiveCityId(city);
     if (type && ["all", "complex", "apartment", "house"].includes(type)) {
@@ -71,6 +121,14 @@ export default function MapPage() {
     if (sort && ["default", "price-asc", "price-desc", "area-desc"].includes(sort)) {
       setSortBy(sort as any);
     }
+    if (pMin) setPriceMin(Number(pMin));
+    if (pMax) setPriceMax(Number(pMax));
+    if (aMin) setAreaMin(Number(aMin));
+    if (aMax) setAreaMax(Number(aMax));
+    if (stage && ["all", "ready", "building"].includes(stage)) {
+      setSelectedStage(stage as any);
+    }
+    if (rad) setRadiusKm(Number(rad));
   }, []);
 
   // Update URL query parameters on state changes
@@ -81,11 +139,28 @@ export default function MapPage() {
     if (selectedCategory !== "all") params.set("type", selectedCategory);
     if (selectedRooms !== null) params.set("rooms", String(selectedRooms));
     if (sortBy !== "default") params.set("sort", sortBy);
+    if (priceMin !== null) params.set("minPrice", String(priceMin));
+    if (priceMax !== null) params.set("maxPrice", String(priceMax));
+    if (areaMin !== null) params.set("minArea", String(areaMin));
+    if (areaMax !== null) params.set("maxArea", String(areaMax));
+    if (selectedStage !== "all") params.set("stage", selectedStage);
+    if (radiusKm !== null) params.set("radius", String(radiusKm));
 
     const queryString = params.toString();
     const newUrl = queryString ? `/map?${queryString}` : "/map";
     window.history.replaceState(null, "", newUrl);
-  }, [activeCityId, selectedCategory, selectedRooms, sortBy]);
+  }, [
+    activeCityId,
+    selectedCategory,
+    selectedRooms,
+    sortBy,
+    priceMin,
+    priceMax,
+    areaMin,
+    areaMax,
+    selectedStage,
+    radiusKm,
+  ]);
 
   // Filter properties
   const filteredProperties = useMemo(() => {
@@ -153,9 +228,47 @@ export default function MapPage() {
         if (!matchTitle && !matchDistrict && !matchCity) return false;
       }
 
+      // 5. Budget Filter (USD or TJS)
+      const currentPrice = currency === "USD" ? item.priceUsd : item.priceTjs;
+      if (priceMin !== null && currentPrice < priceMin) return false;
+      if (priceMax !== null && currentPrice > priceMax) return false;
+
+      // 6. Area Filter (m²)
+      if (areaMin !== null && item.areaM2 < areaMin) return false;
+      if (areaMax !== null && item.areaM2 > areaMax) return false;
+
+      // 7. Stage Filter (for residential complexes)
+      if (selectedStage !== "all" && item.category === "complex") {
+        if (selectedStage === "ready" && item.stage !== "Сдан") return false;
+        if (selectedStage === "building" && item.stage !== "Строится") return false;
+      }
+
+      // 8. Radius Filter from User Location
+      if (userLocation && radiusKm !== null && radiusKm > 0) {
+        const dist = calculateDistanceKm(userLocation, {
+          lat: item.lat,
+          lng: item.lng,
+        });
+        if (dist > radiusKm) return false;
+      }
+
       return true;
     });
-  }, [allProperties, selectedCategory, activeCityId, selectedRooms, searchQuery]);
+  }, [
+    allProperties,
+    selectedCategory,
+    activeCityId,
+    selectedRooms,
+    searchQuery,
+    currency,
+    priceMin,
+    priceMax,
+    areaMin,
+    areaMax,
+    selectedStage,
+    userLocation,
+    radiusKm,
+  ]);
 
   // Sort properties
   const sortedProperties = useMemo(() => {
@@ -178,6 +291,21 @@ export default function MapPage() {
     return allProperties.find((p) => p.id === selectedPropertyId) || null;
   }, [allProperties, selectedPropertyId]);
 
+  // Reset all filters
+  const resetAllFilters = () => {
+    setSelectedCategory("all");
+    setSelectedRooms(null);
+    setSearchQuery("");
+    setPriceMin(null);
+    setPriceMax(null);
+    setAreaMin(null);
+    setAreaMax(null);
+    setSelectedStage("all");
+    setRadiusKm(null);
+    setSortBy("default");
+    setSelectedPropertyId(null);
+  };
+
   // Scroll left desktop list to selected item
   useEffect(() => {
     if (selectedPropertyId) {
@@ -187,9 +315,15 @@ export default function MapPage() {
       }
 
       // Also scroll mobile carousel
-      const carouselEl = document.getElementById(`carousel-card-${selectedPropertyId}`);
+      const carouselEl = document.getElementById(
+        `carousel-card-${selectedPropertyId}`
+      );
       if (carouselEl) {
-        carouselEl.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+        carouselEl.scrollIntoView({
+          behavior: "smooth",
+          inline: "center",
+          block: "nearest",
+        });
       }
     }
   }, [selectedPropertyId]);
@@ -222,7 +356,7 @@ export default function MapPage() {
             })}
           </div>
 
-          {/* Quick Category Filters */}
+          {/* Quick Category Filters & Advanced Modal Trigger */}
           <div className="flex items-center gap-1.5 shrink-0">
             {[
               { id: "all", labelRu: "Все объекты", labelTg: "Ҳама" },
@@ -248,6 +382,24 @@ export default function MapPage() {
                 </button>
               );
             })}
+
+            {/* Advanced Filters Modal Button */}
+            <button
+              onClick={() => setShowFiltersModal(true)}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all shrink-0 cursor-pointer border ${
+                activeFiltersCount > 0
+                  ? "bg-emerald-50 border-emerald-300 text-emerald-800"
+                  : "border-slate-200 hover:bg-slate-50 text-slate-700 bg-white"
+              }`}
+            >
+              <SlidersHorizontal className="w-3.5 h-3.5 text-emerald-600" />
+              <span>{isTg ? "Филтрҳо" : "Фильтры"}</span>
+              {activeFiltersCount > 0 && (
+                <span className="w-4 h-4 rounded-full bg-emerald-600 text-white text-[10px] font-black flex items-center justify-center">
+                  {activeFiltersCount}
+                </span>
+              )}
+            </button>
           </div>
 
           {/* Mobile View Toggle Button */}
@@ -354,19 +506,19 @@ export default function MapPage() {
               </div>
             </div>
 
-            {/* Results counter */}
+            {/* Results counter & Active Filters Badges */}
             <div className="flex items-center justify-between text-xs text-slate-500 font-medium pt-1">
               <span>
                 {isTg
                   ? `${sortedProperties.length} амвол дар харита ёфт шуд`
                   : `Найдено ${sortedProperties.length} объектов на карте`}
               </span>
-              {selectedPropertyId && (
+              {(selectedPropertyId || activeFiltersCount > 0) && (
                 <button
-                  onClick={() => setSelectedPropertyId(null)}
+                  onClick={resetAllFilters}
                   className="text-emerald-600 hover:underline text-[11px] font-bold cursor-pointer"
                 >
-                  {isTg ? "Тоза кардани интихоб" : "Сбросить выбор"}
+                  {isTg ? "Тоза кардани ҳама" : "Сбросить фильтры"}
                 </button>
               )}
             </div>
@@ -381,8 +533,16 @@ export default function MapPage() {
                   {isTg ? "Ҳеҷ чиз ёфт нашуд" : "Ничего не найдено"}
                 </div>
                 <div className="text-xs text-slate-400 mt-1">
-                  {isTg ? "Филтрҳоро тағйир диҳед" : "Попробуйте изменить параметры поиска"}
+                  {isTg
+                    ? "Филтрҳоро тағйир диҳед ё тоза кунед"
+                    : "Попробуйте изменить или сбросить фильтры"}
                 </div>
+                <button
+                  onClick={resetAllFilters}
+                  className="mt-3 px-3 py-1.5 bg-emerald-600 text-white rounded-xl text-xs font-bold shadow-sm"
+                >
+                  {isTg ? "Сброси филтрҳо" : "Сбросить все"}
+                </button>
               </div>
             ) : (
               sortedProperties.map((prop) => {
@@ -460,7 +620,9 @@ export default function MapPage() {
                           </h4>
                           <div className="text-[11px] text-slate-500 font-medium mt-0.5">
                             {prop.category === "house"
-                              ? `${prop.rooms || 0} комн. · ${prop.landAreaSotki || "6"} сот.`
+                              ? `${prop.rooms || 0} комн. · ${
+                                  prop.landAreaSotki || "6"
+                                } сот.`
                               : `${prop.rooms || 0} комн. · ${prop.areaM2} м²`}
                           </div>
                         </div>
@@ -496,6 +658,9 @@ export default function MapPage() {
             activePresetId={activeCityId}
             currency={currency}
             language={language}
+            userLocation={userLocation}
+            radiusKm={radiusKm}
+            onLocateUser={(coords) => setUserLocation(coords)}
             className="w-full h-full"
           />
 
@@ -621,6 +786,233 @@ export default function MapPage() {
           </div>
         </div>
       </div>
+
+      {/* Advanced Filters Modal (Stage 5) */}
+      {showFiltersModal && (
+        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
+          <div className="bg-white rounded-2xl shadow-2xl max-w-lg w-full max-h-[90vh] flex flex-col overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+            {/* Modal Header */}
+            <div className="px-5 py-4 border-b border-slate-100 flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <SlidersHorizontal className="w-5 h-5 text-emerald-600" />
+                <h3 className="text-base font-bold text-slate-900">
+                  {isTg ? "Филтрҳои пешрафта" : "Расширенные фильтры"}
+                </h3>
+              </div>
+              <button
+                onClick={() => setShowFiltersModal(false)}
+                className="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-500 transition-colors"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            {/* Modal Scrollable Body */}
+            <div className="flex-1 overflow-y-auto p-5 space-y-5">
+              {/* 1. Price Budget Range */}
+              <div>
+                <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">
+                  {isTg ? `Буҷет (${currency})` : `Бюджет (${currency})`}
+                </label>
+                <div className="grid grid-cols-2 gap-2.5 mb-2">
+                  <div>
+                    <input
+                      type="number"
+                      placeholder={isTg ? "Аз" : "От"}
+                      value={priceMin ?? ""}
+                      onChange={(e) =>
+                        setPriceMin(e.target.value ? Number(e.target.value) : null)
+                      }
+                      className="w-full px-3 py-2 border border-slate-200 rounded-xl text-xs font-semibold focus:outline-hidden focus:ring-2 focus:ring-emerald-500"
+                    />
+                  </div>
+                  <div>
+                    <input
+                      type="number"
+                      placeholder={isTg ? "То" : "До"}
+                      value={priceMax ?? ""}
+                      onChange={(e) =>
+                        setPriceMax(e.target.value ? Number(e.target.value) : null)
+                      }
+                      className="w-full px-3 py-2 border border-slate-200 rounded-xl text-xs font-semibold focus:outline-hidden focus:ring-2 focus:ring-emerald-500"
+                    />
+                  </div>
+                </div>
+
+                {/* Quick budget chips */}
+                <div className="flex flex-wrap gap-1.5">
+                  {(currency === "USD"
+                    ? [
+                        { label: "до $40k", max: 40000 },
+                        { label: "до $70k", max: 70000 },
+                        { label: "до $120k", max: 120000 },
+                        { label: "от $120k", min: 120000 },
+                      ]
+                    : [
+                        { label: "то 400 ҳ.", max: 400000 },
+                        { label: "то 800 ҳ.", max: 800000 },
+                        { label: "то 1.3 млн", max: 1300000 },
+                        { label: "аз 1.3 млн", min: 1300000 },
+                      ]
+                  ).map((preset, idx) => (
+                    <button
+                      key={idx}
+                      onClick={() => {
+                        if (preset.max) setPriceMax(preset.max);
+                        if (preset.min) setPriceMin(preset.min);
+                      }}
+                      className="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-medium transition-colors"
+                    >
+                      {preset.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* 2. Area Range (m²) */}
+              <div>
+                <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">
+                  {isTg ? "Масоҳат (м²)" : "Площадь (м²)"}
+                </label>
+                <div className="grid grid-cols-2 gap-2.5 mb-2">
+                  <input
+                    type="number"
+                    placeholder={isTg ? "Аз м²" : "От м²"}
+                    value={areaMin ?? ""}
+                    onChange={(e) =>
+                      setAreaMin(e.target.value ? Number(e.target.value) : null)
+                    }
+                    className="w-full px-3 py-2 border border-slate-200 rounded-xl text-xs font-semibold focus:outline-hidden focus:ring-2 focus:ring-emerald-500"
+                  />
+                  <input
+                    type="number"
+                    placeholder={isTg ? "То м²" : "До м²"}
+                    value={areaMax ?? ""}
+                    onChange={(e) =>
+                      setAreaMax(e.target.value ? Number(e.target.value) : null)
+                    }
+                    className="w-full px-3 py-2 border border-slate-200 rounded-xl text-xs font-semibold focus:outline-hidden focus:ring-2 focus:ring-emerald-500"
+                  />
+                </div>
+                <div className="flex flex-wrap gap-1.5">
+                  {[
+                    { label: "до 50 м²", max: 50 },
+                    { label: "50–80 м²", min: 50, max: 80 },
+                    { label: "80–120 м²", min: 80, max: 120 },
+                    { label: "от 120 м²", min: 120 },
+                  ].map((preset, idx) => (
+                    <button
+                      key={idx}
+                      onClick={() => {
+                        setAreaMin(preset.min ?? null);
+                        setAreaMax(preset.max ?? null);
+                      }}
+                      className="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-medium transition-colors"
+                    >
+                      {preset.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* 3. Construction Stage (for residential complexes) */}
+              <div>
+                <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">
+                  {isTg ? "Марҳилаи сохтмон" : "Этап строительства (ЖК)"}
+                </label>
+                <div className="grid grid-cols-3 gap-2">
+                  {[
+                    { id: "all", labelRu: "Все", labelTg: "Ҳама" },
+                    { id: "ready", labelRu: "Сдан", labelTg: "Сдан" },
+                    { id: "building", labelRu: "Строится", labelTg: "Строится" },
+                  ].map((stage) => {
+                    const isActive = selectedStage === stage.id;
+                    return (
+                      <button
+                        key={stage.id}
+                        onClick={() => setSelectedStage(stage.id as any)}
+                        className={`py-2 px-3 rounded-xl text-xs font-bold transition-all ${
+                          isActive
+                            ? "bg-emerald-600 text-white shadow-sm"
+                            : "bg-slate-100 hover:bg-slate-200 text-slate-700"
+                        }`}
+                      >
+                        {isTg ? stage.labelTg : stage.labelRu}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* 4. Radius Search from User Location */}
+              <div>
+                <div className="flex items-center justify-between mb-2">
+                  <label className="text-xs font-bold uppercase tracking-wider text-slate-500">
+                    {isTg ? "Ҷустуҷӯ аз рӯи радиус" : "Поиск по радиусу от меня"}
+                  </label>
+                  {userLocation && (
+                    <span className="text-[11px] font-semibold text-emerald-600">
+                      📍 {isTg ? "Макон фаъол" : "Геопозиция определена"}
+                    </span>
+                  )}
+                </div>
+
+                <div className="grid grid-cols-4 gap-2">
+                  {[
+                    { val: null, label: isTg ? "Ҳама" : "Любой" },
+                    { val: 2, label: "2 км" },
+                    { val: 5, label: "5 км" },
+                    { val: 10, label: "10 км" },
+                  ].map((rad) => {
+                    const isActive = radiusKm === rad.val;
+                    return (
+                      <button
+                        key={String(rad.val)}
+                        onClick={() => setRadiusKm(rad.val)}
+                        className={`py-2 px-2 text-center rounded-xl text-xs font-bold transition-all ${
+                          isActive
+                            ? "bg-emerald-600 text-white shadow-sm"
+                            : "bg-slate-100 hover:bg-slate-200 text-slate-700"
+                        }`}
+                      >
+                        {rad.label}
+                      </button>
+                    );
+                  })}
+                </div>
+
+                {!userLocation && (
+                  <p className="text-[11px] text-slate-400 mt-1.5">
+                    {isTg
+                      ? "Барои филтр аз рӯи радиус тугмаи геолокатсияро дар харита пахш кунед"
+                      : "Для радиуса включите кнопку геолокации 📍 на карте"}
+                  </p>
+                )}
+              </div>
+            </div>
+
+            {/* Modal Footer */}
+            <div className="p-4 border-t border-slate-100 bg-slate-50/70 flex items-center justify-between gap-3">
+              <button
+                onClick={resetAllFilters}
+                className="flex items-center gap-1.5 px-3 py-2 text-xs font-bold text-slate-600 hover:text-slate-900 transition-colors"
+              >
+                <RotateCcw className="w-3.5 h-3.5" />
+                <span>{isTg ? "Тоза кардан" : "Сбросить"}</span>
+              </button>
+
+              <button
+                onClick={() => setShowFiltersModal(false)}
+                className="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold transition-colors shadow-sm"
+              >
+                {isTg
+                  ? `Нишон додани ${filteredProperties.length} амвол`
+                  : `Показать ${filteredProperties.length} объектов`}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

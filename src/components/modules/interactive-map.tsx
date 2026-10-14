@@ -39,6 +39,9 @@ export interface InteractiveMapProps {
   onBoundsChange?: (bounds: BoundingBox, visibleItems: MapPropertyItem[]) => void;
   defaultCenter?: [number, number];
   defaultZoom?: number;
+  userLocation?: { lat: number; lng: number } | null;
+  radiusKm?: number | null;
+  onLocateUser?: (coords: { lat: number; lng: number }) => void;
 }
 
 export function InteractiveMap({
@@ -54,12 +57,16 @@ export function InteractiveMap({
   onBoundsChange,
   defaultCenter,
   defaultZoom,
+  userLocation,
+  radiusKm,
+  onLocateUser,
 }: InteractiveMapProps) {
   const mapWrapperRef = useRef<HTMLDivElement>(null);
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<L.Map | null>(null);
   const markersLayerRef = useRef<L.LayerGroup | null>(null);
   const userMarkerRef = useRef<L.Marker | null>(null);
+  const radiusCircleRef = useRef<L.Circle | null>(null);
   const tileLayerRef = useRef<L.TileLayer | null>(null);
   const labelLayerRef = useRef<L.TileLayer | null>(null);
 
@@ -527,6 +534,30 @@ export function InteractiveMap({
     });
   }, [properties, selectedPropertyId, hoveredPropertyId, currency, language, currentZoom]);
 
+  // Handle Radius Circle Visualizer
+  useEffect(() => {
+    const map = mapInstanceRef.current;
+    if (!map) return;
+
+    if (radiusCircleRef.current) {
+      radiusCircleRef.current.remove();
+      radiusCircleRef.current = null;
+    }
+
+    if (userLocation && radiusKm && radiusKm > 0) {
+      const circle = L.circle([userLocation.lat, userLocation.lng], {
+        radius: radiusKm * 1000,
+        color: "#059669",
+        fillColor: "#10b981",
+        fillOpacity: 0.12,
+        weight: 2,
+        dashArray: "6, 6",
+      }).addTo(map);
+
+      radiusCircleRef.current = circle;
+    }
+  }, [userLocation, radiusKm]);
+
   // Geolocation Handler
   const handleLocateUser = () => {
     if (!navigator.geolocation) {
@@ -561,6 +592,11 @@ export function InteractiveMap({
           });
           const marker = L.marker([latitude, longitude], { icon: userIcon }).addTo(map);
           userMarkerRef.current = marker;
+        }
+
+        // Notify parent callback
+        if (onLocateUser) {
+          onLocateUser({ lat: latitude, lng: longitude });
         }
       },
       (err) => {
