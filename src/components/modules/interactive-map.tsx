@@ -15,6 +15,7 @@ import {
   Plus,
   Minus,
   Maximize2,
+  Minimize2,
   ExternalLink,
   Phone,
   Navigation,
@@ -50,13 +51,16 @@ export function InteractiveMap({
   defaultCenter,
   defaultZoom,
 }: InteractiveMapProps) {
+  const mapWrapperRef = useRef<HTMLDivElement>(null);
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<L.Map | null>(null);
   const markersLayerRef = useRef<L.LayerGroup | null>(null);
   const userMarkerRef = useRef<L.Marker | null>(null);
   const tileLayerRef = useRef<L.TileLayer | null>(null);
+  const labelLayerRef = useRef<L.TileLayer | null>(null);
 
-  const [tileMode, setTileMode] = useState<"street" | "satellite">("street");
+  const [tileMode, setTileMode] = useState<"street" | "hybrid" | "satellite">("street");
+  const [isFullscreen, setIsFullscreen] = useState(false);
   const [isLocating, setIsLocating] = useState(false);
   const [currentZoom, setCurrentZoom] = useState(defaultZoom || 13);
 
@@ -96,6 +100,15 @@ export function InteractiveMap({
         .addAttribution(
           '&copy; <a href="https://carto.com/">CARTO</a> &copy; <a href="https://openstreetmap.org">OSM</a>'
         )
+        .addTo(map);
+
+      // Metric scale control in bottom-left
+      L.control
+        .scale({
+          metric: true,
+          imperial: false,
+          position: "bottomleft",
+        })
         .addTo(map);
 
       // Markers Layer Group
@@ -139,27 +152,74 @@ export function InteractiveMap({
     };
   }, []);
 
-  // Handle Tile Mode (Street vs Satellite)
+  // Handle Fullscreen state change
+  useEffect(() => {
+    const handleFsChange = () => {
+      setIsFullscreen(Boolean(document.fullscreenElement));
+      setTimeout(() => {
+        mapInstanceRef.current?.invalidateSize();
+      }, 150);
+    };
+
+    document.addEventListener("fullscreenchange", handleFsChange);
+    return () => {
+      document.removeEventListener("fullscreenchange", handleFsChange);
+    };
+  }, []);
+
+  const toggleFullscreen = () => {
+    const wrapper = mapWrapperRef.current;
+    if (!wrapper) return;
+
+    if (!document.fullscreenElement) {
+      wrapper.requestFullscreen?.().catch(() => {});
+    } else {
+      document.exitFullscreen?.().catch(() => {});
+    }
+  };
+
+  // Handle Tile Mode (Street vs Hybrid vs Satellite)
   useEffect(() => {
     const map = mapInstanceRef.current;
-    if (!map || !tileLayerRef.current) return;
+    if (!map) return;
 
-    tileLayerRef.current.remove();
+    if (tileLayerRef.current) {
+      tileLayerRef.current.remove();
+      tileLayerRef.current = null;
+    }
+    if (labelLayerRef.current) {
+      labelLayerRef.current.remove();
+      labelLayerRef.current = null;
+    }
 
-    if (tileMode === "satellite") {
-      const satLayer = L.tileLayer(
-        "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
-        { maxZoom: 18 }
-      );
-      satLayer.addTo(map);
-      tileLayerRef.current = satLayer;
-    } else {
+    if (tileMode === "street") {
       const streetLayer = L.tileLayer(
         "https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png",
         { maxZoom: 19, subdomains: "abcd" }
       );
       streetLayer.addTo(map);
       tileLayerRef.current = streetLayer;
+    } else if (tileMode === "hybrid") {
+      const satLayer = L.tileLayer(
+        "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+        { maxZoom: 18 }
+      );
+      satLayer.addTo(map);
+      tileLayerRef.current = satLayer;
+
+      const labelLayer = L.tileLayer(
+        "https://{s}.basemaps.cartocdn.com/rastertiles/voyager_only_labels/{z}/{x}/{y}{r}.png",
+        { maxZoom: 19, subdomains: "abcd", pane: "overlayPane" }
+      );
+      labelLayer.addTo(map);
+      labelLayerRef.current = labelLayer;
+    } else if (tileMode === "satellite") {
+      const satLayer = L.tileLayer(
+        "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+        { maxZoom: 18 }
+      );
+      satLayer.addTo(map);
+      tileLayerRef.current = satLayer;
     }
   }, [tileMode]);
 
@@ -395,18 +455,21 @@ export function InteractiveMap({
   };
 
   return (
-    <div className={`relative ${className} overflow-hidden rounded-2xl border border-slate-200/80 shadow-sm`}>
+    <div
+      ref={mapWrapperRef}
+      className={`relative ${className} overflow-hidden rounded-2xl border border-slate-200/80 shadow-sm`}
+    >
       {/* Map DOM Container */}
       <div ref={mapContainerRef} className="w-full h-full min-h-[500px] z-0" />
 
       {/* Floating Map Controls */}
       {showControls && (
         <>
-          {/* Top-Right: Layer Switcher (Street / Satellite) */}
+          {/* Top-Right: Layer Switcher (Street / Hybrid / Satellite) */}
           <div className="absolute top-4 right-4 z-20 flex items-center bg-white/95 backdrop-blur-md rounded-xl p-1 shadow-md border border-slate-200 text-xs font-semibold text-slate-700">
             <button
               onClick={() => setTileMode("street")}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-all ${
+              className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg transition-all cursor-pointer ${
                 tileMode === "street"
                   ? "bg-emerald-600 text-white shadow-sm font-bold"
                   : "hover:bg-slate-100 text-slate-600"
@@ -416,8 +479,19 @@ export function InteractiveMap({
               <span>{isTg ? "Харита" : "Схема"}</span>
             </button>
             <button
+              onClick={() => setTileMode("hybrid")}
+              className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg transition-all cursor-pointer ${
+                tileMode === "hybrid"
+                  ? "bg-emerald-600 text-white shadow-sm font-bold"
+                  : "hover:bg-slate-100 text-slate-600"
+              }`}
+            >
+              <Layers className="w-3.5 h-3.5" />
+              <span>{isTg ? "Гибрид" : "Гибрид"}</span>
+            </button>
+            <button
               onClick={() => setTileMode("satellite")}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-all ${
+              className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg transition-all cursor-pointer ${
                 tileMode === "satellite"
                   ? "bg-emerald-600 text-white shadow-sm font-bold"
                   : "hover:bg-slate-100 text-slate-600"
@@ -428,29 +502,53 @@ export function InteractiveMap({
             </button>
           </div>
 
-          {/* Bottom-Right: Zoom & Geolocation Actions */}
+          {/* Bottom-Right: Zoom, Fullscreen & Geolocation Actions */}
           <div className="absolute bottom-6 right-4 z-20 flex flex-col items-center gap-2">
+            <button
+              onClick={toggleFullscreen}
+              title={
+                isFullscreen
+                  ? isTg
+                    ? "Баромадан аз тамоми экран"
+                    : "Свернуть карту"
+                  : isTg
+                  ? "Тамоми экран"
+                  : "На весь экран"
+              }
+              className="w-10 h-10 rounded-xl bg-white/95 backdrop-blur-md shadow-md border border-slate-200 flex items-center justify-center text-slate-700 hover:text-emerald-600 hover:bg-slate-50 transition-all cursor-pointer"
+            >
+              {isFullscreen ? (
+                <Minimize2 className="w-5 h-5" />
+              ) : (
+                <Maximize2 className="w-5 h-5" />
+              )}
+            </button>
+
             <button
               onClick={handleLocateUser}
               disabled={isLocating}
               title={isTg ? "Макони ман" : "Моё местоположение"}
-              className="w-10 h-10 rounded-xl bg-white/95 backdrop-blur-md shadow-md border border-slate-200 flex items-center justify-center text-slate-700 hover:text-emerald-600 hover:bg-slate-50 transition-all disabled:opacity-50"
+              className="w-10 h-10 rounded-xl bg-white/95 backdrop-blur-md shadow-md border border-slate-200 flex items-center justify-center text-slate-700 hover:text-emerald-600 hover:bg-slate-50 transition-all disabled:opacity-50 cursor-pointer"
             >
-              <Locate className={`w-5 h-5 ${isLocating ? "animate-spin text-emerald-600" : ""}`} />
+              <Locate
+                className={`w-5 h-5 ${
+                  isLocating ? "animate-spin text-emerald-600" : ""
+                }`}
+              />
             </button>
 
             <div className="flex flex-col bg-white/95 backdrop-blur-md rounded-xl shadow-md border border-slate-200 overflow-hidden divide-y divide-slate-100">
               <button
                 onClick={() => mapInstanceRef.current?.zoomIn()}
                 title={isTg ? "Наздик кардан" : "Приблизить"}
-                className="w-10 h-10 flex items-center justify-center text-slate-700 hover:text-emerald-600 hover:bg-slate-50 transition-colors"
+                className="w-10 h-10 flex items-center justify-center text-slate-700 hover:text-emerald-600 hover:bg-slate-50 transition-colors cursor-pointer"
               >
                 <Plus className="w-5 h-5" />
               </button>
               <button
                 onClick={() => mapInstanceRef.current?.zoomOut()}
                 title={isTg ? "Дур кардан" : "Отдалить"}
-                className="w-10 h-10 flex items-center justify-center text-slate-700 hover:text-emerald-600 hover:bg-slate-50 transition-colors"
+                className="w-10 h-10 flex items-center justify-center text-slate-700 hover:text-emerald-600 hover:bg-slate-50 transition-colors cursor-pointer"
               >
                 <Minus className="w-5 h-5" />
               </button>
