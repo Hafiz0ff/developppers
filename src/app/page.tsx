@@ -244,7 +244,7 @@ const RECENT_CLASSIFIEDS = [
 
 export default function HomePage() {
   const { formatPrice, currency } = useCurrency();
-  const { t, tDual, language } = useLanguage();
+  const { t, tDual, language, setLanguage } = useLanguage();
   const isTg = language === "tg";
   const [activeTab, setActiveTab] = useState<"new" | "resale" | "rent" | "houses">("new");
   const [selectedCity, setSelectedCity] = useState("khujand");
@@ -330,32 +330,64 @@ export default function HomePage() {
           {/* 2. CIAN-STYLE SEARCH CARD WITH CLEAN GLASSMORPHISM (51% TRANSPARENCY / 49% OPACITY) */}
           <div className="relative mx-auto w-full max-w-5xl">
             <div className="bg-white/[0.49] backdrop-blur-2xl border border-white/60 rounded-2xl p-5 sm:p-6 shadow-2xl shadow-slate-950/20">
-              {/* Segment Tabs (CIAN Underline Style) */}
-              <div className="flex items-center gap-6 overflow-x-auto overflow-y-hidden [scrollbar-width:none] [&::-webkit-scrollbar]:hidden pb-0 mb-5 border-b border-slate-200/80">
-                {[
-                  { id: "new", label: tDual("Новостройки (ЖК)", "Биноҳои навсохт (Маҷмааҳо)"), icon: Building2 },
-                  { id: "resale", label: tDual("Купить вторичку", "Хонаҳои пешина (Вторичка)"), icon: Home },
-                  { id: "houses", label: tDual("Дома и Ҳавлӣ", "Ҳавлиҳо ва бӯстонсароҳо"), icon: Trees },
-                  { id: "rent", label: tDual("Аренда & Коммерция", "Иҷора ва амволи тиҷоратӣ"), icon: Store },
-                ].map((tab) => {
-                  const Icon = tab.icon;
-                  const isActive = activeTab === tab.id;
-                  return (
-                    <button
-                      key={tab.id}
-                      type="button"
-                      onClick={() => setActiveTab(tab.id as typeof activeTab)}
-                      className={`flex items-center gap-2 pb-3 px-1 text-sm transition-all whitespace-nowrap border-b-2 -mb-px ${
-                        isActive
-                          ? "text-emerald-700 border-emerald-600 font-semibold"
-                          : "text-slate-500 hover:text-slate-800 border-transparent font-medium"
-                      }`}
-                    >
-                      <Icon className={`h-4 w-4 ${isActive ? "text-emerald-600" : "text-slate-400"}`} />
-                      {tab.label}
-                    </button>
-                  );
-                })}
+              {/* Segment Tabs (CIAN Underline Style) + Quick Language Switcher */}
+              <div className="flex items-center justify-between gap-4 pb-0 mb-5 border-b border-slate-200/80">
+                <div className="flex items-center gap-6 overflow-x-auto overflow-y-hidden [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+                  {[
+                    { id: "new", label: tDual("Новостройки (ЖК)", "Биноҳои навсохт (Маҷмааҳо)"), icon: Building2 },
+                    { id: "resale", label: tDual("Купить вторичку", "Хонаҳои пешина (Вторичка)"), icon: Home },
+                    { id: "houses", label: tDual("Дома и Ҳавлӣ", "Ҳавлиҳо ва бӯстонсароҳо"), icon: Trees },
+                    { id: "rent", label: tDual("Аренда & Коммерция", "Иҷора ва амволи тиҷоратӣ"), icon: Store },
+                  ].map((tab) => {
+                    const Icon = tab.icon;
+                    const isActive = activeTab === tab.id;
+                    return (
+                      <button
+                        key={tab.id}
+                        type="button"
+                        onClick={() => setActiveTab(tab.id as typeof activeTab)}
+                        className={`flex items-center gap-2 pb-3 px-1 text-sm transition-all whitespace-nowrap border-b-2 -mb-px ${
+                          isActive
+                            ? "text-emerald-700 border-emerald-600 font-semibold"
+                            : "text-slate-500 hover:text-slate-800 border-transparent font-medium"
+                        }`}
+                      >
+                        <Icon className={`h-4 w-4 ${isActive ? "text-emerald-600" : "text-slate-400"}`} />
+                        {tab.label}
+                      </button>
+                    );
+                  })}
+                </div>
+
+                {/* In-Card Language Toggle Pill */}
+                <div className="flex items-center gap-1 shrink-0 pb-2.5">
+                  <button
+                    type="button"
+                    onClick={() => setLanguage("ru")}
+                    className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
+                      language === "ru"
+                        ? "bg-white text-emerald-800 shadow-xs border border-emerald-300"
+                        : "text-slate-600 hover:text-slate-900 hover:bg-white/50"
+                    }`}
+                    title="Русский язык"
+                  >
+                    <span>🇷🇺</span>
+                    <span>РУ</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setLanguage("tg")}
+                    className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
+                      language === "tg"
+                        ? "bg-white text-emerald-800 shadow-xs border border-emerald-300"
+                        : "text-slate-600 hover:text-slate-900 hover:bg-white/50"
+                    }`}
+                    title="Забони тоҷикӣ"
+                  >
+                    <span>🇹🇯</span>
+                    <span>ТҶ</span>
+                  </button>
+                </div>
               </div>
 
               {/* Filter Inputs Grid - fixed control height and enough room for every option */}

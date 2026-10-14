@@ -30,6 +30,7 @@ import {
   ChevronDown,
   TrendingUp,
   Users,
+  Check,
 } from "lucide-react";
 
 
@@ -121,22 +122,28 @@ export function Header() {
 
             {/* Currency Selector */}
             <DropdownMenu>
-              <DropdownMenuTrigger className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg border border-border bg-muted/50 text-xs font-semibold hover:bg-muted transition-colors outline-hidden">
-                {currency}
-                <ChevronDown className="h-3 w-3 text-muted-foreground" />
+              <DropdownMenuTrigger className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-slate-200 bg-white/90 hover:bg-white text-slate-800 text-xs font-bold shadow-xs hover:border-emerald-500 hover:text-emerald-700 transition-all outline-hidden cursor-pointer">
+                <span>{currency}</span>
+                <ChevronDown className="h-3 w-3 text-slate-400" />
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-36">
+              <DropdownMenuContent align="end" className="w-40 p-1.5 rounded-xl bg-white shadow-xl border border-slate-200/80 z-50">
                 <DropdownMenuItem
                   onClick={() => setCurrency("TJS")}
-                  className={`cursor-pointer text-xs ${currency === "TJS" ? "text-emerald-700 font-semibold" : ""}`}
+                  className={`cursor-pointer text-xs flex items-center justify-between px-3 py-2 rounded-lg font-semibold transition-colors ${
+                    currency === "TJS" ? "text-emerald-700 bg-emerald-50/80 border border-emerald-200/60" : "text-slate-700 hover:bg-slate-100"
+                  }`}
                 >
-                  TJS (Сомони)
+                  <span>TJS (Сомонӣ)</span>
+                  {currency === "TJS" && <Check className="h-3.5 w-3.5 text-emerald-600" />}
                 </DropdownMenuItem>
                 <DropdownMenuItem
                   onClick={() => setCurrency("USD")}
-                  className={`cursor-pointer text-xs ${currency === "USD" ? "text-emerald-700 font-semibold" : ""}`}
+                  className={`cursor-pointer text-xs flex items-center justify-between px-3 py-2 rounded-lg font-semibold transition-colors mt-1 ${
+                    currency === "USD" ? "text-emerald-700 bg-emerald-50/80 border border-emerald-200/60" : "text-slate-700 hover:bg-slate-100"
+                  }`}
                 >
-                  USD (Доллар $)
+                  <span>USD (Доллар $)</span>
+                  {currency === "USD" && <Check className="h-3.5 w-3.5 text-emerald-600" />}
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
