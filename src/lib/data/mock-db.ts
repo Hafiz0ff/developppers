@@ -104,6 +104,9 @@ export interface ProjectData {
   storageConfig?: ProjectStorageConfig;
   parkingSpots?: ParkingSpot[];
   storageUnits?: StorageUnit[];
+  // Documents module
+  documentsConfig?: ProjectDocumentsConfig;
+  officialDocuments?: ProjectDocument[];
 }
 
 import {
@@ -116,6 +119,11 @@ import {
   generateParkingSpotsForQayroqum,
   generateStorageUnitsForQayroqum,
 } from "@/lib/parking-storage";
+import {
+  ProjectDocument,
+  ProjectDocumentsConfig,
+} from "@/types/documents";
+import { generateOfficialDocumentsForQayroqum } from "@/lib/documents";
 import { ISTIQLOL_DEVELOPER, ISTIQLOL_PROJECTS } from "./istiqlol-data";
 import { TOJ_SOHTMON_DEVELOPER, TOJ_SOHTMON_PROJECTS } from "./toch-sohtmon-data";
 
@@ -343,6 +351,15 @@ export const INITIAL_PROJECTS: ProjectData[] = [
     },
     parkingSpots: generateParkingSpotsForQayroqum(),
     storageUnits: generateStorageUnitsForQayroqum(),
+    documentsConfig: {
+      isEnabled: true,
+      titlePrefix: "Документы",
+      titlePrefixTg: "Ҳуҷҷатҳо",
+      isWatermarkEnabled: true,
+      watermarkText: "Qayroqum Avenue • Танҳо барои шиносоӣ",
+      watermarkOpacity: 0.18,
+    },
+    officialDocuments: generateOfficialDocumentsForQayroqum(),
   },
 
   // 2. Все 15 реальных ЖК строительной фирмы «Истиқлол Гурӯҳ» (Istiqlol Group)

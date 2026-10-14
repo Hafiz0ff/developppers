@@ -40,6 +40,7 @@ import {
   Grid3X3,
   SlidersHorizontal,
   Car,
+  FileText,
 } from "lucide-react";
 import { ResponsiveTooltip } from "@/components/ui/responsive-tooltip";
 import { FinishingFeatureDialog } from "@/components/modules/projects/finishing-feature-dialog";
@@ -51,6 +52,7 @@ import { ProjectInsolationSettings } from "@/components/modules/developer-admin/
 import { ProjectAnalyticsTab } from "@/components/modules/developer-admin/project-analytics-tab";
 import { ProjectPreviewModal } from "@/components/modules/developer-admin/project-preview-modal";
 import { ProjectParkingStorageManager } from "@/components/modules/developer-admin/project-parking-storage-manager";
+import { ProjectDocumentsManager } from "@/components/modules/developer-admin/project-documents-manager";
 import { useLanguage } from "@/lib/i18n/language-context";
 
 export default function EditProjectPage() {
@@ -115,7 +117,7 @@ export default function EditProjectPage() {
   const [images, setImages] = useState<string[]>(proj.images || [proj.coverImageUrl]);
   const [previewOpen, setPreviewOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<
-    "params" | "gallery" | "interactive" | "analytics" | "parking_storage"
+    "params" | "gallery" | "interactive" | "parking_storage" | "documents" | "analytics"
   >("params");
 
   // Custom building features handlers
@@ -269,6 +271,12 @@ export default function EditProjectPage() {
             id: "parking_storage",
             label: isTg ? "Таваққуфгоҳ ва анборхонаҳо" : "Паркинг и кладовые",
             icon: Car,
+          },
+          {
+            id: "documents",
+            label: isTg ? "Ҳуҷҷатҳо" : "Документы",
+            icon: FileText,
+            badge: (proj.officialDocuments?.filter((d) => d.isPublished).length || 0).toString(),
           },
           {
             id: "analytics",
@@ -1005,7 +1013,21 @@ export default function EditProjectPage() {
         />
       )}
 
-      {/* TAB 5: Complex Engagement Analytics (Section 3.4 of Spec) */}
+      {/* TAB 5: Documents Manager */}
+      {activeTab === "documents" && (
+        <ProjectDocumentsManager
+          projectId={proj.id}
+          projectName={isTg && proj.nameTg ? proj.nameTg : proj.name}
+          initialConfig={proj.documentsConfig}
+          initialDocuments={proj.officialDocuments}
+          onSave={(data) => {
+            proj.documentsConfig = data.config;
+            proj.officialDocuments = data.documents;
+          }}
+        />
+      )}
+
+      {/* TAB 6: Complex Engagement Analytics (Section 3.4 of Spec) */}
       {activeTab === "analytics" && (
         <ProjectAnalyticsTab projectName={proj.name} />
       )}

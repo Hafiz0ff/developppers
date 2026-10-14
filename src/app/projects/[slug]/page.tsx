@@ -23,6 +23,7 @@ import { ProjectParkingSection } from "@/components/modules/projects/project-par
 import { ProjectStorageSection } from "@/components/modules/projects/project-storage-section";
 import { ParkingChessboardModal } from "@/components/modules/projects/parking-chessboard-modal";
 import { StorageChessboardModal } from "@/components/modules/projects/storage-chessboard-modal";
+import { ProjectDocumentsSection } from "@/components/modules/projects/project-documents-section";
 
 import {
   Building2,
@@ -590,6 +591,13 @@ export default function PublicProjectPage() {
           </div>
         </section>
       )}
+
+      {/* OFFICIAL PROJECT DOCUMENTS (STRICTLY AFTER CONSTRUCTION PROGRESS) */}
+      <ProjectDocumentsSection
+        projectName={displayName}
+        config={project.documentsConfig}
+        documents={project.officialDocuments}
+      />
     </div>
   );
 }
