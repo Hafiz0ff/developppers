@@ -18,6 +18,9 @@ import { ShaderBackground } from "@/components/ui/shader-background";
 import { Badge } from "@/components/ui/badge";
 import { UnitData } from "@/lib/data/mock-db";
 import { BuildingCrossSection } from "./building-cross-section";
+import { ShowcaseGeneralView } from "./showcase-general-view";
+import { ShowcaseWindowView } from "./showcase-window-view";
+import { ShowcaseLayoutView } from "./showcase-layout-view";
 
 export type ShowcaseMode =
   | "photos"
@@ -87,41 +90,11 @@ export function ProjectVisualShowcase({
     badgeText?: string;
   }> = [
     { id: "photos", label: "Фото", icon: Camera, isAvailable: true },
-    {
-      id: "general_view",
-      label: "Общий вид",
-      icon: Compass,
-      isAvailable: false,
-      badgeText: "Этап 3",
-    },
-    {
-      id: "section_plan",
-      label: "План секции",
-      icon: Building,
-      isAvailable: false,
-      badgeText: "Этап 3",
-    },
-    {
-      id: "cross_section",
-      label: "Вид в срезе",
-      icon: Layers,
-      isAvailable: true,
-      badgeText: "Шахматка",
-    },
-    {
-      id: "window_view",
-      label: "Вид из окон",
-      icon: Eye,
-      isAvailable: false,
-      badgeText: "Этап 3",
-    },
-    {
-      id: "layout",
-      label: "Планировка",
-      icon: FileText,
-      isAvailable: false,
-      badgeText: "Этап 3",
-    },
+    { id: "general_view", label: "Общий вид", icon: Compass, isAvailable: true },
+    { id: "section_plan", label: "План секции", icon: Building, isAvailable: true },
+    { id: "cross_section", label: "Вид в срезе", icon: Layers, isAvailable: true },
+    { id: "window_view", label: "Вид из окон", icon: Eye, isAvailable: true },
+    { id: "layout", label: "Планировка", icon: FileText, isAvailable: true },
   ];
 
   const handleModeChange = (mode: ShowcaseMode) => {
@@ -195,7 +168,15 @@ export function ProjectVisualShowcase({
           </div>
         )}
 
-        {/* 2. CROSS SECTION & SECTION PLAN MODE (Sections 7 & 8 of Spec) */}
+        {/* 2. GENERAL VIEW (AERIAL MAP & INFRASTRUCTURE POI) (Section 6 of Spec) */}
+        {activeMode === "general_view" && (
+          <ShowcaseGeneralView
+            projectName={projectName}
+            onSelectBuilding={() => setActiveMode("cross_section")}
+          />
+        )}
+
+        {/* 3. CROSS SECTION & SECTION PLAN MODE (Sections 7 & 8 of Spec) */}
         {(activeMode === "cross_section" || activeMode === "section_plan") && units && units.length > 0 && (
           <div className="p-4 sm:p-5 bg-card text-foreground">
             <BuildingCrossSection
@@ -206,47 +187,19 @@ export function ProjectVisualShowcase({
           </div>
         )}
 
-        {/* 3. Placeholder Container for Upcoming Modes (General view, Window view, Layout) */}
-        {activeMode !== "photos" &&
-          activeMode !== "cross_section" &&
-          activeMode !== "section_plan" && (
-            <div className="relative h-[340px] sm:h-[480px] w-full bg-slate-900/95 flex flex-col items-center justify-center p-6 text-center text-white space-y-4">
-              <div className="h-14 w-14 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 flex items-center justify-center">
-                {activeMode === "general_view" && <Compass className="h-7 w-7" />}
-                {activeMode === "window_view" && <Eye className="h-7 w-7" />}
-                {activeMode === "layout" && <FileText className="h-7 w-7" />}
-              </div>
+        {/* 4. WINDOW VIEW MODE (Section 9 of Spec) */}
+        {activeMode === "window_view" && (
+          <ShowcaseWindowView projectName={projectName} />
+        )}
 
-              <div className="max-w-md space-y-1.5">
-                <h3 className="text-lg font-bold">
-                  {activeMode === "general_view" && "Интерактивный общий вид территории (Генплан)"}
-                  {activeMode === "window_view" && "Виды из окон квартир"}
-                  {activeMode === "layout" && "Архитектурные планировки"}
-                </h3>
-                <p className="text-xs text-slate-300 leading-relaxed">
-                  Данный визуальный режим подключается в рамках следующих этапов ТЗ.
-                  Вы можете исследовать объект на вкладках «Фото» и «Вид в срезе».
-                </p>
-              </div>
-
-              <div className="flex items-center gap-3 pt-2">
-                <button
-                  type="button"
-                  onClick={() => setActiveMode("photos")}
-                  className="h-9 px-4 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-medium transition-colors cursor-pointer"
-                >
-                  Вернуться к фото
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setActiveMode("cross_section")}
-                  className="h-9 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold shadow-xs transition-colors cursor-pointer"
-                >
-                  Смотреть срез здания →
-                </button>
-              </div>
-            </div>
-          )}
+        {/* 5. LAYOUT MODE (Section 10 of Spec) */}
+        {activeMode === "layout" && (
+          <ShowcaseLayoutView
+            projectName={projectName}
+            developerPhone={developerContact?.phone}
+            developerWhatsapp={developerContact?.whatsapp}
+          />
+        )}
       </div>
 
       {/* 2. HORIZONTAL 6D MODE NAVIGATION STRIP (Section 5 of Specification) */}
