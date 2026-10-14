@@ -24,14 +24,14 @@ test("Classifieds Detail - CATALOG_PROPERTIES contains rich specifications and i
 });
 
 test("Classifieds Detail - getPropertyById resolves correctly", () => {
-  const prop1 = getPropertyById("c1");
-  assert.ok(prop1, "Property c1 must be found");
-  assert.equal(prop1.id, "c1");
+  const prop1 = getPropertyById("17034738") || getPropertyById("c1");
+  assert.ok(prop1, "Property 17034738 must be found");
+  assert.equal(prop1.id, "17034738");
   assert.equal(prop1.dealType, "Продажа");
   assert.equal(prop1.propertyType, "Квартира");
 
-  const prop2 = getPropertyById("c2");
-  assert.ok(prop2, "Property c2 must be found");
+  const prop2 = getPropertyById("16419531") || getPropertyById("c2");
+  assert.ok(prop2, "Property 16419531 (House) must be found");
   assert.equal(prop2.rooms, 5);
   assert.equal(prop2.propertyType, "Дом / Ҳавлӣ");
 

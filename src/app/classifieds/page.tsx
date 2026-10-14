@@ -37,7 +37,7 @@ function ClassifiedsCatalogContent() {
       } catch {
         const fallback: ClassifiedCardData[] = CATALOG_PROPERTIES.map((prop) => ({
           ...prop,
-          slug: `classified-${prop.id}`,
+          slug: prop.slug || `classified-${prop.id}`,
           status: "active",
           viewsCount: 24,
           userId: "demo",

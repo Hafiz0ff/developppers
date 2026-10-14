@@ -63,7 +63,7 @@ export async function GET(req: NextRequest) {
       // Graceful fallback to CATALOG_PROPERTIES with query filtering
       const demoCards: ClassifiedCard[] = CATALOG_PROPERTIES.map((prop) => ({
         ...prop,
-        slug: `classified-${prop.id}`,
+        slug: prop.slug || `classified-${prop.id}`,
         status: "active",
         viewsCount: 24,
         userId: "demo",

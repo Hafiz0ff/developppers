@@ -6,7 +6,7 @@ import { canMutateClassified } from "@/lib/classifieds/access";
 import { classifiedInputSchema } from "@/lib/classifieds/schema";
 import { mapClassifiedToCard, type ClassifiedCard } from "@/lib/classifieds/map-card";
 import { getClassifiedsActor } from "@/lib/classifieds/session";
-import { CATALOG_PROPERTIES } from "@/lib/catalog-data";
+import { CATALOG_PROPERTIES, getPropertyById } from "@/lib/catalog-data";
 
 export async function GET(
   _req: NextRequest,
@@ -34,17 +34,20 @@ export async function GET(
       return NextResponse.json({ success: true, classified: mapClassifiedToCard(row), raw: row });
     }
 
-    // Check catalog demo properties fallback
-    const demoProp = CATALOG_PROPERTIES.find(
-      (p) =>
-        p.id === id ||
-        `classified-${p.id}` === id ||
-        id.toLowerCase().includes(p.id.toLowerCase())
-    );
+    // Check catalog properties fallback
+    const demoProp =
+      getPropertyById(id) ||
+      CATALOG_PROPERTIES.find(
+        (p) =>
+          p.id === id ||
+          p.slug === id ||
+          `classified-${p.id}` === id ||
+          id.toLowerCase().includes(p.id.toLowerCase())
+      );
     if (demoProp) {
       const card: ClassifiedCard = {
         ...demoProp,
-        slug: `classified-${demoProp.id}`,
+        slug: demoProp.slug || `classified-${demoProp.id}`,
         status: "active",
         viewsCount: 48,
         userId: "demo",

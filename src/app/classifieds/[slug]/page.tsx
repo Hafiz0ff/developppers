@@ -10,7 +10,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { CATALOG_PROPERTIES, type CatalogProperty } from "@/lib/catalog-data";
+import { CATALOG_PROPERTIES, getPropertyById, type CatalogProperty } from "@/lib/catalog-data";
 import type { ClassifiedCard } from "@/lib/classifieds/map-card";
 import {
   ArrowLeft,
@@ -77,16 +77,19 @@ export default function ClassifiedDetailPage() {
           setItem(json.classified);
         } else {
           // Check fallback in local CATALOG_PROPERTIES
-          const match = CATALOG_PROPERTIES.find(
-            (p) =>
-              p.id === slug ||
-              `classified-${p.id}` === slug ||
-              slug.includes(p.id)
-          );
+          const match =
+            getPropertyById(slug) ||
+            CATALOG_PROPERTIES.find(
+              (p) =>
+                p.id === slug ||
+                p.slug === slug ||
+                `classified-${p.id}` === slug ||
+                slug.includes(p.id)
+            );
           if (match) {
             setItem({
               ...match,
-              slug: `classified-${match.id}`,
+              slug: match.slug || `classified-${match.id}`,
               status: "active",
               viewsCount: 36,
               userId: "demo",
@@ -96,16 +99,19 @@ export default function ClassifiedDetailPage() {
           }
         }
       } catch {
-        const match = CATALOG_PROPERTIES.find(
-          (p) =>
-            p.id === slug ||
-            `classified-${p.id}` === slug ||
-            slug.includes(p.id)
-        );
+        const match =
+          getPropertyById(slug) ||
+          CATALOG_PROPERTIES.find(
+            (p) =>
+              p.id === slug ||
+              p.slug === slug ||
+              `classified-${p.id}` === slug ||
+              slug.includes(p.id)
+          );
         if (match) {
           setItem({
             ...match,
-            slug: `classified-${match.id}`,
+            slug: match.slug || `classified-${match.id}`,
             status: "active",
             viewsCount: 36,
             userId: "demo",
