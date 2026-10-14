@@ -11,6 +11,7 @@ import { ShaderBackground } from "@/components/ui/shader-background";
 import { DeveloperAvatar } from "@/components/ui/developer-avatar";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
+import { ProjectCatalogCardBadge } from "@/components/modules/project-engagement-pills";
 import {
   Select,
   SelectContent,
@@ -425,6 +426,10 @@ export default function HomePage() {
                 <div className="absolute bottom-3.5 left-3.5 bg-white/95 backdrop-blur-md text-emerald-700 font-semibold text-xs px-3 py-1.5 rounded-lg shadow-sm flex items-center gap-1.5 border border-slate-200/50">
                   <Percent className="h-3.5 w-3.5 text-emerald-600" />
                   {proj.installment} ({proj.downPayment})
+                </div>
+
+                <div className="absolute bottom-3.5 right-3.5 z-10">
+                  <ProjectCatalogCardBadge slug={proj.slug} />
                 </div>
 
                 <div className="absolute top-3.5 right-3.5 bg-white/95 backdrop-blur-md px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-900 shadow-sm flex items-center gap-2 border border-slate-200/50">

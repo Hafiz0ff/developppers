@@ -16,6 +16,9 @@ import { ShaderBackground } from "@/components/ui/shader-background";
 import { DeveloperAvatar } from "@/components/ui/developer-avatar";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
+import { ProjectEngagementHeaderPill } from "@/components/modules/project-engagement-pills";
+import { ProjectVisualShowcase } from "@/components/modules/project-visual-showcase";
+import { useProjectAnalytics } from "@/hooks/use-project-analytics";
 
 import {
   Building2,
@@ -54,7 +57,7 @@ export default function PublicProjectPage() {
     INITIAL_DEVELOPERS.find((d) => d.id === project.developerId) ||
     INITIAL_DEVELOPERS[0];
 
-  const [activeImage, setActiveImage] = useState(project.coverImageUrl);
+  const { isFavorite, toggleFavorite } = useProjectAnalytics(project.slug, true);
   const [units, setUnits] = useState<UnitData[]>(INITIAL_UNITS);
 
   // Сбор всех доступных характеристик с фильтрацией пустых значений
@@ -138,15 +141,24 @@ export default function PublicProjectPage() {
               <Share2 className="h-3.5 w-3.5" />
               Поделиться
             </Button>
-            <Button variant="outline" size="sm" className="h-8 text-xs gap-1.5">
-              <Heart className="h-3.5 w-3.5" />
-              В избранное
+            <Button
+              variant={isFavorite ? "default" : "outline"}
+              size="sm"
+              onClick={toggleFavorite}
+              className={`h-8 text-xs gap-1.5 transition-colors cursor-pointer ${
+                isFavorite
+                  ? "bg-rose-600 hover:bg-rose-700 text-white"
+                  : "hover:text-rose-600"
+              }`}
+            >
+              <Heart className={`h-3.5 w-3.5 ${isFavorite ? "fill-white" : ""}`} />
+              {isFavorite ? "В избранном" : "В избранное"}
             </Button>
           </div>
         </div>
       </div>
 
-      {/* HERO SECTION: TITLE & GALLERY */}
+      {/* HERO SECTION: TITLE, 30-DAY STATS, PRICING & VISUAL SHOWCASE */}
       <div className="container mx-auto px-4 space-y-6">
         <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-4">
           <div className="space-y-2">
@@ -183,68 +195,34 @@ export default function PublicProjectPage() {
             </p>
           </div>
 
-          {/* Pricing Highlight Card */}
-          <div className="bg-card border rounded-2xl p-4 sm:p-5 shadow-sm text-left lg:text-right shrink-0">
-            <div className="text-xs text-muted-foreground">Стоимость квартир:</div>
-            <div className="text-2xl sm:text-3xl font-extrabold text-emerald-600">
-              от {formatPrice(project.minTotalPriceTjs, project.minTotalPriceUsd)}
-            </div>
-            <div className="text-xs font-semibold text-foreground mt-0.5">
-              от {formatPrice(project.minPricePerMeterTjs, project.minPricePerMeterUsd)} / м²
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 shrink-0">
+            {/* 30-Day Activity Stats Pill (Section 3.1) */}
+            <ProjectEngagementHeaderPill slug={project.slug} autoRecordView={true} />
+
+            {/* Pricing Highlight Card */}
+            <div className="bg-card border rounded-2xl p-4 sm:p-5 shadow-sm text-left sm:text-right shrink-0">
+              <div className="text-xs text-muted-foreground">Стоимость квартир:</div>
+              <div className="text-2xl sm:text-3xl font-extrabold text-emerald-600">
+                от {formatPrice(project.minTotalPriceTjs, project.minTotalPriceUsd)}
+              </div>
+              <div className="text-xs font-semibold text-foreground mt-0.5">
+                от {formatPrice(project.minPricePerMeterTjs, project.minPricePerMeterUsd)} / м²
+              </div>
             </div>
           </div>
         </div>
 
-        {/* PHOTO GALLERY WITH LIGHT LEAK SHADER GLOW */}
-        <div className="relative space-y-3">
-          {/* Ambient Light Leak Aura behind luxury project hero */}
-          <ShaderBackground
-            variant="light-leak"
-            speed={0.4}
-            intensity={0.45}
-            className="absolute -inset-3 sm:-inset-6 rounded-3xl blur-2xl opacity-60 dark:opacity-30 -z-10 pointer-events-none"
-          />
-
-          <div className="relative h-[360px] sm:h-[480px] w-full rounded-2xl overflow-hidden border bg-muted shadow-md">
-            <img
-              src={activeImage}
-              alt={project.name}
-              className="w-full h-full object-cover transition-all duration-300"
-            />
-            {/* Subtle soft organic light sheen overlay */}
-            <ShaderBackground
-              variant="light-leak"
-              speed={0.3}
-              intensity={0.25}
-              className="absolute inset-0 pointer-events-none mix-blend-screen opacity-50"
-            />
-            <div className="absolute bottom-4 left-4 bg-background/90 backdrop-blur-md px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-2 shadow-xs z-10">
-              <Percent className="h-3.5 w-3.5 text-emerald-600" />
-              Рассрочка от застройщика до {project.installmentMonths} месяцев (Взнос от {project.installmentDownPaymentPercent}%)
-            </div>
-          </div>
-
-          <div className="grid grid-cols-4 gap-3">
-            {project.images.map((img, idx) => (
-              <button
-                key={idx}
-                type="button"
-                onClick={() => setActiveImage(img)}
-                className={`relative h-20 sm:h-24 rounded-xl overflow-hidden border-2 transition-all cursor-pointer ${
-                  activeImage === img
-                    ? "border-emerald-600 shadow-sm"
-                    : "border-transparent opacity-70 hover:opacity-100"
-                }`}
-              >
-                <img
-                  src={img}
-                  alt={`Фото ${idx + 1}`}
-                  className="w-full h-full object-cover"
-                />
-              </button>
-            ))}
-          </div>
-        </div>
+        {/* APPLE-STYLE VISUAL SHOWCASE & 6D NAVIGATOR (Sections 4 & 5) */}
+        <ProjectVisualShowcase
+          projectName={project.name}
+          coverImageUrl={project.coverImageUrl}
+          images={project.images}
+          installmentMonths={project.installmentMonths}
+          installmentDownPaymentPercent={project.installmentDownPaymentPercent}
+          onSelectUnitMode={() => {
+            document.getElementById("chessboard-section")?.scrollIntoView({ behavior: "smooth" });
+          }}
+        />
       </div>
 
       {/* SPECS & KEY ADVANTAGES */}
@@ -440,7 +418,7 @@ export default function PublicProjectPage() {
       </div>
 
       {/* INTERACTIVE UNIT CHESSBOARD FOR BUYERS */}
-      <section className="container mx-auto px-4 pt-6 space-y-6">
+      <section id="chessboard-section" className="container mx-auto px-4 pt-6 space-y-6">
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3">
           <div>
             <div className="text-xs uppercase font-bold tracking-wider text-emerald-600 mb-1 flex items-center gap-1.5">
