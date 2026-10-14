@@ -20,6 +20,18 @@ export interface DeveloperData {
   websiteUrl?: string;
 }
 
+export interface CustomBuildingFeature {
+  id: string;
+  title: string;
+  value: string;
+}
+
+export interface FinishingFeature {
+  id: string;
+  title: string;
+  description: string;
+}
+
 export interface ProjectData {
   id: string;
   developerId: string;
@@ -40,6 +52,13 @@ export interface ProjectData {
   constructionType: string;
   deadlineQuarter: number;
   deadlineYear: number;
+  // Новые характеристики участка и здания
+  landArea?: string;
+  wallMaterial?: string;
+  facade?: string;
+  cadastralNumber?: string;
+  customBuildingFeatures?: CustomBuildingFeature[];
+  finishingFeatures?: FinishingFeature[];
   minPricePerMeterTjs: number;
   minPricePerMeterUsd: number;
   minTotalPriceTjs: number;
@@ -154,6 +173,32 @@ export const INITIAL_PROJECTS: ProjectData[] = [
     constructionType: "Монолитно-каркасный с кирпичным заполнением",
     deadlineQuarter: 4,
     deadlineYear: 2026,
+    landArea: "0.85 га",
+    wallMaterial: "Газоблок 300 мм + жженый кирпич",
+    facade: "Клинкерная плитка и вентилируемый керамогранит",
+    cadastralNumber: "73:01:0014002:114",
+    customBuildingFeatures: [
+      { id: "cbf_1", title: "Отопление", value: "Общее (собственная котельная)" },
+      { id: "cbf_2", title: "Остекление", value: "Панорамное (Германия)" },
+      { id: "cbf_3", title: "Система очистки", value: "Многоступенчатая фильтрация воды" },
+    ],
+    finishingFeatures: [
+      {
+        id: "ff_1",
+        title: "IP-видеодомофон",
+        description: "В каждой квартире установлен IP-видеодомофон с возможностью интеграции в систему «Умный дом» и выводом камеры на экран смартфона.",
+      },
+      {
+        id: "ff_2",
+        title: "Входная дверь",
+        description: "Бронированные стальные двери 120 мм с замками 4-го класса взломостойкости и итальянской фурнитурой.",
+      },
+      {
+        id: "ff_3",
+        title: "Электропроводка",
+        description: "Медный кабель ГОСТ, разводка до щитка с УЗО и автоматами Schneider Electric, ввод оптоволоконного интернета.",
+      },
+    ],
     minPricePerMeterTjs: 6570,
     minPricePerMeterUsd: 600,
     minTotalPriceTjs: 348210,
@@ -224,6 +269,20 @@ export const INITIAL_PROJECTS: ProjectData[] = [
     constructionType: "Монолитно-каркасный",
     deadlineQuarter: 2,
     deadlineYear: 2027,
+    landArea: "0.45 га",
+    wallMaterial: "Газоблок",
+    facade: "Декоративная штукатурка с элементами травертина",
+    cadastralNumber: "73:01:0018005:42",
+    customBuildingFeatures: [
+      { id: "cbf_4", title: "Отопление", value: "Индивидуальное автономное" },
+    ],
+    finishingFeatures: [
+      {
+        id: "ff_4",
+        title: "Шумоизоляция",
+        description: "Усиленная межквартирная звукоизоляция из минераловатных плит толщиной 50 мм в стяжке пола.",
+      },
+    ],
     minPricePerMeterTjs: 5475,
     minPricePerMeterUsd: 500,
     minTotalPriceTjs: 262800,

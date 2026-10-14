@@ -46,6 +46,22 @@ export const projects = pgTable("projects", {
   deadlineQuarter: integer("deadline_quarter"), // 1..4
   deadlineYear: integer("deadline_year"), // 2026, 2027
 
+  // Новые стандартные характеристики участка и дома
+  landArea: text("land_area"), // Площадь участка (например, "0.85 га", "12 соток")
+  wallMaterial: text("wall_material"), // Материал стен (например, "Газоблок", "Кирпич")
+  facade: text("facade"), // Фасад (например, "Клинкерная плитка", "Вентфасад")
+  cadastralNumber: text("cadastral_number"), // Кадастровый номер участка
+
+  // Пользовательские характеристики здания (до 3)
+  customBuildingFeatures: jsonb("custom_building_features").$type<
+    Array<{ id: string; title: string; value: string }>
+  >().default([]),
+
+  // Пользовательские характеристики отделки (до 3)
+  finishingFeatures: jsonb("finishing_features").$type<
+    Array<{ id: string; title: string; description: string }>
+  >().default([]),
+
   // Цены (двухвалютная поддержка: TJS и USD)
   minPricePerMeterTjs: numeric("min_price_per_meter_tjs", { precision: 12, scale: 2 }),
   minPricePerMeterUsd: numeric("min_price_per_meter_usd", { precision: 12, scale: 2 }),
@@ -84,6 +100,18 @@ export const projects = pgTable("projects", {
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
+
+export interface CustomBuildingFeature {
+  id: string;
+  title: string;
+  value: string;
+}
+
+export interface FinishingFeature {
+  id: string;
+  title: string;
+  description: string;
+}
 
 export type Project = typeof projects.$inferSelect;
 export type NewProject = typeof projects.$inferInsert;
