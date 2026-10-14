@@ -36,6 +36,18 @@ export const DEFAULT_PROJECT_STATS: Record<string, ProjectStats> = {
     favoritesCount: 21,
     favoritesMonthCount: 16,
   },
+  "zhk-tavhid-mol": {
+    viewsCount: 520,
+    viewsMonthCount: 410,
+    favoritesCount: 78,
+    favoritesMonthCount: 65,
+  },
+  "zhk-imperial": {
+    viewsCount: 490,
+    viewsMonthCount: 380,
+    favoritesCount: 71,
+    favoritesMonthCount: 58,
+  },
   "qayroqum-avenue": {
     viewsCount: 412,
     viewsMonthCount: 328,

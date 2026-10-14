@@ -102,6 +102,7 @@ export interface ProjectData {
 }
 
 import { ISTIQLOL_DEVELOPER, ISTIQLOL_PROJECTS } from "./istiqlol-data";
+import { TOJ_SOHTMON_DEVELOPER, TOJ_SOHTMON_PROJECTS } from "./toch-sohtmon-data";
 
 export interface UnitData {
   id: string;
@@ -150,30 +151,7 @@ export const INITIAL_DEVELOPERS: DeveloperData[] = [
     websiteUrl: "https://t.me/+S5SHHAVz_6g0Njli",
   },
   ISTIQLOL_DEVELOPER,
-  {
-    id: "dev_rahsh",
-    name: "Рахш Сохтмон",
-    slug: "rahsh-sohtmon",
-    logoUrl:
-      "https://images.unsplash.com/photo-1541888946425-d0fbb186241b?w=200&h=200&fit=crop",
-    coverUrl:
-      "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1600&h=600&fit=crop",
-    description:
-      "Ведущая строительная компания Согдийской области с 2012 года. Мы возводим современные сейсмостойкие жилые комплексы с использованием европейских материалов и автономных инженерных коммуникаций.",
-    foundedYear: 2012,
-    completedProjectsCount: 8,
-    activeProjectsCount: 3,
-    rating: "4.90",
-    isVerified: true,
-    city: "khujand",
-    officeAddress: "г. Худжанд, проспект Исмоили Сомони, 142",
-    phone: "+992 92 700 5555",
-    phoneSecondary: "+992 92 700 7777",
-    whatsapp: "+992927005555",
-    telegram: "rahsh_sales",
-    email: "info@rahsh-stroy.tj",
-    websiteUrl: "https://rahsh-stroy.tj",
-  },
+  TOJ_SOHTMON_DEVELOPER,
 ];
 
 export const INITIAL_PROJECTS: ProjectData[] = [
@@ -311,7 +289,10 @@ export const INITIAL_PROJECTS: ProjectData[] = [
   // 2. Все 15 реальных ЖК строительной фирмы «Истиқлол Гурӯҳ» (Istiqlol Group)
   ...ISTIQLOL_PROJECTS,
 
-  // 3. ЖК «Сирдарё Плаза» (Рахш Сохтмон)
+  // 3. Все 9 реальных ЖК строительной фирмы «Тоҷ Сохтмон» (Toj Sohtmon)
+  ...TOJ_SOHTMON_PROJECTS,
+
+  // 4. ЖК «Сирдарё Плаза» (архивный проект)
   {
     id: "proj_sirdaryo_plaza",
     developerId: "dev_rahsh",
