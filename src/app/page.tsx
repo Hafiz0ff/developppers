@@ -1,14 +1,14 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useCurrency } from "@/context/currency-context";
 import { useLanguage } from "@/context/language-context";
 import { SOGD_CITIES } from "@/lib/constants/locations";
+import { INITIAL_PROJECTS, INITIAL_DEVELOPERS, INITIAL_UNITS } from "@/lib/data/mock-db";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { ShaderBackground } from "@/components/ui/shader-background";
 import { DeveloperAvatar } from "@/components/ui/developer-avatar";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
@@ -42,142 +42,6 @@ import {
   FileSpreadsheet,
   Check,
 } from "lucide-react";
-
-// Демонстрационные данные каталога новостроек (CIAN Style)
-const FEATURED_PROJECTS = [
-  // 1. «Qayroqum Avenue» на первом месте
-  {
-    id: "proj_qayroqum",
-    name: "ЖК «Qayroqum Avenue»",
-    nameTg: "МҶ «Qayroqum Avenue»",
-    slug: "qayroqum-avenue",
-    developerName: "«Qayroqum Avenue» Development",
-    developerNameTg: "«Qayroqum Avenue» Development",
-    status: "Строится (4 кв. 2027)",
-    statusTg: "Дар ҳоли сохтмон (семоҳаи 4-уми 2027)",
-    buildingClass: "Премиум-класс",
-    buildingClassTg: "Дараҷаи олӣ (Премиум)",
-    city: "г. Гулистон (Кайраккум)",
-    cityTg: "ш. Гулистон (Қайроққум)",
-    district: "Побережье «Баҳри Тоҷик»",
-    districtTg: "Соҳили «Баҳри Тоҷик»",
-    floors: 14,
-    coverImage: "/images/qayroqum/qayroqum-9.jpg",
-    pricePerMeterTjs: 5250,
-    pricePerMeterUsd: 480,
-    minPriceTjs: 252000,
-    minPriceUsd: 23040,
-    installment: "Беспроцентная рассрочка до 60 мес (5 лет!)",
-    installmentTg: "Пардохти қисм-қисми бефоиз то 60 моҳ (5 сол!)",
-    downPayment: "Взнос от 0% (акция)",
-    downPaymentTg: "Пешпардохт аз 0% (аксия)",
-    tags: [
-      "🔑 0% первоначальный взнос",
-      "🚗 Розыгрыш BMW",
-      "📚 Школа и детский сад",
-      "🏊‍♂️ Бассейн и фитнес",
-      "⚡ Зарядки для электромобилей",
-    ],
-    tagsTg: [
-      "🔑 0% пешпардохт",
-      "🚗 Бурди BMW",
-      "📚 Мактаб ва боғча",
-      "🏊‍♂️ Ҳавзи шиноварӣ",
-      "⚡ Нуқтаҳои пуркунии барқӣ",
-    ],
-    availableUnitsCount: 56,
-  },
-  // 2. Флагман «Истиқлол Гурӯҳ» — ЖК «Кохи Мунаввар» (21 этаж, 17 мкр)
-  {
-    id: "proj_kohi_munavvar",
-    name: "ЖК «Кохи Мунаввар»",
-    nameTg: "МҶ «Кохи Мунаввар»",
-    slug: "zhk-kohi-munavvar",
-    developerName: "«Истиқлол Гурӯҳ» (Istiqlol Group)",
-    developerNameTg: "«Истиқлол Гурӯҳ» (Istiqlol Group)",
-    status: "Строится (4 кв. 2029)",
-    statusTg: "Дар ҳоли сохтмон (семоҳаи 4-уми 2029)",
-    buildingClass: "Бизнес-класс",
-    buildingClassTg: "Дараҷаи тиҷоратӣ (Бизнес)",
-    city: "г. Худжанд",
-    cityTg: "ш. Хуҷанд",
-    district: "17 мкр, ул. Гагарина",
-    districtTg: "микрорайони 17, кӯчаи Гагарин",
-    floors: 21,
-    coverImage: "https://cdntj.somon.tj/media/cache1/2e/47/2e479a7d3a2ddb48e87426f65faa73c8.webp",
-    pricePerMeterTjs: 6500,
-    pricePerMeterUsd: 594,
-    minPriceTjs: 234000,
-    minPriceUsd: 21370,
-    installment: "Рассрочка от застройщика",
-    installmentTg: "Пардохти қисм-қисм аз ширкат",
-    downPayment: "Взнос от 30%",
-    downPaymentTg: "Пешпардохт аз 30%",
-    tags: ["21 этаж монолит", "Сейсмостойкость 9 баллов", "Панорамные окна"],
-    tagsTg: ["21 ошёнаи монолитӣ", "Тобоварии 9 балл", "Тирезаҳои панорамӣ"],
-    availableUnitsCount: 84,
-  },
-  // 3. Флагман «Тоҷ Сохтмон» — ЖК «Тавхид Мол» (19 этажей, ТРЦ + апартаменты в центре)
-  {
-    id: "proj_tavhid_mol",
-    name: "ЖК «Тавхид Мол»",
-    nameTg: "МҶ «Тавҳид Молл»",
-    slug: "zhk-tavhid-mol",
-    developerName: "«Тоҷ Сохтмон» (Toj Sohtmon)",
-    developerNameTg: "«Тоҷ Сохтмон» (Toj Sohtmon)",
-    status: "Строится (4 кв. 2027)",
-    statusTg: "Дар ҳоли сохтмон (семоҳаи 4-уми 2027)",
-    buildingClass: "Премиум-класс",
-    buildingClassTg: "Дараҷаи олӣ (Премиум)",
-    city: "г. Худжанд",
-    cityTg: "ш. Хуҷанд",
-    district: "Центр, ул. Фирдавси 117",
-    districtTg: "Марказ, кӯчаи Фирдавсӣ 117",
-    floors: 19,
-    coverImage: "https://cdntj.somon.tj/media/cache1/57/e0/57e0085f770243ad9c61af10a2bd4c8c.png",
-    pricePerMeterTjs: 10000,
-    pricePerMeterUsd: 913,
-    minPriceTjs: 700000,
-    minPriceUsd: 63927,
-    installment: "Рассрочка от застройщика",
-    installmentTg: "Пардохти қисм-қисм аз ширкат",
-    downPayment: "Взнос от 30%",
-    downPaymentTg: "Пешпардохт аз 30%",
-    tags: ["19 этажей ТРЦ + ЖК", "Центр города", "Подземный паркинг"],
-    tagsTg: ["19 ошёна маркази савдо ва манзил", "Маркази шаҳр", "Таваққуфгоҳ"],
-    availableUnitsCount: 96,
-  },
-  // 4. Элитный небоскреб «Тоҷ Сохтмон» — ЖК «Империал» (22 этажа, 28 мкр)
-  {
-    id: "proj_imperial",
-    name: "ЖК «Империал»",
-    nameTg: "МҶ «Империал»",
-    slug: "zhk-imperial",
-    developerName: "«Тоҷ Сохтмон» (Toj Sohtmon)",
-    developerNameTg: "«Тоҷ Сохтмон» (Toj Sohtmon)",
-    status: "Строится (4 кв. 2026)",
-    statusTg: "Дар ҳоли сохтмон (семоҳаи 4-уми 2026)",
-    buildingClass: "Премиум-класс",
-    buildingClassTg: "Дараҷаи олӣ (Премиум)",
-    city: "г. Худжанд",
-    cityTg: "ш. Хуҷанд",
-    district: "28 мкр, пр. Рахимова",
-    districtTg: "микрорайони 28, хиёбони Раҳимов",
-    floors: 22,
-    coverImage: "https://cdntj.somon.tj/media/cache1/d6/5b/d65bc673eb8a546a37e9163e8dd1df3b.png",
-    pricePerMeterTjs: 8000,
-    pricePerMeterUsd: 731,
-    minPriceTjs: 384000,
-    minPriceUsd: 35068,
-    installment: "Рассрочка до 36 мес",
-    installmentTg: "Пардохти қисм-қисм то 36 моҳ",
-    downPayment: "Взнос от 30%",
-    downPaymentTg: "Пешпардохт аз 30%",
-    tags: ["22 этажа монолит", "Престижный район", "Панорамный обзор"],
-    tagsTg: ["22 ошёнаи бошукӯҳ", "Минтақаи бонуфуз", "Манзараи панорамӣ"],
-    availableUnitsCount: 78,
-  },
-];
 
 // Частные объявления (Avito / CIAN Style)
 const RECENT_CLASSIFIEDS = [
@@ -278,11 +142,91 @@ export default function HomePage() {
   const { t, tDual, language, setLanguage } = useLanguage();
   const isTg = language === "tg";
   const [activeTab, setActiveTab] = useState<"new" | "resale" | "rent" | "houses">("new");
-  const [selectedCity, setSelectedCity] = useState("khujand");
+  const [selectedCity, setSelectedCity] = useState("all");
   const [selectedRooms, setSelectedRooms] = useState<string>("all");
   const [priceFrom, setPriceFrom] = useState("");
   const [priceTo, setPriceTo] = useState("");
+  const [showAllProjects, setShowAllProjects] = useState(false);
+  const [activeQuickChip, setActiveQuickChip] = useState<string | null>(null);
   const [revealedPhones, setRevealedPhones] = useState<Record<string, boolean>>({});
+
+  const handleSearchSubmit = (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
+    if (activeTab === "new") {
+      const el = document.getElementById("new-buildings");
+      if (el) el.scrollIntoView({ behavior: "smooth" });
+    } else {
+      const el = document.getElementById("classifieds");
+      if (el) el.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
+  const filteredProjects = useMemo(() => {
+    return INITIAL_PROJECTS.filter((proj) => {
+      // 1. City filter
+      if (selectedCity && selectedCity !== "all") {
+        if (proj.city !== selectedCity) return false;
+      }
+
+      // 2. Price filter
+      const pFrom = parseFloat(priceFrom);
+      const pTo = parseFloat(priceTo);
+      if (!isNaN(pFrom) && pFrom > 0) {
+        if (proj.minTotalPriceTjs < pFrom && proj.minTotalPriceUsd < pFrom) return false;
+      }
+      if (!isNaN(pTo) && pTo > 0) {
+        if (proj.minTotalPriceTjs > pTo && proj.minTotalPriceUsd > pTo) return false;
+      }
+
+      // 3. Rooms filter
+      if (selectedRooms && selectedRooms !== "all") {
+        const targetRooms = selectedRooms === "studio" ? 0 : parseInt(selectedRooms);
+        const matchingUnits = INITIAL_UNITS.filter((u) => u.projectId === proj.id);
+        if (matchingUnits.length > 0) {
+          const hasRooms = matchingUnits.some((u) =>
+            selectedRooms === "4+" ? u.roomsCount >= 4 : u.roomsCount === targetRooms
+          );
+          if (!hasRooms) return false;
+        }
+      }
+
+      // 4. Quick chip filter
+      if (activeQuickChip) {
+        if (activeQuickChip === "installment_0") {
+          const hasZeroDown =
+            proj.installmentDownPaymentPercent === 0 ||
+            proj.amenities.some((a) => a.includes("0%")) ||
+            proj.amenitiesTg?.some((a) => a.includes("0%"));
+          if (!hasZeroDown) return false;
+        } else if (activeQuickChip === "sirdaryo_view") {
+          const hasRiverSea =
+            proj.amenities.some((a) => a.includes("Сырдарь") || a.includes("моря") || a.includes("Таджик")) ||
+            proj.amenitiesTg?.some((a) => a.includes("Сирдарё") || a.includes("Баҳри")) ||
+            proj.district.includes("моря") ||
+            Boolean(proj.districtTg && proj.districtTg.includes("Баҳри"));
+          if (!hasRiverSea) return false;
+        } else if (activeQuickChip === "district_18_19") {
+          const is1819 =
+            proj.district.includes("18") ||
+            proj.district.includes("19") ||
+            Boolean(proj.districtTg && (proj.districtTg.includes("18") || proj.districtTg.includes("19"))) ||
+            proj.address.includes("18") ||
+            proj.address.includes("19");
+          if (!is1819) return false;
+        } else if (activeQuickChip === "with_parking") {
+          if (!proj.hasUndergroundParking && !proj.parkingConfig?.isEnabled) return false;
+        } else if (activeQuickChip === "ready") {
+          if (proj.status !== "ready") return false;
+        }
+      }
+
+      return true;
+    });
+  }, [selectedCity, selectedRooms, priceFrom, priceTo, activeQuickChip]);
+
+  const displayedProjects = showAllProjects
+    ? filteredProjects
+    : filteredProjects.slice(0, 6);
 
   const togglePhone = async (item: (typeof RECENT_CLASSIFIEDS)[0]) => {
     const isRevealing = !revealedPhones[item.id];
@@ -435,14 +379,18 @@ export default function HomePage() {
                     }}
                   >
                     <SelectTrigger className="w-full h-10 rounded-xl bg-white border border-slate-200 text-sm font-medium px-3 shadow-none">
-                      <SelectValue placeholder={tDual("Худжанд", "ш. Хуҷанд")}>
+                      <SelectValue placeholder={tDual("Все города Согда", "Ҳамаи шаҳрҳои Суғд")}>
                         {(() => {
+                          if (selectedCity === "all") return tDual("Все города Согда", "Ҳамаи шаҳрҳои Суғд");
                           const c = SOGD_CITIES.find((item) => item.value === selectedCity);
                           return language === "tg" ? c?.nameTj : c?.nameRu || "Худжанд";
                         })()}
                       </SelectValue>
                     </SelectTrigger>
                     <SelectContent>
+                      <SelectItem value="all">
+                        {tDual("Все города Согда", "Ҳамаи шаҳрҳои Суғд")}
+                      </SelectItem>
                       {SOGD_CITIES.map((c) => (
                         <SelectItem key={c.value} value={c.value}>
                           {language === "tg" ? c.nameTj : c.nameRu}
@@ -463,9 +411,9 @@ export default function HomePage() {
                         key={opt.id}
                         type="button"
                         onClick={() => setSelectedRooms(opt.id)}
-                        className={`h-full flex-1 rounded-lg px-2.5 text-xs font-medium transition-all ${
+                        className={`h-full flex-1 rounded-lg px-2.5 text-xs font-medium transition-all cursor-pointer ${
                           selectedRooms === opt.id
-                            ? "bg-emerald-600 text-white"
+                            ? "bg-emerald-600 text-white shadow-xs font-semibold"
                             : "text-slate-600 hover:bg-slate-100"
                         }`}
                       >
@@ -498,9 +446,20 @@ export default function HomePage() {
 
                 {/* 4. Action Button */}
                 <div className="min-w-0">
-                  <Button className="flex h-10 w-full items-center justify-center gap-2 rounded-xl bg-emerald-600 px-5 text-sm font-medium text-white shadow-sm transition-all hover:bg-emerald-700">
+                  <Button
+                    type="button"
+                    onClick={handleSearchSubmit}
+                    className="flex h-10 w-full items-center justify-center gap-2 rounded-xl bg-emerald-600 px-5 text-sm font-medium text-white shadow-sm transition-all hover:bg-emerald-700 cursor-pointer"
+                  >
                     <Search className="h-4 w-4" />
-                    {tDual("Найти 342 объекта", "Ҷустуҷӯи 342 амвол")}
+                    {tDual(
+                      activeTab === "new"
+                        ? `Найти ${filteredProjects.length} ЖК`
+                        : "Найти объекты",
+                      activeTab === "new"
+                        ? `Ҷустуҷӯи ${filteredProjects.length} МИ`
+                        : "Ҷустуҷӯи амвол"
+                    )}
                   </Button>
                 </div>
               </div>
@@ -511,23 +470,43 @@ export default function HomePage() {
                   {tDual("Быстрый выбор:", "Интихоби фаврӣ:")}
                 </span>
                 {[
-                  { ru: "Рассрочка 0%", tg: "Пардохти қисм-қисм 0%" },
-                  { ru: "Вид на Сырдарью", tg: "Манзара ба Сирдарё" },
-                  { ru: "18 и 19 мкр", tg: "микрорайонҳои 18 ва 19" },
-                  { ru: "Дома с хаузом", tg: "Ҳавлиҳо бо ҳавз" },
-                  { ru: "Сданные ЖК", tg: "Биноҳои супоридашуда" },
-                  { ru: "С паркингом", tg: "Бо таваққуфгоҳ" },
-                ].map((chip) => (
+                  { id: "installment_0", ru: "Рассрочка 0%", tg: "Пардохти қисм-қисм 0%" },
+                  { id: "sirdaryo_view", ru: "Вид на Сырдарью / Море", tg: "Манзара ба Сирдарё / Баҳр" },
+                  { id: "district_18_19", ru: "18 и 19 мкр", tg: "микрорайонҳои 18 ва 19" },
+                  { id: "with_parking", ru: "С паркингом", tg: "Бо таваққуфгоҳ" },
+                  { id: "ready", ru: "Сданные ЖК", tg: "Биноҳои супоридашуда" },
+                ].map((chip) => {
+                  const isActive = activeQuickChip === chip.id;
+                  return (
+                    <button
+                      key={chip.id}
+                      type="button"
+                      onClick={() => {
+                        setActiveQuickChip(isActive ? null : chip.id);
+                        const el = document.getElementById("new-buildings");
+                        if (el) el.scrollIntoView({ behavior: "smooth" });
+                      }}
+                      className={`inline-flex items-center rounded-lg border px-3 py-1 text-xs transition-all cursor-pointer ${
+                        isActive
+                          ? "bg-emerald-600 text-white border-emerald-600 shadow-xs font-semibold"
+                          : "border-slate-200/80 bg-white/80 text-slate-700 hover:bg-white"
+                      }`}
+                    >
+                      {tDual(chip.ru, chip.tg)}
+                    </button>
+                  );
+                })}
+                {activeQuickChip && (
                   <button
-                    key={chip.ru}
                     type="button"
-                    className="inline-flex items-center rounded-lg border border-slate-200/80 bg-white/80 px-3 py-1 text-xs text-slate-700 transition-all hover:bg-white"
+                    onClick={() => setActiveQuickChip(null)}
+                    className="text-[11px] text-muted-foreground hover:text-red-600 underline ml-1 cursor-pointer font-medium"
                   >
-                    {tDual(chip.ru, chip.tg)}
+                    {isTg ? "Тоза кардан" : "Сбросить"}
                   </button>
-                ))}
-              </div>
+                )}
             </div>
+          </div>
           </div>
         </div>
       </section>
@@ -553,132 +532,232 @@ export default function HomePage() {
               )}
             </p>
           </div>
-          <Link
-            href="#new-buildings"
-            className="text-sm font-semibold text-emerald-600 hover:text-emerald-700 flex items-center gap-1 shrink-0"
+          <button
+            type="button"
+            onClick={() => setShowAllProjects(!showAllProjects)}
+            className="text-sm font-semibold text-emerald-600 hover:text-emerald-700 flex items-center gap-1 shrink-0 cursor-pointer"
           >
-            {tDual("Все 25 комплексов", "Ҳамаи 25 маҷмаа")}
-            <ChevronRight className="h-4 w-4" />
-          </Link>
+            {showAllProjects
+              ? tDual("Показать первые 6", "Нишон додани 6-тои аввал")
+              : tDual(`Все ${filteredProjects.length} комплексов`, `Ҳамаи ${filteredProjects.length} маҷмаа`)}
+            <ChevronRight className={`h-4 w-4 transition-transform ${showAllProjects ? "rotate-90" : ""}`} />
+          </button>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {FEATURED_PROJECTS.map((proj) => {
-            const projName = tDual(proj.name, proj.nameTg || proj.name);
-            const projStatus = tDual(proj.status, proj.statusTg || proj.status);
-            const projClass = tDual(proj.buildingClass, proj.buildingClassTg || proj.buildingClass);
-            const projCity = tDual(proj.city, proj.cityTg || proj.city);
-            const projDistrict = tDual(proj.district, proj.districtTg || proj.district);
-            const projInstallment = tDual(proj.installment, proj.installmentTg || proj.installment);
-            const projDownPayment = tDual(proj.downPayment, proj.downPaymentTg || proj.downPayment);
-            const projTags = language === "tg" && proj.tagsTg ? proj.tagsTg : proj.tags;
-            const projDevName = tDual(proj.developerName, proj.developerNameTg || proj.developerName);
+        {filteredProjects.length === 0 ? (
+          <div className="text-center py-16 bg-white rounded-2xl border border-dashed border-slate-200 p-8 shadow-xs">
+            <Building2 className="h-10 w-10 text-slate-300 mx-auto mb-3" />
+            <h3 className="text-slate-800 font-bold text-base">
+              {tDual("Комплексы не найдены", "Маҷмааҳо ёфт нашуданд")}
+            </h3>
+            <p className="text-slate-500 text-xs mt-1 max-w-md mx-auto">
+              {tDual(
+                "Попробуйте изменить параметры фильтра (город, бюджет или комнаты), чтобы увидеть доступные новостройки.",
+                "Лутфан танзимоти филтрро (шаҳр, маблағ ё теъдоди ҳуҷраҳо) дигар кунед, то биноҳои навсохти дастрас намоён шаванд."
+              )}
+            </p>
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={() => {
+                setSelectedCity("all");
+                setSelectedRooms("all");
+                setPriceFrom("");
+                setPriceTo("");
+                setActiveQuickChip(null);
+              }}
+              className="mt-4 text-xs font-semibold rounded-xl border-slate-200 cursor-pointer"
+            >
+              {tDual("Сбросить все фильтры", "Тоза кардани ҳамаи филтрҳо")}
+            </Button>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {displayedProjects.map((proj) => {
+              const projName = tDual(proj.name, proj.nameTg || proj.name);
+              const developer = INITIAL_DEVELOPERS.find((d) => d.id === proj.developerId);
+              const projDevName = developer ? developer.name : "Застройщик";
+              const devWhatsapp = (developer?.whatsapp || "+992920000000").replace(/\D/g, "");
 
-            return (
-              <Card
-                key={proj.id}
-                className="bg-white rounded-xl border border-slate-200/80 hover:border-emerald-300 hover:shadow-xl transition-all duration-300 overflow-hidden group"
-              >
-                <div className="relative h-64 sm:h-72 w-full overflow-hidden bg-slate-100">
-                  <img
-                    src={proj.coverImage}
-                    alt={projName}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                  />
+              const projStatus = (() => {
+                if (proj.status === "ready") {
+                  return tDual("Сдан", "Супорида шудааст");
+                }
+                if (proj.status === "planned") {
+                  return tDual(`В проекте (${proj.deadlineYear})`, `Лоиҳакашӣ (${proj.deadlineYear})`);
+                }
+                return tDual(
+                  `Строится (${proj.deadlineQuarter} кв. ${proj.deadlineYear})`,
+                  `Дар ҳоли сохтмон (${proj.deadlineQuarter}-кв. ${proj.deadlineYear})`
+                );
+              })();
 
-                  <div className="absolute top-3.5 left-3.5 flex flex-wrap gap-2">
-                    <Badge className="bg-emerald-600 text-white font-medium text-xs shadow-sm">
-                      {projStatus}
-                    </Badge>
-                    <Badge variant="secondary" className="backdrop-blur-md bg-white/90 text-slate-800 font-medium text-xs shadow-xs">
-                      {projClass}
-                    </Badge>
-                  </div>
+              const projClass = (() => {
+                switch (proj.buildingClass) {
+                  case "premium":
+                    return tDual("Премиум-класс", "Дараҷаи олӣ (Премиум)");
+                  case "business":
+                    return tDual("Бизнес-класс", "Дараҷаи бизнес");
+                  case "comfort":
+                    return tDual("Комфорт-класс", "Дараҷаи бароҳат");
+                  default:
+                    return tDual("Эконом-класс", "Дараҷаи эконом");
+                }
+              })();
 
-                  <div className="absolute bottom-3.5 left-3.5 bg-white/95 backdrop-blur-md text-emerald-700 font-semibold text-xs px-3 py-1.5 rounded-lg shadow-sm flex items-center gap-1.5 border border-slate-200/50">
-                    <Percent className="h-3.5 w-3.5 text-emerald-600" />
-                    {projInstallment} ({projDownPayment})
-                  </div>
+              const cityObj = SOGD_CITIES.find((c) => c.value === proj.city);
+              const projCity = isTg
+                ? (cityObj?.nameTj || proj.city)
+                : (cityObj?.nameRu || proj.city);
+              const projDistrict = tDual(proj.district, proj.districtTg || proj.district);
 
-                  <div className="absolute bottom-3.5 right-3.5 z-10">
-                    <ProjectCatalogCardBadge slug={proj.slug} />
-                  </div>
+              const projInstallment = proj.hasInstallment
+                ? tDual(`Рассрочка до ${proj.installmentMonths} мес.`, `Пардохти қисм-қисм то ${proj.installmentMonths} моҳ`)
+                : tDual("100% оплата", "100% пардохт");
+              const projDownPayment = proj.hasInstallment
+                ? tDual(`Взнос от ${proj.installmentDownPaymentPercent}%`, `Пешпардохт аз ${proj.installmentDownPaymentPercent}%`)
+                : "";
 
-                  <div className="absolute top-3.5 right-3.5 bg-white/95 backdrop-blur-md px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-900 shadow-sm flex items-center gap-2 border border-slate-200/50">
-                    <DeveloperAvatar name={projDevName} size="sm" className="h-5 w-5 text-[9px]" />
-                    <span>{projDevName}</span>
-                    <CheckCircle2 className="h-3.5 w-3.5 text-emerald-600" />
-                  </div>
-                </div>
+              const projTags = (isTg && proj.amenitiesTg && proj.amenitiesTg.length > 0)
+                ? proj.amenitiesTg.slice(0, 3)
+                : proj.amenities.slice(0, 3);
 
-                <CardContent className="p-5 sm:p-6 space-y-4">
-                  <div>
-                    <h3 className="text-xl font-bold text-slate-900 group-hover:text-emerald-600 transition-colors">
-                      {projName}
-                    </h3>
-                    <p className="text-xs text-slate-500 flex items-center gap-1 mt-1 font-medium">
-                      <MapPin className="h-3.5 w-3.5 text-emerald-600 shrink-0" />
-                      {projCity}, {projDistrict} • {proj.floors} {tDual("этажей", "ошёна")}
-                    </p>
-                  </div>
+              const coverImage = proj.coverImageUrl || proj.images?.[0] || "/images/placeholder.jpg";
 
-                  <div className="flex flex-wrap gap-1.5">
-                    {projTags.map((tag) => (
-                      <span
-                        key={tag}
-                        className="text-[11px] font-medium px-2.5 py-1 rounded-md bg-slate-100 text-slate-600"
-                      >
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
+              const projectUnits = INITIAL_UNITS.filter((u) => u.projectId === proj.id);
+              const availableUnitsCount = projectUnits.length > 0
+                ? projectUnits.filter((u) => u.status === "available").length || projectUnits.length
+                : Math.max(24, proj.floorsCount * proj.sectionsCount * 2);
 
-                  <div className="pt-3.5 border-t border-slate-100 flex items-center justify-between">
-                    <div>
-                      <div className="text-[11px] text-slate-400">{tDual("Цена за м²:", "Нархи 1 м²:")}</div>
-                      <div className="text-sm font-semibold text-slate-800">
-                        {t.common.from}{" "}
-                        {formatPrice(
-                          proj.pricePerMeterTjs,
-                          proj.pricePerMeterUsd
-                        )}{" "}
-                        / {t.common.sqm}
-                      </div>
+              return (
+                <Card
+                  key={proj.id}
+                  className="bg-white rounded-xl border border-slate-200/80 hover:border-emerald-300 hover:shadow-xl transition-all duration-300 overflow-hidden group"
+                >
+                  <div className="relative h-64 sm:h-72 w-full overflow-hidden bg-slate-100">
+                    <img
+                      src={coverImage}
+                      alt={projName}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                    />
+
+                    <div className="absolute top-3.5 left-3.5 flex flex-wrap gap-2">
+                      <Badge className="bg-emerald-600 text-white font-medium text-xs shadow-sm">
+                        {projStatus}
+                      </Badge>
+                      <Badge variant="secondary" className="backdrop-blur-md bg-white/90 text-slate-800 font-medium text-xs shadow-xs">
+                        {projClass}
+                      </Badge>
                     </div>
-                    <div className="text-right">
-                      <div className="text-[11px] text-slate-400">{tDual("Квартиры от:", "Хонадон аз:")}</div>
-                      <div className="text-lg font-bold text-emerald-600">
-                        {t.common.from} {formatPrice(proj.minPriceTjs, proj.minPriceUsd)}
-                      </div>
-                    </div>
-                  </div>
 
-                  <div className="pt-1 flex items-center gap-3">
-                    <Link href={`/projects/${proj.slug}`} className="flex-1">
-                      <Button className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-medium text-xs h-10 px-4 rounded-xl shadow-xs">
-                        {tDual(`Смотреть ${proj.availableUnitsCount} квартир`, `Дидани ${proj.availableUnitsCount} хонадон`)}
-                      </Button>
-                    </Link>
-                    <a
-                      href="https://wa.me/992927005555"
-                      target="_blank"
-                      rel="noreferrer"
+                    <div className="absolute bottom-3.5 left-3.5 bg-white/95 backdrop-blur-md text-emerald-700 font-semibold text-xs px-3 py-1.5 rounded-lg shadow-sm flex items-center gap-1.5 border border-slate-200/50">
+                      <Percent className="h-3.5 w-3.5 text-emerald-600" />
+                      {projInstallment} {projDownPayment ? `(${projDownPayment})` : ""}
+                    </div>
+
+                    <div className="absolute bottom-3.5 right-3.5 z-10">
+                      <ProjectCatalogCardBadge slug={proj.slug} />
+                    </div>
+
+                    <Link
+                      href={developer ? `/developers/${developer.slug}` : "#"}
+                      className="absolute top-3.5 right-3.5 bg-white/95 backdrop-blur-md px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-900 shadow-sm flex items-center gap-2 border border-slate-200/50 hover:bg-white transition-colors"
                     >
-                      <Button variant="outline" size="sm" className="text-xs font-semibold h-10 px-3.5 rounded-xl gap-1.5 border-slate-200">
-                        <MessageCircle className="h-4 w-4 text-emerald-600" />
-                        {tDual("Отдел продаж", "Шӯъбаи фурӯш")}
-                      </Button>
-                    </a>
+                      <DeveloperAvatar name={projDevName} size="sm" className="h-5 w-5 text-[9px]" />
+                      <span className="truncate max-w-[130px]">{projDevName}</span>
+                      <CheckCircle2 className="h-3.5 w-3.5 text-emerald-600 shrink-0" />
+                    </Link>
                   </div>
-                </CardContent>
-              </Card>
-            );
-          })}
-        </div>
+
+                  <CardContent className="p-5 sm:p-6 space-y-4">
+                    <div>
+                      <Link href={`/projects/${proj.slug}`}>
+                        <h3 className="text-xl font-bold text-slate-900 group-hover:text-emerald-600 transition-colors line-clamp-1">
+                          {projName}
+                        </h3>
+                      </Link>
+                      <p className="text-xs text-slate-500 flex items-center gap-1 mt-1 font-medium">
+                        <MapPin className="h-3.5 w-3.5 text-emerald-600 shrink-0" />
+                        <span className="truncate">{projCity}, {projDistrict} • {proj.floorsCount} {tDual("этажей", "ошёна")}</span>
+                      </p>
+                    </div>
+
+                    <div className="flex flex-wrap gap-1.5">
+                      {projTags.map((tag) => (
+                        <span
+                          key={tag}
+                          className="text-[11px] font-medium px-2.5 py-1 rounded-md bg-slate-100 text-slate-600"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+
+                    <div className="pt-3.5 border-t border-slate-100 flex items-center justify-between">
+                      <div>
+                        <div className="text-[11px] text-slate-400">{tDual("Цена за м²:", "Нархи 1 м²:")}</div>
+                        <div className="text-sm font-semibold text-slate-800">
+                          {t.common.from}{" "}
+                          {formatPrice(
+                            proj.minPricePerMeterTjs,
+                            proj.minPricePerMeterUsd
+                          )}{" "}
+                          / {t.common.sqm}
+                        </div>
+                      </div>
+                      <div className="text-right">
+                        <div className="text-[11px] text-slate-400">{tDual("Квартиры от:", "Хонадон аз:")}</div>
+                        <div className="text-lg font-bold text-emerald-600">
+                          {t.common.from} {formatPrice(proj.minTotalPriceTjs, proj.minTotalPriceUsd)}
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="pt-1 flex items-center gap-3">
+                      <Link href={`/projects/${proj.slug}`} className="flex-1">
+                        <Button className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-medium text-xs h-10 px-4 rounded-xl shadow-xs cursor-pointer">
+                          {tDual(`Смотреть ${availableUnitsCount} квартир`, `Дидани ${availableUnitsCount} хонадон`)}
+                        </Button>
+                      </Link>
+                      <a
+                        href={`https://wa.me/${devWhatsapp}`}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        <Button variant="outline" size="sm" className="text-xs font-semibold h-10 px-3.5 rounded-xl gap-1.5 border-slate-200 cursor-pointer">
+                          <MessageCircle className="h-4 w-4 text-emerald-600" />
+                          {tDual("Отдел продаж", "Шӯъбаи фурӯш")}
+                        </Button>
+                      </a>
+                    </div>
+                  </CardContent>
+                </Card>
+              );
+            })}
+          </div>
+        )}
+
+        {filteredProjects.length > 6 && !showAllProjects && (
+          <div className="mt-8 text-center">
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => setShowAllProjects(true)}
+              className="border-emerald-600 text-emerald-700 hover:bg-emerald-50 font-semibold px-6 py-2.5 rounded-xl cursor-pointer"
+            >
+              {tDual(
+                `Показать еще ${filteredProjects.length - 6} комплексов из ${filteredProjects.length}`,
+                `Нишон додани боз ${filteredProjects.length - 6} маҷмаа аз ${filteredProjects.length}`
+              )}
+            </Button>
+          </div>
+        )}
       </section>
 
       {/* 4. SECONDARY MARKET & HOUSES (AVITO / CIAN STYLE) */}
-      <section id="classifieds" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+      <section id="classifieds" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative">
+        <div id="houses" className="absolute -top-24 pointer-events-none" />
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 mb-6">
           <div>
             <div className="inline-flex items-center gap-1.5 text-xs uppercase font-bold tracking-wider text-emerald-600 mb-1">
@@ -712,7 +791,7 @@ export default function HomePage() {
               className="bg-white rounded-xl border border-slate-200/80 hover:border-emerald-300 hover:shadow-lg flex flex-col justify-between overflow-hidden transition-all duration-200 group"
             >
               <div>
-                <div className="relative h-48 w-full overflow-hidden bg-slate-100">
+                <Link href="/classifieds" className="block relative h-48 w-full overflow-hidden bg-slate-100">
                   <img
                     src={item.image}
                     alt={isTg ? item.titleTg || item.title : item.title}
@@ -731,16 +810,18 @@ export default function HomePage() {
                       {isTg ? "Савдо мешавад" : "Торг уместен"}
                     </div>
                   )}
-                </div>
+                </Link>
 
                 <CardContent className="p-4 sm:p-5 space-y-2.5">
                   <div>
                     <div className="text-lg font-bold text-emerald-600">
                       {formatPrice(item.priceTjs, item.priceUsd)}
                     </div>
-                    <h4 className="font-semibold text-sm text-slate-900 line-clamp-1 mt-0.5">
-                      {isTg ? item.titleTg || item.title : item.title}
-                    </h4>
+                    <Link href="/classifieds">
+                      <h4 className="font-semibold text-sm text-slate-900 line-clamp-1 mt-0.5 hover:text-emerald-600 transition-colors">
+                        {isTg ? item.titleTg || item.title : item.title}
+                      </h4>
+                    </Link>
                     <p className="text-xs text-slate-500 flex items-center gap-1 mt-1 font-medium">
                       <MapPin className="h-3.5 w-3.5 text-emerald-600 shrink-0" />
                       {isTg
@@ -917,55 +998,65 @@ export default function HomePage() {
             </h2>
             <p className="text-xs sm:text-sm text-slate-500 mt-1">
               {isTg
-                ? "Ширкатҳое, ки маҷмааҳои истиқоматиро бо ҳуҷҷатҳои пурраи расмӣ, кафолат ва пардохти қисм-қисми бефоиз дар Хуҷанд месозанд."
-                : "Компании, строящие жилые комплексы с официальной проектной документацией, гарантиями и беспроцентной рассрочкой в Худжанде."}
+                ? "Ширкатҳое, ки маҷмааҳои истиқоматиро бо ҳуҷҷатҳои пурраи расмӣ, кафолат ва пардохти қисм-қисми бефоиз дар Хуҷанд ва Гулистон месозанд."
+                : "Компании, строящие жилые комплексы с официальной проектной документацией, гарантиями и беспроцентной рассрочкой в Худжанде и Гулистоне."}
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="bg-slate-50/60 border border-slate-200/70 rounded-xl p-4 flex items-center gap-4 hover:border-emerald-300 transition-colors">
-              <DeveloperAvatar name="Рахш Сохтмон" size="md" />
-              <div className="space-y-1">
-                <div className="flex items-center gap-2">
-                  <h4 className="font-bold text-sm sm:text-base text-slate-900">Рахш Сохтмон</h4>
-                  <Badge className="bg-emerald-50 text-emerald-800 border-emerald-200 text-[10px]">
-                    {isTg ? "Тасдиқшуда" : "Верифицирован"}
-                  </Badge>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+            {INITIAL_DEVELOPERS.map((dev) => (
+              <Link
+                key={dev.id}
+                href={`/developers/${dev.slug}`}
+                className="bg-slate-50/60 border border-slate-200/70 rounded-xl p-5 flex flex-col justify-between hover:border-emerald-300 hover:bg-white hover:shadow-md transition-all group"
+              >
+                <div className="flex items-start gap-3.5">
+                  <div className="h-12 w-12 rounded-xl overflow-hidden bg-white border border-slate-200 shrink-0 shadow-xs">
+                    <img
+                      src={dev.logoUrl}
+                      alt={dev.name}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform"
+                    />
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-center gap-1.5 flex-wrap">
+                      <h4 className="font-bold text-sm text-slate-900 group-hover:text-emerald-600 transition-colors line-clamp-1">
+                        {dev.name}
+                      </h4>
+                      {dev.isVerified && (
+                        <Badge className="bg-emerald-50 text-emerald-800 border-emerald-200 text-[10px] px-1.5 py-0 h-4">
+                          {isTg ? "Тасдиқшуда" : "Верифицирован"}
+                        </Badge>
+                      )}
+                    </div>
+                    <div className="flex items-center gap-2 mt-1 text-xs text-slate-500">
+                      <span className="font-semibold text-amber-600 flex items-center gap-0.5">
+                        ★ {dev.rating}
+                      </span>
+                      <span>•</span>
+                      <span>
+                        {dev.completedProjectsCount} {isTg ? "супоридашуда" : "сдано"}
+                      </span>
+                      <span>•</span>
+                      <span>
+                        {dev.activeProjectsCount} {isTg ? "сохташаванда" : "строятся"}
+                      </span>
+                    </div>
+                  </div>
                 </div>
-                <p className="text-xs text-slate-500">
-                  {isTg
-                    ? "8 иншооти супоридашуда • 3 дар ҳоли сохтмон • Рейтинг 4.9"
-                    : "8 сданных объектов • 3 в процессе строительства • Рейтинг 4.9"}
-                </p>
-                <p className="text-[11px] text-slate-400">
-                  {isTg
-                    ? "Идора: ш. Хуҷанд, хиёбони И. Сомонӣ 142 • Тел: +992 92 700 5555"
-                    : "Офис: г. Худжанд, пр. И. Сомони 142 • Тел: +992 92 700 5555"}
-                </p>
-              </div>
-            </div>
 
-            <div className="bg-slate-50/60 border border-slate-200/70 rounded-xl p-4 flex items-center gap-4 hover:border-emerald-300 transition-colors">
-              <DeveloperAvatar name="Сайҳун Девелопмент" size="md" />
-              <div className="space-y-1">
-                <div className="flex items-center gap-2">
-                  <h4 className="font-bold text-sm sm:text-base text-slate-900">Сайҳун Девелопмент</h4>
-                  <Badge className="bg-emerald-50 text-emerald-800 border-emerald-200 text-[10px]">
-                    {isTg ? "Тасдиқшуда" : "Верифицирован"}
-                  </Badge>
+                <div className="mt-3.5 pt-3 border-t border-slate-200/60 text-[11px] text-slate-500 space-y-1">
+                  <p className="flex items-center gap-1 truncate">
+                    <MapPin className="h-3 w-3 text-emerald-600 shrink-0" />
+                    <span className="truncate">{dev.officeAddress}</span>
+                  </p>
+                  <p className="flex items-center gap-1 text-emerald-700 font-medium">
+                    <Phone className="h-3 w-3 text-emerald-600 shrink-0" />
+                    <span>{dev.phone}</span>
+                  </p>
                 </div>
-                <p className="text-xs text-slate-500">
-                  {isTg
-                    ? "5 иншооти супоридашуда • 2 лоиҳаи сохташаванда • Рейтинг 4.85"
-                    : "5 сданных объектов • 2 строящихся проекта • Рейтинг 4.85"}
-                </p>
-                <p className="text-[11px] text-slate-400">
-                  {isTg
-                    ? "Идора: ш. Хуҷанд, 19 мкр (соҳил) • Тел: +992 92 811 4444"
-                    : "Офис: г. Худжанд, 19 мкр (набережная) • Тел: +992 92 811 4444"}
-                </p>
-              </div>
-            </div>
+              </Link>
+            ))}
           </div>
         </div>
       </section>

@@ -86,27 +86,27 @@ export function Header() {
           {/* Navigation Links */}
           <nav className="hidden md:flex items-center gap-6 text-sm font-medium">
             <Link
-              href="#new-buildings"
+              href="/#new-buildings"
               className="text-foreground/80 hover:text-emerald-600 transition-colors flex items-center gap-1.5"
             >
               <Building2 className="h-4 w-4 text-emerald-600" />
               {t.nav.newBuildings}
             </Link>
             <Link
-              href="#classifieds"
+              href="/#classifieds"
               className="text-foreground/80 hover:text-emerald-600 transition-colors flex items-center gap-1.5"
             >
               <Home className="h-4 w-4 text-emerald-600" />
               {t.nav.resale}
             </Link>
             <Link
-              href="#houses"
+              href="/#houses"
               className="text-foreground/80 hover:text-emerald-600 transition-colors"
             >
               {t.nav.houses}
             </Link>
             <Link
-              href="#developers"
+              href="/#developers"
               className="text-foreground/80 hover:text-emerald-600 transition-colors flex items-center gap-1.5"
             >
               <Briefcase className="h-4 w-4 text-emerald-600" />
@@ -149,19 +149,22 @@ export function Header() {
             </DropdownMenu>
 
             {/* Post Ad Button */}
-            <Button
-              size="sm"
-              variant="outline"
-              onClick={() => {
-                if (!session) {
-                  handleOpenAuth("login");
-                }
-              }}
-              className="hidden sm:flex border-emerald-600/30 text-emerald-700 dark:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-emerald-950/30 gap-1.5 text-xs font-medium"
-            >
-              <PlusCircle className="h-3.5 w-3.5 text-emerald-600" />
-              {t.nav.postAd}
-            </Button>
+            <Link href={session ? "/classifieds/new" : "#"}>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={(e) => {
+                  if (!session) {
+                    e.preventDefault();
+                    handleOpenAuth("login");
+                  }
+                }}
+                className="hidden sm:flex border-emerald-600/30 text-emerald-700 dark:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-emerald-950/30 gap-1.5 text-xs font-medium cursor-pointer"
+              >
+                <PlusCircle className="h-3.5 w-3.5 text-emerald-600" />
+                {t.nav.postAd}
+              </Button>
+            </Link>
 
             {/* Auth Button or User Profile */}
             {isPending ? (
@@ -221,22 +224,28 @@ export function Header() {
                       {t.nav.settings}
                     </DropdownMenuItem>
                   </Link>
-                  <DropdownMenuItem className="cursor-pointer">
-                    <Home className="mr-2 h-4 w-4" />
-                    {t.nav.myAds}
-                  </DropdownMenuItem>
+                  <Link href="/classifieds">
+                    <DropdownMenuItem className="cursor-pointer">
+                      <Home className="mr-2 h-4 w-4" />
+                      {t.nav.myAds}
+                    </DropdownMenuItem>
+                  </Link>
 
                   {userRole === "developer" && (
-                    <DropdownMenuItem className="cursor-pointer">
-                      <Building2 className="mr-2 h-4 w-4" />
-                      {t.nav.devCabinet}
-                    </DropdownMenuItem>
+                    <Link href="/developer-admin">
+                      <DropdownMenuItem className="cursor-pointer">
+                        <Building2 className="mr-2 h-4 w-4" />
+                        {t.nav.devCabinet}
+                      </DropdownMenuItem>
+                    </Link>
                   )}
                   {userRole === "admin" && (
-                    <DropdownMenuItem className="cursor-pointer">
-                      <ShieldCheck className="mr-2 h-4 w-4 text-red-500" />
-                      {t.nav.adminPanel}
-                    </DropdownMenuItem>
+                    <Link href="/developer-admin">
+                      <DropdownMenuItem className="cursor-pointer">
+                        <ShieldCheck className="mr-2 h-4 w-4 text-red-500" />
+                        {t.nav.adminPanel}
+                      </DropdownMenuItem>
+                    </Link>
                   )}
                   <DropdownMenuSeparator />
                   <DropdownMenuItem
