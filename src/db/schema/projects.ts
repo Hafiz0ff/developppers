@@ -14,6 +14,16 @@ import {
   finishingTypeEnum,
 } from "./enums";
 import { developers } from "./developers";
+import type {
+  ProjectParkingConfig,
+  ParkingSpot,
+  ProjectStorageConfig,
+  StorageUnit,
+} from "@/types/parking-storage";
+import type {
+  ProjectDocument,
+  ProjectDocumentsConfig,
+} from "@/types/documents";
 
 export const projects = pgTable("projects", {
   id: text("id").primaryKey(),
@@ -22,9 +32,11 @@ export const projects = pgTable("projects", {
     .references(() => developers.id, { onDelete: "cascade" }),
 
   name: text("name").notNull(), // Например, "ЖК Сирдарё Плаза"
+  nameTg: text("name_tg"), // Масалан, "МИ «Сирдарё Плаза»"
   slug: text("slug").notNull().unique(),
   shortDescription: text("short_description"),
   description: text("description"),
+  descriptionTg: text("description_tg"),
 
   status: projectStatusEnum("status").default("under_construction").notNull(),
   buildingClass: buildingClassEnum("building_class").default("comfort").notNull(),
@@ -34,7 +46,9 @@ export const projects = pgTable("projects", {
   city: sogdCityEnum("city").default("khujand").notNull(),
   district: text("district"), // Микрорайон (18 мкр, 19 мкр, 34 мкр, Шелкокомбинат и др.)
   address: text("address").notNull(),
+  addressTg: text("address_tg"), // Суроға бо забони тоҷикӣ
   landmark: text("landmark"), // Ориентир (Набережная, парк Камоли Худжанди, Панчшанбе)
+  landmarkTg: text("landmark_tg"), // Нишона бо забони тоҷикӣ
   latitude: numeric("latitude", { precision: 10, scale: 7 }),
   longitude: numeric("longitude", { precision: 10, scale: 7 }),
 
@@ -81,6 +95,15 @@ export const projects = pgTable("projects", {
   hasSecurity: boolean("has_security").default(true).notNull(),
   hasAutonomousHeating: boolean("has_autonomous_heating").default(true).notNull(),
   amenities: jsonb("amenities").$type<string[]>().default([]), // ["Вид на Сырдарью", "Школа рядом", "Охрана 24/7"]
+  amenitiesTg: jsonb("amenities_tg").$type<string[]>().default([]),
+
+  // Модули Паркинг, Кладовые и Официальные Документы
+  parkingConfig: jsonb("parking_config").$type<ProjectParkingConfig>(),
+  parkingSpots: jsonb("parking_spots").$type<ParkingSpot[]>().default([]),
+  storageConfig: jsonb("storage_config").$type<ProjectStorageConfig>(),
+  storageUnits: jsonb("storage_units").$type<StorageUnit[]>().default([]),
+  documentsConfig: jsonb("documents_config").$type<ProjectDocumentsConfig>(),
+  officialDocuments: jsonb("official_documents").$type<ProjectDocument[]>().default([]),
 
   // Медиа
   coverImageUrl: text("cover_image_url"),

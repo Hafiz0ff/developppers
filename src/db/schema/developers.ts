@@ -12,10 +12,12 @@ import { users } from "./auth";
 export const developers = pgTable("developers", {
   id: text("id").primaryKey(),
   name: text("name").notNull(),
-  slug: text("slug").notNull().unique(), // URL-friendly slug (e.g. /developers/rahsh-stroy)
+  nameTg: text("name_tg"), // Номи расмӣ бо тоҷикӣ
+  slug: text("slug").notNull().unique(), // URL-friendly slug (e.g. /developers/qayroqum-avenue-dev)
   logoUrl: text("logo_url"),
   coverUrl: text("cover_url"),
   description: text("description"),
+  descriptionTg: text("description_tg"), // Тавсифи расмӣ бо тоҷикӣ
 
   // Опыт и репутация
   foundedYear: integer("founded_year"),
@@ -27,6 +29,7 @@ export const developers = pgTable("developers", {
   // Региональная локация офиса продаж
   city: sogdCityEnum("city").default("khujand").notNull(),
   officeAddress: text("office_address"), // Например, г. Худжанд, пр. И. Сомони 45
+  officeAddressTg: text("office_address_tg"), // Масалан, ш. Хуҷанд, х. И. Сомонӣ 45
 
   // Контакты
   phone: text("phone").notNull(),
