@@ -1,8 +1,8 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import Link from "next/link";
-import { INITIAL_PROJECTS } from "@/lib/data/mock-db";
+import { INITIAL_PROJECTS, INITIAL_DEVELOPERS } from "@/lib/data/mock-db";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
@@ -23,7 +23,12 @@ import { ProjectCatalogCardBadge } from "@/components/modules/project-engagement
 export default function DeveloperProjectsPage() {
   const { formatPrice } = useCurrency();
   const { language, tDual } = useLanguage();
-  const projects = INITIAL_PROJECTS; // complexes of the current developer
+  const [selectedDevId, setSelectedDevId] = useState<string>("all");
+
+  const projects =
+    selectedDevId === "all"
+      ? INITIAL_PROJECTS
+      : INITIAL_PROJECTS.filter((p) => p.developerId === selectedDevId);
 
   return (
     <div className="max-w-5xl space-y-6">
@@ -45,6 +50,38 @@ export default function DeveloperProjectsPage() {
             {tDual("Добавить новый ЖК", "Иловаи МИ нав")}
           </Button>
         </Link>
+      </div>
+
+      {/* Developer Filter Chips */}
+      <div className="flex flex-wrap items-center gap-2 pb-1">
+        <button
+          onClick={() => setSelectedDevId("all")}
+          className={`px-3 py-1.5 rounded-full text-xs font-semibold transition-all cursor-pointer ${
+            selectedDevId === "all"
+              ? "bg-emerald-600 text-white shadow-xs"
+              : "bg-card border text-muted-foreground hover:text-foreground hover:bg-muted"
+          }`}
+        >
+          {tDual("Все комплексы", "Ҳамаи маҷмааҳо")} ({INITIAL_PROJECTS.length})
+        </button>
+        {INITIAL_DEVELOPERS.map((dev) => {
+          const count = INITIAL_PROJECTS.filter(
+            (p) => p.developerId === dev.id
+          ).length;
+          return (
+            <button
+              key={dev.id}
+              onClick={() => setSelectedDevId(dev.id)}
+              className={`px-3 py-1.5 rounded-full text-xs font-semibold transition-all cursor-pointer ${
+                selectedDevId === dev.id
+                  ? "bg-emerald-600 text-white shadow-xs"
+                  : "bg-card border text-muted-foreground hover:text-foreground hover:bg-muted"
+              }`}
+            >
+              {dev.name} ({count})
+            </button>
+          );
+        })}
       </div>
 
       <div className="space-y-4">

@@ -4,6 +4,7 @@ import React, { Suspense } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useSession } from "@/lib/auth-client";
+import { useLanguage } from "@/context/language-context";
 import { Badge } from "@/components/ui/badge";
 import {
   Building2,
@@ -17,7 +18,7 @@ import {
   ChevronRight,
 } from "lucide-react";
 
-import { useLanguage } from "@/context/language-context";
+import { INITIAL_DEVELOPERS } from "@/lib/data/mock-db";
 
 function AdminNavList() {
   const pathname = usePathname();
@@ -42,7 +43,7 @@ function AdminNavList() {
     },
     {
       title: tDual("Шахматка квартир", "Ҷадвали шоҳмотии хонаҳо"),
-      href: "/developer-admin/projects/proj_sirdaryo_plaza/units",
+      href: "/developer-admin/projects/proj_qayroqum/units",
       icon: Grid3X3,
     },
     {
@@ -86,6 +87,7 @@ export default function DeveloperAdminLayout({
   children: React.ReactNode;
 }) {
   const { tDual } = useLanguage();
+  const developer = INITIAL_DEVELOPERS[0];
 
   return (
     <div className="min-h-screen bg-muted/20 flex flex-col">
@@ -97,14 +99,14 @@ export default function DeveloperAdminLayout({
           </Badge>
           <span className="text-emerald-200">
             {tDual(
-              "Кабинет застройщика: ООО «Рахш Сохтмон» (г. Худжанд)",
-              "Кабинети сохтмончӣ: ҶДММ «Рахш Сохтмон» (ш. Хуҷанд)"
+              `Кабинет застройщика: ${developer.name} (г. Гулистон / Согд)`,
+              `Кабинети сохтмончӣ: ${developer.name} (ш. Гулистон / Суғд)`
             )}
           </span>
         </div>
         <div className="flex items-center gap-3">
           <Link
-            href="/developers/rahsh-sohtmon"
+            href={`/developers/${developer.slug}`}
             className="hover:text-emerald-300 flex items-center gap-1 transition-colors text-emerald-200"
           >
             {tDual("Публичная витрина", "Витринаи кушод")}
@@ -117,20 +119,24 @@ export default function DeveloperAdminLayout({
         {/* SIDEBAR */}
         <aside className="w-full md:w-64 bg-card border-r flex flex-col shrink-0">
           <div className="p-4 border-b">
-            <div className="flex items-center gap-3">
-              <div className="h-10 w-10 rounded-xl bg-emerald-600 text-white flex items-center justify-center font-bold shadow-xs">
-                <Building2 className="h-5 w-5" />
+            <Link href={`/developers/${developer.slug}`} className="flex items-center gap-3 group">
+              <div className="h-10 w-10 rounded-xl overflow-hidden bg-white border border-slate-200 shrink-0 shadow-xs">
+                <img
+                  src={developer.logoUrl}
+                  alt={developer.name}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform"
+                />
               </div>
-              <div className="flex flex-col">
-                <span className="font-bold text-sm text-foreground leading-tight">
-                  Рахш Сохтмон
+              <div className="flex flex-col min-w-0">
+                <span className="font-bold text-sm text-foreground leading-tight truncate group-hover:text-emerald-600 transition-colors">
+                  {developer.name}
                 </span>
                 <span className="text-[11px] text-emerald-600 flex items-center gap-1 font-medium">
                   <ShieldCheck className="h-3.5 w-3.5" />
                   {tDual("Верифицирован", "Тасдиқшуда")}
                 </span>
               </div>
-            </div>
+            </Link>
           </div>
 
           {/* Navigation Links wrapped in Suspense */}
@@ -141,10 +147,10 @@ export default function DeveloperAdminLayout({
           {/* Sidebar Footer */}
           <div className="p-4 border-t bg-muted/30 text-xs space-y-2">
             <div className="text-[11px] text-muted-foreground">
-              {tDual("Отдел продаж в Худжанде:", "Шуъбаи фурӯш дар Хуҷанд:")}
+              {tDual("Отдел продаж в Согде:", "Шуъбаи фурӯш дар Суғд:")}
             </div>
             <div className="font-mono font-semibold text-foreground text-xs">
-              +992 92 700 5555
+              {developer.phone}
             </div>
             <Link
               href="/"

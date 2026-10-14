@@ -63,7 +63,7 @@ export default function EditProjectPage() {
   const isTg = language === "tg";
 
   const proj =
-    INITIAL_PROJECTS.find((p) => p.id === projectId) || INITIAL_PROJECTS[0];
+    INITIAL_PROJECTS.find((p) => p.id === projectId || p.slug === projectId) || INITIAL_PROJECTS[0];
 
   const [name, setName] = useState(isTg && proj.nameTg ? proj.nameTg : proj.name);
   const [buildingClass, setBuildingClass] = useState(proj.buildingClass);

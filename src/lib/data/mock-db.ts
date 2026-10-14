@@ -676,3 +676,103 @@ export const INITIAL_UNITS: UnitData[] = [
   ...generateUnitsForSirdaryoPlaza(),
   ...generateUnitsForQayroqum(),
 ];
+
+// Универсальный генератор реалистичных юнитов (квартир) для шахматки любого ЖК
+export function generateUnitsForAnyProject(project: ProjectData): UnitData[] {
+  if (project.id === "proj_qayroqum" || project.slug === "qayroqum-avenue") {
+    return generateUnitsForQayroqum();
+  }
+  if (project.id === "proj_sirdaryo_plaza" || project.slug === "sirdaryo-plaza") {
+    return generateUnitsForSirdaryoPlaza();
+  }
+
+  const existing = INITIAL_UNITS.filter(
+    (u) => u.projectId === project.id || u.projectId === project.slug
+  );
+  if (existing.length > 0) return existing;
+
+  const units: UnitData[] = [];
+  const sectionsCount = Math.max(1, Math.min(project.sectionsCount || 2, 4));
+  const sections = Array.from({ length: sectionsCount }, (_, i) => `Секция ${i + 1}`);
+  const totalFloors = Math.max(1, Math.min(project.floorsCount || 9, 16));
+
+  const basePriceUsd = project.minPricePerMeterUsd || 600;
+
+  const floorTemplates = [
+    {
+      unitSuffix: "A",
+      rooms: 1,
+      area: 45.0,
+      pricePerMUsd: basePriceUsd,
+      planImg: "/images/qayroqum/qayroqum-7.jpg",
+      view: "Вид во двор",
+    },
+    {
+      unitSuffix: "B",
+      rooms: 2,
+      area: 72.0,
+      pricePerMUsd: Math.round(basePriceUsd * 1.03),
+      planImg: "/images/qayroqum/qayroqum-8.jpg",
+      view: "Вид на город",
+    },
+    {
+      unitSuffix: "C",
+      rooms: 3,
+      area: 105.0,
+      pricePerMUsd: Math.round(basePriceUsd * 1.06),
+      planImg: "/images/qayroqum/qayroqum-5.jpg",
+      view: "Панорамный вид",
+    },
+  ];
+
+  let unitCounter = 1;
+
+  for (let floor = totalFloors; floor >= 1; floor--) {
+    for (let sIndex = 0; sIndex < sections.length; sIndex++) {
+      const section = sections[sIndex];
+
+      for (let tIndex = 0; tIndex < floorTemplates.length; tIndex++) {
+        const tpl = floorTemplates[tIndex];
+        const unitNumber = `Кв. ${unitCounter++}`;
+
+        let status: "available" | "reserved" | "sold" = "available";
+        const pseudo = (floor * 3 + sIndex * 5 + tIndex * 2) % 10;
+        if (pseudo === 1 || pseudo === 4) {
+          status = "reserved";
+        } else if (pseudo === 2 || pseudo === 7 || floor <= 2) {
+          status = "sold";
+        }
+
+        const priceUsd = Math.round(tpl.area * tpl.pricePerMUsd);
+        const priceTjs = Math.round(priceUsd * 10.95);
+        const pricePerMeterTjs = Math.round(tpl.pricePerMUsd * 10.95);
+
+        units.push({
+          id: `unit_${project.id}_${floor}_${sIndex + 1}_${tIndex + 1}`,
+          projectId: project.id,
+          unitNumber,
+          type: floor === totalFloors ? "penthouse" : "apartment",
+          roomsCount: tpl.rooms,
+          totalArea: tpl.area,
+          livingArea: Math.round(tpl.area * 0.65),
+          kitchenArea: Math.round(tpl.area * 0.18),
+          floor,
+          section,
+          priceTjs,
+          priceUsd,
+          pricePerMeterTjs,
+          pricePerMeterUsd: tpl.pricePerMUsd,
+          status,
+          finishing: project.finishing || "pre_finishing",
+          hasBalcony: true,
+          hasTerrace: floor === totalFloors,
+          windowView: tpl.view,
+          layoutPlanUrl: tpl.planImg,
+        });
+      }
+    }
+  }
+
+  return units;
+}
+

@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
-import { INITIAL_PROJECTS, INITIAL_UNITS, UnitData } from "@/lib/data/mock-db";
+import { INITIAL_PROJECTS, INITIAL_UNITS, UnitData, generateUnitsForAnyProject } from "@/lib/data/mock-db";
 import { Chessboard } from "@/components/modules/chessboard";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -24,16 +24,13 @@ export default function DeveloperProjectUnitsPage() {
   const { language, tDual } = useLanguage();
 
   const project =
-    INITIAL_PROJECTS.find((p) => p.id === projectId) || INITIAL_PROJECTS[0];
+    INITIAL_PROJECTS.find((p) => p.id === projectId || p.slug === projectId) || INITIAL_PROJECTS[0];
 
   const displayName = language === "tg" && project.nameTg ? project.nameTg : project.name;
   const displayAddress = language === "tg" && project.addressTg ? project.addressTg : project.address;
 
   const [units, setUnits] = useState<UnitData[]>(() => {
-    const filtered = INITIAL_UNITS.filter(
-      (u) => u.projectId === project.id || u.projectId === project.slug
-    );
-    return filtered.length > 0 ? filtered : INITIAL_UNITS;
+    return generateUnitsForAnyProject(project);
   });
   const [lastUpdated, setLastUpdated] = useState<string | null>(null);
 
