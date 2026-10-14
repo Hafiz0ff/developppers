@@ -7,7 +7,7 @@
 **Платформаи муосири амволи ғайриманқули Тоҷикистон**
 
 [![Live Demo](https://img.shields.io/badge/🌐_Live_Demo-maskani.tj-0D9488?style=for-the-badge)](https://sogd-realty.vercel.app)
-[![Tests Passing](https://img.shields.io/badge/Tests-88%2F88%20passing-success?style=for-the-badge&logo=vitest)](https://github.com/Hafiz0ff/developppers)
+[![Tests Passing](https://img.shields.io/badge/Tests-104%2F104%20passing-success?style=for-the-badge&logo=vitest)](https://github.com/Hafiz0ff/developppers)
 [![Next.js](https://img.shields.io/badge/Next.js-16.4-black?style=for-the-badge&logo=next.js)](https://nextjs.org)
 [![React](https://img.shields.io/badge/React-19.3-61DAFB?style=for-the-badge&logo=react)](https://react.dev)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178C6?style=for-the-badge&logo=typescript)](https://typescriptlang.org)
@@ -67,7 +67,8 @@
 | **4. Кабинет девелопера (`/developer-admin`)** | 🟢 **100%** | Управление жилыми комплексами, секциями, этажами, шахматкой, загрузка планов, настройка инсоляции и POI, аналитика просмотров. |
 | **5. Реестр застройщиков (`/developers`, `/[slug]`)** | 🟢 **100%** | Профили строительных компаний Согдийской области (Спитамен Билдинг, Согд Сити Строй, Долина Согда, Баракат Инвест, Ориён Строй) с лицензиями, портфолио и прямыми контактами. |
 | **6. B2B CRM и Аналитика маклера (`/profile/*`)** | 🟢 **100%** | Канбан-воронка лидов (Новый ➔ Квалификация ➔ Показ ➔ Бронь ➔ Сделка), авторасчет комиссии 2%, персональные WhatsApp-витрины `/p/[share_code]`, экспорт PDF, Telegram Push-уведомления. |
-| **7. База данных Drizzle ORM (`src/db`)** | 🟢 **100%** | 14 реляционных таблиц PostgreSQL, автоматический сидирование реальными данными, **88 автоматизированных модульных тестов** (100% pass). |
+| **7. База данных Drizzle ORM (`src/db`)** | 🟢 **100%** | 14 реляционных таблиц PostgreSQL, автоматический сидирование реальными данными, **104 автоматизированных модульных теста** (100% pass). |
+| **8. Интерактивная гео-карта Согда (`/map`)** | 🟢 **100%** | Полноэкранный Split-View (десктоп) и Bottom Sheet (мобильные), CartoDB Voyager + Esri Satellite, кастомные пины цен TJS/USD, пресеты городов (Худжанд, Гулистон, Гафуров, Истаравшан), маршруты в Яндекс.Картах. |
 
 ---
 
@@ -292,7 +293,7 @@ maskani/
 - [x] **Фаза 6: B2B CRM и Аналитика маклера (`/profile/*`)** — Канбан-доска, комиссия 2%, WhatsApp-витрины, Telegram Bot.
 - [x] **Фаза 7: База данных Drizzle ORM** — 14 реляционных таблиц, сид реальными данными, 88 тестов.
 - [x] **Фаза 8: PWA (Progressive Web App)** — Service Worker, Web Manifest, оффлайн-кэш, баннер установки.
-- [ ] **Фаза 9: Интерактивная карта объектов** — Полноэкранная гео-карта Согдийской области (Яндекс.Карты / Leaflet).
+- [x] **Фаза 9: Интерактивная карта объектов** — Полноэкранная гео-карта Согдийской области (`/map`), Split-View, CartoDB + Esri Satellite, пины цен TJS/USD, пресеты городов, маршруты в Яндекс.Картах.
 - [ ] **Фаза 10: Мобильное приложение** — Нативное приложение на React Native / Expo для iOS и Android.
 - [ ] **Фаза 11: AI-консультант по подбору недвижимости** — Интеллектуальный поиск по описанию на таджикском и русском языках.
 

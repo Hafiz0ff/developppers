@@ -29,6 +29,8 @@ import {
   MapPin,
   Maximize2,
   MessageCircle,
+  Navigation,
+  ExternalLink,
   Phone,
   Send,
   Share2,
@@ -40,6 +42,8 @@ import {
   X,
   Zap,
 } from "lucide-react";
+import { InteractiveMapWrapper } from "@/components/modules/interactive-map-wrapper";
+import { generateYandexMapsRouteUrl } from "@/lib/geo-utils";
 
 export default function ClassifiedDetailPage() {
   const params = useParams();
@@ -665,6 +669,83 @@ export default function ClassifiedDetailPage() {
                 </div>
               </div>
             )}
+
+            {/* Map & Location Block */}
+            <div className="bg-white border border-slate-200/80 rounded-2xl p-6 sm:p-7 shadow-sm space-y-4">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                <div>
+                  <h2 className="text-lg font-bold text-slate-900 tracking-tight flex items-center gap-2">
+                    <MapPin className="h-5 w-5 text-emerald-600" />
+                    {tDual("Расположение на карте", "Мавқеи ҷойгиршавӣ дар харита")}
+                  </h2>
+                  <p className="text-xs text-slate-500 mt-0.5">
+                    {item.city} · {item.district} {item.landmark ? `(${item.landmark})` : ""}
+                  </p>
+                </div>
+                {item.lat && item.lng && (
+                  <div className="flex items-center gap-2">
+                    <a
+                      href={generateYandexMapsRouteUrl(item.lat, item.lng)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold transition-colors"
+                    >
+                      <Navigation className="w-3.5 h-3.5 text-red-500" />
+                      <span>{tDual("Маршрут в Яндекс", "Хатсайр дар Яндекс")}</span>
+                    </a>
+                    <Link
+                      href="/map"
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200/60 text-xs font-semibold transition-colors"
+                    >
+                      <ExternalLink className="w-3.5 h-3.5" />
+                      <span>{tDual("На карте Согда", "Дар харитаи Суғд")}</span>
+                    </Link>
+                  </div>
+                )}
+              </div>
+
+              {item.lat && item.lng && (
+                <div className="h-64 sm:h-72 w-full rounded-xl overflow-hidden border border-slate-200 shadow-inner">
+                  <InteractiveMapWrapper
+                    properties={[
+                      {
+                        id: item.id,
+                        slug: item.slug,
+                        title: item.title,
+                        titleTg: item.titleTg,
+                        category:
+                          item.propertyType.toLowerCase().includes("дом") ||
+                          item.propertyType.toLowerCase().includes("ҳавлӣ")
+                            ? "house"
+                            : "apartment",
+                        dealType: "sale",
+                        city: item.city,
+                        cityTg: item.cityTg,
+                        district: item.district,
+                        districtTg: item.districtTg,
+                        lat: item.lat,
+                        lng: item.lng,
+                        priceTjs: item.priceTjs,
+                        priceUsd: item.priceUsd,
+                        rooms: item.rooms,
+                        areaM2: item.area,
+                        coverImage: activePhoto,
+                        phone: rawPhone,
+                        whatsapp: rawWhatsapp,
+                        url: `/classifieds/${item.slug}`,
+                      },
+                    ]}
+                    selectedPropertyId={item.id}
+                    defaultCenter={[item.lat, item.lng]}
+                    defaultZoom={15}
+                    currency={currency}
+                    language={language}
+                    showControls={false}
+                    className="w-full h-full min-h-[250px]"
+                  />
+                </div>
+              )}
+            </div>
 
             {/* Safety & Legal Verification Banner */}
             <div className="bg-amber-50/70 border border-amber-200/80 rounded-2xl p-5 sm:p-6 text-xs text-amber-900 space-y-2">

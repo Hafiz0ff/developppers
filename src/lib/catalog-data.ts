@@ -36,11 +36,15 @@ export interface CatalogProperty {
   description: string;
   descriptionTg?: string;
   originalSomonUrl?: string;
+  lat?: number;
+  lng?: number;
 }
 
 export const CATALOG_PROPERTIES: CatalogProperty[] = [
   {
     "id": "17034738",
+    "lat": 40.2825,
+    "lng": 69.625,
     "alias": "c1",
     "slug": "17034738-1-komn-kvartira-4-etazh-44-m2-sholkombinat",
     "title": "1-комн. квартира, 4 этаж, 44 м², Шёлкокомбинат",
@@ -101,6 +105,8 @@ export const CATALOG_PROPERTIES: CatalogProperty[] = [
   },
   {
     "id": "16766211",
+    "lat": 40.2912,
+    "lng": 69.6455,
     "alias": "c3",
     "slug": "16766211-2-komn-kvartira-4-etazh-52-m2-8mkr",
     "title": "2-комн. квартира, 4 этаж, 52 м², 8-й микрорайон",
@@ -166,6 +172,8 @@ export const CATALOG_PROPERTIES: CatalogProperty[] = [
   },
   {
     "id": "17260830",
+    "lat": 40.3042,
+    "lng": 69.6618,
     "alias": "c4",
     "slug": "17260830-3-komn-kvartira-3-etazh-68-m2-13",
     "title": "3-комн. квартира, 3 этаж, 68 м², 13-й микрорайон",
@@ -222,6 +230,8 @@ export const CATALOG_PROPERTIES: CatalogProperty[] = [
   },
   {
     "id": "17342045",
+    "lat": 40.3055,
+    "lng": 69.6635,
     "slug": "17342045-3-komn-kvartira-3-etazh-68-m2-13-mkr",
     "title": "3-комн. квартира, 3 этаж, 68 м², 13-й микрорайон",
     "titleTg": "Хонадони 3-ҳуҷрагӣ, ошёнаи 3, 68 м², микрорайони 13",
@@ -280,6 +290,8 @@ export const CATALOG_PROPERTIES: CatalogProperty[] = [
   },
   {
     "id": "15911344",
+    "lat": 40.3088,
+    "lng": 69.6702,
     "slug": "15911344-4-komn-kvartira-2-etazh-110-m2-18",
     "title": "4-комн. квартира (перепланировка в 5-комн.), 2 этаж, 110 м², 18 мкр",
     "titleTg": "Хонадони 4-ҳуҷрагӣ (5-ҳуҷрагӣ карда шуда), ошёнаи 2, 110 м², микрорайони 18",
@@ -340,6 +352,8 @@ export const CATALOG_PROPERTIES: CatalogProperty[] = [
   },
   {
     "id": "17068461",
+    "lat": 40.3018,
+    "lng": 69.6582,
     "slug": "17068461-4-komn-kvartira-4-etazh-93-m2-12-mkr",
     "title": "4-комн. квартира со всеми удобствами и мебелью, 4 этаж, 93 м², 12 мкр",
     "titleTg": "Хонадони 4-ҳуҷрагӣ бо шароит ва мебел, ошёнаи 4, 93 м², микрорайони 12",
@@ -403,6 +417,8 @@ export const CATALOG_PROPERTIES: CatalogProperty[] = [
   },
   {
     "id": "12416551",
+    "lat": 40.3035,
+    "lng": 69.6605,
     "slug": "12416551-3-komn-kvartira-5-etazh-75-m2-13-mkr",
     "title": "3-комн. квартира (перепланирована в 4-комн.) со всей техникой, 5 этаж, 75 м², 13 мкр",
     "titleTg": "Хонадони 3-ҳуҷрагӣ (4-ҳуҷрагӣ карда шуда) бо тамоми техника, ошёнаи 5, 75 м², микрорайони 13",
@@ -462,6 +478,8 @@ export const CATALOG_PROPERTIES: CatalogProperty[] = [
   },
   {
     "id": "15368183",
+    "lat": 40.2788,
+    "lng": 69.6215,
     "slug": "15368183-5-komn-kvartira-11-etazh-220-m2-bofanda-shiolkkombinat",
     "title": "5-комн. видовой пентхаус с террасой 75 м², 11 этаж, 220 м², Бофанда",
     "titleTg": "Хонадони 5-ҳуҷрагӣ бо айвони (терраса) 75 м², ошёнаи 11, 220 м², Бофанда",
@@ -524,6 +542,8 @@ export const CATALOG_PROPERTIES: CatalogProperty[] = [
   },
   {
     "id": "16419531",
+    "lat": 40.2848,
+    "lng": 69.6322,
     "alias": "c2",
     "slug": "16419531-2-etazhn-5-komn-dom-6-sotok-ul-gagarina",
     "title": "2-этажный 5-комнатный дом (Ҳавлӣ), 6 соток, ул. Гагарина",
@@ -577,6 +597,8 @@ export const CATALOG_PROPERTIES: CatalogProperty[] = [
   },
   {
     "id": "17254763",
+    "lat": 40.2882,
+    "lng": 69.6278,
     "slug": "17254763-1-etazhn-6-komn-dom-5-sotok-kuchai-mir-orientir-poioni-optika",
     "title": "1-этажный 6-комнатный дом (Ҳавлӣ), 4.7 соток, ул. Мир (Поёни оптика)",
     "titleTg": "Ҳавлии 1-ошёнаи 6-ҳуҷрагӣ, 4.7 сотих, кӯчаи Мир (Поёни оптика)",
@@ -640,6 +662,8 @@ export const CATALOG_PROPERTIES: CatalogProperty[] = [
   },
   {
     "id": "17161805",
+    "lat": 40.2698,
+    "lng": 69.6145,
     "slug": "17161805-1-etazhn-5-komn-dom-10-sotok-obi-toza",
     "title": "1-этажный дом (Ҳавлӣ) с большим участком 10.5 соток, Оби тоза",
     "titleTg": "Ҳавлии нақшавӣ бо қитъаи 10.5 сотих замин, Оби тоза",
@@ -686,6 +710,8 @@ export const CATALOG_PROPERTIES: CatalogProperty[] = [
   },
   {
     "id": "15811188",
+    "lat": 40.2818,
+    "lng": 69.6225,
     "slug": "15811188-2-etazhn-7-komn-dom-3-sotok-panchshanbe",
     "title": "2-этажный 7-комнатный дом (Ҳавлӣ) с сауной и джакузи, 3 сотки, Панчшанбе",
     "titleTg": "Ҳавлии 2-ошёнаи 7-ҳуҷрагӣ бо сауна ва шипанг, 3 сотих, назди Панҷшанбе",
@@ -743,6 +769,8 @@ export const CATALOG_PROPERTIES: CatalogProperty[] = [
   },
   {
     "id": "17059070",
+    "lat": 40.2545,
+    "lng": 69.6895,
     "slug": "17059070-1-etazhn-4-komn-dom-4500-sotok-sartukai",
     "title": "1-этажный 4-комнатный дом (Ҳавлӣ) с бассейном и сауной, 5 соток, Мости Хитой",
     "titleTg": "Ҳавлии 1-ошёнаи 4-ҳуҷрагӣ бо ҳавзи шиноварӣ ва сауна, 5 сотих, Пули хитойӣ",
@@ -793,6 +821,8 @@ export const CATALOG_PROPERTIES: CatalogProperty[] = [
   },
   {
     "id": "16368243",
+    "lat": 40.2648,
+    "lng": 69.6395,
     "slug": "16368243-2-etazhn-8-komn-dom-14-sotok-kuibyshev",
     "title": "2-этажный 8-комнатный дом (Ҳавлӣ) с участком 14 соток, Куйбышев",
     "titleTg": "Ҳавлии 2-ошёнаи 8-ҳуҷрагӣ бо замини 14 сотих, Куйбышев",
@@ -850,6 +880,8 @@ export const CATALOG_PROPERTIES: CatalogProperty[] = [
   },
   {
     "id": "17046737",
+    "lat": 40.2155,
+    "lng": 69.7248,
     "slug": "17046737-1-etazhn-6-komn-dom-6-sotok-b-gafurov",
     "title": "1-этажный 7-комнатный дом (Ҳавлӣ) из жженого кирпича, 6 соток, Б. Гафуров",
     "titleTg": "Ҳавлии 1-ошёнаи 7-ҳуҷрагӣ аз хишти пухта, 6 сотих, н. Б. Ғафуров",

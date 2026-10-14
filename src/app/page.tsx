@@ -563,6 +563,13 @@ export default function HomePage() {
                     {isTg ? "Тоза кардан" : "Сбросить"}
                   </button>
                 )}
+                <Link
+                  href="/map"
+                  className="inline-flex items-center gap-1.5 rounded-lg border border-emerald-500/30 bg-emerald-50/90 hover:bg-emerald-100 text-emerald-800 font-bold px-3 py-1 text-xs transition-all ml-auto shadow-xs"
+                >
+                  <MapPin className="h-3.5 w-3.5 text-emerald-600" />
+                  <span>{tDual("Показать на карте Согда", "Дар харитаи Суғд дидан")}</span>
+                </Link>
             </div>
           </div>
           </div>

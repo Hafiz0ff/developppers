@@ -31,6 +31,7 @@ import {
   TrendingUp,
   Users,
   Check,
+  MapPin,
 } from "lucide-react";
 
 
@@ -104,6 +105,13 @@ export function Header() {
               className="text-foreground/80 hover:text-emerald-600 transition-colors"
             >
               {t.nav.houses}
+            </Link>
+            <Link
+              href="/map"
+              className="text-foreground/80 hover:text-emerald-600 transition-colors flex items-center gap-1.5 font-semibold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-lg border border-emerald-200/60"
+            >
+              <MapPin className="h-4 w-4 text-emerald-600" />
+              {tDual("Карта", "Харита")}
             </Link>
             <Link
               href="/developers"

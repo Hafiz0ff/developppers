@@ -8,7 +8,7 @@ import { useCurrency } from "@/context/currency-context";
 import { ClassifiedsFilters } from "@/components/classifieds/classifieds-filters";
 import { ClassifiedCard } from "@/components/classifieds/classified-card";
 import { Button } from "@/components/ui/button";
-import { Plus, Home, ArrowLeft, SearchX, Sparkles } from "lucide-react";
+import { Plus, Home, ArrowLeft, SearchX, Sparkles, MapPin } from "lucide-react";
 import type { ClassifiedCard as ClassifiedCardData } from "@/lib/classifieds/map-card";
 import { CATALOG_PROPERTIES } from "@/lib/catalog-data";
 
@@ -84,12 +84,20 @@ function ClassifiedsCatalogContent() {
               </p>
             </div>
 
-            <Link href="/classifieds/new" className="shrink-0">
-              <Button className="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs h-10 px-4 rounded-xl gap-2 shadow-xs cursor-pointer">
-                <Plus className="h-4 w-4" />
-                {isTg ? "Гузоштани эълон (ройгон)" : "Подать объявление (бесплатно)"}
-              </Button>
-            </Link>
+            <div className="flex items-center gap-2.5 shrink-0">
+              <Link href="/map?type=apartment">
+                <Button variant="outline" className="border-slate-300 hover:bg-slate-100 font-semibold text-xs h-10 px-4 rounded-xl gap-2 cursor-pointer text-slate-700">
+                  <MapPin className="h-4 w-4 text-emerald-600" />
+                  {isTg ? "Дар харита" : "На карте"}
+                </Button>
+              </Link>
+              <Link href="/classifieds/new">
+                <Button className="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs h-10 px-4 rounded-xl gap-2 shadow-xs cursor-pointer">
+                  <Plus className="h-4 w-4" />
+                  {isTg ? "Гузоштани эълон (ройгон)" : "Подать объявление (бесплатно)"}
+                </Button>
+              </Link>
+            </div>
           </div>
 
           <div className="mt-6 pt-5 border-t border-slate-100">
