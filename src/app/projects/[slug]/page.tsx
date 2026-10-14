@@ -19,6 +19,10 @@ import { Card, CardContent } from "@/components/ui/card";
 import { ProjectEngagementHeaderPill } from "@/components/modules/project-engagement-pills";
 import { ProjectVisualShowcase } from "@/components/modules/project-visual-showcase";
 import { useProjectAnalytics } from "@/hooks/use-project-analytics";
+import { ProjectParkingSection } from "@/components/modules/projects/project-parking-section";
+import { ProjectStorageSection } from "@/components/modules/projects/project-storage-section";
+import { ParkingChessboardModal } from "@/components/modules/projects/parking-chessboard-modal";
+import { StorageChessboardModal } from "@/components/modules/projects/storage-chessboard-modal";
 
 import {
   Building2,
@@ -66,6 +70,8 @@ export default function PublicProjectPage() {
   };
 
   const { isFavorite, toggleFavorite } = useProjectAnalytics(project.slug, true);
+  const [isParkingModalOpen, setIsParkingModalOpen] = useState(false);
+  const [isStorageModalOpen, setIsStorageModalOpen] = useState(false);
 
   const [units, setUnits] = useState<UnitData[]>(() => {
     const filtered = INITIAL_UNITS.filter(
@@ -473,6 +479,46 @@ export default function PublicProjectPage() {
           </div>
         </div>
       </div>
+
+      {/* PARKING & STORAGE MODULES (OPTIONAL & INDEPENDENT) */}
+      <ProjectParkingSection
+        config={project.parkingConfig}
+        spots={project.parkingSpots}
+        onSelectSpotClick={() => setIsParkingModalOpen(true)}
+      />
+
+      <ProjectStorageSection
+        config={project.storageConfig}
+        units={project.storageUnits}
+        onSelectUnitClick={() => setIsStorageModalOpen(true)}
+      />
+
+      {/* PARKING & STORAGE INTERACTIVE CHESSBOARD MODALS */}
+      {project.parkingSpots && project.parkingSpots.length > 0 && (
+        <ParkingChessboardModal
+          isOpen={isParkingModalOpen}
+          onClose={() => setIsParkingModalOpen(false)}
+          projectName={displayName}
+          spots={project.parkingSpots}
+          developerContact={{
+            phone: developer.phone,
+            whatsapp: developer.whatsapp,
+          }}
+        />
+      )}
+
+      {project.storageUnits && project.storageUnits.length > 0 && (
+        <StorageChessboardModal
+          isOpen={isStorageModalOpen}
+          onClose={() => setIsStorageModalOpen(false)}
+          projectName={displayName}
+          units={project.storageUnits}
+          developerContact={{
+            phone: developer.phone,
+            whatsapp: developer.whatsapp,
+          }}
+        />
+      )}
 
       {/* INTERACTIVE UNIT CHESSBOARD FOR BUYERS */}
       <section id="chessboard-section" className="container mx-auto px-4 pt-6 space-y-6">

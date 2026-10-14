@@ -39,6 +39,7 @@ import {
   ExternalLink,
   Grid3X3,
   SlidersHorizontal,
+  Car,
 } from "lucide-react";
 import { ResponsiveTooltip } from "@/components/ui/responsive-tooltip";
 import { FinishingFeatureDialog } from "@/components/modules/projects/finishing-feature-dialog";
@@ -49,6 +50,7 @@ import { ProjectViewsLayoutsManager } from "@/components/modules/developer-admin
 import { ProjectInsolationSettings } from "@/components/modules/developer-admin/project-insolation-settings";
 import { ProjectAnalyticsTab } from "@/components/modules/developer-admin/project-analytics-tab";
 import { ProjectPreviewModal } from "@/components/modules/developer-admin/project-preview-modal";
+import { ProjectParkingStorageManager } from "@/components/modules/developer-admin/project-parking-storage-manager";
 import { useLanguage } from "@/lib/i18n/language-context";
 
 export default function EditProjectPage() {
@@ -112,7 +114,9 @@ export default function EditProjectPage() {
   const [coverImageUrl, setCoverImageUrl] = useState(proj.coverImageUrl);
   const [images, setImages] = useState<string[]>(proj.images || [proj.coverImageUrl]);
   const [previewOpen, setPreviewOpen] = useState(false);
-  const [activeTab, setActiveTab] = useState<"params" | "gallery" | "interactive" | "analytics">("params");
+  const [activeTab, setActiveTab] = useState<
+    "params" | "gallery" | "interactive" | "analytics" | "parking_storage"
+  >("params");
 
   // Custom building features handlers
   const handleAddCustomBuildingFeature = () => {
@@ -260,6 +264,11 @@ export default function EditProjectPage() {
             id: "interactive",
             label: isTg ? "Қабатҳои интерактивии (6D)" : "Интерактивные слои (6D)",
             icon: Layers,
+          },
+          {
+            id: "parking_storage",
+            label: isTg ? "Таваққуфгоҳ ва анборхонаҳо" : "Паркинг и кладовые",
+            icon: Car,
           },
           {
             id: "analytics",
@@ -979,7 +988,24 @@ export default function EditProjectPage() {
         </div>
       )}
 
-      {/* TAB 4: Complex Engagement Analytics (Section 3.4 of Spec) */}
+      {/* TAB 4: Parking & Storage Manager */}
+      {activeTab === "parking_storage" && (
+        <ProjectParkingStorageManager
+          projectId={proj.id}
+          initialParkingConfig={proj.parkingConfig}
+          initialStorageConfig={proj.storageConfig}
+          initialSpots={proj.parkingSpots}
+          initialStorageUnits={proj.storageUnits}
+          onSave={(data) => {
+            proj.parkingConfig = data.parkingConfig;
+            proj.storageConfig = data.storageConfig;
+            proj.parkingSpots = data.parkingSpots;
+            proj.storageUnits = data.storageUnits;
+          }}
+        />
+      )}
+
+      {/* TAB 5: Complex Engagement Analytics (Section 3.4 of Spec) */}
       {activeTab === "analytics" && (
         <ProjectAnalyticsTab projectName={proj.name} />
       )}

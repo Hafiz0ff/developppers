@@ -99,8 +99,23 @@ export interface ProjectData {
     value: string;
     valueTg?: string;
   }[];
+  // Parking & Storage modules
+  parkingConfig?: ProjectParkingConfig;
+  storageConfig?: ProjectStorageConfig;
+  parkingSpots?: ParkingSpot[];
+  storageUnits?: StorageUnit[];
 }
 
+import {
+  ProjectParkingConfig,
+  ProjectStorageConfig,
+  ParkingSpot,
+  StorageUnit,
+} from "@/types/parking-storage";
+import {
+  generateParkingSpotsForQayroqum,
+  generateStorageUnitsForQayroqum,
+} from "@/lib/parking-storage";
 import { ISTIQLOL_DEVELOPER, ISTIQLOL_PROJECTS } from "./istiqlol-data";
 import { TOJ_SOHTMON_DEVELOPER, TOJ_SOHTMON_PROJECTS } from "./toch-sohtmon-data";
 
@@ -284,6 +299,50 @@ export const INITIAL_PROJECTS: ProjectData[] = [
     },
     latitude: 40.265442,
     longitude: 69.796114,
+    parkingConfig: {
+      isEnabled: true,
+      title: "Паркинг",
+      titleTg: "Таваққуфгоҳ",
+      subtitle: "Подземные паркинги",
+      subtitleTg: "Таваққуфгоҳҳои зеризаминӣ",
+      description:
+        "Двухуровневый подземный паркинг на 500+ машино-мест с круглосуточным доступом на лифте прямо с жилых этажей. Оборудован скоростными автоматическими воротами, зарядными станциями для электромобилей, системой спринклерного пожаротушения, приточно-вытяжной вентиляцией и видеонаблюдением 24/7. В наличии стандартные, увеличенные и семейные двойные места.",
+      descriptionTg:
+        "Таваққуфгоҳи зеризаминии 2-ошёна барои беш аз 500 мошин бо дастрасии мустақим тавассути лифт аз ошёнаҳои истиқоматӣ. Муҷаҳҳаз бо дарвозаҳои худкор, нуқтаҳои пуркунии барқии электромобилҳо, системаи зиддисӯхтор, вентилятсияи ҳаво ва назорати видеоии шабонарӯзии 24/7. Ҷойҳои стандартии васеъ ва оилавии дукарата дастрасанд.",
+      images: [
+        "https://images.unsplash.com/photo-1590674899484-d5640e854abe?w=1200&h=800&fit=crop",
+        "https://images.unsplash.com/photo-1506521781263-d8422e82f27a?w=800&h=600&fit=crop",
+        "https://images.unsplash.com/photo-1573348722427-f1d6819fdf98?w=800&h=600&fit=crop",
+      ],
+      isChessboardPublished: true,
+      totalSpots: 38,
+      availableSpots: 24,
+      minPriceTjs: 19710,
+      minPriceUsd: 1800,
+    },
+    storageConfig: {
+      isEnabled: true,
+      title: "Кладовые",
+      titleTg: "Анборхонаҳо",
+      subtitle: "Кладовые для хранения вещей",
+      subtitleTg: "Анборхонаҳо барои нигоҳдории ашё",
+      description:
+        "Индивидуальные отапливаемые кладовые помещения в цокольном этаже площадью от 3.2 до 7.6 м². Идеальное решение для сезонного хранения шин, велосипедов, чемоданов и спортинвентаря, освобождающее пространство в квартире. Оснащены прочными металлическими дверями, приточной вентиляцией и системой контроля доступа.",
+      descriptionTg:
+        "Анборхонаҳои инфиродии гармшуда дар ошёнаи таҳхона бо масоҳати аз 3.2 то 7.6 м². Роҳи беҳтарин барои нигоҳдории чархҳои мавсимӣ, дучархаҳо, ҷомадон ва ашёи варзишӣ барои озод нигоҳ доштани фазои хонадон. Бо дари оҳанин, вентилятсияи доимӣ ва низоми назорати дастрасӣ муҷаҳҳаз гардидаанд.",
+      images: [
+        "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=1200&h=800&fit=crop",
+        "https://images.unsplash.com/photo-1600585152220-90363fe7e115?w=800&h=600&fit=crop",
+        "https://images.unsplash.com/photo-1595246140625-573b715d11dc?w=800&h=600&fit=crop",
+      ],
+      isChessboardPublished: true,
+      totalUnits: 16,
+      availableUnits: 11,
+      minPriceTjs: 11200,
+      minPriceUsd: 1024,
+    },
+    parkingSpots: generateParkingSpotsForQayroqum(),
+    storageUnits: generateStorageUnitsForQayroqum(),
   },
 
   // 2. Все 15 реальных ЖК строительной фирмы «Истиқлол Гурӯҳ» (Istiqlol Group)
