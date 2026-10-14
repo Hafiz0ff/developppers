@@ -17,6 +17,7 @@ import {
   Calendar,
   Percent,
 } from "lucide-react";
+import { ProjectCatalogCardBadge } from "@/components/modules/project-engagement-pills";
 
 export default function DeveloperProjectsPage() {
   const { formatPrice } = useCurrency();
@@ -54,6 +55,9 @@ export default function DeveloperProjectsPage() {
                 alt={proj.name}
                 className="w-full h-full object-cover"
               />
+              <div className="absolute bottom-2 left-2 z-10">
+                <ProjectCatalogCardBadge slug={proj.slug} />
+              </div>
               <Badge className="absolute top-2 left-2 bg-emerald-600 text-white text-[10px]">
                 {proj.status === "under_construction"
                   ? "Строится"

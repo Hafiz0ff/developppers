@@ -34,10 +34,21 @@ import {
   Edit3,
   Paintbrush,
   Sparkles,
+  Layers,
+  BarChart3,
+  ExternalLink,
+  Grid3X3,
+  SlidersHorizontal,
 } from "lucide-react";
 import { ResponsiveTooltip } from "@/components/ui/responsive-tooltip";
 import { FinishingFeatureDialog } from "@/components/modules/projects/finishing-feature-dialog";
 import type { CustomBuildingFeature, FinishingFeature } from "@/lib/data/mock-db";
+import { ProjectGalleryManager } from "@/components/modules/developer-admin/project-gallery-manager";
+import { ProjectPoiManager } from "@/components/modules/developer-admin/project-poi-manager";
+import { ProjectViewsLayoutsManager } from "@/components/modules/developer-admin/project-views-layouts-manager";
+import { ProjectInsolationSettings } from "@/components/modules/developer-admin/project-insolation-settings";
+import { ProjectAnalyticsTab } from "@/components/modules/developer-admin/project-analytics-tab";
+import { ProjectPreviewModal } from "@/components/modules/developer-admin/project-preview-modal";
 
 export default function EditProjectPage() {
   const router = useRouter();
@@ -93,6 +104,12 @@ export default function EditProjectPage() {
 
   const [saving, setSaving] = useState(false);
   const [success, setSuccess] = useState(false);
+
+  // Stage 5: Gallery, Showcase, Analytics & Preview States
+  const [coverImageUrl, setCoverImageUrl] = useState(proj.coverImageUrl);
+  const [images, setImages] = useState<string[]>(proj.images || [proj.coverImageUrl]);
+  const [previewOpen, setPreviewOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState<"params" | "gallery" | "interactive" | "analytics">("params");
 
   // Custom building features handlers
   const handleAddCustomBuildingFeature = () => {
@@ -173,7 +190,8 @@ export default function EditProjectPage() {
 
   return (
     <div className="max-w-4xl space-y-6">
-      <div className="flex items-center justify-between">
+      {/* Top Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div className="flex items-center gap-3">
           <Link href="/developer-admin/projects">
             <Button variant="outline" size="sm" className="h-8 text-xs gap-1">
@@ -186,19 +204,84 @@ export default function EditProjectPage() {
               Редактирование: {proj.name}
             </h1>
             <p className="text-xs text-muted-foreground mt-0.5">
-              Обновление параметров жилого комплекса и условий продаж
+              Управление витриной, 6D-слоями и характеристиками комплекса
             </p>
           </div>
         </div>
-        {success && (
-          <div className="flex items-center gap-1.5 text-xs font-semibold text-emerald-600 bg-emerald-50 dark:bg-emerald-950/40 px-3 py-1.5 rounded-lg border border-emerald-300">
-            <CheckCircle2 className="h-4 w-4" />
-            Изменения сохранены!
-          </div>
-        )}
+
+        <div className="flex items-center gap-2 flex-wrap">
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            onClick={() => setPreviewOpen(true)}
+            className="h-8 text-xs font-semibold gap-1.5 border-emerald-500/40 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-50 dark:hover:bg-emerald-950/20 cursor-pointer shadow-xs"
+          >
+            <Eye className="h-3.5 w-3.5 text-emerald-600" />
+            Предпросмотр на витрине
+          </Button>
+
+          <Link href={`/developer-admin/projects/${proj.id}/units`}>
+            <Button variant="outline" size="sm" className="h-8 text-xs gap-1.5 cursor-pointer">
+              <Grid3X3 className="h-3.5 w-3.5 text-emerald-600" />
+              Шахматка квартир
+            </Button>
+          </Link>
+
+          {success && (
+            <div className="flex items-center gap-1.5 text-xs font-semibold text-emerald-600 bg-emerald-50 dark:bg-emerald-950/40 px-3 py-1.5 rounded-lg border border-emerald-300">
+              <CheckCircle2 className="h-4 w-4" />
+              Сохранено!
+            </div>
+          )}
+        </div>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-6">
+      {/* Tab Switcher for Developer Admin (Section 3.4 of Spec) */}
+      <div className="flex items-center gap-1.5 overflow-x-auto pb-1 [scrollbar-width:none]">
+        {[
+          { id: "params", label: "Параметры и отделка", icon: Building2 },
+          {
+            id: "gallery",
+            label: "Галерея и обложка",
+            icon: ImageIcon,
+            badge: images.length.toString(),
+          },
+          { id: "interactive", label: "Интерактивные слои (6D)", icon: Layers },
+          { id: "analytics", label: "Аналитика объекта", icon: BarChart3 },
+        ].map((tab) => {
+          const Icon = tab.icon;
+          const isActive = activeTab === tab.id;
+          return (
+            <button
+              key={tab.id}
+              type="button"
+              onClick={() => setActiveTab(tab.id as typeof activeTab)}
+              className={`h-9 px-3.5 rounded-xl text-xs font-semibold flex items-center gap-2 whitespace-nowrap transition-all cursor-pointer ${
+                isActive
+                  ? "bg-emerald-600 text-white shadow-xs"
+                  : "bg-card hover:bg-muted text-muted-foreground border border-border/80"
+              }`}
+            >
+              <Icon className="h-4 w-4" />
+              <span>{tab.label}</span>
+              {tab.badge && (
+                <span
+                  className={`text-[10px] px-1.5 py-0.2 rounded-full ${
+                    isActive ? "bg-white/20 text-white" : "bg-muted text-foreground"
+                  }`}
+                >
+                  {tab.badge}
+                </span>
+              )}
+            </button>
+          );
+        })}
+      </div>
+
+      {/* TAB 1: Main Parameters and Finishing Form */}
+      {activeTab === "params" && (
+        <form onSubmit={handleSubmit} className="space-y-6">
         {/* Main Details */}
         <Card>
           <CardHeader className="p-4 pb-2">
@@ -795,6 +878,33 @@ export default function EditProjectPage() {
           </Button>
         </div>
       </form>
+      )}
+
+      {/* TAB 2: Gallery and Cover Management (Section 3.4 of Spec) */}
+      {activeTab === "gallery" && (
+        <ProjectGalleryManager
+          images={images}
+          coverImageUrl={coverImageUrl}
+          onChange={(newImages, newCover) => {
+            setImages(newImages);
+            setCoverImageUrl(newCover);
+          }}
+        />
+      )}
+
+      {/* TAB 3: Interactive 6D Showcase Layers (Section 3.4 of Spec) */}
+      {activeTab === "interactive" && (
+        <div className="space-y-6">
+          <ProjectPoiManager />
+          <ProjectViewsLayoutsManager />
+          <ProjectInsolationSettings />
+        </div>
+      )}
+
+      {/* TAB 4: Complex Engagement Analytics (Section 3.4 of Spec) */}
+      {activeTab === "analytics" && (
+        <ProjectAnalyticsTab projectName={proj.name} />
+      )}
 
       {/* Finishing Feature Dialog */}
       <FinishingFeatureDialog
@@ -807,6 +917,18 @@ export default function EditProjectPage() {
           setActiveFinishingFeature(feat);
           setFinishingDialogMode("edit");
         }}
+      />
+
+      {/* Full Interactive 6D Showcase Preview Modal (Section 3.4 of Spec) */}
+      <ProjectPreviewModal
+        open={previewOpen}
+        onOpenChange={setPreviewOpen}
+        projectName={name}
+        coverImageUrl={coverImageUrl}
+        images={images}
+        installmentMonths={parseInt(installmentMonths, 10) || 24}
+        installmentDownPaymentPercent={parseInt(installmentDownPayment, 10) || 30}
+        slug={proj.slug}
       />
     </div>
   );
