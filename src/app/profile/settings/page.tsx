@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import { useLanguage } from "@/lib/i18n/language-context";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
@@ -28,6 +29,9 @@ import {
 } from "lucide-react";
 
 export default function ProfileSettingsPage() {
+  const { language } = useLanguage();
+  const isTg = language === "tg";
+
   const [chatId, setChatId] = useState("");
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
   const [botUsername, setBotUsername] = useState("SogdRealtyBot");
@@ -79,18 +83,18 @@ export default function ProfileSettingsPage() {
       if (data.success) {
         setStatusMessage({
           type: "success",
-          text: "Настройки успешно сохранены!",
+          text: isTg ? "Танзимот бомуваффақият сабт шуд!" : "Настройки успешно сохранены!",
         });
       } else {
         setStatusMessage({
           type: "error",
-          text: data.error || "Ошибка сохранения",
+          text: data.error || (isTg ? "Хатогӣ ҳангоми сабт" : "Ошибка сохранения"),
         });
       }
     } catch (err) {
       setStatusMessage({
         type: "error",
-        text: "Сетевая ошибка при сохранении",
+        text: isTg ? "Хатогии шабака ҳангоми сабт" : "Сетевая ошибка при сохранении",
       });
     } finally {
       setSaving(false);
@@ -101,7 +105,9 @@ export default function ProfileSettingsPage() {
     if (!chatId.trim()) {
       setStatusMessage({
         type: "error",
-        text: "Пожалуйста, укажите ваш Telegram Chat ID перед отправкой теста",
+        text: isTg
+          ? "Лутфан қабл аз озмоиш Telegram Chat ID-и худро ворид кунед"
+          : "Пожалуйста, укажите ваш Telegram Chat ID перед отправкой теста",
       });
       return;
     }
@@ -121,18 +127,18 @@ export default function ProfileSettingsPage() {
       if (data.success) {
         setStatusMessage({
           type: "success",
-          text: data.message || "Тестовое уведомление отправлено в Telegram!",
+          text: data.message || (isTg ? "Огоҳиномаи озмоишӣ ба Telegram фиристода шуд!" : "Тестовое уведомление отправлено в Telegram!"),
         });
       } else {
         setStatusMessage({
           type: "error",
-          text: data.error || "Не удалось отправить сообщение. Проверьте Chat ID.",
+          text: data.error || (isTg ? "Паём фиристода нашуд. Chat ID-ро санҷед." : "Не удалось отправить сообщение. Проверьте Chat ID."),
         });
       }
     } catch (err) {
       setStatusMessage({
         type: "error",
-        text: "Сетевая ошибка при отправке теста",
+        text: isTg ? "Хатогии шабака ҳангоми фиристодани озмоиш" : "Сетевая ошибка при отправке теста",
       });
     } finally {
       setTesting(false);
@@ -148,31 +154,33 @@ export default function ProfileSettingsPage() {
         <div className="max-w-4xl mx-auto flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
             <div className="flex items-center gap-2 text-xs uppercase font-bold tracking-wider text-emerald-600 mb-1">
-              <Link href="/profile/crm" className="hover:underline flex items-center gap-1">
+              <Link href="/profile/crm" className="hover:underline flex items-center gap-1 font-semibold">
                 <ArrowLeft className="h-3 w-3" />
-                Личный кабинет
+                {isTg ? "Кабинети шахсӣ" : "Личный кабинет"}
               </Link>
             </div>
             <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
-              Настройки профиля & Интеграции
+              {isTg ? "Танзимоти профил ва пайвастшавиҳо" : "Настройки профиля & Интеграции"}
             </h1>
             <p className="text-xs sm:text-sm text-slate-500 mt-1">
-              Управление персональными данными, безопасностью и моментальными уведомлениями
+              {isTg
+                ? "Идоракунии маълумоти шахсӣ, амният ва огоҳиномаҳои фаврӣ"
+                : "Управление персональными данными, безопасностью и моментальными уведомлениями"}
             </p>
           </div>
 
           <div className="flex items-center gap-2.5">
             <Link href="/profile/crm">
-              <Button variant="outline" className="h-9 px-3 text-xs font-semibold gap-1.5 border-slate-200">
+              <Button variant="outline" className="h-9 px-3 text-xs font-semibold gap-1.5 border-slate-200 cursor-pointer">
                 <Users className="h-3.5 w-3.5 text-emerald-600" />
-                Канбан CRM
+                {isTg ? "Канбан CRM" : "Канбан CRM"}
               </Button>
             </Link>
 
             <Link href="/profile/analytics">
-              <Button variant="outline" className="h-9 px-3 text-xs font-semibold gap-1.5 border-slate-200">
+              <Button variant="outline" className="h-9 px-3 text-xs font-semibold gap-1.5 border-slate-200 cursor-pointer">
                 <TrendingUp className="h-3.5 w-3.5 text-slate-600" />
-                Аналитика
+                {isTg ? "Таҳлил" : "Аналитика"}
               </Button>
             </Link>
           </div>
@@ -189,32 +197,44 @@ export default function ProfileSettingsPage() {
               </div>
               <div>
                 <CardTitle className="text-base font-bold text-slate-900">
-                  Рустам Ахмедов
+                  Рустам Аҳмедов
                 </CardTitle>
                 <CardDescription className="text-xs text-slate-500">
-                  Риелтор • Агентство «Сугд-Инвест» (г. Худжанд)
+                  {isTg
+                    ? "Риелтор • Агентии «Суғд-Инвест» (ш. Хуҷанд)"
+                    : "Риелтор • Агентство «Сугд-Инвест» (г. Худжанд)"}
                 </CardDescription>
               </div>
             </div>
 
             <Badge className="bg-emerald-50 text-emerald-700 border-emerald-200 text-xs font-semibold gap-1">
               <ShieldCheck className="h-3.5 w-3.5 text-emerald-600" />
-              Верифицирован
+              {isTg ? "Тасдиқшуда" : "Верифицирован"}
             </Badge>
           </CardHeader>
 
           <CardContent className="p-5 grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
             <div>
-              <span className="text-slate-400 block font-semibold text-[11px]">Телефон:</span>
+              <span className="text-slate-400 block font-semibold text-[11px]">
+                {isTg ? "Телефон:" : "Телефон:"}
+              </span>
               <span className="font-bold text-slate-800 font-mono">+992 92 777 00 22</span>
             </div>
             <div>
-              <span className="text-slate-400 block font-semibold text-[11px]">Город присутствия:</span>
-              <span className="font-bold text-slate-800">Худжанд / Согдийская область</span>
+              <span className="text-slate-400 block font-semibold text-[11px]">
+                {isTg ? "Шаҳри фаъолият:" : "Город присутствия:"}
+              </span>
+              <span className="font-bold text-slate-800">
+                {isTg ? "Хуҷанд / Вилояти Суғд" : "Худжанд / Согдийская область"}
+              </span>
             </div>
             <div>
-              <span className="text-slate-400 block font-semibold text-[11px]">Роль на платформе:</span>
-              <span className="font-bold text-slate-800">Маклер / Агентство недвижимости</span>
+              <span className="text-slate-400 block font-semibold text-[11px]">
+                {isTg ? "Нақш дар платформа:" : "Роль на платформе:"}
+              </span>
+              <span className="font-bold text-slate-800">
+                {isTg ? "Риелтор / Агентии амволи ғайриманқул" : "Маклер / Агентство недвижимости"}
+              </span>
             </div>
           </CardContent>
         </Card>
@@ -230,28 +250,36 @@ export default function ProfileSettingsPage() {
                 <div>
                   <div className="flex items-center gap-2">
                     <CardTitle className="text-lg font-bold text-slate-900">
-                      Мгновенные Telegram-уведомления
+                      {isTg ? "Огоҳиномаҳои фаврии Telegram" : "Мгновенные Telegram-уведомления"}
                     </CardTitle>
                     {isConnected ? (
                       <Badge className="bg-emerald-50 text-emerald-700 border-emerald-200 text-[10px] font-bold gap-1">
                         <CheckCircle2 className="h-3 w-3 text-emerald-600" />
-                        Подключено
+                        {isTg ? "Пайваст шуд" : "Подключено"}
                       </Badge>
                     ) : (
                       <Badge variant="secondary" className="bg-slate-100 text-slate-600 text-[10px] font-semibold">
-                        Не настроено
+                        {isTg ? "Танзим нашудааст" : "Не настроено"}
                       </Badge>
                     )}
                   </div>
                   <CardDescription className="text-xs text-slate-500 mt-0.5">
-                    Получайте пуши о звонках, кликах WhatsApp и новых заявках сразу в Telegram
+                    {isTg
+                      ? "Огоҳиномаҳо дар бораи зангҳо, гузариш ба WhatsApp ва дархостҳои навро бевосита дар Telegram қабул кунед"
+                      : "Получайте пуши о звонках, кликах WhatsApp и новых заявках сразу в Telegram"}
                   </CardDescription>
                 </div>
               </div>
 
               <div className="flex items-center gap-2">
                 <Label htmlFor="telegram-toggle" className="text-xs font-semibold text-slate-700 cursor-pointer">
-                  {notificationsEnabled ? "Включены" : "Выключены"}
+                  {notificationsEnabled
+                    ? isTg
+                      ? "Фаъол"
+                      : "Включены"
+                    : isTg
+                    ? "Хомӯш"
+                    : "Выключены"}
                 </Label>
                 <Switch
                   id="telegram-toggle"
@@ -267,17 +295,19 @@ export default function ProfileSettingsPage() {
             <div className="rounded-xl border border-sky-100 bg-sky-50/40 p-4 space-y-3">
               <h4 className="font-bold text-xs text-sky-950 uppercase tracking-wider flex items-center gap-1.5">
                 <Sparkles className="h-3.5 w-3.5 text-sky-600" />
-                Инструкция по подключению за 30 секунд:
+                {isTg ? "Дастури пайвастшавӣ дар 30 сония:" : "Инструкция по подключению за 30 секунд:"}
               </h4>
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs text-slate-600">
                 <div className="p-3 bg-white rounded-lg border border-sky-100/80 space-y-1.5">
                   <div className="font-bold text-sky-700 flex items-center gap-1.5">
                     <span className="h-5 w-5 rounded-full bg-sky-100 text-sky-800 text-[11px] font-extrabold flex items-center justify-center">1</span>
-                    Запустите бота
+                    {isTg ? "Ботро фаъол созед" : "Запустите бота"}
                   </div>
                   <p className="text-[11px] leading-relaxed">
-                    Откройте официального бота платформы в Telegram и нажмите <strong>«Start»</strong>:
+                    {isTg
+                      ? "Боти расмии платформаро дар Telegram кушоед ва тугмаи «Start»-ро пахш кунед:"
+                      : "Откройте официального бота платформы в Telegram и нажмите «Start»:"}
                   </p>
                   <a
                     href={`https://t.me/${botUsername}`}
@@ -293,20 +323,24 @@ export default function ProfileSettingsPage() {
                 <div className="p-3 bg-white rounded-lg border border-sky-100/80 space-y-1.5">
                   <div className="font-bold text-sky-700 flex items-center gap-1.5">
                     <span className="h-5 w-5 rounded-full bg-sky-100 text-sky-800 text-[11px] font-extrabold flex items-center justify-center">2</span>
-                    Узнайте Chat ID
+                    {isTg ? "Chat ID-ро муайян кунед" : "Узнайте Chat ID"}
                   </div>
                   <p className="text-[11px] leading-relaxed">
-                    Отправьте команду <code>/id</code> боту или напишите в <strong>@userinfobot</strong>, чтобы скопировать ваш персональный ID.
+                    {isTg
+                      ? "Фармони /id-ро ба бот фиристед ё ба @userinfobot нависед, то ID-и худро гиред."
+                      : "Отправьте команду /id боту или напишите в @userinfobot, чтобы скопировать ваш персональный ID."}
                   </p>
                 </div>
 
                 <div className="p-3 bg-white rounded-lg border border-sky-100/80 space-y-1.5">
                   <div className="font-bold text-sky-700 flex items-center gap-1.5">
                     <span className="h-5 w-5 rounded-full bg-sky-100 text-sky-800 text-[11px] font-extrabold flex items-center justify-center">3</span>
-                    Вставьте и сохраните
+                    {isTg ? "Гузоред ва сабт намоед" : "Вставьте и сохраните"}
                   </div>
                   <p className="text-[11px] leading-relaxed">
-                    Вставьте номер в поле ниже, сохраните и нажмите кнопку <strong>«Тест»</strong> для проверки.
+                    {isTg
+                      ? "Рақамро дар сатри поён гузоред, сабт кунед ва тугмаи «Санҷиш»-ро пахш намоед."
+                      : "Вставьте номер в поле ниже, сохраните и нажмите кнопку «Тест» для проверки."}
                   </p>
                 </div>
               </div>
@@ -316,16 +350,16 @@ export default function ProfileSettingsPage() {
             <form onSubmit={handleSave} className="space-y-4">
               <div>
                 <Label htmlFor="chat-id" className="text-xs font-semibold text-slate-700 flex items-center justify-between">
-                  <span>Ваш Telegram Chat ID *</span>
+                  <span>{isTg ? "Telegram Chat ID-и шумо *" : "Ваш Telegram Chat ID *"}</span>
                   <span className="text-[11px] font-normal text-slate-400">
-                    Например: <code>123456789</code> или <code>-100123456789</code> (для группы агентства)
+                    {isTg ? "Масалан: 123456789 ё -100123456789 (барои гурӯҳ)" : "Например: 123456789 или -100123456789 (для группы)"}
                   </span>
                 </Label>
                 <div className="relative mt-1.5">
                   <Input
                     id="chat-id"
                     type="text"
-                    placeholder="Введите ваш Telegram Chat ID..."
+                    placeholder={isTg ? "Telegram Chat ID-и худро ворид кунед..." : "Введите ваш Telegram Chat ID..."}
                     value={chatId}
                     onChange={(e) => setChatId(e.target.value)}
                     className="h-10 text-xs font-mono pr-24 border-slate-200 bg-slate-50 focus:bg-white"
@@ -337,10 +371,10 @@ export default function ProfileSettingsPage() {
                       size="sm"
                       onClick={handleTestNotification}
                       disabled={testing || !chatId.trim()}
-                      className="h-7 px-2.5 text-[11px] font-semibold text-sky-600 hover:text-sky-700 hover:bg-sky-50 gap-1"
+                      className="h-7 px-2.5 text-[11px] font-semibold text-sky-600 hover:text-sky-700 hover:bg-sky-50 gap-1 cursor-pointer"
                     >
                       {testing ? <RefreshCw className="h-3 w-3 animate-spin" /> : <Send className="h-3 w-3" />}
-                      Тест
+                      {isTg ? "Санҷиш" : "Тест"}
                     </Button>
                   </div>
                 </div>
@@ -373,7 +407,7 @@ export default function ProfileSettingsPage() {
                   className="inline-flex items-center gap-1.5 text-xs font-semibold text-sky-600 hover:underline"
                 >
                   <Send className="h-3.5 w-3.5" />
-                  Перейти к @{botUsername}
+                  {isTg ? `Гузариш ба @${botUsername}` : `Перейти к @${botUsername}`}
                   <ExternalLink className="h-3 w-3" />
                 </a>
 
@@ -381,9 +415,15 @@ export default function ProfileSettingsPage() {
                   <Button
                     type="submit"
                     disabled={saving}
-                    className="h-9 px-4 text-xs font-semibold bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl shadow-xs"
+                    className="h-9 px-4 text-xs font-semibold bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl shadow-xs cursor-pointer"
                   >
-                    {saving ? "Сохранение..." : "Сохранить настройки"}
+                    {saving
+                      ? isTg
+                        ? "Дар ҳоли сабт..."
+                        : "Сохранение..."
+                      : isTg
+                      ? "Сабти танзимот"
+                      : "Сохранить настройки"}
                   </Button>
                 </div>
               </div>
@@ -392,16 +432,20 @@ export default function ProfileSettingsPage() {
             {/* Notification Preview */}
             <div className="border-t border-slate-100 pt-5 space-y-2">
               <h5 className="font-semibold text-xs text-slate-700">
-                Пример входящего пуша в Telegram:
+                {isTg ? "Намунаи огоҳинома дар Telegram:" : "Пример входящего пуша в Telegram:"}
               </h5>
               <div className="p-3.5 rounded-xl bg-slate-900 text-slate-100 text-[11px] font-mono leading-relaxed space-y-1 shadow-sm max-w-md">
-                <p className="text-emerald-400 font-bold">🔔 Новый лид на Maskani.tj!</p>
-                <p>👤 <strong>Клиент:</strong> Дилшод Рахимов</p>
-                <p>📞 <strong>Телефон:</strong> +992 93 505 11 88</p>
-                <p>🏢 <strong>Объект:</strong> 3-комнатная квартира (18 мкр)</p>
-                <p>💰 <strong>Бюджет:</strong> $49,000 <em>(Комиссия ~ $980)</em></p>
-                <p>📊 <strong>Канал:</strong> 💬 Переход в WhatsApp</p>
-                <p className="text-sky-400 underline pt-1">👉 Открыть карточку в CRM Воронке</p>
+                <p className="text-emerald-400 font-bold">
+                  {isTg ? "🔔 Дархости нав дар Maskani.tj!" : "🔔 Новый лид на Maskani.tj!"}
+                </p>
+                <p>👤 <strong>{isTg ? "Мизоҷ:" : "Клиент:"}</strong> Дилшод Раҳимов</p>
+                <p>📞 <strong>{isTg ? "Телефон:" : "Телефон:"}</strong> +992 93 505 11 88</p>
+                <p>🏢 <strong>{isTg ? "Амвол:" : "Объект:"}</strong> {isTg ? "Хонадони 3-ҳуҷрагӣ (18 мкр)" : "3-комнатная квартира (18 мкр)"}</p>
+                <p>💰 <strong>{isTg ? "Буҷет:" : "Бюджет:"}</strong> $49,000 <em>({isTg ? "Ҳаққи хизмат" : "Комиссия"} ~ $980)</em></p>
+                <p>📊 <strong>{isTg ? "Манбаъ:" : "Канал:"}</strong> 💬 {isTg ? "Гузариш ба WhatsApp" : "Переход в WhatsApp"}</p>
+                <p className="text-sky-400 underline pt-1">
+                  👉 {isTg ? "Кушодани корт дар воронкаи CRM" : "Открыть карточку в CRM Воронке"}
+                </p>
               </div>
             </div>
           </CardContent>

@@ -10,10 +10,13 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { SOGD_CITIES } from "@/lib/constants/locations";
+import { useLanguage } from "@/lib/i18n/language-context";
 
 export function ClassifiedsFilters() {
   const router = useRouter();
   const params = useSearchParams();
+  const { language } = useLanguage();
+  const isTg = language === "tg";
 
   function setParam(key: string, value: string) {
     const next = new URLSearchParams(params.toString());
@@ -27,13 +30,13 @@ export function ClassifiedsFilters() {
     <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
       <Select value={params.get("city") || "all"} onValueChange={(v) => setParam("city", v ?? "all")}>
         <SelectTrigger className="h-10 bg-white">
-          <SelectValue placeholder="Город" />
+          <SelectValue placeholder={isTg ? "Шаҳр" : "Город"} />
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value="all">Все города</SelectItem>
+          <SelectItem value="all">{isTg ? "Ҳамаи шаҳрҳо" : "Все города"}</SelectItem>
           {SOGD_CITIES.map((city) => (
             <SelectItem key={city.value} value={city.value}>
-              {city.nameRu}
+              {isTg ? city.nameTj || city.nameRu : city.nameRu}
             </SelectItem>
           ))}
         </SelectContent>
@@ -44,14 +47,14 @@ export function ClassifiedsFilters() {
         onValueChange={(v) => setParam("propertyType", v ?? "all")}
       >
         <SelectTrigger className="h-10 bg-white">
-          <SelectValue placeholder="Тип" />
+          <SelectValue placeholder={isTg ? "Намуди амвол" : "Тип"} />
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value="all">Все типы</SelectItem>
-          <SelectItem value="apartment">Квартира</SelectItem>
-          <SelectItem value="house">Дом / Ҳавлӣ</SelectItem>
-          <SelectItem value="commercial">Коммерция</SelectItem>
-          <SelectItem value="land">Участок</SelectItem>
+          <SelectItem value="all">{isTg ? "Ҳамаи намудҳо" : "Все типы"}</SelectItem>
+          <SelectItem value="apartment">{isTg ? "Хонадон" : "Квартира"}</SelectItem>
+          <SelectItem value="house">{isTg ? "Ҳавлӣ / Хона" : "Дом / Ҳавлӣ"}</SelectItem>
+          <SelectItem value="commercial">{isTg ? "Амволи тиҷоратӣ" : "Коммерция"}</SelectItem>
+          <SelectItem value="land">{isTg ? "Қитъаи замин" : "Участок"}</SelectItem>
         </SelectContent>
       </Select>
 
@@ -60,21 +63,21 @@ export function ClassifiedsFilters() {
         onValueChange={(v) => setParam("dealType", v ?? "all")}
       >
         <SelectTrigger className="h-10 bg-white">
-          <SelectValue placeholder="Сделка" />
+          <SelectValue placeholder={isTg ? "Муомила" : "Сделка"} />
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value="all">Продажа и аренда</SelectItem>
-          <SelectItem value="sale">Продажа</SelectItem>
-          <SelectItem value="rent_long">Аренда</SelectItem>
+          <SelectItem value="all">{isTg ? "Фурӯш ва иҷора" : "Продажа и аренда"}</SelectItem>
+          <SelectItem value="sale">{isTg ? "Фурӯш" : "Продажа"}</SelectItem>
+          <SelectItem value="rent_long">{isTg ? "Иҷора" : "Аренда"}</SelectItem>
         </SelectContent>
       </Select>
 
       <Select value={params.get("rooms") || "all"} onValueChange={(v) => setParam("rooms", v ?? "all")}>
         <SelectTrigger className="h-10 bg-white">
-          <SelectValue placeholder="Комнаты" />
+          <SelectValue placeholder={isTg ? "Ҳуҷраҳо" : "Комнаты"} />
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value="all">Комнаты</SelectItem>
+          <SelectItem value="all">{isTg ? "Ҳамаи ҳуҷраҳо" : "Комнаты"}</SelectItem>
           <SelectItem value="1">1</SelectItem>
           <SelectItem value="2">2</SelectItem>
           <SelectItem value="3">3</SelectItem>
@@ -84,7 +87,7 @@ export function ClassifiedsFilters() {
 
       <Input
         defaultValue={params.get("q") || ""}
-        placeholder="Поиск"
+        placeholder={isTg ? "Ҷустуҷӯ аз рӯи ном ё кӯча..." : "Поиск по названию или улице..."}
         className="h-10 bg-white"
         onKeyDown={(e) => {
           if (e.key === "Enter") {

@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import { useLanguage } from "@/lib/i18n/language-context";
 
 type Props = {
   urls: string[];
@@ -9,6 +10,8 @@ type Props = {
 };
 
 export function PhotoUploader({ urls, onChange, disabled }: Props) {
+  const { language } = useLanguage();
+  const isTg = language === "tg";
   const [error, setError] = useState<string | null>(null);
   const [uploading, setUploading] = useState(false);
 
@@ -25,16 +28,22 @@ export function PhotoUploader({ urls, onChange, disabled }: Props) {
       if (!data.success || !data.urls) {
         setError(
           data.error === "file_too_large"
-            ? "Файл больше 10 МБ"
+            ? isTg
+              ? "Ҳаҷми файл аз 10 МБ зиёд аст"
+              : "Файл больше 10 МБ"
             : data.error === "unsupported_type"
-              ? "Нужен JPEG, PNG или WebP"
+              ? isTg
+                ? "Танҳо форматҳои JPEG, PNG ё WebP қабул мешаванд"
+                : "Нужен JPEG, PNG или WebP"
+              : isTg
+              ? "Боргузории акс муяссар нашуд"
               : "Не удалось загрузить фото"
         );
         return;
       }
       onChange([...urls, ...data.urls].slice(0, 10));
     } catch {
-      setError("Не удалось загрузить фото");
+      setError(isTg ? "Боргузории акс муяссар нашуд" : "Не удалось загрузить фото");
     } finally {
       setUploading(false);
     }
@@ -57,7 +66,13 @@ export function PhotoUploader({ urls, onChange, disabled }: Props) {
             if (e.target.files) void uploadFiles(e.target.files);
           }}
         />
-        {uploading ? "Загрузка…" : "Нажмите или перетащите фото с устройства (до 10)"}
+        {uploading
+          ? isTg
+            ? "Дар ҳоли боргирӣ…"
+            : "Загрузка…"
+          : isTg
+          ? "Барои боргузорӣ клик кунед ё аксҳоро кашед (то 10 акс)"
+          : "Нажмите или перетащите фото с устройства (до 10)"}
       </label>
       {error ? <p className="text-xs text-red-600">{error}</p> : null}
       <div className="grid grid-cols-3 gap-2">
@@ -66,12 +81,12 @@ export function PhotoUploader({ urls, onChange, disabled }: Props) {
             <img src={url} alt="" className="w-full h-full object-cover" />
             {index === 0 ? (
               <span className="absolute bottom-1 left-1 text-[10px] bg-black/60 text-white px-1.5 py-0.5 rounded">
-                Обложка
+                {isTg ? "Муқова" : "Обложка"}
               </span>
             ) : null}
             <button
               type="button"
-              className="absolute top-1 right-1 h-6 w-6 rounded-full bg-black/60 text-white text-xs"
+              className="absolute top-1 right-1 h-6 w-6 rounded-full bg-black/60 text-white text-xs cursor-pointer"
               onClick={() => onChange(urls.filter((item) => item !== url))}
             >
               ×

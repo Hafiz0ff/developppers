@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { MapPin, MessageCircle, Phone } from "lucide-react";
+import { useLanguage } from "@/lib/i18n/language-context";
 import type { ClassifiedCard as ClassifiedCardData } from "@/lib/classifieds/map-card";
 
 type Props = {
@@ -31,8 +32,36 @@ function postLead(item: ClassifiedCardData, source: "phone_click" | "whatsapp_cl
 }
 
 export function ClassifiedCard({ item, formatPrice }: Props) {
+  const { language } = useLanguage();
+  const isTg = language === "tg";
   const [revealed, setRevealed] = useState(false);
   const href = `/classifieds/${item.slug}`;
+
+  const dealTypeDisplay = isTg
+    ? item.dealType === "Аренда"
+      ? "Иҷора"
+      : "Фурӯш"
+    : item.dealType;
+
+  const propertyTypeDisplay = isTg
+    ? item.propertyType === "Квартира"
+      ? "Хонадон"
+      : item.propertyType.includes("Ҳавлӣ") || item.propertyType.includes("Дом")
+      ? "Ҳавлӣ"
+      : item.propertyType === "Коммерция"
+      ? "Амволи тиҷоратӣ"
+      : item.propertyType
+    : item.propertyType;
+
+  const sellerTypeDisplay = isTg
+    ? item.sellerType === "Собственник"
+      ? "Соҳибмулк"
+      : item.sellerType === "Агентство"
+      ? "Агентии амвол"
+      : item.sellerType.includes("Риелтор")
+      ? "Мутахассис (Риелтор)"
+      : item.sellerType
+    : item.sellerType;
 
   return (
     <Card className="bg-white rounded-xl border border-slate-200/80 hover:border-emerald-300 hover:shadow-lg flex flex-col justify-between overflow-hidden transition-all duration-200 group">
@@ -45,18 +74,18 @@ export function ClassifiedCard({ item, formatPrice }: Props) {
           />
           <div className="absolute top-3 left-3 flex gap-1.5">
             <Badge className="bg-emerald-600 text-white text-[11px] font-medium shadow-xs">
-              {item.dealType}
+              {dealTypeDisplay}
             </Badge>
             <Badge
               variant="secondary"
               className="backdrop-blur-md bg-white/90 text-slate-800 text-[11px] font-medium"
             >
-              {item.propertyType}
+              {propertyTypeDisplay}
             </Badge>
           </div>
           {item.isNegotiable && (
             <div className="absolute bottom-3 right-3 bg-white/95 backdrop-blur-md text-[10px] font-semibold text-slate-700 px-2.5 py-1 rounded-md shadow-xs">
-              Торг уместен
+              {isTg ? "Савдо мешавад" : "Торг уместен"}
             </div>
           )}
         </Link>
@@ -77,7 +106,9 @@ export function ClassifiedCard({ item, formatPrice }: Props) {
           </div>
 
           <div className="flex items-center gap-3 text-xs text-slate-600 border-y border-slate-100 py-2 font-medium">
-            <span className="font-bold text-slate-900">{item.rooms} комн.</span>
+            <span className="font-bold text-slate-900">
+              {isTg ? `${item.rooms} ҳуҷр.` : `${item.rooms} комн.`}
+            </span>
             <span>•</span>
             <span className="font-bold text-slate-900">{item.area} м²</span>
             {item.floor || item.landArea ? (
@@ -92,7 +123,7 @@ export function ClassifiedCard({ item, formatPrice }: Props) {
 
       <div className="p-4 sm:p-5 pt-0 border-t border-slate-100 mt-2 flex items-center justify-between text-xs">
         <div>
-          <span className="text-[10px] text-slate-400 block font-medium">{item.sellerType}</span>
+          <span className="text-[10px] text-slate-400 block font-medium">{sellerTypeDisplay}</span>
           <span className="font-semibold text-slate-900 font-mono text-xs">
             {revealed ? item.phone : `${item.phone.slice(0, 8)} •• ••`}
           </span>
@@ -106,10 +137,16 @@ export function ClassifiedCard({ item, formatPrice }: Props) {
               setRevealed(next);
               if (next) postLead(item, "phone_click");
             }}
-            className="h-8 px-2.5 text-xs font-semibold gap-1 rounded-lg border-slate-200"
+            className="h-8 px-2.5 text-xs font-semibold gap-1 rounded-lg border-slate-200 cursor-pointer"
           >
             <Phone className="h-3.5 w-3.5 text-emerald-600" />
-            {revealed ? "Скрыть" : "Показать"}
+            {revealed
+              ? isTg
+                ? "Пӯшидан"
+                : "Скрыть"
+              : isTg
+              ? "Нишон додан"
+              : "Показать"}
           </Button>
           <a
             href={`https://wa.me/${item.whatsapp.replace(/\D/g, "")}`}

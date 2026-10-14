@@ -153,71 +153,99 @@ const RECENT_CLASSIFIEDS = [
   {
     id: "c1",
     title: "3-комнатная квартира с евроремонтом",
+    titleTg: "Хонадони 3-ҳуҷрагӣ бо таъмири аврупоӣ",
     dealType: "Продажа",
+    dealTypeTg: "Фурӯш",
     propertyType: "Квартира",
+    propertyTypeTg: "Хонадон",
     city: "г. Худжанд",
+    cityTg: "ш. Хуҷанд",
     district: "18 мкр",
+    districtTg: "микрорайони 18",
     landmark: "Напротив школы №28",
+    landmarkTg: "Рӯ ба рӯи мактаби №28",
     rooms: 3,
     area: 76,
     floor: "3 из 5",
+    floorTg: "Ошёнаи 3 аз 5",
     priceTjs: 536550,
     priceUsd: 49000,
     sellerType: "Риелтор (Сугд-Инвест)",
+    sellerTypeTg: "Мутахассис (Суғд-Инвест)",
     phone: "+992 92 888 1234",
     whatsapp: "+992928881234",
     isNegotiable: true,
     image:
       "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800&h=550&fit=crop",
     features: ["Евроремонт", "С мебелью", "Отопление"],
+    featuresTg: ["Таъмири аврупоӣ", "Бо мебел", "Гармидиҳӣ"],
   },
   {
     id: "c2",
     title: "Благоустроенный дом (Ҳавлӣ) 6.5 соток",
+    titleTg: "Ҳавлии ободшуда бо 6.5 сотих замин",
     dealType: "Продажа",
+    dealTypeTg: "Фурӯш",
     propertyType: "Дом / Ҳавлӣ",
+    propertyTypeTg: "Ҳавлӣ",
     city: "Б. Гафуров",
+    cityTg: "н. Бобоҷон Ғафуров",
     district: "Джамоат Унчи",
+    districtTg: "Ҷамоати Унҷӣ",
     landmark: "Около мечети Унчи",
+    landmarkTg: "Назди масҷиди Унҷӣ",
     rooms: 5,
     area: 180,
     landArea: "6.5 сот.",
+    landAreaTg: "6.5 сотих",
     priceTjs: 711750,
     priceUsd: 65000,
     sellerType: "Собственник",
+    sellerTypeTg: "Соҳибмулк",
     phone: "+992 92 999 4321",
     whatsapp: "+992929994321",
     isNegotiable: true,
     image:
       "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=800&h=550&fit=crop",
     features: ["Фруктовый сад", "Хауз 10т", "Гараж 2 авто"],
+    featuresTg: ["Боғи мевадор", "Ҳавзи 10т", "Гараж барои 2 мошин"],
   },
   {
     id: "c3",
     title: "Торговое помещение у рынка «Панчшанбе»",
+    titleTg: "Ҷойи тиҷоратӣ дар назди бозори «Панҷшанбе»",
     dealType: "Аренда",
+    dealTypeTg: "Иҷора",
     propertyType: "Коммерция",
+    propertyTypeTg: "Амволи тиҷоратӣ",
     city: "г. Худжанд",
+    cityTg: "ш. Хуҷанд",
     district: "Центр / Панчшанбе",
+    districtTg: "Марказ / Панҷшанбе",
     landmark: "50 м от главных ворот рынка",
+    landmarkTg: "50 метр аз дарвозаи асосии бозор",
     rooms: 1,
     area: 65,
     floor: "1 этаж",
+    floorTg: "Ошёнаи 1",
     priceTjs: 8500,
     priceUsd: 776,
     sellerType: "Агентство",
+    sellerTypeTg: "Агентии амвол",
     phone: "+992 92 888 1234",
     whatsapp: "+992928881234",
     isNegotiable: false,
     image:
       "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=800&h=550&fit=crop",
     features: ["Первая линия", "Витринные окна", "Кондиционер"],
+    featuresTg: ["Хатти аввал", "Тирезаҳои калон", "Кондитсионер"],
   },
 ];
 
 export default function HomePage() {
   const { formatPrice, currency } = useCurrency();
   const { t, tDual, language } = useLanguage();
+  const isTg = language === "tg";
   const [activeTab, setActiveTab] = useState<"new" | "resale" | "rent" | "houses">("new");
   const [selectedCity, setSelectedCity] = useState("khujand");
   const [selectedRooms, setSelectedRooms] = useState<string>("all");
@@ -592,20 +620,24 @@ export default function HomePage() {
           <div>
             <div className="inline-flex items-center gap-1.5 text-xs uppercase font-bold tracking-wider text-emerald-600 mb-1">
               <Home className="h-3.5 w-3.5" />
-              Вторичный рынок и дома
+              {isTg ? "Бозори дуюмдараҷа ва ҳавлиҳо" : "Вторичный рынок и дома"}
             </div>
             <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">
-              Свежие объявления в Худжанде и пригороде
+              {isTg
+                ? "Эълонҳои тоза дар ш. Хуҷанд ва атрофи он"
+                : "Свежие объявления в Худжанде и пригороде"}
             </h2>
             <p className="text-xs sm:text-sm text-slate-500 mt-0.5">
-              Квартиры от собственников, традиционные дома (ҳавлӣ), дачи и коммерция
+              {isTg
+                ? "Хонадонҳо аз соҳибмулкон, ҳавлиҳои анъанавӣ, бӯстонсароҳо ва амволи тиҷоратӣ"
+                : "Квартиры от собственников, традиционные дома (ҳавлӣ), дачи и коммерция"}
             </p>
           </div>
           <Link
-            href="#classifieds"
+            href="/classifieds"
             className="text-sm font-semibold text-emerald-600 hover:text-emerald-700 flex items-center gap-1 shrink-0"
           >
-            Смотреть все 186 объявлений
+            {isTg ? "Дидани ҳамаи 186 эълон" : "Смотреть все 186 объявлений"}
             <ChevronRight className="h-4 w-4" />
           </Link>
         </div>
@@ -620,20 +652,20 @@ export default function HomePage() {
                 <div className="relative h-48 w-full overflow-hidden bg-slate-100">
                   <img
                     src={item.image}
-                    alt={item.title}
+                    alt={isTg ? item.titleTg || item.title : item.title}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   />
                   <div className="absolute top-3 left-3 flex gap-1.5">
                     <Badge className="bg-emerald-600 text-white text-[11px] font-medium shadow-xs">
-                      {item.dealType}
+                      {isTg ? item.dealTypeTg || item.dealType : item.dealType}
                     </Badge>
                     <Badge variant="secondary" className="backdrop-blur-md bg-white/90 text-slate-800 text-[11px] font-medium">
-                      {item.propertyType}
+                      {isTg ? item.propertyTypeTg || item.propertyType : item.propertyType}
                     </Badge>
                   </div>
                   {item.isNegotiable && (
                     <div className="absolute bottom-3 right-3 bg-white/95 backdrop-blur-md text-[10px] font-semibold text-slate-700 px-2.5 py-1 rounded-md shadow-xs">
-                      Торг уместен
+                      {isTg ? "Савдо мешавад" : "Торг уместен"}
                     </div>
                   )}
                 </div>
@@ -644,26 +676,34 @@ export default function HomePage() {
                       {formatPrice(item.priceTjs, item.priceUsd)}
                     </div>
                     <h4 className="font-semibold text-sm text-slate-900 line-clamp-1 mt-0.5">
-                      {item.title}
+                      {isTg ? item.titleTg || item.title : item.title}
                     </h4>
                     <p className="text-xs text-slate-500 flex items-center gap-1 mt-1 font-medium">
                       <MapPin className="h-3.5 w-3.5 text-emerald-600 shrink-0" />
-                      {item.city}, {item.district} ({item.landmark})
+                      {isTg
+                        ? `${item.cityTg || item.city}, ${item.districtTg || item.district} (${item.landmarkTg || item.landmark})`
+                        : `${item.city}, ${item.district} (${item.landmark})`}
                     </p>
                   </div>
 
                   {/* Specs */}
                   <div className="flex items-center gap-3 text-xs text-slate-600 border-y border-slate-100 py-2 font-medium">
-                    <span className="font-bold text-slate-900">{item.rooms} комн.</span>
+                    <span className="font-bold text-slate-900">
+                      {item.rooms} {isTg ? "ҳуҷр." : "комн."}
+                    </span>
                     <span>•</span>
                     <span className="font-bold text-slate-900">{item.area} м²</span>
                     <span>•</span>
-                    <span>{item.floor || item.landArea}</span>
+                    <span>
+                      {isTg
+                        ? item.floorTg || item.landAreaTg || item.floor || item.landArea
+                        : item.floor || item.landArea}
+                    </span>
                   </div>
 
                   {/* Features */}
                   <div className="flex flex-wrap gap-1">
-                    {item.features.map((f) => (
+                    {(isTg ? item.featuresTg || item.features : item.features).map((f) => (
                       <span
                         key={f}
                         className="text-[10px] font-medium px-2 py-0.5 rounded bg-slate-100 text-slate-600"
@@ -679,7 +719,7 @@ export default function HomePage() {
               <div className="p-4 sm:p-5 pt-0 border-t border-slate-100 mt-2 flex items-center justify-between text-xs">
                 <div>
                   <span className="text-[10px] text-slate-400 block font-medium">
-                    {item.sellerType}
+                    {isTg ? item.sellerTypeTg || item.sellerType : item.sellerType}
                   </span>
                   <span className="font-semibold text-slate-900 font-mono text-xs">
                     {revealedPhones[item.id] ? item.phone : `${item.phone.slice(0, 8)} •• ••`}
@@ -690,10 +730,16 @@ export default function HomePage() {
                     size="xs"
                     variant={revealedPhones[item.id] ? "secondary" : "outline"}
                     onClick={() => togglePhone(item)}
-                    className="h-8 px-2.5 text-xs font-semibold gap-1 rounded-lg border-slate-200"
+                    className="h-8 px-2.5 text-xs font-semibold gap-1 rounded-lg border-slate-200 cursor-pointer"
                   >
                     <Phone className="h-3.5 w-3.5 text-emerald-600" />
-                    {revealedPhones[item.id] ? "Скрыть" : "Показать"}
+                    {revealedPhones[item.id]
+                      ? isTg
+                        ? "Пӯшидан"
+                        : "Скрыть"
+                      : isTg
+                      ? "Нишон додан"
+                      : "Показать"}
                   </Button>
                   <a
                     href={`https://wa.me/${item.whatsapp.replace(/\D/g, "")}`}
@@ -716,13 +762,17 @@ export default function HomePage() {
         <div className="bg-white border border-slate-200/80 rounded-2xl p-6 sm:p-10 shadow-sm">
           <div className="max-w-2xl mb-8">
             <Badge className="bg-emerald-50 text-emerald-800 border-emerald-200 mb-2.5 text-xs font-semibold">
-              Экосистема Sogd Realty
+              {isTg ? "Экосистемаи Sogd Realty" : "Экосистема Sogd Realty"}
             </Badge>
             <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">
-              Инструменты для всех участников рынка
+              {isTg
+                ? "Воситаҳо барои тамоми иштирокдорони бозор"
+                : "Инструменты для всех участников рынка"}
             </h2>
             <p className="text-xs sm:text-sm text-slate-500 mt-1.5 leading-relaxed">
-              Мы объединяем покупателей, застройщиков и частных маклеров в единую современную цифровую среду.
+              {isTg
+                ? "Мо харидорон, сохтмончиён ва мутахассисони амволро дар як фазои ягонаи рақамӣ муттаҳид месозем."
+                : "Мы объединяем покупателей, застройщиков и частных маклеров в единую современную цифровую среду."}
             </p>
           </div>
 
@@ -732,12 +782,16 @@ export default function HomePage() {
               <div className="h-10 w-10 rounded-xl bg-emerald-100/70 text-emerald-700 flex items-center justify-center">
                 <Home className="h-5 w-5" />
               </div>
-              <h4 className="font-bold text-slate-900 text-base">Для покупателей</h4>
+              <h4 className="font-bold text-slate-900 text-base">
+                {isTg ? "Барои харидорон" : "Для покупателей"}
+              </h4>
               <p className="text-xs text-slate-600 leading-relaxed">
-                Поиск новостроек и вторички без переплат. Интерактивная поэтажная шахматка и прямой контакт с отделами продаж.
+                {isTg
+                  ? "Ҷустуҷӯи биноҳои навсохт ва бозори дуюмдараҷа. Ҷадвали шоҳмотии ошёнаҳо ва робитаи мустақим бо шуъбаи фурӯш."
+                  : "Поиск новостроек и вторички без переплат. Интерактивная поэтажная шахматка и прямой контакт с отделами продаж."}
               </p>
               <Link href="#new-buildings" className="inline-flex items-center text-xs font-semibold text-emerald-700 hover:underline gap-1 pt-1">
-                Перейти в каталог ЖК
+                {isTg ? "Гузариш ба феҳристи МИ" : "Перейти в каталог ЖК"}
                 <ChevronRight className="h-3.5 w-3.5" />
               </Link>
             </div>
@@ -747,12 +801,16 @@ export default function HomePage() {
               <div className="h-10 w-10 rounded-xl bg-teal-100/70 text-teal-700 flex items-center justify-center">
                 <Building2 className="h-5 w-5" />
               </div>
-              <h4 className="font-bold text-slate-900 text-base">Для застройщиков</h4>
+              <h4 className="font-bold text-slate-900 text-base">
+                {isTg ? "Барои сохтмончиён" : "Для застройщиков"}
+              </h4>
               <p className="text-xs text-slate-600 leading-relaxed">
-                Цифровой кабинет застройщика: визуальное управление шахматкой квартир, бронирование и заявки в Telegram.
+                {isTg
+                  ? "Кабинети рақамии сохтмончӣ: идоракунии ҷадвали шоҳмотии хонаҳо, бронкунӣ ва огоҳиномаҳои Telegram."
+                  : "Цифровой кабинет застройщика: визуальное управление шахматкой квартир, бронирование и заявки в Telegram."}
               </p>
               <Link href="/developer-admin" className="inline-flex items-center text-xs font-semibold text-teal-700 hover:underline gap-1 pt-1">
-                Кабинет застройщика
+                {isTg ? "Кабинети сохтмончӣ" : "Кабинет застройщика"}
                 <ChevronRight className="h-3.5 w-3.5" />
               </Link>
             </div>
@@ -762,13 +820,17 @@ export default function HomePage() {
               <div className="h-10 w-10 rounded-xl bg-emerald-100/70 text-emerald-700 flex items-center justify-center">
                 <TrendingUp className="h-5 w-5" />
               </div>
-              <h4 className="font-bold text-slate-900 text-base">Для маклеров и агентств</h4>
+              <h4 className="font-bold text-slate-900 text-base">
+                {isTg ? "Барои риелторҳо ва агентиҳо" : "Для маклеров и агентств"}
+              </h4>
               <p className="text-xs text-slate-600 leading-relaxed">
-                Легкая Канбан-воронка лидов, персональные подборки объектов в WhatsApp без контактов собственников и Open API.
+                {isTg
+                  ? "Канбан-CRM-и муосир, интихоби инфиродии хонаҳо дар WhatsApp ва Open API."
+                  : "Легкая Канбан-воронка лидов, персональные подборки объектов в WhatsApp без контактов собственников и Open API."}
               </p>
               <div className="flex items-center gap-3 pt-1">
                 <Link href="/profile/crm" className="inline-flex items-center text-xs font-bold text-emerald-700 hover:underline gap-1">
-                  Канбан CRM & Подборки
+                  {isTg ? "Канбан CRM ва интихобҳо" : "Канбан CRM & Подборки"}
                   <ChevronRight className="h-3.5 w-3.5" />
                 </Link>
                 <span className="text-slate-300">•</span>
@@ -786,11 +848,14 @@ export default function HomePage() {
         <div className="bg-white border border-slate-200/80 rounded-2xl p-6 sm:p-8 shadow-sm">
           <div className="max-w-2xl mb-6">
             <h2 className="text-2xl font-bold text-slate-900 tracking-tight">
-              Проверенные застройщики Согдийской области
+              {isTg
+                ? "Ширкатҳои сохтмонии тасдиқшудаи вилояти Суғд"
+                : "Проверенные застройщики Согдийской области"}
             </h2>
             <p className="text-xs sm:text-sm text-slate-500 mt-1">
-              Компании, строящие жилые комплексы с официальной проектной документацией,
-              гарантиями и беспроцентной рассрочкой в Худжанде.
+              {isTg
+                ? "Ширкатҳое, ки маҷмааҳои истиқоматиро бо ҳуҷҷатҳои пурраи расмӣ, кафолат ва пардохти қисм-қисми бефоиз дар Хуҷанд месозанд."
+                : "Компании, строящие жилые комплексы с официальной проектной документацией, гарантиями и беспроцентной рассрочкой в Худжанде."}
             </p>
           </div>
 
@@ -801,14 +866,18 @@ export default function HomePage() {
                 <div className="flex items-center gap-2">
                   <h4 className="font-bold text-sm sm:text-base text-slate-900">Рахш Сохтмон</h4>
                   <Badge className="bg-emerald-50 text-emerald-800 border-emerald-200 text-[10px]">
-                    Верифицирован
+                    {isTg ? "Тасдиқшуда" : "Верифицирован"}
                   </Badge>
                 </div>
                 <p className="text-xs text-slate-500">
-                  8 сданных объектов • 3 в процессе строительства • Рейтинг 4.9
+                  {isTg
+                    ? "8 иншооти супоридашуда • 3 дар ҳоли сохтмон • Рейтинг 4.9"
+                    : "8 сданных объектов • 3 в процессе строительства • Рейтинг 4.9"}
                 </p>
                 <p className="text-[11px] text-slate-400">
-                  Офис: г. Худжанд, пр. И. Сомони 142 • Тел: +992 92 700 5555
+                  {isTg
+                    ? "Идора: ш. Хуҷанд, хиёбони И. Сомонӣ 142 • Тел: +992 92 700 5555"
+                    : "Офис: г. Худжанд, пр. И. Сомони 142 • Тел: +992 92 700 5555"}
                 </p>
               </div>
             </div>
@@ -819,14 +888,18 @@ export default function HomePage() {
                 <div className="flex items-center gap-2">
                   <h4 className="font-bold text-sm sm:text-base text-slate-900">Сайҳун Девелопмент</h4>
                   <Badge className="bg-emerald-50 text-emerald-800 border-emerald-200 text-[10px]">
-                    Верифицирован
+                    {isTg ? "Тасдиқшуда" : "Верифицирован"}
                   </Badge>
                 </div>
                 <p className="text-xs text-slate-500">
-                  5 сданных объектов • 2 строящихся проекта • Рейтинг 4.85
+                  {isTg
+                    ? "5 иншооти супоридашуда • 2 лоиҳаи сохташаванда • Рейтинг 4.85"
+                    : "5 сданных объектов • 2 строящихся проекта • Рейтинг 4.85"}
                 </p>
                 <p className="text-[11px] text-slate-400">
-                  Офис: г. Худжанд, 19 мкр (набережная) • Тел: +992 92 811 4444
+                  {isTg
+                    ? "Идора: ш. Хуҷанд, 19 мкр (соҳил) • Тел: +992 92 811 4444"
+                    : "Офис: г. Худжанд, 19 мкр (набережная) • Тел: +992 92 811 4444"}
                 </p>
               </div>
             </div>
@@ -842,65 +915,67 @@ export default function HomePage() {
             {/* By Cities */}
             <div>
               <h5 className="font-bold text-slate-900 mb-3 uppercase tracking-wider text-[11px]">
-                Города Согдийской области
+                {isTg ? "Шаҳру ноҳияҳои вилояти Суғд" : "Города Согдийской области"}
               </h5>
               <ul className="space-y-2 text-xs">
-                <li><Link href="#classifieds" className="hover:text-emerald-700 transition-colors">Недвижимость в Худжанде (Хуҷанд)</Link></li>
-                <li><Link href="#classifieds" className="hover:text-emerald-700 transition-colors">Дома в Б. Гафурове (Бобоҷон Ғафуров)</Link></li>
-                <li><Link href="#classifieds" className="hover:text-emerald-700 transition-colors">Квартиры в Исфаре (Исфара)</Link></li>
-                <li><Link href="#classifieds" className="hover:text-emerald-700 transition-colors">Недвижимость в Истаравшане</Link></li>
-                <li><Link href="#classifieds" className="hover:text-emerald-700 transition-colors">Квартиры в Гулистоне (Қайроққум)</Link></li>
-                <li><Link href="#classifieds" className="hover:text-emerald-700 transition-colors">Участки в Канибадаме (Конибодом)</Link></li>
-                <li><Link href="#classifieds" className="hover:text-emerald-700 transition-colors">Дома в Пенджикенте (Панҷакент)</Link></li>
+                <li><Link href="/classifieds?city=khujand" className="hover:text-emerald-700 transition-colors">{isTg ? "Амвол дар ш. Хуҷанд" : "Недвижимость в Худжанде (Хуҷанд)"}</Link></li>
+                <li><Link href="/classifieds?city=gafurov" className="hover:text-emerald-700 transition-colors">{isTg ? "Хонаҳо дар н. Б. Ғафуров" : "Дома в Б. Гафурове (Бобоҷон Ғафуров)"}</Link></li>
+                <li><Link href="/classifieds?city=isfara" className="hover:text-emerald-700 transition-colors">{isTg ? "Хонадонҳо дар ш. Исфара" : "Квартиры в Исфаре (Исфара)"}</Link></li>
+                <li><Link href="/classifieds?city=istaravshan" className="hover:text-emerald-700 transition-colors">{isTg ? "Амвол дар ш. Истаравшан" : "Недвижимость в Истаравшане"}</Link></li>
+                <li><Link href="/classifieds?city=guliston" className="hover:text-emerald-700 transition-colors">{isTg ? "Хонадонҳо дар ш. Гулистон" : "Квартиры в Гулистоне (Қайроққум)"}</Link></li>
+                <li><Link href="/classifieds?city=konibodom" className="hover:text-emerald-700 transition-colors">{isTg ? "Қитъаҳои замин дар ш. Конибодом" : "Участки в Канибадаме (Конибодом)"}</Link></li>
+                <li><Link href="/classifieds?city=panjakent" className="hover:text-emerald-700 transition-colors">{isTg ? "Хонаҳо дар ш. Панҷакент" : "Дома в Пенджикенте (Панҷакент)"}</Link></li>
               </ul>
             </div>
 
             {/* By Districts of Khujand */}
             <div>
               <h5 className="font-bold text-slate-900 mb-3 uppercase tracking-wider text-[11px]">
-                Микрорайоны Худжанда
+                {isTg ? "Маҳаллаҳои шаҳри Хуҷанд" : "Микрорайоны Худжанда"}
               </h5>
               <ul className="space-y-2 text-xs">
-                <li><Link href="#classifieds" className="hover:text-emerald-700 transition-colors">Новостройки в 19 микрорайоне</Link></li>
-                <li><Link href="#classifieds" className="hover:text-emerald-700 transition-colors">Квартиры в 18 микрорайоне</Link></li>
-                <li><Link href="#classifieds" className="hover:text-emerald-700 transition-colors">Жилье на Набережной Сырдарьи</Link></li>
-                <li><Link href="#classifieds" className="hover:text-emerald-700 transition-colors">Квартиры в 20 и 34 мкр</Link></li>
-                <li><Link href="#classifieds" className="hover:text-emerald-700 transition-colors">Район рынка «Панчшанбе»</Link></li>
-                <li><Link href="#classifieds" className="hover:text-emerald-700 transition-colors">Шелкокомбинат и Правый берег</Link></li>
-                <li><Link href="#classifieds" className="hover:text-emerald-700 transition-colors">Махалля Раззок и Центр</Link></li>
+                <li><Link href="/classifieds?q=19" className="hover:text-emerald-700 transition-colors">{isTg ? "Биноҳои нав дар микрорайони 19" : "Новостройки в 19 микрорайоне"}</Link></li>
+                <li><Link href="/classifieds?q=18" className="hover:text-emerald-700 transition-colors">{isTg ? "Хонадонҳо дар микрорайони 18" : "Квартиры в 18 микрорайоне"}</Link></li>
+                <li><Link href="/classifieds?q=набережная" className="hover:text-emerald-700 transition-colors">{isTg ? "Манзил дар соҳили Сирдарё" : "Жилье на Набережной Сырдарьи"}</Link></li>
+                <li><Link href="/classifieds?q=20" className="hover:text-emerald-700 transition-colors">{isTg ? "Хонадонҳо дар мкр 20 ва 34" : "Квартиры в 20 и 34 мкр"}</Link></li>
+                <li><Link href="/classifieds?q=панчшанбе" className="hover:text-emerald-700 transition-colors">{isTg ? "Атрофи бозори «Панҷшанбе»" : "Район рынка «Панчшанбе»"}</Link></li>
+                <li><Link href="/classifieds?q=абрешим" className="hover:text-emerald-700 transition-colors">{isTg ? "Комбинати абрешим ва Соҳили рост" : "Шелкокомбинат и Правый берег"}</Link></li>
+                <li><Link href="/classifieds?q=раззок" className="hover:text-emerald-700 transition-colors">{isTg ? "Маҳаллаи Раззоқ ва Марказ" : "Махалля Раззок и Центр"}</Link></li>
               </ul>
             </div>
 
             {/* By Property Categories */}
             <div>
               <h5 className="font-bold text-slate-900 mb-3 uppercase tracking-wider text-[11px]">
-                Категории недвижимости
+                {isTg ? "Гурӯҳҳои амволи ғайриманқул" : "Категории недвижимости"}
               </h5>
               <ul className="space-y-2 text-xs">
-                <li><Link href="#new-buildings" className="hover:text-emerald-700 transition-colors">Каталог ЖК с поэтажной шахматкой</Link></li>
-                <li><Link href="#classifieds" className="hover:text-emerald-700 transition-colors">1-комнатные квартиры в Худжанде</Link></li>
-                <li><Link href="#classifieds" className="hover:text-emerald-700 transition-colors">2-комнатные квартиры с евроремонтом</Link></li>
-                <li><Link href="#classifieds" className="hover:text-emerald-700 transition-colors">Традиционные дома (Ҳавлӣ) с садом</Link></li>
-                <li><Link href="#classifieds" className="hover:text-emerald-700 transition-colors">Земельные участки под застройку</Link></li>
-                <li><Link href="#classifieds" className="hover:text-emerald-700 transition-colors">Коммерческие помещения и магазины</Link></li>
-                <li><Link href="/profile/analytics" className="hover:text-emerald-700 transition-colors">B2B Open API для риелторов</Link></li>
+                <li><Link href="#new-buildings" className="hover:text-emerald-700 transition-colors">{isTg ? "Феҳристи МИ бо ҷадвали шоҳмотӣ" : "Каталог ЖК с поэтажной шахматкой"}</Link></li>
+                <li><Link href="/classifieds?rooms=1" className="hover:text-emerald-700 transition-colors">{isTg ? "Хонадонҳои 1-ҳуҷрагӣ дар Хуҷанд" : "1-комнатные квартиры в Худжанде"}</Link></li>
+                <li><Link href="/classifieds?rooms=2" className="hover:text-emerald-700 transition-colors">{isTg ? "Хонадонҳои 2-ҳуҷрагӣ бо таъмир" : "2-комнатные квартиры с евроремонтом"}</Link></li>
+                <li><Link href="/classifieds?propertyType=house" className="hover:text-emerald-700 transition-colors">{isTg ? "Ҳавлиҳои анъанавӣ бо боғ" : "Традиционные дома (Ҳавлӣ) с садом"}</Link></li>
+                <li><Link href="/classifieds?propertyType=land" className="hover:text-emerald-700 transition-colors">{isTg ? "Қитъаҳои замин барои сохтмон" : "Земельные участки под застройку"}</Link></li>
+                <li><Link href="/classifieds?propertyType=commercial" className="hover:text-emerald-700 transition-colors">{isTg ? "Биноҳои тиҷоратӣ ва мағозаҳо" : "Коммерческие помещения и магазины"}</Link></li>
+                <li><Link href="/profile/analytics" className="hover:text-emerald-700 transition-colors">{isTg ? "B2B Open API барои риелторҳо" : "B2B Open API для риелторов"}</Link></li>
               </ul>
             </div>
 
             {/* Contacts & Support */}
             <div>
               <h5 className="font-bold text-slate-900 mb-3 uppercase tracking-wider text-[11px]">
-                Контакты и офис
+                {isTg ? "Тамос ва шуъбаи марказӣ" : "Контакты и офис"}
               </h5>
               <p className="text-xs mb-2 leading-relaxed text-slate-600">
-                Центральный офис по Согдийской области:
+                {isTg ? "Шуъбаи марказӣ дар вилояти Суғд:" : "Центральный офис по Согдийской области:"}
               </p>
-              <p className="font-semibold text-slate-900">г. Худжанд, пр. И. Сомони 142</p>
+              <p className="font-semibold text-slate-900">
+                {isTg ? "ш. Хуҷанд, хиёбони И. Сомонӣ 142" : "г. Худжанд, пр. И. Сомони 142"}
+              </p>
               <p className="font-mono font-bold text-emerald-700 text-sm mt-2">+992 92 777 0001</p>
               <p className="font-mono text-slate-500 mt-0.5">support@sogd-realty.tj</p>
               <div className="pt-3">
                 <Badge variant="outline" className="text-[10px] bg-slate-50 text-slate-700 border-slate-200">
-                  🇹🇯 Худжанд • Согд • Таджикистан
+                  🇹🇯 Хуҷанд • Суғд • Тоҷикистон
                 </Badge>
               </div>
             </div>
@@ -908,12 +983,20 @@ export default function HomePage() {
 
           <div className="pt-6 border-t border-slate-200/80 flex flex-col sm:flex-row items-center justify-between gap-3 text-[11px] text-slate-400">
             <div>
-              © 2026 Maskani.tj. Все права защищены.
+              {isTg
+                ? "© 2026 Maskani.tj. Ҳамаи ҳуқуқҳо маҳфузанд."
+                : "© 2026 Maskani.tj. Все права защищены."}
             </div>
             <div className="flex items-center gap-4 text-slate-500">
-              <Link href="/developer-admin" className="hover:text-emerald-700">Кабинет застройщика</Link>
-              <Link href="/profile/analytics" className="hover:text-emerald-700">Аналитика & Open API</Link>
-              <Link href="/profile/crm" className="hover:text-emerald-700 font-medium text-emerald-700/70">Маклерам и Агентствам (B2B CRM)</Link>
+              <Link href="/developer-admin" className="hover:text-emerald-700">
+                {isTg ? "Кабинети сохтмончӣ" : "Кабинет застройщика"}
+              </Link>
+              <Link href="/profile/analytics" className="hover:text-emerald-700">
+                {isTg ? "Таҳлил ва Open API" : "Аналитика & Open API"}
+              </Link>
+              <Link href="/profile/crm" className="hover:text-emerald-700 font-medium text-emerald-700/70">
+                {isTg ? "Барои риелторҳо ва агентиҳо (B2B CRM)" : "Маклерам и Агентствам (B2B CRM)"}
+              </Link>
             </div>
           </div>
         </div>

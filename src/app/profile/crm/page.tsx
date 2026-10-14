@@ -46,6 +46,7 @@ import {
   Filter,
 } from "lucide-react";
 import { CATALOG_PROPERTIES, CatalogProperty } from "@/lib/catalog-data";
+import { useLanguage } from "@/lib/i18n/language-context";
 
 type LeadStatus = "new" | "contacted" | "showing" | "deal" | "closed";
 
@@ -78,34 +79,39 @@ interface CollectionItem {
   createdAt: string;
 }
 
-const COLUMNS: { id: LeadStatus; title: string; color: string; badgeColor: string }[] = [
+const COLUMNS: { id: LeadStatus; title: string; titleTg: string; color: string; badgeColor: string }[] = [
   {
     id: "new",
     title: "Новые отклики",
+    titleTg: "Дархостҳои нав",
     color: "border-sky-200 bg-sky-50/40",
     badgeColor: "bg-sky-100 text-sky-800 border-sky-200",
   },
   {
     id: "contacted",
     title: "В работе / Звонок",
+    titleTg: "Дар коркард / Занг",
     color: "border-amber-200 bg-amber-50/40",
     badgeColor: "bg-amber-100 text-amber-800 border-amber-200",
   },
   {
     id: "showing",
     title: "Назначен показ",
+    titleTg: "Нишондиҳӣ таъин шуд",
     color: "border-purple-200 bg-purple-50/40",
     badgeColor: "bg-purple-100 text-purple-800 border-purple-200",
   },
   {
     id: "deal",
     title: "Успешная сделка",
+    titleTg: "Муомилаи бобарор",
     color: "border-emerald-200 bg-emerald-50/40",
     badgeColor: "bg-emerald-100 text-emerald-800 border-emerald-200",
   },
   {
     id: "closed",
     title: "Архив / Отказ",
+    titleTg: "Бойгонӣ / Рад шуд",
     color: "border-slate-200 bg-slate-50/40",
     badgeColor: "bg-slate-100 text-slate-700 border-slate-200",
   },
@@ -113,6 +119,8 @@ const COLUMNS: { id: LeadStatus; title: string; color: string; badgeColor: strin
 
 export default function BrokerCrmPage() {
   const { formatPrice, currency } = useCurrency();
+  const { language } = useLanguage();
+  const isTg = language === "tg";
 
   // State
   const [leads, setLeads] = useState<Lead[]>([]);
@@ -354,16 +362,18 @@ export default function BrokerCrmPage() {
           <div>
             <div className="flex items-center gap-2 text-xs uppercase font-bold tracking-wider text-emerald-600 mb-1">
               <Users className="h-3.5 w-3.5" />
-              B2B CRM Маклера и Агентства
+              {isTg ? "B2B CRM-и даллал ва агентӣ" : "B2B CRM Маклера и Агентства"}
             </div>
             <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight flex items-center gap-3">
-              Канбан-воронка лидов & Сделок
+              {isTg ? "Воронкаи канбании мизоҷон ва муомилаҳо" : "Канбан-воронка лидов & Сделок"}
               <Badge className="bg-emerald-50 text-emerald-800 border-emerald-200 text-xs font-semibold">
                 Sogd CRM Lite
               </Badge>
             </h1>
             <p className="text-xs sm:text-sm text-slate-500 mt-1">
-              Учет входящих звонков, WhatsApp-откликов, показов и калькулятор ожидаемой комиссии
+              {isTg
+                ? "Баҳисобгирии зангҳои даромад, муроҷиатҳои WhatsApp, нишондиҳиҳо ва ҳисобкунаки ҳаққи хизмат"
+                : "Учет входящих звонков, WhatsApp-откликов, показов и калькулятор ожидаемой комиссии"}
             </p>
           </div>
 
@@ -371,7 +381,7 @@ export default function BrokerCrmPage() {
             <Link href="/profile/analytics">
               <Button variant="outline" className="h-9 px-3 text-xs font-medium gap-1.5 border-slate-200">
                 <TrendingUp className="h-3.5 w-3.5 text-slate-600" />
-                Аналитика & Отчеты
+                {isTg ? "Таҳлил ва ҳисоботҳо" : "Аналитика & Отчеты"}
               </Button>
             </Link>
 
@@ -384,7 +394,7 @@ export default function BrokerCrmPage() {
               className="h-9 px-3 text-xs font-semibold gap-1.5 border-emerald-300 text-emerald-700 bg-emerald-50/50 hover:bg-emerald-100/50"
             >
               <Share2 className="h-3.5 w-3.5 text-emerald-600" />
-              Подборка в WhatsApp
+              {isTg ? "Маҷмӯа ба WhatsApp" : "Подборка в WhatsApp"}
             </Button>
 
             <Button
@@ -392,7 +402,7 @@ export default function BrokerCrmPage() {
               className="h-9 px-3.5 text-xs font-semibold gap-1.5 bg-emerald-600 hover:bg-emerald-700 text-white shadow-xs"
             >
               <Plus className="h-4 w-4" />
-              Новый лид
+              {isTg ? "Мизоҷи нав" : "Новый лид"}
             </Button>
           </div>
         </div>
@@ -409,7 +419,7 @@ export default function BrokerCrmPage() {
             }`}
           >
             <Layers className="h-4 w-4" />
-            Канбан-доска
+            {isTg ? "Лавҳаи канбан" : "Канбан-доска"}
             <span className="text-xs px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 font-bold">
               {leads.length}
             </span>
@@ -425,7 +435,7 @@ export default function BrokerCrmPage() {
             }`}
           >
             <Share2 className="h-4 w-4" />
-            Подборки для клиентов
+            {isTg ? "Маҷмӯаҳо барои мизоҷон" : "Подборки для клиентов"}
             <span className="text-xs px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700 font-bold">
               {collections.length}
             </span>
@@ -439,12 +449,17 @@ export default function BrokerCrmPage() {
           <Card className="bg-white border-slate-200/80 shadow-xs">
             <CardContent className="p-4 flex items-center justify-between">
               <div>
-                <p className="text-xs font-semibold text-slate-500">Сделок в работе</p>
+                <p className="text-xs font-semibold text-slate-500">
+                  {isTg ? "Муомилаҳо дар коркард" : "Сделок в работе"}
+                </p>
                 <div className="text-2xl font-extrabold text-slate-900 mt-1">
-                  {metrics.activeCount} <span className="text-xs font-normal text-slate-400">клиентов</span>
+                  {metrics.activeCount}{" "}
+                  <span className="text-xs font-normal text-slate-400">
+                    {isTg ? "мизоҷ" : "клиентов"}
+                  </span>
                 </div>
                 <p className="text-[11px] text-emerald-600 font-medium mt-0.5">
-                  +{metrics.newCount} новых сегодня
+                  +{metrics.newCount} {isTg ? "нав имрӯз" : "новых сегодня"}
                 </p>
               </div>
               <div className="h-11 w-11 rounded-xl bg-sky-50 text-sky-600 flex items-center justify-center">
@@ -456,7 +471,9 @@ export default function BrokerCrmPage() {
           <Card className="bg-white border-slate-200/80 shadow-xs">
             <CardContent className="p-4 flex items-center justify-between">
               <div>
-                <p className="text-xs font-semibold text-slate-500">Объем сделок в пайплайне</p>
+                <p className="text-xs font-semibold text-slate-500">
+                  {isTg ? "Ҳаҷми муомилаҳо дар гардиш" : "Объем сделок в пайплайне"}
+                </p>
                 <div className="text-2xl font-extrabold text-slate-900 mt-1">
                   ${metrics.totalActiveVolume.toLocaleString()}
                 </div>
@@ -473,12 +490,14 @@ export default function BrokerCrmPage() {
           <Card className="bg-white border-slate-200/80 shadow-xs">
             <CardContent className="p-4 flex items-center justify-between">
               <div>
-                <p className="text-xs font-semibold text-slate-500">Ожидаемая комиссия</p>
+                <p className="text-xs font-semibold text-slate-500">
+                  {isTg ? "Ҳаққи хизмати пешбинишуда" : "Ожидаемая комиссия"}
+                </p>
                 <div className="text-2xl font-extrabold text-emerald-600 mt-1">
                   ${metrics.potentialCommission.toLocaleString()}
                 </div>
                 <p className="text-[11px] text-emerald-700 font-medium mt-0.5">
-                  при ставке маклера ~2%
+                  {isTg ? "бо меъёри даллалӣ ~2%" : "при ставке маклера ~2%"}
                 </p>
               </div>
               <div className="h-11 w-11 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
@@ -490,12 +509,14 @@ export default function BrokerCrmPage() {
           <Card className="bg-white border-slate-200/80 shadow-xs">
             <CardContent className="p-4 flex items-center justify-between">
               <div>
-                <p className="text-xs font-semibold text-slate-500">Заработано в этом месяце</p>
+                <p className="text-xs font-semibold text-slate-500">
+                  {isTg ? "Даромад дар ин моҳ" : "Заработано в этом месяце"}
+                </p>
                 <div className="text-2xl font-extrabold text-slate-900 mt-1">
                   ${metrics.earnedThisMonth.toLocaleString()}
                 </div>
                 <p className="text-[11px] text-emerald-600 font-medium mt-0.5">
-                  по закрытым сделкам
+                  {isTg ? "аз рӯи муомилаҳои анҷомёфта" : "по закрытым сделкам"}
                 </p>
               </div>
               <div className="h-11 w-11 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center">
@@ -513,7 +534,11 @@ export default function BrokerCrmPage() {
               <div className="relative w-full sm:w-80">
                 <Search className="h-4 w-4 absolute left-3 top-2.5 text-slate-400" />
                 <Input
-                  placeholder="Поиск по имени, номеру, объекту..."
+                  placeholder={
+                    isTg
+                      ? "Ҷустуҷӯ аз рӯи ном, рақам, иншоот..."
+                      : "Поиск по имени, номеру, объекту..."
+                  }
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="pl-9 h-9 text-xs border-slate-200 bg-slate-50 focus:bg-white"
@@ -521,7 +546,10 @@ export default function BrokerCrmPage() {
               </div>
 
               <div className="text-xs text-slate-500 font-medium">
-                💡 <span className="text-slate-700 font-semibold">Подсказка:</span> Перетаскивайте карточки мышкой между колонками для смены статуса сделки.
+                💡 <span className="text-slate-700 font-semibold">{isTg ? "Маслиҳат:" : "Подсказка:"}</span>{" "}
+                {isTg
+                  ? "Барои иваз кардани вазъи муомила, кортҳоро байни сутунҳо бо муш кашед."
+                  : "Перетаскивайте карточки мышкой между колонками для смены статуса сделки."}
               </div>
             </div>
 
@@ -542,7 +570,7 @@ export default function BrokerCrmPage() {
                     <div className="flex items-center justify-between mb-3 px-1">
                       <div className="flex items-center gap-1.5">
                         <span className="font-bold text-xs text-slate-900 tracking-tight">
-                          {col.title}
+                          {isTg ? col.titleTg || col.title : col.title}
                         </span>
                         <Badge className={`${col.badgeColor} text-[10px] px-1.5 py-0 h-4 font-bold`}>
                           {columnLeads.length}
@@ -558,13 +586,15 @@ export default function BrokerCrmPage() {
                     <div className="space-y-2.5 flex-1">
                       {columnLeads.length === 0 ? (
                         <div className="h-28 rounded-xl border border-dashed border-slate-200/80 flex items-center justify-center text-[11px] text-slate-400 text-center p-3">
-                          Перетащите лид сюда
+                          {isTg ? "Мизоҷро ба ин ҷо кашед" : "Перетащите лид сюда"}
                         </div>
                       ) : (
                         columnLeads.map((lead) => {
                           const cleanPhone = lead.clientPhone.replace(/\D/g, "");
                           const waText = encodeURIComponent(
-                            `Здравствуйте, ${lead.clientName}! По поводу объекта «${lead.classifiedTitle || "недвижимости"}» в Худжанде.`
+                            isTg
+                              ? `Салом, ${lead.clientName}! Оид ба иншооти «${lead.classifiedTitle || "амвол"}» дар Хуҷанд.`
+                              : `Здравствуйте, ${lead.clientName}! По поводу объекта «${lead.classifiedTitle || "недвижимости"}» в Худжанде.`
                           );
 
                           return (
@@ -596,8 +626,8 @@ export default function BrokerCrmPage() {
                                   {lead.source === "whatsapp_click"
                                     ? "WhatsApp"
                                     : lead.source === "phone_click"
-                                    ? "Звонок"
-                                    : "Сайт"}
+                                    ? (isTg ? "Занг" : "Звонок")
+                                    : (isTg ? "Сомона" : "Сайт")}
                                 </Badge>
                               </div>
 
@@ -612,7 +642,7 @@ export default function BrokerCrmPage() {
                               <div className="flex items-center justify-between text-xs pt-1 border-t border-slate-100">
                                 <div>
                                   <span className="text-[10px] text-slate-400 block font-semibold">
-                                    Бюджет
+                                    {isTg ? "Буҷет" : "Бюджет"}
                                   </span>
                                   <span className="font-extrabold text-slate-900 font-mono">
                                     ${lead.budget.toLocaleString()}
@@ -621,7 +651,7 @@ export default function BrokerCrmPage() {
 
                                 <div className="text-right">
                                   <span className="text-[10px] text-emerald-600 block font-semibold">
-                                    Комиссия ({lead.commissionPercent}%)
+                                    {isTg ? `Ҳаққи хизмат (${lead.commissionPercent}%)` : `Комиссия (${lead.commissionPercent}%)`}
                                   </span>
                                   <span className="font-extrabold text-emerald-600 font-mono">
                                     +${lead.commission.toLocaleString()}
@@ -637,7 +667,7 @@ export default function BrokerCrmPage() {
                                 <a
                                   href={`tel:${cleanPhone}`}
                                   className="h-7 w-7 rounded-lg border border-slate-200 text-slate-600 hover:text-emerald-600 hover:border-emerald-300 flex items-center justify-center transition-colors"
-                                  title="Позвонить клиенту"
+                                  title={isTg ? "Ба мизоҷ занг задан" : "Позвонить клиенту"}
                                 >
                                   <Phone className="h-3.5 w-3.5" />
                                 </a>
@@ -647,7 +677,7 @@ export default function BrokerCrmPage() {
                                   target="_blank"
                                   rel="noreferrer"
                                   className="h-7 w-7 rounded-lg bg-emerald-50 text-emerald-600 hover:bg-emerald-600 hover:text-white flex items-center justify-center transition-colors border border-emerald-100"
-                                  title="Написать в WhatsApp"
+                                  title={isTg ? "Ба WhatsApp навиштан" : "Написать в WhatsApp"}
                                 >
                                   <MessageCircle className="h-3.5 w-3.5" />
                                 </a>
@@ -670,10 +700,12 @@ export default function BrokerCrmPage() {
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-5 rounded-2xl border border-slate-200/80 shadow-xs">
               <div>
                 <h3 className="text-lg font-bold text-slate-900">
-                  Сформированные подборки для клиентов
+                  {isTg ? "Маҷмӯаҳои таҳияшуда барои мизоҷон" : "Сформированные подборки для клиентов"}
                 </h3>
                 <p className="text-xs text-slate-500 mt-0.5">
-                  Ссылки на персональные витрины без контактов собственников. Отправляйте в WhatsApp в 1 клик.
+                  {isTg
+                    ? "Пайвандҳо ба намоишгоҳи инфиродӣ бидуни рақамҳои соҳибмулк. Бо 1 клик ба WhatsApp фиристед."
+                    : "Ссылки на персональные витрины без контактов собственников. Отправляйте в WhatsApp в 1 клик."}
                 </p>
               </div>
 
@@ -685,7 +717,7 @@ export default function BrokerCrmPage() {
                 className="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold gap-1.5 rounded-xl h-9"
               >
                 <Plus className="h-4 w-4" />
-                Создать новую подборку
+                {isTg ? "Эҷоди маҷмӯаи нав" : "Создать новую подборку"}
               </Button>
             </div>
 
@@ -693,7 +725,9 @@ export default function BrokerCrmPage() {
               {collections.map((col) => {
                 const shareLink = typeof window !== "undefined" ? `${window.location.origin}/p/${col.shareCode}` : `/p/${col.shareCode}`;
                 const waMessage = encodeURIComponent(
-                  `Здравствуйте! Подготовил для вас персональную подборку проверенных объектов недвижимости в Худжанде: ${shareLink}`
+                  isTg
+                    ? `Салом! Барои Шумо маҷмӯаи иншооти санҷидашудаи амволи ғайриманқулро дар Хуҷанд омода кардам: ${shareLink}`
+                    : `Здравствуйте! Подготовил для вас персональную подборку проверенных объектов недвижимости в Худжанде: ${shareLink}`
                 );
 
                 return (
@@ -711,7 +745,7 @@ export default function BrokerCrmPage() {
 
                         <div className="flex items-center gap-1 text-xs text-slate-500 font-medium shrink-0">
                           <Eye className="h-3.5 w-3.5 text-slate-400" />
-                          <span>{col.viewsCount} просмотров</span>
+                          <span>{col.viewsCount} {isTg ? "дидан" : "просмотров"}</span>
                         </div>
                       </div>
                       {col.notes && (
@@ -728,12 +762,12 @@ export default function BrokerCrmPage() {
                           type="button"
                           onClick={() => {
                             navigator.clipboard.writeText(shareLink);
-                            alert("Ссылка скопирована в буфер обмена!");
+                            alert(isTg ? "Пайванд нусхабардорӣ шуд!" : "Ссылка скопирована в буфер обмена!");
                           }}
                           className="text-emerald-600 hover:text-emerald-700 font-semibold flex items-center gap-1 shrink-0 ml-2"
                         >
                           <Copy className="h-3.5 w-3.5" />
-                          Копировать
+                          {isTg ? "Нусхабардорӣ" : "Копировать"}
                         </button>
                       </div>
 
@@ -744,7 +778,7 @@ export default function BrokerCrmPage() {
                           className="text-xs font-semibold text-slate-600 hover:text-slate-900 flex items-center gap-1"
                         >
                           <ExternalLink className="h-3.5 w-3.5" />
-                          Открыть витрину
+                          {isTg ? "Кушодани витрина" : "Открыть витрину"}
                         </Link>
 
                         <a
@@ -757,7 +791,7 @@ export default function BrokerCrmPage() {
                             className="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold h-8 px-3 rounded-lg gap-1.5"
                           >
                             <MessageCircle className="h-3.5 w-3.5" />
-                            Отправить в WhatsApp
+                            {isTg ? "Ба WhatsApp фиристодан" : "Отправить в WhatsApp"}
                           </Button>
                         </a>
                       </div>
@@ -775,19 +809,23 @@ export default function BrokerCrmPage() {
         <DialogContent className="sm:max-w-md bg-white rounded-2xl">
           <DialogHeader>
             <DialogTitle className="text-lg font-bold text-slate-900">
-              Добавить нового клиента в воронку
+              {isTg ? "Иловаи мизоҷи нав ба воронка" : "Добавить нового клиента в воронку"}
             </DialogTitle>
             <DialogDescription className="text-xs text-slate-500">
-              Создайте карточку покупателя для отслеживания звонков, показов и комиссионных.
+              {isTg
+                ? "Барои назорати зангҳо, нишондиҳиҳо ва ҳаққи хизмат корти харидорро эҷод кунед."
+                : "Создайте карточку покупателя для отслеживания звонков, показов и комиссионных."}
             </DialogDescription>
           </DialogHeader>
 
           <form onSubmit={handleCreateLead} className="space-y-3.5 py-2">
             <div>
-              <Label className="text-xs font-semibold text-slate-700">Имя клиента *</Label>
+              <Label className="text-xs font-semibold text-slate-700">
+                {isTg ? "Номи мизоҷ *" : "Имя клиента *"}
+              </Label>
               <Input
                 required
-                placeholder="Например: Рустам Шарипов"
+                placeholder={isTg ? "Масалан: Рустам Шарипов" : "Например: Рустам Шарипов"}
                 value={newLeadForm.clientName}
                 onChange={(e) =>
                   setNewLeadForm((prev) => ({ ...prev, clientName: e.target.value }))
@@ -797,7 +835,9 @@ export default function BrokerCrmPage() {
             </div>
 
             <div>
-              <Label className="text-xs font-semibold text-slate-700">Номер телефона *</Label>
+              <Label className="text-xs font-semibold text-slate-700">
+                {isTg ? "Рақами телефон *" : "Номер телефона *"}
+              </Label>
               <Input
                 required
                 placeholder="+992 92 ___ __ __"
@@ -811,7 +851,9 @@ export default function BrokerCrmPage() {
 
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <Label className="text-xs font-semibold text-slate-700">Бюджет ($) *</Label>
+                <Label className="text-xs font-semibold text-slate-700">
+                  {isTg ? "Буҷет ($) *" : "Бюджет ($) *"}
+                </Label>
                 <Input
                   type="number"
                   required
@@ -824,7 +866,9 @@ export default function BrokerCrmPage() {
               </div>
 
               <div>
-                <Label className="text-xs font-semibold text-slate-700">Комиссия маклера (%)</Label>
+                <Label className="text-xs font-semibold text-slate-700">
+                  {isTg ? "Ҳаққи хизмати даллал (%)" : "Комиссия маклера (%)"}
+                </Label>
                 <Input
                   type="number"
                   value={newLeadForm.commissionPercent}
@@ -840,14 +884,18 @@ export default function BrokerCrmPage() {
             </div>
 
             <div className="p-2.5 rounded-lg bg-emerald-50 border border-emerald-100 flex items-center justify-between text-xs">
-              <span className="text-emerald-800 font-medium">Ожидаемая выплата:</span>
+              <span className="text-emerald-800 font-medium">
+                {isTg ? "Пардохти пешбинишуда:" : "Ожидаемая выплата:"}
+              </span>
               <strong className="text-emerald-700 font-mono text-sm">
                 ${Math.round((newLeadForm.budget * newLeadForm.commissionPercent) / 100)}
               </strong>
             </div>
 
             <div>
-              <Label className="text-xs font-semibold text-slate-700">Интересующий объект</Label>
+              <Label className="text-xs font-semibold text-slate-700">
+                {isTg ? "Иншооти мавриди таваҷҷуҳ" : "Интересующий объект"}
+              </Label>
               <Input
                 value={newLeadForm.classifiedTitle}
                 onChange={(e) =>
@@ -858,9 +906,15 @@ export default function BrokerCrmPage() {
             </div>
 
             <div>
-              <Label className="text-xs font-semibold text-slate-700">Заметки / Требования</Label>
+              <Label className="text-xs font-semibold text-slate-700">
+                {isTg ? "Қайдҳо / Талаботҳо" : "Заметки / Требования"}
+              </Label>
               <Textarea
-                placeholder="Ищет этаж 3-5, готов на задаток, торг..."
+                placeholder={
+                  isTg
+                    ? "Ошёнаи 3-5 меҷӯяд, омода ба пешпардохт, савдо мешавад..."
+                    : "Ищет этаж 3-5, готов на задаток, торг..."
+                }
                 value={newLeadForm.notes}
                 onChange={(e) =>
                   setNewLeadForm((prev) => ({ ...prev, notes: e.target.value }))
@@ -876,13 +930,13 @@ export default function BrokerCrmPage() {
                 onClick={() => setIsNewLeadOpen(false)}
                 className="text-xs"
               >
-                Отмена
+                {isTg ? "Бекор кардан" : "Отмена"}
               </Button>
               <Button
                 type="submit"
                 className="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold"
               >
-                Создать лид
+                {isTg ? "Эҷоди мизоҷ" : "Создать лид"}
               </Button>
             </DialogFooter>
           </form>
@@ -896,7 +950,7 @@ export default function BrokerCrmPage() {
             <DialogHeader>
               <div className="flex items-center justify-between">
                 <DialogTitle className="text-lg font-bold text-slate-900">
-                  Карточка клиента: {selectedLead.clientName}
+                  {isTg ? `Корти мизоҷ: ${selectedLead.clientName}` : `Карточка клиента: ${selectedLead.clientName}`}
                 </DialogTitle>
                 <Badge
                   className="text-xs font-semibold uppercase"
@@ -906,14 +960,18 @@ export default function BrokerCrmPage() {
                 </Badge>
               </div>
               <DialogDescription className="text-xs text-slate-500">
-                Редактирование параметров сделки, истории показов и расчет комиссии.
+                {isTg
+                  ? "Таҳрири муомила, таърихи нишондиҳӣ ва ҳисоби ҳаққи хизмат."
+                  : "Редактирование параметров сделки, истории показов и расчет комиссии."}
               </DialogDescription>
             </DialogHeader>
 
             <div className="space-y-3.5 py-2">
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <Label className="text-xs font-semibold text-slate-700">ФИО клиента</Label>
+                  <Label className="text-xs font-semibold text-slate-700">
+                    {isTg ? "Ному насаби мизоҷ" : "ФИО клиента"}
+                  </Label>
                   <Input
                     value={selectedLead.clientName}
                     onChange={(e) =>
@@ -924,7 +982,9 @@ export default function BrokerCrmPage() {
                 </div>
 
                 <div>
-                  <Label className="text-xs font-semibold text-slate-700">Телефон</Label>
+                  <Label className="text-xs font-semibold text-slate-700">
+                    {isTg ? "Телефон" : "Телефон"}
+                  </Label>
                   <Input
                     value={selectedLead.clientPhone}
                     onChange={(e) =>
@@ -936,7 +996,9 @@ export default function BrokerCrmPage() {
               </div>
 
               <div>
-                <Label className="text-xs font-semibold text-slate-700">Статус в воронке</Label>
+                <Label className="text-xs font-semibold text-slate-700">
+                  {isTg ? "Вазъ дар воронка" : "Статус в воронке"}
+                </Label>
                 <div className="grid grid-cols-5 gap-1.5 mt-1.5">
                   {COLUMNS.map((col) => (
                     <button
@@ -951,7 +1013,7 @@ export default function BrokerCrmPage() {
                           : "bg-slate-50 text-slate-600 border-slate-200 hover:bg-slate-100"
                       }`}
                     >
-                      {col.title.split(" ")[0]}
+                      {(isTg ? col.titleTg || col.title : col.title).split(" ")[0]}
                     </button>
                   ))}
                 </div>
@@ -959,7 +1021,9 @@ export default function BrokerCrmPage() {
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <Label className="text-xs font-semibold text-slate-700">Бюджет ($)</Label>
+                  <Label className="text-xs font-semibold text-slate-700">
+                    {isTg ? "Буҷет ($)" : "Бюджет ($)"}
+                  </Label>
                   <Input
                     type="number"
                     value={selectedLead.budget}
@@ -976,7 +1040,9 @@ export default function BrokerCrmPage() {
                 </div>
 
                 <div>
-                  <Label className="text-xs font-semibold text-slate-700">Комиссия маклера ($)</Label>
+                  <Label className="text-xs font-semibold text-slate-700">
+                    {isTg ? "Ҳаққи хизмати даллал ($)" : "Комиссия маклера ($)"}
+                  </Label>
                   <Input
                     type="number"
                     value={selectedLead.commission}
@@ -989,7 +1055,9 @@ export default function BrokerCrmPage() {
               </div>
 
               <div>
-                <Label className="text-xs font-semibold text-slate-700">История заметок & Договоренности</Label>
+                <Label className="text-xs font-semibold text-slate-700">
+                  {isTg ? "Таърихи қайдҳо ва мувофиқаҳо" : "История заметок & Договоренности"}
+                </Label>
                 <Textarea
                   value={selectedLead.notes || ""}
                   onChange={(e) =>
@@ -1001,18 +1069,22 @@ export default function BrokerCrmPage() {
 
               {/* Direct Communication Bar */}
               <div className="p-3 bg-slate-50 rounded-xl border border-slate-100 flex items-center justify-between">
-                <span className="text-xs text-slate-600 font-medium">Связаться прямо сейчас:</span>
+                <span className="text-xs text-slate-600 font-medium">
+                  {isTg ? "Ҳозир дар тамос шавед:" : "Связаться прямо сейчас:"}
+                </span>
                 <div className="flex items-center gap-2">
                   <a href={`tel:${selectedLead.clientPhone.replace(/\D/g, "")}`}>
                     <Button size="sm" variant="outline" className="h-8 text-xs font-semibold gap-1">
                       <Phone className="h-3.5 w-3.5 text-emerald-600" />
-                      Позвонить
+                      {isTg ? "Занг задан" : "Позвонить"}
                     </Button>
                   </a>
 
                   <a
                     href={`https://wa.me/${selectedLead.clientPhone.replace(/\D/g, "")}?text=${encodeURIComponent(
-                      `Здравствуйте, ${selectedLead.clientName}!`
+                      isTg
+                        ? `Салом, ${selectedLead.clientName}!`
+                        : `Здравствуйте, ${selectedLead.clientName}!`
                     )}`}
                     target="_blank"
                     rel="noreferrer"
@@ -1034,7 +1106,7 @@ export default function BrokerCrmPage() {
                 className="text-xs text-red-600 hover:text-red-700 hover:bg-red-50 gap-1"
               >
                 <Trash2 className="h-3.5 w-3.5" />
-                Удалить
+                {isTg ? "Нобуд кардан" : "Удалить"}
               </Button>
 
               <div className="flex items-center gap-2">
@@ -1044,14 +1116,14 @@ export default function BrokerCrmPage() {
                   onClick={() => setIsEditLeadOpen(false)}
                   className="text-xs"
                 >
-                  Закрыть
+                  {isTg ? "Пӯшидан" : "Закрыть"}
                 </Button>
                 <Button
                   type="button"
                   onClick={handleUpdateLead}
                   className="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold"
                 >
-                  Сохранить
+                  {isTg ? "Сабт кардан" : "Сохранить"}
                 </Button>
               </div>
             </DialogFooter>
@@ -1065,10 +1137,12 @@ export default function BrokerCrmPage() {
           <DialogHeader>
             <DialogTitle className="text-lg font-bold text-slate-900 flex items-center gap-2">
               <Share2 className="h-5 w-5 text-emerald-600" />
-              Генератор персональной подборки для клиента
+              {isTg ? "Генератори маҷмӯаи инфиродӣ барои мизоҷ" : "Генератор персональной подборки для клиента"}
             </DialogTitle>
             <DialogDescription className="text-xs text-slate-500">
-              Создайте мобильную витрину со своими контактами (без прямых номеров собственников) и отправьте клиенту в WhatsApp.
+              {isTg
+                ? "Витринаи мобилиро бо алоқаи худ (бидуни рақами соҳибмулк) созед ва ба WhatsApp фиристед."
+                : "Создайте мобильную витрину со своими контактами (без прямых номеров собственников) и отправьте клиенту в WhatsApp."}
             </DialogDescription>
           </DialogHeader>
 
@@ -1079,10 +1153,12 @@ export default function BrokerCrmPage() {
                   <Check className="h-5 w-5" />
                 </div>
                 <h3 className="font-bold text-base text-slate-900">
-                  Подборка успешно создана!
+                  {isTg ? "Маҷмӯа бомуваффақият омода шуд!" : "Подборка успешно создана!"}
                 </h3>
                 <p className="text-xs text-slate-600">
-                  Клиент увидит чистую страницу с вашим именем, телефоном и выбранными объектами.
+                  {isTg
+                    ? "Мизоҷ саҳифаро бо ном, телефон ва иншооти интихобкардаи Шумо мебинад."
+                    : "Клиент увидит чистую страницу с вашим именем, телефоном и выбранными объектами."}
                 </p>
                 <div className="p-2.5 bg-white rounded-lg border border-emerald-200 font-mono text-xs text-slate-800 break-all select-all">
                   {generatedShareUrl}
@@ -1101,12 +1177,14 @@ export default function BrokerCrmPage() {
                   className="flex-1 text-xs font-semibold h-10 gap-1.5"
                 >
                   {copiedUrl ? <Check className="h-4 w-4 text-emerald-600" /> : <Copy className="h-4 w-4" />}
-                  {copiedUrl ? "Скопировано!" : "Скопировать ссылку"}
+                  {copiedUrl ? (isTg ? "Нусхабардорӣ шуд!" : "Скопировано!") : (isTg ? "Нусхабардории пайванд" : "Скопировать ссылку")}
                 </Button>
 
                 <a
                   href={`https://wa.me/?text=${encodeURIComponent(
-                    `Здравствуйте! Подготовил для вас персональную подборку проверенных вариантов недвижимости в Худжанде: ${generatedShareUrl}`
+                    isTg
+                      ? `Салом! Барои Шумо маҷмӯаи иншооти санҷидашудаи амволи ғайриманқулро дар Хуҷанд омода кардам: ${generatedShareUrl}`
+                      : `Здравствуйте! Подготовил для вас персональную подборку проверенных вариантов недвижимости в Худжанде: ${generatedShareUrl}`
                   )}`}
                   target="_blank"
                   rel="noreferrer"
@@ -1114,7 +1192,7 @@ export default function BrokerCrmPage() {
                 >
                   <Button className="w-full text-xs font-semibold h-10 bg-emerald-600 hover:bg-emerald-700 text-white gap-1.5">
                     <MessageCircle className="h-4 w-4" />
-                    Отправить в WhatsApp
+                    {isTg ? "Ба WhatsApp фиристодан" : "Отправить в WhatsApp"}
                   </Button>
                 </a>
               </div>
@@ -1125,7 +1203,8 @@ export default function BrokerCrmPage() {
                   target="_blank"
                   className="text-xs font-semibold text-emerald-600 hover:underline inline-flex items-center gap-1"
                 >
-                  Посмотреть страницу глазами клиента <ArrowRight className="h-3 w-3" />
+                  {isTg ? "Дидани саҳифа бо чашми мизоҷ" : "Посмотреть страницу глазами клиента"}{" "}
+                  <ArrowRight className="h-3 w-3" />
                 </Link>
               </div>
             </div>
@@ -1133,7 +1212,9 @@ export default function BrokerCrmPage() {
             <form onSubmit={handleCreateCollection} className="space-y-4 py-2">
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <Label className="text-xs font-semibold text-slate-700">Имя маклера</Label>
+                  <Label className="text-xs font-semibold text-slate-700">
+                    {isTg ? "Номи даллал (маклери амвол)" : "Имя маклера"}
+                  </Label>
                   <Input
                     required
                     value={collectionForm.agentName}
@@ -1144,7 +1225,9 @@ export default function BrokerCrmPage() {
                   />
                 </div>
                 <div>
-                  <Label className="text-xs font-semibold text-slate-700">Ваш WhatsApp / Телефон</Label>
+                  <Label className="text-xs font-semibold text-slate-700">
+                    {isTg ? "WhatsApp / Телефони шумо" : "Ваш WhatsApp / Телефон"}
+                  </Label>
                   <Input
                     required
                     value={collectionForm.agentPhone}
@@ -1157,7 +1240,9 @@ export default function BrokerCrmPage() {
               </div>
 
               <div>
-                <Label className="text-xs font-semibold text-slate-700">Заголовок подборки</Label>
+                <Label className="text-xs font-semibold text-slate-700">
+                  {isTg ? "Сарлавҳаи маҷмӯа" : "Заголовок подборки"}
+                </Label>
                 <Input
                   required
                   value={collectionForm.title}
@@ -1169,7 +1254,9 @@ export default function BrokerCrmPage() {
               </div>
 
               <div>
-                <Label className="text-xs font-semibold text-slate-700">Личное приветствие клиенту</Label>
+                <Label className="text-xs font-semibold text-slate-700">
+                  {isTg ? "Паёми шахсӣ ба мизоҷ" : "Личное приветствие клиенту"}
+                </Label>
                 <Textarea
                   value={collectionForm.notes}
                   onChange={(e) =>
@@ -1183,10 +1270,10 @@ export default function BrokerCrmPage() {
               <div>
                 <div className="flex items-center justify-between mb-2">
                   <Label className="text-xs font-semibold text-slate-700">
-                    Выберите объекты для включения в подборку:
+                    {isTg ? "Иншоотҳоро барои маҷмӯа интихоб намоед:" : "Выберите объекты для включения в подборку:"}
                   </Label>
                   <span className="text-[11px] font-bold text-emerald-600">
-                    Выбрано: {collectionForm.selectedPropertyIds.length}
+                    {isTg ? "Интихобшуда: " : "Выбрано: "}{collectionForm.selectedPropertyIds.length}
                   </span>
                 </div>
 
@@ -1215,7 +1302,7 @@ export default function BrokerCrmPage() {
                               {prop.title}
                             </h5>
                             <p className="text-[11px] text-slate-500 font-medium">
-                              {prop.city}, {prop.district} • {prop.rooms} комн. ({prop.area} м²)
+                              {prop.city}, {prop.district} • {isTg ? `${prop.rooms} ҳуҷр. (${prop.area} м²)` : `${prop.rooms} комн. (${prop.area} м²)`}
                             </p>
                             <span className="font-extrabold text-xs text-emerald-600 font-mono">
                               ${prop.priceUsd.toLocaleString()}
@@ -1243,14 +1330,16 @@ export default function BrokerCrmPage() {
                   onClick={() => setIsCreateCollectionOpen(false)}
                   className="text-xs"
                 >
-                  Отмена
+                  {isTg ? "Бекор кардан" : "Отмена"}
                 </Button>
                 <Button
                   type="submit"
                   disabled={collectionForm.selectedPropertyIds.length === 0}
                   className="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold"
                 >
-                  Сформировать подборку ({collectionForm.selectedPropertyIds.length})
+                  {isTg
+                    ? `Таҳияи маҷмӯа (${collectionForm.selectedPropertyIds.length})`
+                    : `Сформировать подборку (${collectionForm.selectedPropertyIds.length})`}
                 </Button>
               </DialogFooter>
             </form>

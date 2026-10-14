@@ -3,6 +3,7 @@
 import React, { use, useState, useEffect } from "react";
 import Link from "next/link";
 import { useCurrency } from "@/context/currency-context";
+import { useLanguage } from "@/lib/i18n/language-context";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
@@ -49,6 +50,9 @@ export default function ClientCollectionPage({
   const shareCode = resolvedParams.share_code;
 
   const { formatPrice, currency, setCurrency } = useCurrency();
+  const { language } = useLanguage();
+  const isTg = language === "tg";
+
   const [collection, setCollection] = useState<CollectionData | null>(null);
   const [properties, setProperties] = useState<CatalogProperty[]>([]);
   const [loading, setLoading] = useState(true);
@@ -87,9 +91,13 @@ export default function ClientCollectionPage({
 
   const cleanPhone = collection?.agentPhone?.replace(/\D/g, "") || "992927770022";
   const whatsappShareText = encodeURIComponent(
-    `Здравствуйте, ${collection?.agentName || "специалист"}! Я посмотрел(а) вашу подборку недвижимости (${shareCode}). Хочу обсудить детали и договориться о просмотре: ${
-      typeof window !== "undefined" ? window.location.href : ""
-    }`
+    isTg
+      ? `Салом, ${collection?.agentName || "мутахассис"}! Ман интихоби амволи фиристодаи шуморо (${shareCode}) дидам. Мехоҳам барои дидани он маслиҳат кунем: ${
+          typeof window !== "undefined" ? window.location.href : ""
+        }`
+      : `Здравствуйте, ${collection?.agentName || "специалист"}! Я посмотрел(а) вашу подборку недвижимости (${shareCode}). Хочу обсудить детали и договориться о просмотре: ${
+          typeof window !== "undefined" ? window.location.href : ""
+        }`
   );
   const whatsappUrl = `https://wa.me/${cleanPhone}?text=${whatsappShareText}`;
 
@@ -97,7 +105,11 @@ export default function ClientCollectionPage({
     return (
       <div className="min-h-screen bg-[#F8FAFC] flex flex-col items-center justify-center p-6 text-slate-500">
         <div className="h-10 w-10 border-3 border-emerald-600 border-t-transparent rounded-full animate-spin mb-4" />
-        <p className="text-sm font-medium">Загружаем персональную подборку недвижимости...</p>
+        <p className="text-sm font-medium">
+          {isTg
+            ? "Интихоби инфиродии амвол боргирӣ мешавад..."
+            : "Загружаем персональную подборку недвижимости..."}
+        </p>
       </div>
     );
   }
@@ -108,13 +120,17 @@ export default function ClientCollectionPage({
         <div className="h-14 w-14 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center mb-4">
           <Info className="h-7 w-7" />
         </div>
-        <h1 className="text-2xl font-bold text-slate-900 mb-2">Подборка не найдена</h1>
+        <h1 className="text-2xl font-bold text-slate-900 mb-2">
+          {isTg ? "Интихоби амвол ёфт нашуд" : "Подборка не найдена"}
+        </h1>
         <p className="text-sm text-slate-500 max-w-md mb-6">
-          Возможно, срок действия ссылки истек или маклер обновил список объектов.
+          {isTg
+            ? "Шояд муҳлати пайванд ба охир расидааст ё мутахассис рӯйхатро нав кардааст."
+            : "Возможно, срок действия ссылки истек или маклер обновил список объектов."}
         </p>
         <Link href="/">
           <Button className="bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl">
-            Перейти в главный каталог Sogd Realty
+            {isTg ? "Гузариш ба феҳристи асосии Sogd Realty" : "Перейти в главный каталог Sogd Realty"}
           </Button>
         </Link>
       </div>
@@ -165,27 +181,29 @@ export default function ClientCollectionPage({
               size="sm"
               variant="outline"
               onClick={handlePrint}
-              className="h-8 px-2.5 text-xs font-medium gap-1 rounded-lg border-slate-200 hidden sm:flex"
+              className="h-8 px-2.5 text-xs font-medium gap-1 rounded-lg border-slate-200 hidden sm:flex cursor-pointer"
             >
               <Printer className="h-3.5 w-3.5 text-slate-600" />
-              <span>Печать / PDF</span>
+              <span>{isTg ? "Чоп / PDF" : "Печать / PDF"}</span>
             </Button>
 
             <Button
               size="sm"
               variant="outline"
               onClick={handleCopyLink}
-              className="h-8 px-2.5 text-xs font-medium gap-1 rounded-lg border-slate-200"
+              className="h-8 px-2.5 text-xs font-medium gap-1 rounded-lg border-slate-200 cursor-pointer"
             >
               {copied ? (
                 <>
                   <Check className="h-3.5 w-3.5 text-emerald-600" />
-                  <span className="text-emerald-600">Скопировано</span>
+                  <span className="text-emerald-600">
+                    {isTg ? "Нусха бардошта шуд" : "Скопировано"}
+                  </span>
                 </>
               ) : (
                 <>
                   <Share2 className="h-3.5 w-3.5 text-slate-600" />
-                  <span>Поделиться</span>
+                  <span>{isTg ? "Мубодила" : "Поделиться"}</span>
                 </>
               )}
             </Button>
@@ -214,12 +232,13 @@ export default function ClientCollectionPage({
                   </h1>
                   <Badge className="bg-emerald-50 text-emerald-700 border-emerald-200 text-[10px] font-semibold gap-1">
                     <ShieldCheck className="h-3 w-3 text-emerald-600" />
-                    Проверенный эксперт
+                    {isTg ? "Мутахассиси тасдиқшуда" : "Проверенный эксперт"}
                   </Badge>
                 </div>
 
                 <p className="text-xs sm:text-sm text-slate-500 font-medium mt-0.5">
-                  {collection.agentAgency || "Персональный риелтор по недвижимости"}
+                  {collection.agentAgency ||
+                    (isTg ? "Риелтори инфиродии амвол" : "Персональный риелтор по недвижимости")}
                 </p>
 
                 <p className="text-xs text-slate-600 font-mono mt-1 font-semibold flex items-center gap-1.5">
@@ -231,16 +250,13 @@ export default function ClientCollectionPage({
 
             {/* Direct Contact Buttons */}
             <div className="flex items-center gap-2.5 w-full sm:w-auto">
-              <a
-                href={`tel:${cleanPhone}`}
-                className="flex-1 sm:flex-none"
-              >
+              <a href={`tel:${cleanPhone}`} className="flex-1 sm:flex-none">
                 <Button
                   variant="outline"
-                  className="w-full sm:w-auto h-10 px-4 text-xs font-semibold rounded-xl border-slate-200 gap-1.5"
+                  className="w-full sm:w-auto h-10 px-4 text-xs font-semibold rounded-xl border-slate-200 gap-1.5 cursor-pointer"
                 >
                   <Phone className="h-3.5 w-3.5 text-emerald-600" />
-                  Позвонить
+                  {isTg ? "Занг задан" : "Позвонить"}
                 </Button>
               </a>
 
@@ -250,9 +266,9 @@ export default function ClientCollectionPage({
                 rel="noreferrer"
                 className="flex-1 sm:flex-none"
               >
-                <Button className="w-full sm:w-auto h-10 px-4 text-xs font-semibold rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white shadow-sm shadow-emerald-600/20 gap-1.5">
+                <Button className="w-full sm:w-auto h-10 px-4 text-xs font-semibold rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white shadow-sm shadow-emerald-600/20 gap-1.5 cursor-pointer">
                   <MessageCircle className="h-4 w-4" />
-                  Написать в WhatsApp
+                  {isTg ? "Дар WhatsApp навиштан" : "Написать в WhatsApp"}
                 </Button>
               </a>
             </div>
@@ -269,10 +285,14 @@ export default function ClientCollectionPage({
               </div>
             )}
             <div className="flex items-center gap-4 mt-3 text-xs text-slate-400 font-medium">
-              <span>Объектов в подборке: <strong className="text-slate-700">{properties.length}</strong></span>
+              <span>
+                {isTg ? "Шумораи амвол:" : "Объектов в подборке:"}{" "}
+                <strong className="text-slate-700">{properties.length}</strong>
+              </span>
               <span>•</span>
               <span className="flex items-center gap-1">
-                <Eye className="h-3 w-3" /> {collection.viewsCount} просмотров
+                <Eye className="h-3 w-3" /> {collection.viewsCount}{" "}
+                {isTg ? "боздид" : "просмотров"}
               </span>
             </div>
           </div>
@@ -286,8 +306,26 @@ export default function ClientCollectionPage({
             const currentImg = allImages[currentImgIdx] || prop.image;
 
             const propertyWhatsappUrl = `https://wa.me/${cleanPhone}?text=${encodeURIComponent(
-              `Здравствуйте, ${collection.agentName}! Меня заинтересовал объект №${idx + 1}: «${prop.title}» за ${formatPrice(prop.priceTjs, prop.priceUsd)}. Когда можно посмотреть?`
+              isTg
+                ? `Салом, ${collection.agentName}! Ба ман амволи №${idx + 1}: «${prop.title}» бо арзиши ${formatPrice(prop.priceTjs, prop.priceUsd)} писанд омад. Кай онро дидан мумкин аст?`
+                : `Здравствуйте, ${collection.agentName}! Меня заинтересовал объект №${idx + 1}: «${prop.title}» за ${formatPrice(prop.priceTjs, prop.priceUsd)}. Когда можно посмотреть?`
             )}`;
+
+            const dealTypeDisplay = isTg
+              ? prop.dealType === "Аренда"
+                ? "Иҷора"
+                : "Фурӯш"
+              : prop.dealType;
+
+            const propertyTypeDisplay = isTg
+              ? prop.propertyType === "Квартира"
+                ? "Хонадон"
+                : prop.propertyType.includes("Ҳавлӣ")
+                ? "Ҳавлӣ"
+                : prop.propertyType === "Коммерция"
+                ? "Амволи тиҷоратӣ"
+                : prop.propertyType
+              : prop.propertyType;
 
             return (
               <Card
@@ -306,10 +344,10 @@ export default function ClientCollectionPage({
                     {/* Badge top-left */}
                     <div className="absolute top-3 left-3 flex gap-1.5">
                       <Badge className="bg-emerald-600 text-white text-[11px] font-semibold">
-                        {prop.dealType}
+                        {dealTypeDisplay}
                       </Badge>
                       <Badge variant="secondary" className="bg-white/95 backdrop-blur-md text-slate-800 text-[11px] font-medium">
-                        {prop.propertyType}
+                        {propertyTypeDisplay}
                       </Badge>
                     </div>
 
@@ -323,7 +361,7 @@ export default function ClientCollectionPage({
                             onClick={() =>
                               setActivePhotoIndex((prev) => ({ ...prev, [prop.id]: i }))
                             }
-                            className={`h-10 w-14 rounded overflow-hidden shrink-0 border-2 transition-all ${
+                            className={`h-10 w-14 rounded overflow-hidden shrink-0 border-2 transition-all cursor-pointer ${
                               currentImgIdx === i ? "border-emerald-400 scale-105" : "border-transparent opacity-70"
                             }`}
                           >
@@ -344,7 +382,7 @@ export default function ClientCollectionPage({
                         </div>
                         {prop.isNegotiable && (
                           <span className="text-[11px] font-semibold text-slate-500 bg-slate-100 px-2 py-0.5 rounded">
-                            Торг уместен
+                            {isTg ? "Савдо мешавад" : "Торг уместен"}
                           </span>
                         )}
                       </div>
@@ -361,17 +399,25 @@ export default function ClientCollectionPage({
                       {/* Specs bar */}
                       <div className="flex items-center gap-4 text-xs text-slate-700 bg-slate-50 rounded-xl p-2.5 mt-3 font-medium">
                         <div className="flex flex-col">
-                          <span className="text-[10px] text-slate-400 uppercase font-semibold">Комнат</span>
-                          <span className="font-bold text-slate-900">{prop.rooms} комн.</span>
+                          <span className="text-[10px] text-slate-400 uppercase font-semibold">
+                            {isTg ? "ҲУҶРАҲО" : "КОМНАТ"}
+                          </span>
+                          <span className="font-bold text-slate-900">
+                            {prop.rooms} {isTg ? "ҳуҷр." : "комн."}
+                          </span>
                         </div>
                         <div className="w-px h-6 bg-slate-200" />
                         <div className="flex flex-col">
-                          <span className="text-[10px] text-slate-400 uppercase font-semibold">Площадь</span>
+                          <span className="text-[10px] text-slate-400 uppercase font-semibold">
+                            {isTg ? "МАСОҲАТ" : "ПЛОЩАДЬ"}
+                          </span>
                           <span className="font-bold text-slate-900">{prop.area} м²</span>
                         </div>
                         <div className="w-px h-6 bg-slate-200" />
                         <div className="flex flex-col">
-                          <span className="text-[10px] text-slate-400 uppercase font-semibold">Этаж / Участок</span>
+                          <span className="text-[10px] text-slate-400 uppercase font-semibold">
+                            {isTg ? "ОШЁНА / ЗАМИН" : "ЭТАЖ / УЧАСТОК"}
+                          </span>
                           <span className="font-bold text-slate-900">{prop.floor || prop.landArea || "—"}</span>
                         </div>
                       </div>
@@ -399,7 +445,7 @@ export default function ClientCollectionPage({
                     {/* Action Bar for this property */}
                     <div className="pt-3 border-t border-slate-100 flex items-center justify-between gap-3">
                       <div className="text-[11px] text-slate-400 font-medium">
-                        Объект проверен маклером
+                        {isTg ? "Амвол тафтиш шудааст" : "Объект проверен маклером"}
                       </div>
 
                       <a
@@ -409,10 +455,10 @@ export default function ClientCollectionPage({
                       >
                         <Button
                           size="sm"
-                          className="h-9 px-3.5 text-xs font-semibold bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl gap-1.5 shadow-xs"
+                          className="h-9 px-3.5 text-xs font-semibold bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl gap-1.5 shadow-xs cursor-pointer"
                         >
                           <MessageCircle className="h-3.5 w-3.5" />
-                          Спросить по этому объекту
+                          {isTg ? "Савол оид ба ин амвол" : "Спросить по этому объекту"}
                         </Button>
                       </a>
                     </div>
@@ -426,14 +472,15 @@ export default function ClientCollectionPage({
         {/* 4. FOOTER CARD */}
         <div className="bg-slate-50 border border-slate-200 rounded-2xl p-6 text-center space-y-3 print:hidden">
           <p className="text-xs text-slate-500 font-medium max-w-lg mx-auto">
-            Данная подборка сформирована персонально для вас специалистом по недвижимости платформы Sogd Realty.
-            Все указанные объекты актуальны на момент формирования.
+            {isTg
+              ? "Ин интихоби амвол шахсан барои шумо аз ҷониби мутахассиси амволи ғайриманқули платформаи Sogd Realty таҳия шудааст. Ҳамаи амволҳо дар ҳоли ҳозир дастрасанд."
+              : "Данная подборка сформирована персонально для вас специалистом по недвижимости платформы Sogd Realty. Все указанные объекты актуальны на момент формирования."}
           </p>
           <div className="flex items-center justify-center gap-3 pt-1">
             <a href={whatsappUrl} target="_blank" rel="noreferrer">
-              <Button className="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold rounded-xl gap-1.5">
+              <Button className="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold rounded-xl gap-1.5 cursor-pointer">
                 <MessageCircle className="h-4 w-4" />
-                Связаться с {collection.agentName}
+                {isTg ? `Робита бо ${collection.agentName}` : `Связаться с ${collection.agentName}`}
               </Button>
             </a>
           </div>
@@ -443,15 +490,15 @@ export default function ClientCollectionPage({
       {/* Floating Bottom Bar on Mobile */}
       <div className="fixed bottom-0 left-0 right-0 p-3 bg-white/95 backdrop-blur-md border-t border-slate-200 sm:hidden z-50 print:hidden flex items-center gap-2">
         <a href={`tel:${cleanPhone}`} className="flex-1">
-          <Button variant="outline" className="w-full text-xs font-semibold rounded-xl h-10 border-slate-300">
+          <Button variant="outline" className="w-full text-xs font-semibold rounded-xl h-10 border-slate-300 cursor-pointer">
             <Phone className="h-3.5 w-3.5 mr-1 text-emerald-600" />
-            Позвонить
+            {isTg ? "Занг задан" : "Позвонить"}
           </Button>
         </a>
         <a href={whatsappUrl} target="_blank" rel="noreferrer" className="flex-2">
-          <Button className="w-full text-xs font-semibold rounded-xl h-10 bg-emerald-600 hover:bg-emerald-700 text-white gap-1">
+          <Button className="w-full text-xs font-semibold rounded-xl h-10 bg-emerald-600 hover:bg-emerald-700 text-white gap-1 cursor-pointer">
             <MessageCircle className="h-4 w-4" />
-            Написать в WhatsApp
+            {isTg ? "Дар WhatsApp навиштан" : "Написать в WhatsApp"}
           </Button>
         </a>
       </div>
