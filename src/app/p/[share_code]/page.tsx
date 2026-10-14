@@ -238,7 +238,7 @@ export default function ClientCollectionPage({
 
                 <p className="text-xs sm:text-sm text-slate-500 font-medium mt-0.5">
                   {collection.agentAgency ||
-                    (isTg ? "Риелтори инфиродии амвол" : "Персональный риелтор по недвижимости")}
+                    (isTg ? "Мутахассиси инфиродии амвол" : "Персональный риелтор по недвижимости")}
                 </p>
 
                 <p className="text-xs text-slate-600 font-mono mt-1 font-semibold flex items-center gap-1.5">

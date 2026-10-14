@@ -821,7 +821,7 @@ export default function HomePage() {
                 <TrendingUp className="h-5 w-5" />
               </div>
               <h4 className="font-bold text-slate-900 text-base">
-                {isTg ? "Барои риелторҳо ва агентиҳо" : "Для маклеров и агентств"}
+                {isTg ? "Барои даллалҳо ва агентиҳо" : "Для маклеров и агентств"}
               </h4>
               <p className="text-xs text-slate-600 leading-relaxed">
                 {isTg
@@ -956,7 +956,7 @@ export default function HomePage() {
                 <li><Link href="/classifieds?propertyType=house" className="hover:text-emerald-700 transition-colors">{isTg ? "Ҳавлиҳои анъанавӣ бо боғ" : "Традиционные дома (Ҳавлӣ) с садом"}</Link></li>
                 <li><Link href="/classifieds?propertyType=land" className="hover:text-emerald-700 transition-colors">{isTg ? "Қитъаҳои замин барои сохтмон" : "Земельные участки под застройку"}</Link></li>
                 <li><Link href="/classifieds?propertyType=commercial" className="hover:text-emerald-700 transition-colors">{isTg ? "Биноҳои тиҷоратӣ ва мағозаҳо" : "Коммерческие помещения и магазины"}</Link></li>
-                <li><Link href="/profile/analytics" className="hover:text-emerald-700 transition-colors">{isTg ? "B2B Open API барои риелторҳо" : "B2B Open API для риелторов"}</Link></li>
+                <li><Link href="/profile/analytics" className="hover:text-emerald-700 transition-colors">{isTg ? "B2B Open API барои даллалҳо ва шарикон" : "B2B Open API для риелторов"}</Link></li>
               </ul>
             </div>
 
@@ -995,7 +995,7 @@ export default function HomePage() {
                 {isTg ? "Таҳлил ва Open API" : "Аналитика & Open API"}
               </Link>
               <Link href="/profile/crm" className="hover:text-emerald-700 font-medium text-emerald-700/70">
-                {isTg ? "Барои риелторҳо ва агентиҳо (B2B CRM)" : "Маклерам и Агентствам (B2B CRM)"}
+                {isTg ? "Барои даллалҳо ва агентиҳо (B2B CRM)" : "Маклерам и Агентствам (B2B CRM)"}
               </Link>
             </div>
           </div>

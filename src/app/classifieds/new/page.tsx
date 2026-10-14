@@ -295,7 +295,7 @@ export default function NewClassifiedPage() {
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="apartment">{isTg ? "Хонадон (Квартира)" : "Квартира"}</SelectItem>
+                        <SelectItem value="apartment">{isTg ? "Хонадон" : "Квартира"}</SelectItem>
                         <SelectItem value="house">{isTg ? "Ҳавлӣ / Хонаи заминӣ" : "Дом / Ҳавлӣ"}</SelectItem>
                         <SelectItem value="commercial">{isTg ? "Амволи тиҷоратӣ" : "Коммерческая недвижимость"}</SelectItem>
                         <SelectItem value="land">{isTg ? "Қитъаи замин" : "Земельный участок"}</SelectItem>

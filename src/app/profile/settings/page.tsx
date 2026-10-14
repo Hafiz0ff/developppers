@@ -201,7 +201,7 @@ export default function ProfileSettingsPage() {
                 </CardTitle>
                 <CardDescription className="text-xs text-slate-500">
                   {isTg
-                    ? "Риелтор • Агентии «Суғд-Инвест» (ш. Хуҷанд)"
+                    ? "Мутахассиси амвол • Агентии «Суғд-Инвест» (ш. Хуҷанд)"
                     : "Риелтор • Агентство «Сугд-Инвест» (г. Худжанд)"}
                 </CardDescription>
               </div>
@@ -233,7 +233,7 @@ export default function ProfileSettingsPage() {
                 {isTg ? "Нақш дар платформа:" : "Роль на платформе:"}
               </span>
               <span className="font-bold text-slate-800">
-                {isTg ? "Риелтор / Агентии амволи ғайриманқул" : "Маклер / Агентство недвижимости"}
+                {isTg ? "Даллоли амвол / Агентии амволи ғайриманқул" : "Маклер / Агентство недвижимости"}
               </span>
             </div>
           </CardContent>
