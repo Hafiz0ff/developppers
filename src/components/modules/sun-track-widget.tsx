@@ -2,6 +2,7 @@
 
 import React, { useState, useMemo } from "react";
 import { Sun, Compass as CompassIcon, Sparkles } from "lucide-react";
+import { useLanguage } from "@/context/language-context";
 
 interface SunTrackProps {
   onTimeChange?: (hours: number) => void;
@@ -9,6 +10,8 @@ interface SunTrackProps {
 }
 
 export function SunTrackCompass({ timeHours }: { timeHours: number }) {
+  const { language, tDual } = useLanguage();
+
   // Normalize time (9:00 = 0%, 12:00 = 50%, 18:00 = 100%)
   const progress = Math.max(0, Math.min(1, (timeHours - 9) / 9));
 
@@ -29,7 +32,10 @@ export function SunTrackCompass({ timeHours }: { timeHours: number }) {
   return (
     <div
       className="relative w-[76px] h-[76px] rounded-full bg-slate-950/85 backdrop-blur-md border border-white/20 shadow-xl flex items-center justify-center select-none"
-      title="Компас сторон света и траектория движения солнца (В ➔ Ю ➔ З)"
+      title={tDual(
+        "Компас сторон света и траектория движения солнца (В ➔ Ю ➔ З)",
+        "Самтҳои олам ва ҳаракати офтоб (Шқ ➔ Ҷ ➔ Ғ)"
+      )}
     >
       {/* SVG Arc for Golden Sun Path */}
       <svg className="absolute inset-0 w-full h-full pointer-events-none">
@@ -67,21 +73,24 @@ export function SunTrackCompass({ timeHours }: { timeHours: number }) {
       {/* Compass Directions */}
       {/* North at Top */}
       <span className="absolute top-1 text-[10px] font-black text-rose-500 leading-none">
-        С
+        {language === "tg" ? "Ш" : "С"}
       </span>
 
       {/* East on Right */}
-      <span className="absolute right-1.5 text-[9px] font-bold text-slate-300 leading-none">
-        В
+      <span className="absolute right-1 text-[9px] font-bold text-slate-300 leading-none">
+        {language === "tg" ? "Шқ" : "В"}
       </span>
 
       {/* West on Left */}
       <span className="absolute left-1.5 text-[9px] font-bold text-slate-300 leading-none">
-        З
+        {language === "tg" ? "Ғ" : "З"}
       </span>
 
       {/* South at Bottom: Sun Icon instead of "Ю" as required by Section 11.2 */}
-      <span className="absolute bottom-1 text-amber-400" title="Юг (траектория солнца)">
+      <span
+        className="absolute bottom-1 text-amber-400"
+        title={tDual("Юг (траектория солнца)", "Ҷануб (ҳаракати офтоб)")}
+      >
         <Sun className="h-3 w-3 fill-amber-400" />
       </span>
 
@@ -98,6 +107,8 @@ export function SunTrackBar({
   timeHours: number;
   onChange: (hours: number) => void;
 }) {
+  const { tDual } = useLanguage();
+
   const formatTime = (h: number) => {
     const whole = Math.floor(h);
     const mins = h % 1 === 0 ? "00" : "30";
@@ -105,10 +116,10 @@ export function SunTrackBar({
   };
 
   const getLightingLabel = (h: number) => {
-    if (h <= 10.5) return "Утреннее солнце (Восток)";
-    if (h >= 11 && h <= 14) return "Зенит (Максимум инсоляции)";
-    if (h >= 14.5 && h <= 16.5) return "Дневной свет (Юго-Запад)";
-    return "Вечерний закат (Запад)";
+    if (h <= 10.5) return tDual("Утреннее солнце (Восток)", "Офтоби саҳаргоҳӣ (Шарқ)");
+    if (h >= 11 && h <= 14) return tDual("Зенит (Максимум инсоляции)", "Авҷи офтоб (Равшании максималӣ)");
+    if (h >= 14.5 && h <= 16.5) return tDual("Дневной свет (Юго-Запад)", "Равшании нисфирӯзӣ (Ҷанубу Ғарб)");
+    return tDual("Вечерний закат (Запад)", "Ғуруби офтоб (Ғарб)");
   };
 
   return (
@@ -137,7 +148,10 @@ export function SunTrackBar({
           value={timeHours}
           onChange={(e) => onChange(parseFloat(e.target.value))}
           className="w-36 sm:w-48 h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-amber-400"
-          title="Перемещайте для оценки естественного освещения в разное время суток"
+          title={tDual(
+            "Перемещайте для оценки естественного освещения в разное время суток",
+            "Барои санҷидани равшании табиӣ дар соатҳои гуногуни рӯз бегунокро ҳаракат диҳед"
+          )}
         />
       </div>
     </div>

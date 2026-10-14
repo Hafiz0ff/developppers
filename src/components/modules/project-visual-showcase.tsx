@@ -21,6 +21,7 @@ import { BuildingCrossSection } from "./building-cross-section";
 import { ShowcaseGeneralView } from "./showcase-general-view";
 import { ShowcaseWindowView } from "./showcase-window-view";
 import { ShowcaseLayoutView } from "./showcase-layout-view";
+import { useLanguage } from "@/context/language-context";
 
 export type ShowcaseMode =
   | "photos"
@@ -54,6 +55,8 @@ export function ProjectVisualShowcase({
   developerContact,
   onSelectUnitMode,
 }: ProjectVisualShowcaseProps) {
+  const { tDual } = useLanguage();
+
   // Ordered gallery photos with cover first
   const allImages = React.useMemo(() => {
     const list = [coverImageUrl, ...images.filter((img) => img !== coverImageUrl)];
@@ -89,12 +92,12 @@ export function ProjectVisualShowcase({
     isAvailable: boolean;
     badgeText?: string;
   }> = [
-    { id: "photos", label: "Фото", icon: Camera, isAvailable: true },
-    { id: "general_view", label: "Общий вид", icon: Compass, isAvailable: true },
-    { id: "section_plan", label: "План секции", icon: Building, isAvailable: true },
-    { id: "cross_section", label: "Вид в срезе", icon: Layers, isAvailable: true },
-    { id: "window_view", label: "Вид из окон", icon: Eye, isAvailable: true },
-    { id: "layout", label: "Планировка", icon: FileText, isAvailable: true },
+    { id: "photos", label: tDual("Фото", "Аксҳо"), icon: Camera, isAvailable: true },
+    { id: "general_view", label: tDual("Общий вид", "Намуди умумӣ"), icon: Compass, isAvailable: true },
+    { id: "section_plan", label: tDual("План секции", "Нақшаи бахш"), icon: Building, isAvailable: true },
+    { id: "cross_section", label: tDual("Вид в срезе", "Буриши бино"), icon: Layers, isAvailable: true },
+    { id: "window_view", label: tDual("Вид из окон", "Манзара аз тирезаҳо"), icon: Eye, isAvailable: true },
+    { id: "layout", label: tDual("Планировка", "Тарҳи хонаҳо"), icon: FileText, isAvailable: true },
   ];
 
   const handleModeChange = (mode: ShowcaseMode) => {
@@ -121,7 +124,7 @@ export function ProjectVisualShowcase({
           <div className="relative h-[340px] sm:h-[480px] w-full select-none overflow-hidden bg-slate-900 flex items-center justify-center">
             <img
               src={allImages[currentIndex]}
-              alt={`${projectName} - фото ${currentIndex + 1}`}
+              alt={`${projectName} - ${tDual("фото", "акси")} ${currentIndex + 1}`}
               className="w-full h-full object-cover transition-opacity duration-300"
             />
 
@@ -134,7 +137,7 @@ export function ProjectVisualShowcase({
                 <button
                   type="button"
                   onClick={handlePrev}
-                  aria-label="Предыдущее фото"
+                  aria-label={tDual("Предыдущее фото", "Акси қаблӣ")}
                   className="absolute left-3 sm:left-4 top-1/2 -translate-y-1/2 h-11 w-11 rounded-full bg-black/40 hover:bg-black/70 backdrop-blur-md text-white flex items-center justify-center shadow-lg transition-all duration-200 hover:scale-105 active:scale-95 cursor-pointer border border-white/20"
                 >
                   <ChevronLeft className="h-6 w-6 stroke-[2.5]" />
@@ -143,7 +146,7 @@ export function ProjectVisualShowcase({
                 <button
                   type="button"
                   onClick={handleNext}
-                  aria-label="Следующее фото"
+                  aria-label={tDual("Следующее фото", "Акси навбатӣ")}
                   className="absolute right-3 sm:right-4 top-1/2 -translate-y-1/2 h-11 w-11 rounded-full bg-black/40 hover:bg-black/70 backdrop-blur-md text-white flex items-center justify-center shadow-lg transition-all duration-200 hover:scale-105 active:scale-95 cursor-pointer border border-white/20"
                 >
                   <ChevronRight className="h-6 w-6 stroke-[2.5]" />
@@ -162,7 +165,10 @@ export function ProjectVisualShowcase({
             <div className="absolute bottom-4 left-4 bg-background/90 backdrop-blur-md px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-2 shadow-xs z-10 border border-border/40">
               <Sparkles className="h-3.5 w-3.5 text-emerald-600" />
               <span>
-                Рассрочка до {installmentMonths} мес. (Взнос от {installmentDownPaymentPercent}%)
+                {tDual(
+                  `Рассрочка до ${installmentMonths} мес. (Взнос от ${installmentDownPaymentPercent}%)`,
+                  `Пардохти қисм-қисм то ${installmentMonths} моҳ (Пешпардохт аз ${installmentDownPaymentPercent}%)`
+                )}
               </span>
             </div>
           </div>

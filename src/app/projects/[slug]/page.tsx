@@ -38,17 +38,13 @@ import {
   Sparkles,
   Paintbrush,
 } from "lucide-react";
-
-const FINISHING_LABELS: Record<string, string> = {
-  rough: "Черновая отделка",
-  pre_finishing: "Предчистовая отделка (White box)",
-  turnkey: "Чистовая под ключ",
-};
+import { useLanguage } from "@/context/language-context";
 
 export default function PublicProjectPage() {
   const params = useParams();
   const slug = params?.slug as string;
   const { formatPrice } = useCurrency();
+  const { language, t, tDual } = useLanguage();
 
   const project =
     INITIAL_PROJECTS.find((p) => p.slug === slug) || INITIAL_PROJECTS[0];
@@ -56,6 +52,18 @@ export default function PublicProjectPage() {
   const developer =
     INITIAL_DEVELOPERS.find((d) => d.id === project.developerId) ||
     INITIAL_DEVELOPERS[0];
+
+  const displayName = language === "tg" && project.nameTg ? project.nameTg : project.name;
+  const displayDesc = language === "tg" && project.descriptionTg ? project.descriptionTg : project.description;
+  const displayAddress = language === "tg" && project.addressTg ? project.addressTg : project.address;
+  const displayLandmark = language === "tg" && project.landmarkTg ? project.landmarkTg : project.landmark;
+  const displayAmenities = language === "tg" && project.amenitiesTg ? project.amenitiesTg : project.amenities;
+
+  const finishingLabels: Record<string, string> = {
+    rough: tDual("Черновая отделка", "Пардози аввалия (қуттӣ)"),
+    pre_finishing: tDual("Предчистовая отделка (White box)", "Пардози пешакӣ (қуттии сафед)"),
+    turnkey: tDual("Чистовая под ключ", "Таъмири пурра («калид дар даст»)"),
+  };
 
   const { isFavorite, toggleFavorite } = useProjectAnalytics(project.slug, true);
 
@@ -73,47 +81,69 @@ export default function PublicProjectPage() {
     highlight?: boolean;
   }> = [
     {
-      label: "Срок сдачи",
+      label: tDual("Срок сдачи", "Муҳлати супоридан"),
       value:
         project.deadlineQuarter && project.deadlineYear
-          ? `${project.deadlineQuarter} кв. ${project.deadlineYear} г.`
+          ? language === "tg"
+            ? `семоҳаи ${project.deadlineQuarter}-и с. ${project.deadlineYear}`
+            : `${project.deadlineQuarter} кв. ${project.deadlineYear} г.`
           : null,
     },
     {
-      label: "Этажность",
-      value: project.floorsCount ? `${project.floorsCount} этажей` : null,
+      label: tDual("Этажность", "Шумораи ошёнаҳо"),
+      value: project.floorsCount
+        ? language === "tg"
+          ? `${project.floorsCount} ошёна`
+          : `${project.floorsCount} этажей`
+        : null,
     },
     {
-      label: "Секций (подъездов)",
-      value: project.sectionsCount ? `${project.sectionsCount} секции` : null,
+      label: tDual("Секций (подъездов)", "Бахшҳо (даромадгоҳҳо)"),
+      value: project.sectionsCount
+        ? language === "tg"
+          ? `${project.sectionsCount} бахш`
+          : `${project.sectionsCount} секции`
+        : null,
     },
     {
-      label: "Высота потолков",
+      label: tDual("Высота потолков", "Баландии шифт"),
       value: project.ceilingHeight ? `${project.ceilingHeight} м` : null,
     },
     {
-      label: "Конструкция",
-      value: project.constructionType || null,
+      label: tDual("Конструкция", "Сохтори бино"),
+      value: project.constructionType
+        ? language === "tg"
+          ? project.constructionType.replace("Монолитный каркас", "Каркаси монолитӣ").replace("кирпичное заполнение", "пуркунии ғиштӣ")
+          : project.constructionType
+        : null,
     },
     {
-      label: "Сейсмостойкость",
-      value: "До 9 баллов",
+      label: tDual("Сейсмостойкость", "Муқовимат ба заминларза"),
+      value: tDual("До 9 баллов", "То 9 балл"),
       highlight: true,
     },
     {
-      label: "Площадь участка",
+      label: tDual("Площадь участка", "Масоҳати қитъа"),
       value: project.landArea || null,
     },
     {
-      label: "Материал стен",
-      value: project.wallMaterial || null,
+      label: tDual("Материал стен", "Масолеҳи деворҳо"),
+      value: project.wallMaterial
+        ? language === "tg"
+          ? project.wallMaterial.replace("Обожжённый кирпич", "Ғишти пухта").replace("газоблок", "газоблок")
+          : project.wallMaterial
+        : null,
     },
     {
-      label: "Фасад",
-      value: project.facade || null,
+      label: tDual("Фасад", "Намуди фасад"),
+      value: project.facade
+        ? language === "tg"
+          ? project.facade.replace("Вентилируемый керамогранит", "Керамогранити шамолдиҳанда").replace("фиброцементные панели", "панелҳои фибросементӣ")
+          : project.facade
+        : null,
     },
     {
-      label: "Кадастровый номер",
+      label: tDual("Кадастровый номер", "Рақами кадастрӣ"),
       value: project.cadastralNumber || null,
     },
     ...(project.customBuildingFeatures || []).map((cf) => ({
@@ -140,12 +170,12 @@ export default function PublicProjectPage() {
             className="inline-flex items-center gap-1.5 text-xs font-semibold text-muted-foreground hover:text-foreground transition-colors"
           >
             <ArrowLeft className="h-3.5 w-3.5" />
-            Назад на главную
+            {tDual("Назад на главную", "Бозгашт ба саҳифаи аслӣ")}
           </Link>
           <div className="flex items-center gap-2">
             <Button variant="outline" size="sm" className="h-8 text-xs gap-1.5">
               <Share2 className="h-3.5 w-3.5" />
-              Поделиться
+              {tDual("Поделиться", "Мубодила кардан")}
             </Button>
             <Button
               variant={isFavorite ? "default" : "outline"}
@@ -158,7 +188,7 @@ export default function PublicProjectPage() {
               }`}
             >
               <Heart className={`h-3.5 w-3.5 ${isFavorite ? "fill-white" : ""}`} />
-              {isFavorite ? "В избранном" : "В избранное"}
+              {isFavorite ? tDual("В избранном", "Дар баргузидаҳо") : tDual("В избранное", "Ба баргузидаҳо")}
             </Button>
           </div>
         </div>
@@ -171,14 +201,18 @@ export default function PublicProjectPage() {
             <div className="flex flex-wrap items-center gap-2">
               <Badge className="bg-emerald-600 text-white font-semibold text-xs">
                 {project.status === "under_construction"
-                  ? "Строится"
+                  ? tDual("Строится", "Дар ҳоли сохтмон")
                   : project.status === "ready"
-                  ? "Сдан"
-                  : "Проектирование"}
+                  ? tDual("Сдан", "Ба истифода дода шудааст")
+                  : tDual("Проектирование", "Лоиҳакашӣ")}
               </Badge>
               <Badge variant="secondary" className="font-semibold text-xs">
                 {project.buildingClass === "business"
-                  ? "Бизнес-класс"
+                  ? tDual("Бизнес-класс", "Синфи тиҷоратӣ (Бизнес)")
+                  : project.buildingClass === "comfort"
+                  ? tDual("Комфорт", "Синфи бароҳат (Комфорт)")
+                  : project.buildingClass === "premium"
+                  ? tDual("Премиум", "Синфи аъло (Премиум)")
                   : project.buildingClass}
               </Badge>
               <span className="text-xs text-muted-foreground">•</span>
@@ -192,12 +226,12 @@ export default function PublicProjectPage() {
             </div>
 
             <h1 className="text-3xl sm:text-4xl font-extrabold text-foreground tracking-tight">
-              {project.name}
+              {displayName}
             </h1>
 
             <p className="text-xs sm:text-sm text-muted-foreground flex items-center gap-1.5">
               <MapPin className="h-4 w-4 text-emerald-600 shrink-0" />
-              {project.address} ({project.landmark})
+              {displayAddress} ({displayLandmark})
             </p>
           </div>
 
@@ -207,12 +241,12 @@ export default function PublicProjectPage() {
 
             {/* Pricing Highlight Card */}
             <div className="bg-card border rounded-2xl p-4 sm:p-5 shadow-sm text-left sm:text-right shrink-0">
-              <div className="text-xs text-muted-foreground">Стоимость квартир:</div>
+              <div className="text-xs text-muted-foreground">{tDual("Стоимость квартир:", "Нархи хонадонҳо:")}</div>
               <div className="text-2xl sm:text-3xl font-extrabold text-emerald-600">
-                от {formatPrice(project.minTotalPriceTjs, project.minTotalPriceUsd)}
+                {tDual("от", "аз")} {formatPrice(project.minTotalPriceTjs, project.minTotalPriceUsd)}
               </div>
               <div className="text-xs font-semibold text-foreground mt-0.5">
-                от {formatPrice(project.minPricePerMeterTjs, project.minPricePerMeterUsd)} / м²
+                {tDual("от", "аз")} {formatPrice(project.minPricePerMeterTjs, project.minPricePerMeterUsd)} / м²
               </div>
             </div>
           </div>
@@ -220,7 +254,7 @@ export default function PublicProjectPage() {
 
         {/* APPLE-STYLE VISUAL SHOWCASE & 6D NAVIGATOR (Sections 4 & 5) */}
         <ProjectVisualShowcase
-          projectName={project.name}
+          projectName={displayName}
           coverImageUrl={project.coverImageUrl}
           images={project.images}
           installmentMonths={project.installmentMonths}
@@ -243,10 +277,10 @@ export default function PublicProjectPage() {
             {/* Description */}
             <div className="space-y-3">
               <h2 className="text-xl font-bold text-foreground">
-                О жилом комплексе
+                {tDual("О жилом комплексе", "Дар бораи маҷмааи истиқоматӣ")}
               </h2>
               <p className="text-sm text-muted-foreground leading-relaxed whitespace-pre-line">
-                {project.description}
+                {displayDesc}
               </p>
             </div>
 
@@ -254,7 +288,7 @@ export default function PublicProjectPage() {
             {buildingSpecs.length > 0 && (
               <div className="space-y-3">
                 <h3 className="text-base font-bold text-foreground">
-                  Характеристики дома
+                  {tDual("Характеристики дома", "Мушаххасоти бино")}
                 </h3>
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 text-xs">
                   {buildingSpecs.map((spec, idx) => (
@@ -287,7 +321,7 @@ export default function PublicProjectPage() {
                   <div className="flex items-center gap-2">
                     <Paintbrush className="h-4 w-4 text-emerald-600" />
                     <h3 className="text-base font-bold text-foreground">
-                      Отделка и комплектация
+                      {tDual("Отделка и комплектация", "Пардоз ва таҷҳизонидан")}
                     </h3>
                   </div>
                   {project.finishing && (
@@ -295,7 +329,7 @@ export default function PublicProjectPage() {
                       variant="outline"
                       className="bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 border-emerald-500/20 text-xs px-2.5 py-1 font-medium"
                     >
-                      {FINISHING_LABELS[project.finishing] || project.finishing}
+                      {finishingLabels[project.finishing] || project.finishing}
                     </Badge>
                   )}
                 </div>
@@ -330,11 +364,11 @@ export default function PublicProjectPage() {
                   <div className="p-3.5 rounded-xl bg-muted/30 border border-border/60 text-xs text-muted-foreground flex items-center gap-2">
                     <Layers className="h-4 w-4 text-emerald-600 shrink-0" />
                     <span>
-                      Стандарт базовой отделки:{" "}
+                      {tDual("Стандарт базовой отделки:", "Стандарти пардози асосӣ:")}{" "}
                       <strong className="text-foreground">
-                        {project.finishing ? FINISHING_LABELS[project.finishing] || project.finishing : "По запросу"}
+                        {project.finishing ? finishingLabels[project.finishing] || project.finishing : tDual("По запросу", "Мувофиқи дархост")}
                       </strong>
-                      . Подробности уточняйте в отделе продаж застройщика.
+                      {tDual(". Подробности уточняйте в отделе продаж застройщика.", ". Тафсилотро аз шуъбаи фурӯши сохтмончӣ дақиқ кунед.")}
                     </span>
                   </div>
                 )}
@@ -344,10 +378,10 @@ export default function PublicProjectPage() {
             {/* Amenities Pills */}
             <div className="space-y-3">
               <h3 className="text-base font-bold text-foreground">
-                Удобства и инфраструктура
+                {tDual("Удобства и инфраструктура", "Имкониятҳо ва инфрасохтор")}
               </h3>
               <div className="flex flex-wrap gap-2">
-                {project.amenities.map((am) => (
+                {displayAmenities.map((am) => (
                   <div
                     key={am}
                     className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 border border-emerald-500/20 text-xs font-semibold"
@@ -375,14 +409,14 @@ export default function PublicProjectPage() {
                     {developer.name}
                   </h4>
                   <p className="text-[11px] text-muted-foreground">
-                    Официальный застройщик в Худжанде
+                    {tDual("Официальный застройщик в Согдийской области", "Сохтмончии расмӣ дар вилояти Суғд")}
                   </p>
                 </div>
               </div>
 
               <div className="space-y-2 text-xs border-t pt-3">
                 <div className="text-[11px] text-muted-foreground">
-                  Адрес офиса продаж:
+                  {tDual("Адрес офиса продаж:", "Суроғаи дафтари фурӯш:")}
                 </div>
                 <div className="font-medium text-foreground">
                   {developer.officeAddress}
@@ -392,14 +426,16 @@ export default function PublicProjectPage() {
               <div className="space-y-2 pt-2">
                 <a
                   href={`https://wa.me/${developer.whatsapp.replace(/\D/g, "")}?text=${encodeURIComponent(
-                    `Здравствуйте! Интересует покупка квартиры в ЖК «${project.name}» (г. Худжанд). Расскажите подробнее об условиях рассрочки.`
+                    language === "tg"
+                      ? `Салом! Ба ман хариди хонадон дар МИ «${displayName}» писанд омад. Лутфан дар бораи шартҳои пардохти қисм-қисм маълумот диҳед.`
+                      : `Здравствуйте! Интересует покупка квартиры в ЖК «${displayName}». Расскажите подробнее об условиях рассрочки.`
                   )}`}
                   target="_blank"
                   rel="noreferrer"
                   className="w-full inline-flex items-center justify-center gap-2 h-10 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs shadow-xs transition-colors"
                 >
                   <MessageCircle className="h-4 w-4" />
-                  Консультация в WhatsApp
+                  {tDual("Консультация в WhatsApp", "Машварат дар WhatsApp")}
                 </a>
 
                 <a
@@ -416,12 +452,22 @@ export default function PublicProjectPage() {
             <div className="p-4 rounded-2xl bg-muted/40 border space-y-2 text-xs">
               <div className="font-bold text-foreground flex items-center gap-1.5">
                 <Percent className="h-4 w-4 text-emerald-600" />
-                Беспроцентная рассрочка
+                {tDual("Беспроцентная рассрочка", "Пардохти қисм-қисми бефоиз")}
               </div>
               <p className="text-muted-foreground text-[11px] leading-relaxed">
-                Застройщик предоставляет рассрочку на срок до{" "}
-                <strong>{project.installmentMonths} месяцев</strong> без участия банков. Первоначальный взнос — от{" "}
-                <strong>{project.installmentDownPaymentPercent}%</strong>.
+                {language === "tg" ? (
+                  <>
+                    Сохтмончӣ пардохти қисм-қисми бефоизро то{" "}
+                    <strong>{project.installmentMonths} моҳ</strong> бе иштироки бонкҳо пешниҳод мекунад. Пешпардохт — аз{" "}
+                    <strong>{project.installmentDownPaymentPercent}%</strong>.
+                  </>
+                ) : (
+                  <>
+                    Застройщик предоставляет рассрочку на срок до{" "}
+                    <strong>{project.installmentMonths} месяцев</strong> без участия банков. Первоначальный взнос — от{" "}
+                    <strong>{project.installmentDownPaymentPercent}%</strong>.
+                  </>
+                )}
               </p>
             </div>
           </div>
@@ -434,13 +480,16 @@ export default function PublicProjectPage() {
           <div>
             <div className="text-xs uppercase font-bold tracking-wider text-emerald-600 mb-1 flex items-center gap-1.5">
               <Sparkles className="h-3.5 w-3.5" />
-              Выбор квартиры
+              {tDual("Выбор квартиры", "Интихоби хонадон")}
             </div>
             <h2 className="text-2xl sm:text-3xl font-extrabold text-foreground">
-              Интерактивная шахматка ЖК «{project.name}»
+              {tDual(`Интерактивная шахматка ЖК «${displayName}»`, `Ҷадвали интерактивии МИ «${displayName}»`)}
             </h2>
             <p className="text-xs sm:text-sm text-muted-foreground mt-0.5">
-              Выберите этаж и расположение на площадке или отфильтруйте планировки по комнатности и цене
+              {tDual(
+                "Выберите этаж и расположение на площадке или отфильтруйте планировки по комнатности и цене",
+                "Ошёна ва мавқеиятро дар майдонча интихоб намоед ё нақшаҳоро аз рӯи шумораи ҳуҷраҳо ва нарх филтр кунед"
+              )}
             </p>
           </div>
         </div>
@@ -448,6 +497,7 @@ export default function PublicProjectPage() {
         {/* CHESSBOARD COMPONENT */}
         <Chessboard
           units={units}
+          projectName={displayName}
           isEditable={false}
           developerContact={{
             phone: developer.phone,
@@ -461,10 +511,13 @@ export default function PublicProjectPage() {
         <section className="container mx-auto px-4 space-y-6">
           <div>
             <h2 className="text-2xl font-bold text-foreground">
-              Ход строительства
+              {tDual("Ход строительства", "Раванди сохтмон")}
             </h2>
             <p className="text-xs text-muted-foreground mt-0.5">
-              Фотоотчеты со строительной площадки в 19 микрорайоне Худжанда
+              {tDual(
+                "Фотоотчеты со строительной площадки",
+                "Ҳисоботи аксҳо аз майдони сохтмон"
+              )}
             </p>
           </div>
 

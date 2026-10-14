@@ -3,6 +3,7 @@
 import React, { useState, useMemo } from "react";
 import { UnitData } from "@/lib/data/mock-db";
 import { useCurrency } from "@/context/currency-context";
+import { useLanguage } from "@/context/language-context";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -52,6 +53,7 @@ export function BuildingCrossSection({
   maxFloorsVisible = 16,
 }: BuildingCrossSectionProps) {
   const { formatPrice } = useCurrency();
+  const { language, t, tDual } = useLanguage();
 
   // Unique sections
   const sections = useMemo(() => {
@@ -127,7 +129,7 @@ export function BuildingCrossSection({
         {/* Sections Tabs */}
         <div className="flex items-center gap-1.5 overflow-x-auto [scrollbar-width:none]">
           <span className="text-xs font-semibold text-muted-foreground mr-1 hidden sm:inline">
-            Подъезд:
+            {tDual("Подъезд:", "Бахш:")}
           </span>
           {sections.map((sec) => (
             <button
@@ -143,7 +145,7 @@ export function BuildingCrossSection({
                   : "bg-muted/60 hover:bg-muted text-muted-foreground"
               }`}
             >
-              {sec}
+              {sec.replace(/Секция/gi, tDual("Секция", "Бахши"))}
             </button>
           ))}
         </div>
@@ -151,10 +153,10 @@ export function BuildingCrossSection({
         {/* Room Filter Pills */}
         <div className="flex items-center gap-1 overflow-x-auto [scrollbar-width:none]">
           <span className="text-xs font-semibold text-muted-foreground mr-1 hidden sm:inline">
-            Комнат:
+            {tDual("Комнат:", "Ҳуҷраҳо:")}
           </span>
           {[
-            { id: "all", label: "Все" },
+            { id: "all", label: t.common.all },
             { id: "1", label: "1" },
             { id: "2", label: "2" },
             { id: "3", label: "3" },
@@ -181,19 +183,19 @@ export function BuildingCrossSection({
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-1.5">
             <span className="h-3 w-3 rounded-full bg-emerald-500 shadow-xs" />
-            <span className="font-semibold text-foreground">Продаётся</span>
+            <span className="font-semibold text-foreground">{tDual("Продаётся", "Барои фурӯш")}</span>
             <span className="text-muted-foreground text-[11px]">({statusStats.available})</span>
           </div>
 
           <div className="flex items-center gap-1.5">
             <span className="h-3 w-3 rounded-full bg-amber-500 shadow-xs" />
-            <span className="font-semibold text-foreground">Бронь</span>
+            <span className="font-semibold text-foreground">{tDual("Бронь", "Брон")}</span>
             <span className="text-muted-foreground text-[11px]">({statusStats.reserved})</span>
           </div>
 
           <div className="flex items-center gap-1.5">
             <span className="h-3 w-3 rounded-full bg-slate-400 dark:bg-slate-600 shadow-xs" />
-            <span className="font-semibold text-foreground">Продано</span>
+            <span className="font-semibold text-foreground">{tDual("Продано", "Фурӯхта шудааст")}</span>
             <span className="text-muted-foreground text-[11px]">({statusStats.sold})</span>
           </div>
         </div>
@@ -204,7 +206,10 @@ export function BuildingCrossSection({
             onClick={() => setSelectedFloor(null)}
             className="text-xs text-emerald-600 hover:underline font-medium cursor-pointer"
           >
-            Сбросить фильтр этажа (выбран {selectedFloor} этаж)
+            {tDual(
+              `Сбросить фильтр этажа (выбран ${selectedFloor} этаж)`,
+              `Тоза кардани филтри ошёна (ошёнаи ${selectedFloor}-ум интихоб шудааст)`
+            )}
           </button>
         )}
       </div>
@@ -215,10 +220,13 @@ export function BuildingCrossSection({
           <SunTrackCompass timeHours={sunTime} />
           <div>
             <div className="text-xs font-bold text-slate-100 flex items-center gap-1.5">
-              <span>Инсоляция фасада и стороны света</span>
+              <span>{tDual("Инсоляция фасада и стороны света", "Равшании табиии фасад ва самтҳои олам")}</span>
             </div>
             <div className="text-[11px] text-slate-400">
-              Двигайте бегунок времени для оценки естественного освещения квартир
+              {tDual(
+                "Двигайте бегунок времени для оценки естественного освещения квартир",
+                "Барои арзёбии равшании табиии хонаҳо бегуноки вақтро ҳаракат диҳед"
+              )}
             </div>
           </div>
         </div>
@@ -257,9 +265,9 @@ export function BuildingCrossSection({
                       ? "bg-emerald-600 text-white border-emerald-500 shadow-sm"
                       : "bg-slate-900 text-slate-300 border-slate-800 hover:bg-slate-800"
                   }`}
-                  title={`Выбрать ${floorNum} этаж`}
+                  title={tDual(`Выбрать ${floorNum} этаж`, `Интихоби ошёнаи ${floorNum}`)}
                 >
-                  {floorNum} эт.
+                  {floorNum} {language === "tg" ? "ош." : "эт."}
                 </button>
 
                 {/* Units Row in Section Cut */}
@@ -280,10 +288,13 @@ export function BuildingCrossSection({
                           unit.status,
                           isUnitDimmed
                         )}`}
-                        title={`Кв. №${unit.unitNumber} (${unit.roomsCount}-комн., ${unit.totalArea} м²)`}
+                        title={tDual(
+                          `Кв. №${unit.unitNumber} (${unit.roomsCount}-комн., ${unit.totalArea} м²)`,
+                          `Хонадони №${unit.unitNumber} (${unit.roomsCount}-ҳуҷр., ${unit.totalArea} м²)`
+                        )}
                       >
                         <div className="text-[11px] font-bold leading-tight truncate">
-                          №{unit.unitNumber} • {unit.roomsCount}к
+                          №{unit.unitNumber} • {unit.roomsCount}{language === "tg" ? "ҳ" : "к"}
                         </div>
                         <div className="text-[10px] font-medium opacity-85 leading-none">
                           {unit.totalArea} м²
@@ -316,33 +327,33 @@ export function BuildingCrossSection({
                     }
                   >
                     {activeUnit.status === "available"
-                      ? "Свободна для покупки"
+                      ? tDual("Свободна для покупки", "Барои харид озод")
                       : activeUnit.status === "reserved"
-                      ? "Забронирована"
-                      : "Продана"}
+                      ? tDual("Забронирована", "Брон шудааст")
+                      : tDual("Продана", "Фурӯхта шудааст")}
                   </Badge>
                   <span className="text-xs font-semibold text-muted-foreground">
-                    {activeUnit.section} • {activeUnit.floor} этаж
+                    {activeUnit.section.replace(/Секция/gi, tDual("Секция", "Бахши"))} • {activeUnit.floor} {language === "tg" ? "ошёна" : "этаж"}
                   </span>
                 </div>
                 <DialogTitle className="text-xl font-bold pt-2">
-                  Квартира №{activeUnit.unitNumber} ({activeUnit.roomsCount}-комнатная)
+                  {tDual("Квартира", "Хонадони")} №{activeUnit.unitNumber} ({activeUnit.roomsCount}-{tDual("комнатная", "ҳуҷрагӣ")})
                 </DialogTitle>
                 <DialogDescription className="text-xs">
-                  {projectName} — {activeUnit.section}, {activeUnit.floor} этаж из 16
+                  {projectName} — {activeUnit.section.replace(/Секция/gi, tDual("Секция", "Бахши"))}, {activeUnit.floor} {tDual("этаж из", "ошёна аз")} 16
                 </DialogDescription>
               </DialogHeader>
 
               {/* Price & Area Highlights */}
               <div className="grid grid-cols-2 gap-3 p-4 rounded-xl bg-muted/40 border">
                 <div>
-                  <div className="text-[11px] text-muted-foreground">Общая стоимость:</div>
+                  <div className="text-[11px] text-muted-foreground">{tDual("Общая стоимость:", "Арзиши умумӣ:")}</div>
                   <div className="text-lg font-extrabold text-emerald-600">
                     {formatPrice(activeUnit.priceTjs, activeUnit.priceUsd)}
                   </div>
                 </div>
                 <div>
-                  <div className="text-[11px] text-muted-foreground">Площадь и цена м²:</div>
+                  <div className="text-[11px] text-muted-foreground">{tDual("Площадь и цена м²:", "Масоҳат ва нархи м²:")}</div>
                   <div className="text-sm font-bold text-foreground">
                     {activeUnit.totalArea} м² (
                     {formatPrice(activeUnit.pricePerMeterTjs, activeUnit.pricePerMeterUsd)}/м²)
@@ -353,15 +364,15 @@ export function BuildingCrossSection({
               {/* Additional specs */}
               <div className="grid grid-cols-2 gap-2 text-xs">
                 <div className="p-2.5 rounded-lg bg-card border">
-                  <span className="text-muted-foreground text-[10px] block">Тип жилья:</span>
+                  <span className="text-muted-foreground text-[10px] block">{tDual("Тип жилья:", "Навъи манзил:")}</span>
                   <span className="font-semibold text-foreground">
-                    {activeUnit.type === "studio" ? "Студия" : "Квартира"}
+                    {activeUnit.type === "studio" ? tDual("Студия", "Студия") : tDual("Квартира", "Хонадон")}
                   </span>
                 </div>
                 <div className="p-2.5 rounded-lg bg-card border">
-                  <span className="text-muted-foreground text-[10px] block">Балкон / Лоджия:</span>
+                  <span className="text-muted-foreground text-[10px] block">{tDual("Балкон / Лоджия:", "Балкон / Айвон:")}</span>
                   <span className="font-semibold text-foreground">
-                    {activeUnit.hasBalcony ? "Есть балкон" : "Без балкона"}
+                    {activeUnit.hasBalcony ? tDual("Есть балкон", "Балкон дорад") : tDual("Без балкона", "Бе балкон")}
                   </span>
                 </div>
               </div>
@@ -372,14 +383,16 @@ export function BuildingCrossSection({
                   <>
                     <a
                       href={`https://wa.me/${developerContact.whatsapp.replace(/\D/g, "")}?text=${encodeURIComponent(
-                        `Здравствуйте! Интересует квартира №${activeUnit.unitNumber} (${activeUnit.roomsCount}-комн., ${activeUnit.totalArea} м²) на ${activeUnit.floor} этаже в ЖК «${projectName}». Расскажите об условиях бронирования.`
+                        language === "tg"
+                          ? `Салом! Ба ман хонадони №${activeUnit.unitNumber} (${activeUnit.roomsCount}-ҳуҷрагӣ, ${activeUnit.totalArea} м²) дар ошёнаи ${activeUnit.floor}-ум дар МИ «${projectName}» писанд омад. Лутфан шартҳои харидро бигӯед.`
+                          : `Здравствуйте! Интересует квартира №${activeUnit.unitNumber} (${activeUnit.roomsCount}-комн., ${activeUnit.totalArea} м²) на ${activeUnit.floor} этаже в ЖК «${projectName}». Расскажите об условиях бронирования.`
                       )}`}
                       target="_blank"
                       rel="noreferrer"
                       className="w-full inline-flex items-center justify-center gap-2 h-11 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs shadow-xs transition-colors"
                     >
                       <MessageCircle className="h-4 w-4" />
-                      Забронировать в WhatsApp
+                      {tDual("Забронировать в WhatsApp", "Брон кардан дар WhatsApp")}
                     </a>
 
                     <a
@@ -387,13 +400,14 @@ export function BuildingCrossSection({
                       className="w-full inline-flex items-center justify-center gap-2 h-10 px-4 rounded-xl border hover:bg-muted font-semibold text-xs transition-colors"
                     >
                       <Phone className="h-4 w-4" />
-                      Позвонить в отдел продаж
+                      {tDual("Позвонить в отдел продаж", "Занг ба шуъбаи фурӯш")}
                     </a>
                   </>
                 ) : (
                   <div className="p-3 rounded-xl bg-muted text-center text-xs text-muted-foreground">
-                    Данная квартира {activeUnit.status === "reserved" ? "забронирована" : "продана"}. Вы можете выбрать
-                    другие свободные варианты на этом или соседних этажах.
+                    {language === "tg"
+                      ? `Ин хонадон ${activeUnit.status === "reserved" ? "брон шудааст" : "фурӯхта шудааст"}. Шумо метавонед дигар вариантҳои холиро дар ин ё ошёнаҳои дигар интихоб намоед.`
+                      : `Данная квартира ${activeUnit.status === "reserved" ? "забронирована" : "продана"}. Вы можете выбрать другие свободные варианты на этом или соседних этажах.`}
                   </div>
                 )}
               </div>

@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import { Eye, Compass, Mountain, Trees, Waves, Info } from "lucide-react";
+import { useLanguage } from "@/context/language-context";
 
 interface ViewAngle {
   id: string;
@@ -13,72 +14,88 @@ interface ViewAngle {
 }
 
 export function ShowcaseWindowView({ projectName }: { projectName: string }) {
+  const { tDual } = useLanguage();
   const isQayroqum = projectName.toLowerCase().includes("qayroqum");
 
-  const angles: ViewAngle[] = isQayroqum
-    ? [
-        {
-          id: "sea",
-          title: "Панорама на «Баҳри Тоҷик» (Кайраккум)",
-          direction: "Ҷанубу Ғарб • 10-й этаж",
-          imageUrl: "/images/qayroqum/qayroqum-9.jpg",
-          icon: Waves,
-          description:
-            "Прямой панорамный вид на водную гладь «Таджикского моря» (Кайраккумского водохранилища) и благоустроенную набережную зону отдыха.",
-        },
-        {
-          id: "courtyard",
-          title: "Внутренний ландшафтный парк",
-          direction: "Шарқ • Закрытая территория",
-          imageUrl: "/images/qayroqum/qayroqum-3.jpg",
-          icon: Trees,
-          description:
-            "Вид на собственный закрытый парк с фонтанами, детскими городками, спортивными площадками и прогулочными аллеями без машин.",
-        },
-        {
-          id: "architecture",
-          title: "Архитектурный ансамбль и горы",
-          direction: "Шимол • Панорама",
-          imageUrl: "/images/qayroqum/qayroqum-11.jpg",
-          icon: Mountain,
-          description:
-            "Вид на современную архитектуру комплекса, горы Моголтау и шоссе Худжанд — Гулистон с утренним рассветным солнцем.",
-        },
-      ]
-    : [
-        {
-          id: "river",
-          title: "Панорама на Сырдарью",
-          direction: "Северо-запад • 12-й этаж",
-          imageUrl:
-            "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=1600&h=1000&fit=crop",
-          icon: Waves,
-          description:
-            "Прямой панорамный вид на гладь реки Сырдарья и благоустроенную прогулочную набережную. Закатное вечернее солнце.",
-        },
-        {
-          id: "courtyard",
-          title: "Внутренний зелёный двор",
-          direction: "Юг • Закрытая территория",
-          imageUrl:
-            "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=1600&h=1000&fit=crop",
-          icon: Trees,
-          description:
-            "Спокойный вид на охраняемый ландшафтный двор без машин, детские городки европейского стандарта и фонтан.",
-        },
-        {
-          id: "mountains",
-          title: "Горы Моголтау и город",
-          direction: "Восток • Утренний рассвет",
-          imageUrl:
-            "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1600&h=1000&fit=crop",
-          icon: Mountain,
-          description:
-            "Широкая перспектива на хребет Моголтау и историческую часть Худжанда с первыми лучами утреннего солнца.",
-        },
-      ];
+  const angles: ViewAngle[] = useMemo(() => {
+    return isQayroqum
+      ? [
+          {
+            id: "sea",
+            title: tDual("Панорама на «Баҳри Тоҷик» (Кайраккум)", "Манзараи панорамӣ ба «Баҳри Тоҷик»"),
+            direction: tDual("Юго-запад • 10-й этаж", "Ҷанубу Ғарб • ошёнаи 10-ум"),
+            imageUrl: "/images/qayroqum/qayroqum-9.jpg",
+            icon: Waves,
+            description: tDual(
+              "Прямой панорамный вид на водную гладь «Таджикского моря» (Кайраккумского водохранилища) и благоустроенную набережную зону отдыха.",
+              "Манзараи зебои мустақим ба сатҳи оби «Баҳри Тоҷик» (обанбори Қайроққум) ва минтақаи ободу кабудизоркардашудаи соҳил."
+            ),
+          },
+          {
+            id: "courtyard",
+            title: tDual("Внутренний ландшафтный парк", "Боғи зебоманзари дохилӣ"),
+            direction: tDual("Восток • Закрытая территория", "Шарқ • Ҳудуди пӯшида"),
+            imageUrl: "/images/qayroqum/qayroqum-3.jpg",
+            icon: Trees,
+            description: tDual(
+              "Вид на собственный закрытый парк с фонтанами, детскими городками, спортивными площадками и прогулочными аллеями без машин.",
+              "Манзара ба боғи хусусии пӯшида бо фаввораҳо, майдончаҳои бозии кӯдакон, майдончаҳои варзишӣ ва пайроҳаҳои сайругашти бе мошин."
+            ),
+          },
+          {
+            id: "architecture",
+            title: tDual("Архитектурный ансамбль и горы", "Ансамбли меъморӣ ва кӯҳҳо"),
+            direction: tDual("Север • Панорама", "Шимол • Панорама"),
+            imageUrl: "/images/qayroqum/qayroqum-11.jpg",
+            icon: Mountain,
+            description: tDual(
+              "Вид на современную архитектуру комплекса, горы Моголтау и шоссе Худжанд — Гулистон с утренним рассветным солнцем.",
+              "Манзара ба меъмории муосири маҷмаа, кӯҳҳои Муғултоғ ва шоҳроҳи Хуҷанд — Гулистон бо нурҳои субҳгоҳии офтоб."
+            ),
+          },
+        ]
+      : [
+          {
+            id: "river",
+            title: tDual("Панорама на Сырдарью", "Манзараи панорамӣ ба Сирдарё"),
+            direction: tDual("Северо-запад • 12-й этаж", "Шимолу Ғарб • ошёнаи 12-ум"),
+            imageUrl:
+              "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=1600&h=1000&fit=crop",
+            icon: Waves,
+            description: tDual(
+              "Прямой панорамный вид на гладь реки Сырдарья и благоустроенную прогулочную набережную. Закатное вечернее солнце.",
+              "Манзараи мустақим ба оби Сирдарё ва гулгашти соҳилӣ. Офтоби зебои ҳангоми ғуруб."
+            ),
+          },
+          {
+            id: "courtyard",
+            title: tDual("Внутренний зелёный двор", "Ҳавлии сабзи дохилӣ"),
+            direction: tDual("Юг • Закрытая территория", "Ҷануб • Ҳудуди пӯшида"),
+            imageUrl:
+              "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=1600&h=1000&fit=crop",
+            icon: Trees,
+            description: tDual(
+              "Спокойный вид на охраняемый ландшафтный двор без машин, детские городки европейского стандарта и фонтан.",
+              "Манзараи ором ба ҳавлии сабзи бе мошин ва таҳти посбонӣ, майдончаҳои бозии муосир ва фаввора."
+            ),
+          },
+          {
+            id: "mountains",
+            title: tDual("Горы Моголтау и город", "Кӯҳҳои Муғултоғ ва шаҳр"),
+            direction: tDual("Восток • Утренний рассвет", "Шарқ • Субҳи содиқ"),
+            imageUrl:
+              "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1600&h=1000&fit=crop",
+            icon: Mountain,
+            description: tDual(
+              "Широкая перспектива на хребет Моголтау и историческую часть Худжанда с первыми лучами утреннего солнца.",
+              "Манзараи фарох ба қаторкӯҳҳои Муғултоғ ва қисмати таърихии Хуҷанд бо нурҳои аввалини офтоб."
+            ),
+          },
+        ];
+  }, [isQayroqum, tDual]);
 
-  const [activeAngle, setActiveAngle] = useState<ViewAngle>(angles[0]);
+  const [activeAngleId, setActiveAngleId] = useState<string>(angles[0]?.id || "sea");
+  const activeAngle = angles.find((a) => a.id === activeAngleId) || angles[0];
 
   return (
     <div className="relative w-full h-[360px] sm:h-[480px] bg-slate-950 overflow-hidden select-none">
@@ -102,7 +119,7 @@ export function ShowcaseWindowView({ projectName }: { projectName: string }) {
             <button
               key={ang.id}
               type="button"
-              onClick={() => setActiveAngle(ang)}
+              onClick={() => setActiveAngleId(ang.id)}
               className={`h-9 px-3.5 rounded-xl text-xs font-semibold flex items-center gap-2 whitespace-nowrap transition-all cursor-pointer shadow-md ${
                 isActive
                   ? "bg-white text-slate-900 border border-white"
