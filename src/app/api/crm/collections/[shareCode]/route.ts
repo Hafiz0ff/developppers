@@ -2,7 +2,11 @@ import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/db";
 import { crmCollections } from "@/db/schema";
 import { eq } from "drizzle-orm";
-import { CATALOG_PROPERTIES, getPropertiesByIds } from "@/lib/catalog-data";
+import { getPropertiesByIds } from "@/lib/catalog-data";
+import {
+  findInMemoryCollection,
+  incrementInMemoryViews,
+} from "@/lib/crm-collections-store";
 
 export async function GET(
   req: NextRequest,
@@ -22,7 +26,6 @@ export async function GET(
 
       if (records.length > 0) {
         collection = records[0];
-        // Инкрементируем просмотры
         await db
           .update(crmCollections)
           .set({ viewsCount: (collection.viewsCount || 0) + 1 })
@@ -32,25 +35,10 @@ export async function GET(
       // DB offline fallback
     }
 
-    // Если нет в БД, проверяем дефолтные подборки
     if (!collection) {
-      if (shareCode === "khujand-top3" || shareCode.startsWith("pick-")) {
-        collection = {
-          id: "col-demo-1",
-          shareCode,
-          agentId: "agent-default",
-          agentName: "Рустам Ахмедов",
-          agentPhone: "+992 92 777 00 22",
-          agentAvatar:
-            "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&fit=crop",
-          agentAgency: "Агентство «Сугд-Инвест»",
-          title: "Эксклюзивная подборка проверенных квартир в Худжанде",
-          notes:
-            "Здравствуйте! Отобрал для вас 3 самых надежных объекта со свежим ремонтом, готовыми документами (техпаспорт) и возможностью торга.",
-          propertyIds: JSON.stringify(["c1", "c4", "c2"]),
-          viewsCount: 15,
-          createdAt: new Date(),
-        };
+      collection = findInMemoryCollection(shareCode);
+      if (collection) {
+        incrementInMemoryViews(collection.id);
       }
     }
 
@@ -65,14 +53,10 @@ export async function GET(
     try {
       parsedIds = JSON.parse(collection.propertyIds || "[]");
     } catch {
-      parsedIds = ["c1", "c2"];
+      parsedIds = [];
     }
 
-    // Достаем объекты из каталога
-    let properties = getPropertiesByIds(parsedIds);
-    if (properties.length === 0) {
-      properties = CATALOG_PROPERTIES.slice(0, 3);
-    }
+    const properties = getPropertiesByIds(parsedIds);
 
     return NextResponse.json({
       success: true,

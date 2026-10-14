@@ -74,6 +74,7 @@ export const classifieds = pgTable("classifieds", {
 
   // Медиа и продвижение
   photos: jsonb("photos").$type<string[]>().default([]),
+  moderationNote: text("moderation_note"),
   viewsCount: integer("views_count").default(0).notNull(),
   isPromoted: boolean("is_promoted").default(false).notNull(),
   promotedUntil: timestamp("promoted_until"),

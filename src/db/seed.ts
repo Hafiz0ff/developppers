@@ -49,6 +49,7 @@ export async function seed() {
           email: "dilshod@gmail.com",
           role: "user",
           phone: "+992929994321",
+          phoneVerified: true,
           city: "khujand",
         },
       ])

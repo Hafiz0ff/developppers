@@ -2,26 +2,10 @@ import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/db";
 import { crmCollections } from "@/db/schema";
 import { eq, desc } from "drizzle-orm";
-
-const DEFAULT_DEMO_COLLECTIONS = [
-  {
-    id: "col-demo-1",
-    shareCode: "khujand-top3",
-    agentId: "agent-default",
-    agentName: "Рустам Ахмедов",
-    agentPhone: "+992 92 777 00 22",
-    agentAvatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&fit=crop",
-    agentAgency: "Агентство «Сугд-Инвест»",
-    title: "Эксклюзивная подборка квартир в 18 и 19 мкр (Худжанд)",
-    notes: "Отобрал лучшие варианты с евроремонтом и готовыми документами для вашей семьи.",
-    propertyIds: JSON.stringify(["c1", "c4", "c2"]),
-    viewsCount: 14,
-    createdAt: new Date(Date.now() - 1000 * 60 * 60 * 48),
-    updatedAt: new Date(Date.now() - 1000 * 60 * 60 * 2),
-  },
-];
-
-let inMemoryCollections = [...DEFAULT_DEMO_COLLECTIONS];
+import {
+  addInMemoryCollection,
+  listInMemoryCollections,
+} from "@/lib/crm-collections-store";
 
 export async function GET(req: NextRequest) {
   try {
@@ -44,13 +28,13 @@ export async function GET(req: NextRequest) {
 
     return NextResponse.json({
       success: true,
-      collections: inMemoryCollections,
+      collections: listInMemoryCollections(agentId),
       isDemo: true,
     });
   } catch (error) {
     console.error("CRM Collections GET error:", error);
     return NextResponse.json(
-      { success: false, collections: inMemoryCollections },
+      { success: false, collections: listInMemoryCollections() },
       { status: 200 }
     );
   }
@@ -104,7 +88,7 @@ export async function POST(req: NextRequest) {
       // Store in memory
     }
 
-    inMemoryCollections = [newCollection, ...inMemoryCollections];
+    addInMemoryCollection(newCollection);
 
     const shareUrl = `/p/${shareCode}`;
 
