@@ -24,6 +24,12 @@ export const DEFAULT_PROJECT_STATS: Record<string, ProjectStats> = {
     favoritesCount: 21,
     favoritesMonthCount: 16,
   },
+  "qayroqum-avenue": {
+    viewsCount: 412,
+    viewsMonthCount: 328,
+    favoritesCount: 56,
+    favoritesMonthCount: 44,
+  },
 };
 
 const VIEW_STORAGE_KEY = "sogd_project_views_v1";

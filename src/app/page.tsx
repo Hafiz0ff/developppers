@@ -86,6 +86,32 @@ const FEATURED_PROJECTS = [
     tags: ["Рядом школа №28", "Супермаркет «Амид»", "Закрытый двор"],
     availableUnitsCount: 52,
   },
+  {
+    id: "proj_qayroqum",
+    name: "ЖК «Qayroqum Avenue»",
+    slug: "qayroqum-avenue",
+    developerName: "«Qayroqum Avenue» Development",
+    status: "Строится (4 кв. 2027)",
+    buildingClass: "Премиум-класс",
+    city: "г. Гулистон (Кайраккум)",
+    district: "Побережье «Баҳри Тоҷик»",
+    floors: 14,
+    coverImage: "/images/qayroqum/qayroqum-9.jpg",
+    pricePerMeterTjs: 5250,
+    pricePerMeterUsd: 480,
+    minPriceTjs: 252000,
+    minPriceUsd: 23040,
+    installment: "Беспроцентная рассрочка до 60 мес (5 лет!)",
+    downPayment: "Взнос от 0% (акция)",
+    tags: [
+      "🔑 0% пешпардохт",
+      "🚗 Бурди BMW",
+      "📚 Мактаб ва боғча",
+      "🏊‍♂️ Ҳавзи шиноварӣ",
+      "⚡ Зарядки для электромобилей",
+    ],
+    availableUnitsCount: 56,
+  },
 ];
 
 // Частные объявления (Avito / CIAN Style)

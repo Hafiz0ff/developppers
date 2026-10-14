@@ -23,7 +23,12 @@ export default function DeveloperProjectUnitsPage() {
   const project =
     INITIAL_PROJECTS.find((p) => p.id === projectId) || INITIAL_PROJECTS[0];
 
-  const [units, setUnits] = useState<UnitData[]>(INITIAL_UNITS);
+  const [units, setUnits] = useState<UnitData[]>(() => {
+    const filtered = INITIAL_UNITS.filter(
+      (u) => u.projectId === project.id || u.projectId === project.slug
+    );
+    return filtered.length > 0 ? filtered : INITIAL_UNITS;
+  });
   const [lastUpdated, setLastUpdated] = useState<string | null>(null);
 
   const handleUpdateStatus = (

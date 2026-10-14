@@ -74,3 +74,14 @@ test("DoD 6: Developer Admin - Pool mapping and showcase metrics validate integr
   const sum = modeEngagement.reduce((acc, curr) => acc + curr, 0);
   assert.equal(sum, 100, "Showcase mode percentages must sum exactly to 100%");
 });
+
+test("DoD 7: Real Showcase Case - Qayroqum Avenue contains all parameters, real photos and units", () => {
+  const project = INITIAL_PROJECTS.find((p) => p.slug === "qayroqum-avenue");
+  assert.ok(project, "Qayroqum Avenue must exist in INITIAL_PROJECTS");
+  assert.equal(project.city, "guliston");
+  assert.equal(project.installmentMonths, 60, "Must have 60 months installment");
+  assert.equal(project.installmentDownPaymentPercent, 0, "Must have 0% down payment");
+  assert.ok(project.images.length >= 10, "Must have at least 10 real photos");
+  assert.ok(project.coverImageUrl.startsWith("/images/qayroqum/"), "Cover must point to public qayroqum image");
+});
+

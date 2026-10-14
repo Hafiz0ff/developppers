@@ -58,7 +58,13 @@ export default function PublicProjectPage() {
     INITIAL_DEVELOPERS[0];
 
   const { isFavorite, toggleFavorite } = useProjectAnalytics(project.slug, true);
-  const [units, setUnits] = useState<UnitData[]>(INITIAL_UNITS);
+
+  const [units, setUnits] = useState<UnitData[]>(() => {
+    const filtered = INITIAL_UNITS.filter(
+      (u) => u.projectId === project.id || u.projectId === project.slug
+    );
+    return filtered.length > 0 ? filtered : INITIAL_UNITS;
+  });
 
   // Сбор всех доступных характеристик с фильтрацией пустых значений
   const rawSpecs: Array<{

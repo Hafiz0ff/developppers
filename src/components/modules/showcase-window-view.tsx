@@ -13,38 +13,70 @@ interface ViewAngle {
 }
 
 export function ShowcaseWindowView({ projectName }: { projectName: string }) {
-  const angles: ViewAngle[] = [
-    {
-      id: "river",
-      title: "Панорама на Сырдарью",
-      direction: "Северо-запад • 12-й этаж",
-      imageUrl:
-        "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=1600&h=1000&fit=crop",
-      icon: Waves,
-      description:
-        "Прямой панорамный вид на гладь реки Сырдарья и благоустроенную прогулочную набережную. Закатное вечернее солнце.",
-    },
-    {
-      id: "courtyard",
-      title: "Внутренний зелёный двор",
-      direction: "Юг • Закрытая территория",
-      imageUrl:
-        "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=1600&h=1000&fit=crop",
-      icon: Trees,
-      description:
-        "Спокойный вид на охраняемый ландшафтный двор без машин, детские городки европейского стандарта и фонтан.",
-    },
-    {
-      id: "mountains",
-      title: "Горы Моголтау и город",
-      direction: "Восток • Утренний рассвет",
-      imageUrl:
-        "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1600&h=1000&fit=crop",
-      icon: Mountain,
-      description:
-        "Широкая перспектива на хребет Моголтау и историческую часть Худжанда с первыми лучами утреннего солнца.",
-    },
-  ];
+  const isQayroqum = projectName.toLowerCase().includes("qayroqum");
+
+  const angles: ViewAngle[] = isQayroqum
+    ? [
+        {
+          id: "sea",
+          title: "Панорама на «Баҳри Тоҷик» (Кайраккум)",
+          direction: "Ҷанубу Ғарб • 10-й этаж",
+          imageUrl: "/images/qayroqum/qayroqum-9.jpg",
+          icon: Waves,
+          description:
+            "Прямой панорамный вид на водную гладь «Таджикского моря» (Кайраккумского водохранилища) и благоустроенную набережную зону отдыха.",
+        },
+        {
+          id: "courtyard",
+          title: "Внутренний ландшафтный парк",
+          direction: "Шарқ • Закрытая территория",
+          imageUrl: "/images/qayroqum/qayroqum-3.jpg",
+          icon: Trees,
+          description:
+            "Вид на собственный закрытый парк с фонтанами, детскими городками, спортивными площадками и прогулочными аллеями без машин.",
+        },
+        {
+          id: "architecture",
+          title: "Архитектурный ансамбль и горы",
+          direction: "Шимол • Панорама",
+          imageUrl: "/images/qayroqum/qayroqum-11.jpg",
+          icon: Mountain,
+          description:
+            "Вид на современную архитектуру комплекса, горы Моголтау и шоссе Худжанд — Гулистон с утренним рассветным солнцем.",
+        },
+      ]
+    : [
+        {
+          id: "river",
+          title: "Панорама на Сырдарью",
+          direction: "Северо-запад • 12-й этаж",
+          imageUrl:
+            "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=1600&h=1000&fit=crop",
+          icon: Waves,
+          description:
+            "Прямой панорамный вид на гладь реки Сырдарья и благоустроенную прогулочную набережную. Закатное вечернее солнце.",
+        },
+        {
+          id: "courtyard",
+          title: "Внутренний зелёный двор",
+          direction: "Юг • Закрытая территория",
+          imageUrl:
+            "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=1600&h=1000&fit=crop",
+          icon: Trees,
+          description:
+            "Спокойный вид на охраняемый ландшафтный двор без машин, детские городки европейского стандарта и фонтан.",
+        },
+        {
+          id: "mountains",
+          title: "Горы Моголтау и город",
+          direction: "Восток • Утренний рассвет",
+          imageUrl:
+            "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1600&h=1000&fit=crop",
+          icon: Mountain,
+          description:
+            "Широкая перспектива на хребет Моголтау и историческую часть Худжанда с первыми лучами утреннего солнца.",
+        },
+      ];
 
   const [activeAngle, setActiveAngle] = useState<ViewAngle>(angles[0]);
 

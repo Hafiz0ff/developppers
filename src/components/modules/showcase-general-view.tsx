@@ -35,64 +35,121 @@ export function ShowcaseGeneralView({
   onSelectBuilding,
 }: ShowcaseGeneralViewProps) {
   const [activePoi, setActivePoi] = useState<POI | null>(null);
+  const isQayroqum = projectName.toLowerCase().includes("qayroqum");
 
-  // High-fidelity POI markers for Khujand (19th & 18th mkr waterfront district)
-  const poiList: POI[] = [
-    {
-      id: "poi_waterfront",
-      name: "Набережная Сырдарьи и пляжная зона",
-      category: "park",
-      distance: "2 мин пешком (150 м)",
-      xPercent: 48,
-      yPercent: 78,
-      description: "Благоустроенный променад для прогулок, беговые и велосипедные дорожки.",
-    },
-    {
-      id: "poi_park",
-      name: "Парк Камоли Худжанди",
-      category: "park",
-      distance: "4 мин пешком (350 м)",
-      xPercent: 22,
-      yPercent: 32,
-      description: "Исторический парк с тенистыми аллеями, фонтанами и амфитеатром.",
-    },
-    {
-      id: "poi_school",
-      name: "Средняя школа №28",
-      category: "school",
-      distance: "5 мин пешком (420 м)",
-      xPercent: 78,
-      yPercent: 28,
-      description: "Современная школа с углубленным изучением языков и спортивным комплексом.",
-    },
-    {
-      id: "poi_kindergarten",
-      name: "Детский сад «Парасту»",
-      category: "kindergarten",
-      distance: "3 мин пешком (260 м)",
-      xPercent: 82,
-      yPercent: 62,
-      description: "Ясли и группы дошкольной подготовки с закрытой охраняемой территорией.",
-    },
-    {
-      id: "poi_shop",
-      name: "Супермаркет «Амид» & Торговый центр",
-      category: "shop",
-      distance: "4 мин пешком (380 м)",
-      xPercent: 18,
-      yPercent: 72,
-      description: "Крупный продуктовый супермаркет, аптека, кафе и банкоматы 24/7.",
-    },
-    {
-      id: "poi_clinic",
-      name: "Медицинский центр и поликлиника",
-      category: "medical",
-      distance: "7 мин пешком (600 м)",
-      xPercent: 88,
-      yPercent: 42,
-      description: "Многопрофильная клиника, диагностика и скорая помощь.",
-    },
-  ];
+  const poiList: POI[] = isQayroqum
+    ? [
+        {
+          id: "poi_q_sea",
+          name: "Соҳили «Баҳри Тоҷик» (Пляж ва набережная)",
+          category: "park",
+          distance: "2 мин пиёда (100 м)",
+          xPercent: 48,
+          yPercent: 78,
+          description: "Фароғатгоҳ, соҳили регзор ва сайругашт дар соҳили оби мусаффои Баҳри Тоҷик.",
+        },
+        {
+          id: "poi_q_school",
+          name: "Мактаби муосир ва боғчаи хусусӣ",
+          category: "school",
+          distance: "Дар ҳудуд (0 мин)",
+          xPercent: 78,
+          yPercent: 28,
+          description: "Мактаб ва боғчаи кӯдакона дар худи ҳудуди Qayroqum Avenue.",
+        },
+        {
+          id: "poi_q_clinic",
+          name: "Клиникаи хусусӣ ва маркази ташхис",
+          category: "medical",
+          distance: "1 мин пиёда",
+          xPercent: 88,
+          yPercent: 42,
+          description: "Ёрии таъҷилии тиббӣ ва табибони касбӣ барои сокинон.",
+        },
+        {
+          id: "poi_q_fitness",
+          name: "Толори фитнес ва ҳавзи шиноварӣ",
+          category: "park",
+          distance: "1 мин пиёда",
+          xPercent: 22,
+          yPercent: 32,
+          description: "Ҳавзи пӯшидаи шиноварӣ ва толори муосири тренажёрӣ.",
+        },
+        {
+          id: "poi_q_shop",
+          name: "Супермаркет ва маркази савдо",
+          category: "shop",
+          distance: "2 мин пиёда",
+          xPercent: 18,
+          yPercent: 72,
+          description: "Супермаркети калон, дорухона ва нуқтаҳои савдо.",
+        },
+        {
+          id: "poi_q_parking",
+          name: "Таваққуфгоҳи 2-ошёна бо нуқтаҳои барқӣ",
+          category: "transport",
+          distance: "Дар зери бино",
+          xPercent: 82,
+          yPercent: 62,
+          description: "Таваққуфгоҳи зеризаминии 2-ошёна барои 500+ мошин ва пуркунандаи электромобилҳо.",
+        },
+      ]
+    : [
+        {
+          id: "poi_waterfront",
+          name: "Набережная Сырдарьи и пляжная зона",
+          category: "park",
+          distance: "2 мин пешком (150 м)",
+          xPercent: 48,
+          yPercent: 78,
+          description: "Благоустроенный променад для прогулок, беговые и велосипедные дорожки.",
+        },
+        {
+          id: "poi_park",
+          name: "Парк Камоли Худжанди",
+          category: "park",
+          distance: "4 мин пешком (350 м)",
+          xPercent: 22,
+          yPercent: 32,
+          description: "Исторический парк с тенистыми аллеями, фонтанами и амфитеатром.",
+        },
+        {
+          id: "poi_school",
+          name: "Средняя школа №28",
+          category: "school",
+          distance: "5 мин пешком (420 м)",
+          xPercent: 78,
+          yPercent: 28,
+          description: "Современная школа с углубленным изучением языков и спортивным комплексом.",
+        },
+        {
+          id: "poi_kindergarten",
+          name: "Детский сад «Парасту»",
+          category: "kindergarten",
+          distance: "3 мин пешком (260 м)",
+          xPercent: 82,
+          yPercent: 62,
+          description: "Ясли и группы дошкольной подготовки с закрытой охраняемой территорией.",
+        },
+        {
+          id: "poi_shop",
+          name: "Супермаркет «Амид» & Торговый центр",
+          category: "shop",
+          distance: "4 мин пешком (380 м)",
+          xPercent: 18,
+          yPercent: 72,
+          description: "Крупный продуктовый супермаркет, аптека, кафе и банкоматы 24/7.",
+        },
+        {
+          id: "poi_clinic",
+          name: "Медицинский центр и поликлиника",
+          category: "medical",
+          distance: "7 мин пешком (600 м)",
+          xPercent: 88,
+          yPercent: 42,
+          description: "Многопрофильная клиника, диагностика и скорая помощь.",
+        },
+      ];
 
   const getPoiIcon = (category: POI["category"]) => {
     switch (category) {
@@ -111,11 +168,15 @@ export function ShowcaseGeneralView({
     }
   };
 
+  const bgImage = isQayroqum
+    ? "/images/qayroqum/qayroqum-10.jpg"
+    : "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=1600&h=1000&fit=crop";
+
   return (
     <div className="relative w-full h-[360px] sm:h-[480px] bg-slate-950 overflow-hidden select-none">
       {/* 1. PHOTOREALISTIC AERIAL PANORAMA BACKGROUND */}
       <img
-        src="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=1600&h=1000&fit=crop"
+        src={bgImage}
         alt={`Генплан и территория ${projectName}`}
         className="w-full h-full object-cover opacity-85"
       />

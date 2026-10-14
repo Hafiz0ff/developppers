@@ -148,6 +148,28 @@ export const INITIAL_DEVELOPERS: DeveloperData[] = [
     telegram: "sayhun_realty",
     email: "sales@sayhun.tj",
   },
+  {
+    id: "dev_qayroqum",
+    name: "«Qayroqum Avenue» Development",
+    slug: "qayroqum-avenue-dev",
+    logoUrl: "/images/qayroqum/qayroqum-9.jpg",
+    coverUrl: "/images/qayroqum/qayroqum-10.jpg",
+    description:
+      "Ширкати сохтмонии пешрафта дар вилояти Суғд. Бунёди маҷмааи муосири истиқоматии «Qayroqum Avenue» дар соҳили «Баҳри Тоҷик» бо мактаб, боғча, ҳавзи шиноварӣ ва таваққуфгоҳи 2-ошёна.",
+    foundedYear: 2021,
+    completedProjectsCount: 3,
+    activeProjectsCount: 1,
+    rating: "4.95",
+    isVerified: true,
+    city: "guliston",
+    officeAddress: "ш. Гулистон (Қайроққум), шоҳроҳи Хуҷанд — Гулистон",
+    phone: "+992 92 000 0000",
+    phoneSecondary: "+992 92 000 1111",
+    whatsapp: "+992920000000",
+    telegram: "qayroqum_avenue",
+    email: "info@qayroqum-avenue.tj",
+    websiteUrl: "https://t.me/+S5SHHAVz_6g0Njli",
+  },
 ];
 
 export const INITIAL_PROJECTS: ProjectData[] = [
@@ -304,6 +326,108 @@ export const INITIAL_PROJECTS: ProjectData[] = [
     documents: [{ name: "Проектная декларация ЖК «Суғдиён»", fileUrl: "#" }],
     constructionProgress: [],
   },
+  {
+    id: "proj_qayroqum",
+    developerId: "dev_qayroqum",
+    name: "ЖК «Qayroqum Avenue»",
+    slug: "qayroqum-avenue",
+    shortDescription:
+      "Муосиртарин маҷмааи истиқоматӣ дар соҳили «Баҳри Тоҷик» бо мактаб, боғча ва ҳавзи шиноварӣ",
+    description:
+      "«Qayroqum Avenue» — маҷмааи муосири истиқоматии дараҷаи олӣ дар ш. Гулистон (Қайроққум). Ҳадафи лоиҳа — фароҳам овардани муҳитест, ки тамоми имкониятҳои зарурии зиндагӣ ба хонаи шумо наздик бошанд. Дар ҳудуди маҷмаа мактаб ва боғчаи кӯдакон, клиникаи хусусӣ, супермаркет, бозор ва нуқтаҳои савдо, толори фитнес, ҳавзи шиноварӣ ва варзишгоҳи хурд, минтақаҳои сабзи истироҳатӣ, коворкинг, қаҳвахонаҳо ва тарабхонаҳо пешбинӣ шудаанд. Барои сокинон таваққуфгоҳи зеризаминии дуошёна барои беш аз 500 мошин бо нуқтаҳои пуркунии электромобилҳо, ҳудуди комилан пӯшида ва назорати видеоии 24-соата сохта мешавад.",
+    status: "under_construction",
+    buildingClass: "premium",
+    finishing: "pre_finishing",
+    city: "guliston",
+    district: "Побережье «Таджикского моря»",
+    address: "ш. Гулистон (Қайроққум), шоҳроҳи Хуҷанд — Гулистон",
+    landmark: "Соҳили «Баҳри Тоҷик» (Таджикское море)",
+    floorsCount: 14,
+    sectionsCount: 4,
+    ceilingHeight: "3.30",
+    constructionType: "Монолитно-каркасный с сейсмостойкостью 9 баллов",
+    deadlineQuarter: 4,
+    deadlineYear: 2027,
+    landArea: "2.4 га",
+    wallMaterial: "Монолит + жженый кирпич и энергосберегающий блок",
+    facade: "Вентилируемый керамогранит, панорамное остекление и ночная подсветка",
+    cadastralNumber: "73:03:0010001:089",
+    customBuildingFeatures: [
+      { id: "cbf_q1", title: "Паркинг", value: "2-ошёна зеризаминӣ (500+ ҷой)" },
+      { id: "cbf_q2", title: "Электромобилҳо", value: "Нуқтаҳои пуркунии барқӣ" },
+      { id: "cbf_q3", title: "Амният", value: "Ҳудуди пӯшида, назорати 24/7" },
+    ],
+    finishingFeatures: [
+      {
+        id: "ff_q1",
+        title: "Мактаб ва боғча дар ҳудуд",
+        description:
+          "Дар ҳудуди маҷмаа мактаби муосир ва кӯдакистони хусусӣ фаъолият хоҳад кард, то фарзандони шумо бехатар таълим гиранд.",
+      },
+      {
+        id: "ff_q2",
+        title: "Толори фитнес ва ҳавзи шиноварӣ",
+        description:
+          "Барои тарзи ҳаёти солим: ҳавзи пӯшидаи шиноварӣ, толори замонавии фитнес ва майдончаҳои варзишии кушода.",
+      },
+      {
+        id: "ff_q3",
+        title: "Таваққуфгоҳи 2-ошёна ва коворкинг",
+        description:
+          "Таваққуфгоҳи зеризаминии дуошёна барои 500+ мошин бо пуркунандаи электромобилҳо ва фазои коворкинг барои кор.",
+      },
+    ],
+    minPricePerMeterTjs: 5250,
+    minPricePerMeterUsd: 480,
+    minTotalPriceTjs: 252000,
+    minTotalPriceUsd: 23040,
+    hasInstallment: true,
+    installmentMonths: 60,
+    installmentDownPaymentPercent: 0,
+    hasUndergroundParking: true,
+    hasElevator: true,
+    hasPlayground: true,
+    hasSecurity: true,
+    hasAutonomousHeating: true,
+    amenities: [
+      "🔑 0% пешпардохт (аксияи маҳдуд)",
+      "📆 Пардохти қисм-қисм то 60 моҳ (5 сол)",
+      "💰 То $230 тахфиф ба ҳар 1 м²",
+      "🎁 Зиёда аз 100 туҳфа ва бурди BMW",
+      "📚 Мактаб ва боғчаи хусусӣ дар ҳудуд",
+      "🏊‍♂️ Ҳавзи шиноварӣ ва толори фитнес",
+      "🚗 Таваққуфгоҳи дуошёна барои 500+ мошин",
+      "⚡ Нуқтаҳои пуркунии электромобилҳо",
+      "🔒 Ҳудуди пӯшида ва назорати 24-соата",
+      "🌊 Намуди панорамӣ ба «Баҳри Тоҷик»",
+    ],
+    coverImageUrl: "/images/qayroqum/qayroqum-9.jpg",
+    images: [
+      "/images/qayroqum/qayroqum-9.jpg",
+      "/images/qayroqum/qayroqum-10.jpg",
+      "/images/qayroqum/qayroqum-11.jpg",
+      "/images/qayroqum/qayroqum-12.jpg",
+      "/images/qayroqum/qayroqum-1.jpg",
+      "/images/qayroqum/qayroqum-2.jpg",
+      "/images/qayroqum/qayroqum-3.jpg",
+      "/images/qayroqum/qayroqum-4.jpg",
+      "/images/qayroqum/qayroqum-5.jpg",
+      "/images/qayroqum/qayroqum-6.jpg",
+      "/images/qayroqum/qayroqum-7.jpg",
+      "/images/qayroqum/qayroqum-8.jpg",
+    ],
+    documents: [
+      { name: "Муаррифии расмии «Qayroqum Avenue»", fileUrl: "https://t.me/+S5SHHAVz_6g0Njli" },
+      { name: "Шартҳои аксия ва бурди BMW", fileUrl: "https://t.me/+S5SHHAVz_6g0Njli" },
+    ],
+    constructionProgress: [
+      {
+        date: "Октябр 2026",
+        title: "Оғози корҳои заминӣ ва тайёрӣ ба таҳкурсии блокҳои 1 ва 2",
+        photos: ["/images/qayroqum/qayroqum-11.jpg"],
+      },
+    ],
+  },
 ];
 
 // Генератор реалистичных юнитов (квартир) для шахматки ЖК «Сирдарё Плаза»
@@ -395,4 +519,99 @@ export function generateUnitsForSirdaryoPlaza(): UnitData[] {
   return units;
 }
 
-export const INITIAL_UNITS: UnitData[] = generateUnitsForSirdaryoPlaza();
+// Генератор квартир для шахматки ЖК «Qayroqum Avenue» (Гулистон / Кайраккум)
+export function generateUnitsForQayroqum(): UnitData[] {
+  const units: UnitData[] = [];
+  const sections = ["Секция 1", "Секция 2", "Секция 3", "Секция 4"];
+  const totalFloors = 14;
+
+  const floorTemplates = [
+    {
+      unitSuffix: "A",
+      rooms: 1,
+      area: 48.0,
+      pricePerMUsd: 480,
+      planImg: "/images/qayroqum/qayroqum-7.jpg",
+      view: "Вид на сабзазор ва фаввораҳо",
+    },
+    {
+      unitSuffix: "B",
+      rooms: 2,
+      area: 74.5,
+      pricePerMUsd: 490,
+      planImg: "/images/qayroqum/qayroqum-8.jpg",
+      view: "Вид на соҳили «Баҳри Тоҷик»",
+    },
+    {
+      unitSuffix: "C",
+      rooms: 3,
+      area: 108.0,
+      pricePerMUsd: 510,
+      planImg: "/images/qayroqum/qayroqum-5.jpg",
+      view: "Панорамаи «Баҳри Тоҷик» ва кӯҳҳо",
+    },
+    {
+      unitSuffix: "D",
+      rooms: 4,
+      area: 142.0,
+      pricePerMUsd: 530,
+      planImg: "/images/qayroqum/qayroqum-6.jpg",
+      view: "Панорамаи пурраи соҳили баҳр",
+    },
+  ];
+
+  let unitCounter = 1;
+
+  for (let floor = totalFloors; floor >= 1; floor--) {
+    for (let sIndex = 0; sIndex < sections.length; sIndex++) {
+      const section = sections[sIndex];
+
+      for (let tIndex = 0; tIndex < floorTemplates.length; tIndex++) {
+        const tpl = floorTemplates[tIndex];
+        const unitNumber = `Кв. ${unitCounter++}`;
+
+        let status: "available" | "reserved" | "sold" = "available";
+        const pseudo = (floor * 5 + sIndex * 7 + tIndex * 2) % 10;
+        if (pseudo === 1 || pseudo === 4) {
+          status = "reserved";
+        } else if (pseudo === 2 || pseudo === 7 || floor <= 2) {
+          status = "sold";
+        }
+
+        const priceUsd = Math.round(tpl.area * tpl.pricePerMUsd);
+        const priceTjs = Math.round(priceUsd * 10.95);
+        const pricePerMeterTjs = Math.round(tpl.pricePerMUsd * 10.95);
+
+        units.push({
+          id: `unit_qayroqum_${floor}_${sIndex + 1}_${tIndex + 1}`,
+          projectId: "proj_qayroqum",
+          unitNumber,
+          type: floor === 14 ? "penthouse" : "apartment",
+          roomsCount: tpl.rooms,
+          totalArea: tpl.area,
+          livingArea: Math.round(tpl.area * 0.65),
+          kitchenArea: Math.round(tpl.area * 0.18),
+          floor,
+          section,
+          priceTjs,
+          priceUsd,
+          pricePerMeterTjs,
+          pricePerMeterUsd: tpl.pricePerMUsd,
+          status,
+          finishing: "pre_finishing",
+          hasBalcony: true,
+          hasTerrace: floor === 14,
+          windowView: tpl.view,
+          layoutPlanUrl: tpl.planImg,
+        });
+      }
+    }
+  }
+
+  return units;
+}
+
+export const INITIAL_UNITS: UnitData[] = [
+  ...generateUnitsForSirdaryoPlaza(),
+  ...generateUnitsForQayroqum(),
+];

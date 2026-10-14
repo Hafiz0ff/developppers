@@ -29,38 +29,79 @@ export function ShowcaseLayoutView({
   developerPhone?: string;
   developerWhatsapp?: string;
 }) {
-  const layouts: LayoutOption[] = [
-    {
-      id: "layout_1k",
-      rooms: "1-комнатная",
-      area: 53.0,
-      livingArea: 22.5,
-      kitchenArea: 14.0,
-      planUrl:
-        "https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=1200&h=900&fit=crop",
-      features: ["Изолированная кухня 14 м²", "Панорамная лоджия", "Просторный санузел"],
-    },
-    {
-      id: "layout_2k",
-      rooms: "2-комнатная",
-      area: 78.5,
-      livingArea: 42.0,
-      kitchenArea: 16.5,
-      planUrl:
-        "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1200&h=900&fit=crop",
-      features: ["Окна на две стороны", "Мастер-спальня", "Два санузла", "Гардеробная"],
-    },
-    {
-      id: "layout_3k",
-      rooms: "3-комнатная",
-      area: 115.0,
-      livingArea: 64.0,
-      kitchenArea: 20.0,
-      planUrl:
-        "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1200&h=900&fit=crop",
-      features: ["Панорамный вид на Сырдарью", "Кухня-гостиная 35 м²", "3 санузла", "Хауз / терраса"],
-    },
-  ];
+  const isQayroqum = projectName.toLowerCase().includes("qayroqum");
+
+  const layouts: LayoutOption[] = isQayroqum
+    ? [
+        {
+          id: "layout_1k",
+          rooms: "1-комнатная",
+          area: 48.0,
+          livingArea: 21.0,
+          kitchenArea: 13.5,
+          planUrl: "/images/qayroqum/qayroqum-7.jpg",
+          features: ["Изолированная кухня 13.5 м²", "Балкон с видом на парк", "Просторный санузел"],
+        },
+        {
+          id: "layout_2k",
+          rooms: "2-комнатная",
+          area: 74.5,
+          livingArea: 39.0,
+          kitchenArea: 16.0,
+          planUrl: "/images/qayroqum/qayroqum-8.jpg",
+          features: ["Панорамный вид на «Баҳри Тоҷик»", "Мастер-спальня", "Два санузла", "Гардероб"],
+        },
+        {
+          id: "layout_3k",
+          rooms: "3-комнатная",
+          area: 108.0,
+          livingArea: 59.0,
+          kitchenArea: 19.5,
+          planUrl: "/images/qayroqum/qayroqum-5.jpg",
+          features: ["Окна на море и парк", "3 изолированные спальни", "2 санузла", "Лоджия"],
+        },
+        {
+          id: "layout_4k",
+          rooms: "4-комнатная",
+          area: 142.0,
+          livingArea: 84.0,
+          kitchenArea: 24.0,
+          planUrl: "/images/qayroqum/qayroqum-6.jpg",
+          features: ["Пентхаус на 14 этаже", "Большая терраса", "Панорама 360° на море и горы"],
+        },
+      ]
+    : [
+        {
+          id: "layout_1k",
+          rooms: "1-комнатная",
+          area: 53.0,
+          livingArea: 22.5,
+          kitchenArea: 14.0,
+          planUrl:
+            "https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=1200&h=900&fit=crop",
+          features: ["Изолированная кухня 14 м²", "Панорамная лоджия", "Просторный санузел"],
+        },
+        {
+          id: "layout_2k",
+          rooms: "2-комнатная",
+          area: 78.5,
+          livingArea: 42.0,
+          kitchenArea: 16.5,
+          planUrl:
+            "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1200&h=900&fit=crop",
+          features: ["Окна на две стороны", "Мастер-спальня", "Два санузла", "Гардеробная"],
+        },
+        {
+          id: "layout_3k",
+          rooms: "3-комнатная",
+          area: 115.0,
+          livingArea: 64.0,
+          kitchenArea: 20.0,
+          planUrl:
+            "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1200&h=900&fit=crop",
+          features: ["Панорамный вид на Сырдарью", "Кухня-гостиная 35 м²", "3 санузла", "Хауз / терраса"],
+        },
+      ];
 
   const [activeLayout, setActiveLayout] = useState<LayoutOption>(layouts[1]);
   const [isZoomOpen, setIsZoomOpen] = useState(false);
