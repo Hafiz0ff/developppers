@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { Header } from "@/components/layout/header";
 import { CurrencyProvider } from "@/context/currency-context";
+import { LanguageProvider } from "@/context/language-context";
 import { PwaInstallPrompt } from "@/components/modules/pwa-install-prompt";
 
 export const viewport: Viewport = {
@@ -48,11 +49,13 @@ export default function RootLayout({
         <meta name="apple-mobile-web-app-title" content="Maskani" />
       </head>
       <body className="min-h-full flex flex-col bg-background text-foreground font-sans">
-        <CurrencyProvider>
-          <Header />
-          <main className="flex-1">{children}</main>
-          <PwaInstallPrompt />
-        </CurrencyProvider>
+        <LanguageProvider>
+          <CurrencyProvider>
+            <Header />
+            <main className="flex-1">{children}</main>
+            <PwaInstallPrompt />
+          </CurrencyProvider>
+        </LanguageProvider>
       </body>
     </html>
   );

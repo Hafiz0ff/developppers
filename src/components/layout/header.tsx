@@ -14,6 +14,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useCurrency } from "@/context/currency-context";
+import { useLanguage } from "@/context/language-context";
+import { LanguageSwitcher } from "@/components/layout/language-switcher";
 import { AuthModal } from "@/components/auth/auth-modal";
 import { useSession, signOut } from "@/lib/auth-client";
 import {
@@ -33,6 +35,7 @@ import {
 
 export function Header() {
   const { currency, setCurrency } = useCurrency();
+  const { t, tDual } = useLanguage();
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const [authModalTab, setAuthModalTab] = useState<"login" | "register">("login");
 
@@ -44,16 +47,16 @@ export function Header() {
   };
 
   const roleLabels: Record<string, { label: string; color: string }> = {
-    admin: { label: "Администратор", color: "bg-red-500/10 text-red-600 border-red-200" },
+    admin: { label: tDual("Администратор", "Мудир"), color: "bg-red-500/10 text-red-600 border-red-200" },
     developer: {
-      label: "Застройщик",
+      label: tDual("Застройщик", "Ширкати сохтмонӣ"),
       color: "bg-blue-500/10 text-blue-600 border-blue-200",
     },
     realtor: {
-      label: "Риелтор",
+      label: tDual("Риелтор", "Маклер"),
       color: "bg-emerald-500/10 text-emerald-600 border-emerald-200",
     },
-    user: { label: "Пользователь", color: "bg-muted text-muted-foreground" },
+    user: { label: tDual("Пользователь", "Корбар"), color: "bg-muted text-muted-foreground" },
   };
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -74,7 +77,7 @@ export function Header() {
                 MASKANI
               </span>
               <span className="text-[10px] text-muted-foreground uppercase tracking-widest font-medium">
-                Недвижимость Таджикистана
+                {tDual("Недвижимость Таджикистана", "Амволи ғайриманқули Тоҷикистон")}
               </span>
             </div>
           </Link>
@@ -86,33 +89,36 @@ export function Header() {
               className="text-foreground/80 hover:text-emerald-600 transition-colors flex items-center gap-1.5"
             >
               <Building2 className="h-4 w-4 text-emerald-600" />
-              Новостройки
+              {t.nav.newBuildings}
             </Link>
             <Link
               href="#classifieds"
               className="text-foreground/80 hover:text-emerald-600 transition-colors flex items-center gap-1.5"
             >
               <Home className="h-4 w-4 text-emerald-600" />
-              Вторичка
+              {t.nav.resale}
             </Link>
             <Link
               href="#houses"
               className="text-foreground/80 hover:text-emerald-600 transition-colors"
             >
-              Дома
+              {t.nav.houses}
             </Link>
             <Link
               href="#developers"
               className="text-foreground/80 hover:text-emerald-600 transition-colors flex items-center gap-1.5"
             >
               <Briefcase className="h-4 w-4 text-emerald-600" />
-              Застройщики
+              {t.nav.developers}
             </Link>
           </nav>
 
 
-          {/* Right Controls: Currency, Add Button, Auth */}
-          <div className="flex items-center gap-2.5">
+          {/* Right Controls: Language, Currency, Add Button, Auth */}
+          <div className="flex items-center gap-2">
+            {/* Language Selector */}
+            <LanguageSwitcher />
+
             {/* Currency Selector */}
             <DropdownMenu>
               <DropdownMenuTrigger className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg border border-border bg-muted/50 text-xs font-semibold hover:bg-muted transition-colors outline-hidden">
@@ -147,7 +153,7 @@ export function Header() {
               className="hidden sm:flex border-emerald-600/30 text-emerald-700 dark:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-emerald-950/30 gap-1.5 text-xs font-medium"
             >
               <PlusCircle className="h-3.5 w-3.5 text-emerald-600" />
-              Подать объявление
+              {t.nav.postAd}
             </Button>
 
             {/* Auth Button or User Profile */}
@@ -193,36 +199,36 @@ export function Header() {
                   <Link href="/profile/crm">
                     <DropdownMenuItem className="cursor-pointer text-emerald-700 dark:text-emerald-400 font-semibold">
                       <Users className="mr-2 h-4 w-4 text-emerald-600" />
-                      Канбан CRM & Подборки
+                      {t.nav.crm}
                     </DropdownMenuItem>
                   </Link>
                   <Link href="/profile/analytics">
                     <DropdownMenuItem className="cursor-pointer text-slate-700 dark:text-slate-300">
                       <TrendingUp className="mr-2 h-4 w-4 text-emerald-600" />
-                      Аналитика & Open API
+                      {t.nav.analytics}
                     </DropdownMenuItem>
                   </Link>
                   <Link href="/profile/settings">
                     <DropdownMenuItem className="cursor-pointer">
                       <User className="mr-2 h-4 w-4" />
-                      Настройки & Telegram
+                      {t.nav.settings}
                     </DropdownMenuItem>
                   </Link>
                   <DropdownMenuItem className="cursor-pointer">
                     <Home className="mr-2 h-4 w-4" />
-                    Мои объявления
+                    {t.nav.myAds}
                   </DropdownMenuItem>
 
                   {userRole === "developer" && (
                     <DropdownMenuItem className="cursor-pointer">
                       <Building2 className="mr-2 h-4 w-4" />
-                      Кабинет застройщика
+                      {t.nav.devCabinet}
                     </DropdownMenuItem>
                   )}
                   {userRole === "admin" && (
                     <DropdownMenuItem className="cursor-pointer">
                       <ShieldCheck className="mr-2 h-4 w-4 text-red-500" />
-                      Панель администратора
+                      {t.nav.adminPanel}
                     </DropdownMenuItem>
                   )}
                   <DropdownMenuSeparator />
@@ -234,7 +240,7 @@ export function Header() {
                     className="cursor-pointer text-destructive focus:text-destructive"
                   >
                     <LogOut className="mr-2 h-4 w-4" />
-                    Выйти
+                    {t.nav.logout}
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
@@ -245,7 +251,7 @@ export function Header() {
                 className="bg-emerald-600 hover:bg-emerald-700 text-white font-medium text-xs px-3 shadow-xs"
               >
                 <LogIn className="mr-1.5 h-3.5 w-3.5" />
-                Войти
+                {t.nav.login}
               </Button>
             )}
           </div>
@@ -259,12 +265,12 @@ export function Header() {
                 key={i}
                 className="inline-flex items-center gap-6 px-6 text-[11px] font-semibold tracking-widest uppercase text-emerald-900/75 select-none"
               >
-                <span><span className="text-emerald-600 mr-2">✦</span>MASKANI.TJ — ЕДИНЫЙ ЖИЛИЩНЫЙ ПОРТАЛ ТАДЖИКИСТАНА</span>
-                <span><span className="text-emerald-600 mr-2">✦</span>НОВОСТРОЙКИ НАПРЯМУЮ ОТ ЗАСТРОЙЩИКОВ БЕЗ КОМИССИИ</span>
-                <span><span className="text-emerald-600 mr-2">✦</span>ИНТЕРАКТИВНЫЕ ПОЭТАЖНЫЕ ШАХМАТКИ</span>
-                <span><span className="text-emerald-600 mr-2">✦</span>ВТОРИЧНОЕ ЖИЛЬЁ И ТРАДИЦИОННЫЕ ДОМА</span>
-                <span><span className="text-emerald-600 mr-2">✦</span>ДВУХВАЛЮТНЫЙ ПЕРЕРАСЧЁТ TJS / USD</span>
-                <span><span className="text-emerald-600 mr-2">✦</span>B2B CRM И МГНОВЕННЫЕ TELEGRAM-УВЕДОМЛЕНИЯ ДЛЯ МАКЛЕРОВ</span>
+                <span><span className="text-emerald-600 mr-2">✦</span>{t.marquee.portalTitle}</span>
+                <span><span className="text-emerald-600 mr-2">✦</span>{t.marquee.directDev}</span>
+                <span><span className="text-emerald-600 mr-2">✦</span>{t.marquee.chessboards}</span>
+                <span><span className="text-emerald-600 mr-2">✦</span>{t.marquee.resaleHomes}</span>
+                <span><span className="text-emerald-600 mr-2">✦</span>{t.marquee.dualCurrency}</span>
+                <span><span className="text-emerald-600 mr-2">✦</span>{t.marquee.b2bCrm}</span>
               </span>
             ))}
           </div>
