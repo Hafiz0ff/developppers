@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useCurrency } from "@/context/currency-context";
+import { useLanguage } from "@/context/language-context";
 import {
   Building2,
   FolderKanban,
@@ -22,6 +23,7 @@ import {
 
 export default function DeveloperAdminDashboard() {
   const { formatPrice } = useCurrency();
+  const { language, tDual } = useLanguage();
 
   return (
     <div className="space-y-8 max-w-6xl">
@@ -29,22 +31,25 @@ export default function DeveloperAdminDashboard() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl sm:text-3xl font-extrabold text-foreground">
-            Панель управления застройщика
+            {tDual("Панель управления застройщика", "Панели идоракунии сохтмончӣ")}
           </h1>
           <p className="text-xs sm:text-sm text-muted-foreground mt-1">
-            ООО «Рахш Сохтмон» • Управление объектами строительства и продажами в Согде
+            {tDual(
+              "ООО «Рахш Сохтмон» • Управление объектами строительства и продажами в Согде",
+              "ҶДММ «Рахш Сохтмон» • Идоракунии сохтмон ва фурӯш дар вилояти Суғд"
+            )}
           </p>
         </div>
         <div className="flex items-center gap-2.5">
           <Link href="/developer-admin/projects/new">
             <Button className="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs gap-1.5 shadow-xs">
               <PlusCircle className="h-4 w-4" />
-              Добавить новый ЖК
+              {tDual("Добавить новый ЖК", "Иловаи МИ нав")}
             </Button>
           </Link>
           <Link href="/developers/rahsh-sohtmon">
             <Button variant="outline" size="sm" className="text-xs gap-1">
-              Витрина компании
+              {tDual("Витрина компании", "Витринаи ширкат")}
               <ArrowUpRight className="h-3.5 w-3.5" />
             </Button>
           </Link>
@@ -56,14 +61,19 @@ export default function DeveloperAdminDashboard() {
         <Card>
           <CardHeader className="p-4 pb-2 flex flex-row items-center justify-between">
             <CardTitle className="text-xs font-semibold text-muted-foreground">
-              Активных ЖК
+              {tDual("Активных ЖК", "МИ фаъол")}
             </CardTitle>
             <FolderKanban className="h-4 w-4 text-emerald-600" />
           </CardHeader>
           <CardContent className="p-4 pt-0">
-            <div className="text-2xl font-extrabold text-foreground">2 объекта</div>
+            <div className="text-2xl font-extrabold text-foreground">
+              {tDual("2 объекта", "2 маҷмаа")}
+            </div>
             <p className="text-[11px] text-muted-foreground mt-1">
-              ЖК «Сирдарё Плаза» (19 мкр), ЖК «Бахористон»
+              {tDual(
+                "ЖК «Сирдарё Плаза» (19 мкр), ЖК «Бахористон»",
+                "МИ «Сирдарё Плаза» (маҳ. 19), МИ «Баҳористон»"
+              )}
             </p>
           </CardContent>
         </Card>
@@ -71,14 +81,19 @@ export default function DeveloperAdminDashboard() {
         <Card>
           <CardHeader className="p-4 pb-2 flex flex-row items-center justify-between">
             <CardTitle className="text-xs font-semibold text-muted-foreground">
-              Свободно квартир
+              {tDual("Свободно квартир", "Хонадонҳои озод")}
             </CardTitle>
             <CheckCircle2 className="h-4 w-4 text-emerald-600" />
           </CardHeader>
           <CardContent className="p-4 pt-0">
-            <div className="text-2xl font-extrabold text-emerald-600">64 кв.</div>
+            <div className="text-2xl font-extrabold text-emerald-600">
+              64 {tDual("кв.", "хона")}
+            </div>
             <p className="text-[11px] text-muted-foreground mt-1">
-              В активной продаже через шахматку
+              {tDual(
+                "В активной продаже через шахматку",
+                "Дар фурӯши фаъол тавассути ҷадвал"
+              )}
             </p>
           </CardContent>
         </Card>
@@ -86,14 +101,16 @@ export default function DeveloperAdminDashboard() {
         <Card>
           <CardHeader className="p-4 pb-2 flex flex-row items-center justify-between">
             <CardTitle className="text-xs font-semibold text-muted-foreground">
-              На брони
+              {tDual("На брони", "Дар ҳолати брон")}
             </CardTitle>
             <Clock className="h-4 w-4 text-amber-500" />
           </CardHeader>
           <CardContent className="p-4 pt-0">
-            <div className="text-2xl font-extrabold text-amber-600">18 кв.</div>
+            <div className="text-2xl font-extrabold text-amber-600">
+              18 {tDual("кв.", "хона")}
+            </div>
             <p className="text-[11px] text-muted-foreground mt-1">
-              Ожидают заключения договоров
+              {tDual("Ожидают заключения договоров", "Интизори имзои шартнома")}
             </p>
           </CardContent>
         </Card>
@@ -101,7 +118,7 @@ export default function DeveloperAdminDashboard() {
         <Card>
           <CardHeader className="p-4 pb-2 flex flex-row items-center justify-between">
             <CardTitle className="text-xs font-semibold text-muted-foreground">
-              Потенциал продаж
+              {tDual("Потенциал продаж", "Иқтидори фурӯш")}
             </CardTitle>
             <TrendingUp className="h-4 w-4 text-emerald-600" />
           </CardHeader>
@@ -110,7 +127,7 @@ export default function DeveloperAdminDashboard() {
               {formatPrice(34821000, 3180000)}
             </div>
             <p className="text-[11px] text-muted-foreground mt-1">
-              По свободным юнитам
+              {tDual("По свободным юнитам", "Аз рӯи хонадонҳои озод")}
             </p>
           </CardContent>
         </Card>
@@ -122,13 +139,13 @@ export default function DeveloperAdminDashboard() {
         <div className="lg:col-span-2 space-y-4">
           <div className="flex items-center justify-between">
             <h2 className="text-lg font-bold text-foreground">
-              Текущие жилые комплексы
+              {tDual("Текущие жилые комплексы", "Маҷмааҳои истиқоматии ҷорӣ")}
             </h2>
             <Link
               href="/developer-admin/projects"
               className="text-xs font-semibold text-emerald-600 hover:underline"
             >
-              Смотреть все
+              {tDual("Смотреть все", "Ҳамаашро дидан")}
             </Link>
           </div>
 
@@ -141,7 +158,7 @@ export default function DeveloperAdminDashboard() {
                   className="w-full h-full object-cover"
                 />
                 <Badge className="absolute top-2 left-2 bg-emerald-600 text-white text-[10px]">
-                  Строится
+                  {tDual("Строится", "Дар ҳоли сохтмон")}
                 </Badge>
               </div>
 
@@ -149,29 +166,32 @@ export default function DeveloperAdminDashboard() {
                 <div>
                   <div className="flex items-center justify-between">
                     <h3 className="font-bold text-base text-foreground">
-                      ЖК «Сирдарё Плаза»
+                      {tDual("ЖК «Сирдарё Плаза»", "МИ «Сирдарё Плаза»")}
                     </h3>
                     <Badge variant="outline" className="text-[10px]">
-                      Бизнес-класс
+                      {tDual("Бизнес-класс", "Синфи тиҷоратӣ (Бизнес)")}
                     </Badge>
                   </div>
                   <p className="text-xs text-muted-foreground mt-0.5">
-                    г. Худжанд, 19-й микрорайон, набережная Сырдарьи
+                    {tDual(
+                      "г. Худжанд, 19-й микрорайон, набережная Сырдарьи",
+                      "ш. Хуҷанд, маҳаллаи 19-ум, соҳили Сирдарё"
+                    )}
                   </p>
                   <div className="flex flex-wrap gap-3 text-xs text-muted-foreground mt-2">
-                    <span>16 этажей</span>
+                    <span>{tDual("16 этажей", "16 ошёна")}</span>
                     <span>•</span>
-                    <span>3 секции</span>
+                    <span>{tDual("3 секции", "3 бахш")}</span>
                     <span>•</span>
                     <span className="text-emerald-600 font-semibold">
-                      Сдача: 4 кв. 2026
+                      {tDual("Сдача: 4 кв. 2026", "Супоридан: семоҳаи 4-и с. 2026")}
                     </span>
                   </div>
                 </div>
 
                 <div className="pt-3 mt-2 border-t flex flex-wrap items-center justify-between gap-2">
                   <div className="text-xs">
-                    <span className="text-muted-foreground">Квартиры от: </span>
+                    <span className="text-muted-foreground">{tDual("Квартиры от: ", "Нарх аз: ")}</span>
                     <strong className="text-emerald-600">
                       {formatPrice(348210, 31800)}
                     </strong>
@@ -183,12 +203,12 @@ export default function DeveloperAdminDashboard() {
                         className="h-8 bg-emerald-600 hover:bg-emerald-700 text-white text-xs gap-1.5"
                       >
                         <Grid3X3 className="h-3.5 w-3.5" />
-                        Управление шахматкой
+                        {tDual("Управление шахматкой", "Идоракунии ҷадвал")}
                       </Button>
                     </Link>
                     <Link href="/developer-admin/projects/proj_sirdaryo_plaza/edit">
                       <Button size="sm" variant="outline" className="h-8 text-xs">
-                        Редактировать
+                        {tDual("Редактировать", "Таҳрир кардан")}
                       </Button>
                     </Link>
                   </div>
@@ -201,7 +221,7 @@ export default function DeveloperAdminDashboard() {
         {/* Recent Inquiries / Leads */}
         <div className="space-y-4">
           <h2 className="text-lg font-bold text-foreground">
-            Входящие запросы от покупателей
+            {tDual("Входящие запросы от покупателей", "Дархостҳои воридотӣ аз харидорон")}
           </h2>
 
           <Card className="p-4 space-y-3">
@@ -209,12 +229,15 @@ export default function DeveloperAdminDashboard() {
               <div className="p-3 rounded-lg bg-muted/40 border text-xs space-y-1.5">
                 <div className="flex items-center justify-between">
                   <span className="font-bold text-foreground">
-                    Фаррух (Худжанд)
+                    {tDual("Фаррух (Худжанд)", "Фаррух (Хуҷанд)")}
                   </span>
-                  <span className="text-[10px] text-muted-foreground">Сегодня, 11:20</span>
+                  <span className="text-[10px] text-muted-foreground">{tDual("Сегодня, 11:20", "Имрӯз, 11:20")}</span>
                 </div>
                 <p className="text-muted-foreground text-[11px]">
-                  Запрос на бронь: <strong>Кв. 28 (2-комн., 78.5 м²)</strong> в ЖК «Сирдарё Плаза».
+                  {tDual(
+                    "Запрос на бронь: Кв. 28 (2-комн., 78.5 м²) в ЖК «Сирдарё Плаза».",
+                    "Дархости брон: Хонадони 28 (2-ҳуҷр., 78.5 м²) дар МИ «Сирдарё Плаза»."
+                  )}
                 </p>
                 <div className="pt-1 flex items-center gap-2">
                   <a
@@ -224,7 +247,7 @@ export default function DeveloperAdminDashboard() {
                     className="inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-600 hover:underline"
                   >
                     <MessageCircle className="h-3 w-3" />
-                    Написать в WhatsApp
+                    {tDual("Написать в WhatsApp", "Навиштан дар WhatsApp")}
                   </a>
                   <span className="text-muted-foreground">•</span>
                   <a
@@ -232,7 +255,7 @@ export default function DeveloperAdminDashboard() {
                     className="inline-flex items-center gap-1 text-[11px] font-semibold text-foreground hover:underline"
                   >
                     <Phone className="h-3 w-3" />
-                    Позвонить
+                    {tDual("Позвонить", "Занг задан")}
                   </a>
                 </div>
               </div>
@@ -240,12 +263,15 @@ export default function DeveloperAdminDashboard() {
               <div className="p-3 rounded-lg bg-muted/40 border text-xs space-y-1.5">
                 <div className="flex items-center justify-between">
                   <span className="font-bold text-foreground">
-                    Нозима (Б. Гафуров)
+                    {tDual("Нозима (Б. Гафуров)", "Нозима (Б. Ғафуров)")}
                   </span>
-                  <span className="text-[10px] text-muted-foreground">Вчера, 17:45</span>
+                  <span className="text-[10px] text-muted-foreground">{tDual("Вчера, 17:45", "Дирӯз, 17:45")}</span>
                 </div>
                 <p className="text-muted-foreground text-[11px]">
-                  Консультация по условиям <strong>рассрочки до 24 мес</strong> и 3-комнатным квартирам с видом на реку.
+                  {tDual(
+                    "Консультация по условиям рассрочки до 24 мес и 3-комнатным квартирам с видом на реку.",
+                    "Машварат оид ба шартҳои пардохти қисм-қисм то 24 моҳ ва хонаҳои 3-ҳуҷрагӣ бо манзара ба дарё."
+                  )}
                 </p>
                 <div className="pt-1 flex items-center gap-2">
                   <a
@@ -255,7 +281,7 @@ export default function DeveloperAdminDashboard() {
                     className="inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-600 hover:underline"
                   >
                     <MessageCircle className="h-3 w-3" />
-                    WhatsApp диалог
+                    {tDual("WhatsApp диалог", "Гуфтугӯ дар WhatsApp")}
                   </a>
                 </div>
               </div>
@@ -263,7 +289,10 @@ export default function DeveloperAdminDashboard() {
 
             <div className="pt-2 text-center">
               <span className="text-[11px] text-muted-foreground">
-                Уведомления также автоматически дублируются в Telegram-бот отдела продаж.
+                {tDual(
+                  "Уведомления также автоматически дублируются в Telegram-бот отдела продаж.",
+                  "Огоҳиномаҳо инчунин ба таври худкор ба Telegram-боти шуъбаи фурӯш фиристода мешаванд."
+                )}
               </span>
             </div>
           </Card>

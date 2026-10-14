@@ -18,6 +18,7 @@ import {
   HeartPulse,
   Bus,
 } from "lucide-react";
+import { useLanguage } from "@/lib/i18n/language-context";
 
 export interface POIItem {
   id: string;
@@ -95,6 +96,8 @@ export function ProjectPoiManager({
   initialPois = DEFAULT_POIS,
   onChange,
 }: ProjectPoiManagerProps) {
+  const { language } = useLanguage();
+  const isTg = language === "tg";
   const [pois, setPois] = useState<POIItem[]>(initialPois);
   const [newName, setNewName] = useState("");
   const [newCategory, setNewCategory] = useState<POIItem["category"]>("school");
@@ -153,14 +156,16 @@ export function ProjectPoiManager({
         <div className="flex items-center justify-between">
           <CardTitle className="text-sm font-bold flex items-center gap-2">
             <Compass className="h-4 w-4 text-emerald-600" />
-            Генплан квартала и инфраструктура (POI)
+            {isTg ? "Нақшаи маҳалла ва инфрасохтор (POI)" : "Генплан квартала и инфраструктура (POI)"}
           </CardTitle>
           <Badge variant="outline" className="text-xs">
-            {pois.length} объектов рядом
+            {isTg ? `${pois.length} иншоот дар наздикӣ` : `${pois.length} объектов рядом`}
           </Badge>
         </div>
         <CardDescription className="text-xs">
-          Настройте точки притяжения (школы, детские сады, парки, набережные, магазины), которые отображаются на интерактивной карте в режиме «Общий вид».
+          {isTg
+            ? "Нуқтаҳои муҳими атрофро (мактабҳо, боғчаҳои кӯдакон, боғҳо, соҳил, мағозаҳо) танзим кунед, ки дар харитаи интерактивӣ дар реҷаи «Намуди умумӣ» намоиш дода мешаванд."
+            : "Настройте точки притяжения (школы, детские сады, парки, набережные, магазины), которые отображаются на интерактивной карте в режиме «Общий вид»."}
         </CardDescription>
       </CardHeader>
 
@@ -184,7 +189,7 @@ export function ProjectPoiManager({
                     </span>
                   </div>
                   <div className="text-[11px] text-muted-foreground line-clamp-1">
-                    {poi.description || "Без описания"} (X: {poi.xPercent}%, Y: {poi.yPercent}%)
+                    {poi.description || (isTg ? "Бе тавсиф" : "Без описания")} (X: {poi.xPercent}%, Y: {poi.yPercent}%)
                   </div>
                 </div>
               </div>
@@ -196,7 +201,7 @@ export function ProjectPoiManager({
                   size="icon"
                   onClick={() => handleDeletePoi(poi.id)}
                   className="h-7 w-7 text-muted-foreground hover:text-destructive hover:bg-destructive/10 cursor-pointer"
-                  title="Удалить объект"
+                  title={isTg ? "Нест кардани иншоот" : "Удалить объект"}
                 >
                   <Trash2 className="h-3.5 w-3.5" />
                 </Button>
@@ -209,14 +214,16 @@ export function ProjectPoiManager({
         <div className="p-3.5 rounded-xl border border-dashed bg-muted/20 space-y-3">
           <div className="text-xs font-bold text-foreground flex items-center gap-1.5">
             <Plus className="h-3.5 w-3.5 text-emerald-600" />
-            Добавить объект инфраструктуры
+            {isTg ? "Иловаи иншооти инфрасохтор" : "Добавить объект инфраструктуры"}
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             <div className="space-y-1 sm:col-span-2">
-              <Label className="text-[11px] font-semibold">Название объекта</Label>
+              <Label className="text-[11px] font-semibold">
+                {isTg ? "Номи иншоот" : "Название объекта"}
+              </Label>
               <Input
-                placeholder="Например, Лицей №1 или Фитнес-центр"
+                placeholder={isTg ? "Масалан, Литсейи №1 ё Толори варзишӣ" : "Например, Лицей №1 или Фитнес-центр"}
                 value={newName}
                 onChange={(e) => setNewName(e.target.value)}
                 className="text-xs h-8"
@@ -224,25 +231,29 @@ export function ProjectPoiManager({
             </div>
 
             <div className="space-y-1">
-              <Label className="text-[11px] font-semibold">Категория</Label>
+              <Label className="text-[11px] font-semibold">
+                {isTg ? "Гурӯҳ" : "Категория"}
+              </Label>
               <select
                 value={newCategory}
                 onChange={(e) => setNewCategory(e.target.value as POIItem["category"])}
                 className="w-full h-8 text-xs bg-background border rounded-md px-2"
               >
-                <option value="school">Школа</option>
-                <option value="kindergarten">Детский сад</option>
-                <option value="park">Парк / Набережная</option>
-                <option value="shop">ТЦ / Супермаркет</option>
-                <option value="medical">Медицина</option>
-                <option value="transport">Транспорт</option>
+                <option value="school">{isTg ? "Мактаб" : "Школа"}</option>
+                <option value="kindergarten">{isTg ? "Боғчаи кӯдакон" : "Детский сад"}</option>
+                <option value="park">{isTg ? "Боғ / Соҳил" : "Парк / Набережная"}</option>
+                <option value="shop">{isTg ? "Маркази савдо / Супермаркет" : "ТЦ / Супермаркет"}</option>
+                <option value="medical">{isTg ? "Тиббиёт / Дармонгоҳ" : "Медицина"}</option>
+                <option value="transport">{isTg ? "Нақлиёт" : "Транспорт"}</option>
               </select>
             </div>
 
             <div className="space-y-1">
-              <Label className="text-[11px] font-semibold">Удаленность / Время</Label>
+              <Label className="text-[11px] font-semibold">
+                {isTg ? "Масофа / Вақт" : "Удаленность / Время"}
+              </Label>
               <Input
-                placeholder="2 мин пешком (150 м)"
+                placeholder={isTg ? "2 дақ пиёда (150 м)" : "2 мин пешком (150 м)"}
                 value={newDistance}
                 onChange={(e) => setNewDistance(e.target.value)}
                 className="text-xs h-8"
@@ -250,7 +261,9 @@ export function ProjectPoiManager({
             </div>
 
             <div className="space-y-1">
-              <Label className="text-[11px] font-semibold">Координата X ({newX}%)</Label>
+              <Label className="text-[11px] font-semibold">
+                {isTg ? `Координатаи X (${newX}%)` : `Координата X (${newX}%)`}
+              </Label>
               <input
                 type="range"
                 min={5}
@@ -262,7 +275,9 @@ export function ProjectPoiManager({
             </div>
 
             <div className="space-y-1">
-              <Label className="text-[11px] font-semibold">Координата Y ({newY}%)</Label>
+              <Label className="text-[11px] font-semibold">
+                {isTg ? `Координатаи Y (${newY}%)` : `Координата Y (${newY}%)`}
+              </Label>
               <input
                 type="range"
                 min={5}
@@ -274,9 +289,17 @@ export function ProjectPoiManager({
             </div>
 
             <div className="space-y-1 sm:col-span-3">
-              <Label className="text-[11px] font-semibold">Краткое описание (для подсказки при клике)</Label>
+              <Label className="text-[11px] font-semibold">
+                {isTg
+                  ? "Тавсифи мухтасар (барои маслиҳат ҳангоми пахш)"
+                  : "Краткое описание (для подсказки при клике)"}
+              </Label>
               <Input
-                placeholder="Например, Охраняемая территория, спортивные секции"
+                placeholder={
+                  isTg
+                    ? "Масалан, Ҳудуди маҳфуз, бахшҳои варзишӣ"
+                    : "Например, Охраняемая территория, спортивные секции"
+                }
                 value={newDesc}
                 onChange={(e) => setNewDesc(e.target.value)}
                 className="text-xs h-8"
@@ -292,7 +315,7 @@ export function ProjectPoiManager({
               className="h-8 text-xs font-semibold bg-emerald-600 hover:bg-emerald-700 text-white gap-1.5 cursor-pointer"
             >
               <Plus className="h-3.5 w-3.5" />
-              Добавить на карту
+              {isTg ? "Ба харита илова кардан" : "Добавить на карту"}
             </Button>
           </div>
         </div>

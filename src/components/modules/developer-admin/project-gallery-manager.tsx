@@ -15,6 +15,7 @@ import {
   ExternalLink,
   Sparkles,
 } from "lucide-react";
+import { useLanguage } from "@/lib/i18n/language-context";
 
 interface ProjectGalleryManagerProps {
   images: string[];
@@ -27,6 +28,8 @@ export function ProjectGalleryManager({
   coverImageUrl,
   onChange,
 }: ProjectGalleryManagerProps) {
+  const { language } = useLanguage();
+  const isTg = language === "tg";
   const [newImageUrl, setNewImageUrl] = useState("");
   const [photoList, setPhotoList] = useState<string[]>(() => {
     // Ensure cover is first
@@ -89,14 +92,16 @@ export function ProjectGalleryManager({
         <div className="flex items-center justify-between">
           <CardTitle className="text-sm font-bold flex items-center gap-2">
             <ImageIcon className="h-4 w-4 text-emerald-600" />
-            Галерея и обложка объекта
+            {isTg ? "Нигористон ва муқоваи иншоот" : "Галерея и обложка объекта"}
           </CardTitle>
           <Badge variant="outline" className="text-xs">
-            {photoList.length} фото в показе
+            {isTg ? `${photoList.length} акс дар намоиш` : `${photoList.length} фото в показе`}
           </Badge>
         </div>
         <CardDescription className="text-xs">
-          Первое изображение автоматически используется как главная обложка в каталоге и в карточке объекта. Вы можете менять порядок фотографий и назначать обложку в 1 клик.
+          {isTg
+            ? "Акси аввал ба таври худкор ҳамчун муқоваи асосӣ дар феҳрист ва корти иншоот истифода мешавад. Шумо метавонед тартиби аксҳоро иваз кунед ва муқоваро дар 1 клик таъйин намоед."
+            : "Первое изображение автоматически используется как главная обложка в каталоге и в карточке объекта. Вы можете менять порядок фотографий и назначать обложку в 1 клик."}
         </CardDescription>
       </CardHeader>
 
@@ -104,7 +109,11 @@ export function ProjectGalleryManager({
         {/* Add photo bar */}
         <div className="flex flex-col sm:flex-row items-center gap-2">
           <Input
-            placeholder="Вставьте прямую ссылку на фото (https://...)"
+            placeholder={
+              isTg
+                ? "Истиноди мустақим ба аксро гузоред (https://...)"
+                : "Вставьте прямую ссылку на фото (https://...)"
+            }
             value={newImageUrl}
             onChange={(e) => setNewImageUrl(e.target.value)}
             className="text-xs h-9"
@@ -116,24 +125,24 @@ export function ProjectGalleryManager({
             className="w-full sm:w-auto h-9 text-xs font-semibold bg-emerald-600 hover:bg-emerald-700 text-white gap-1.5 shrink-0 cursor-pointer"
           >
             <Plus className="h-3.5 w-3.5" />
-            Добавить фото
+            {isTg ? "Иловаи акс" : "Добавить фото"}
           </Button>
         </div>
 
         {/* Quick sample photos */}
         <div className="flex items-center gap-2 text-xs text-muted-foreground flex-wrap">
-          <span className="text-[11px]">Готовые ракурсы:</span>
+          <span className="text-[11px]">{isTg ? "Намунаҳои омода:" : "Готовые ракурсы:"}</span>
           {[
             {
-              label: "+ Ночной фасад",
+              label: isTg ? "+ Намои шабона" : "+ Ночной фасад",
               url: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=1600&h=1000&fit=crop",
             },
             {
-              label: "+ Входная группа",
+              label: isTg ? "+ Даромадгоҳи асосӣ" : "+ Входная группа",
               url: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1600&h=1000&fit=crop",
             },
             {
-              label: "+ Двор-парк",
+              label: isTg ? "+ Боғи дохили ҳавлӣ" : "+ Двор-парк",
               url: "https://images.unsplash.com/photo-1574362848149-11496d93a7c7?w=1600&h=1000&fit=crop",
             },
           ].map((sample) => (
@@ -166,7 +175,7 @@ export function ProjectGalleryManager({
                 <div className="relative h-36 w-full bg-slate-900 overflow-hidden">
                   <img
                     src={url}
-                    alt={`Фото ${idx + 1}`}
+                    alt={isTg ? `Акси ${idx + 1}` : `Фото ${idx + 1}`}
                     className="w-full h-full object-cover"
                   />
                   <div className="absolute top-2 left-2 flex items-center gap-1.5">
@@ -176,7 +185,7 @@ export function ProjectGalleryManager({
                     {isCover && (
                       <Badge className="bg-emerald-600 text-white text-[10px] gap-1 font-semibold">
                         <Star className="h-2.5 w-2.5 fill-white" />
-                        Обложка
+                        {isTg ? "Муқова" : "Обложка"}
                       </Badge>
                     )}
                   </div>
@@ -192,10 +201,14 @@ export function ProjectGalleryManager({
                         size="sm"
                         onClick={() => handleMakeCover(idx)}
                         className="h-7 px-2 text-[11px] font-semibold text-emerald-600 hover:bg-emerald-50 dark:hover:bg-emerald-950/30 gap-1 cursor-pointer"
-                        title="Назначить главной обложкой проекта"
+                        title={
+                          isTg
+                            ? "Ҳамчун муқоваи асосии лоиҳа таъйин кардан"
+                            : "Назначить главной обложкой проекта"
+                        }
                       >
                         <Star className="h-3 w-3" />
-                        На обложку
+                        {isTg ? "Ба муқова" : "На обложку"}
                       </Button>
                     )}
                   </div>
@@ -208,7 +221,7 @@ export function ProjectGalleryManager({
                       disabled={idx === 0}
                       onClick={() => handleMoveUp(idx)}
                       className="h-7 w-7 text-muted-foreground hover:text-foreground cursor-pointer disabled:opacity-30"
-                      title="Переместить вверх / влево"
+                      title={isTg ? "Ба боло / чап" : "Переместить вверх / влево"}
                     >
                       <ArrowUp className="h-3.5 w-3.5" />
                     </Button>
@@ -219,7 +232,7 @@ export function ProjectGalleryManager({
                       disabled={idx === photoList.length - 1}
                       onClick={() => handleMoveDown(idx)}
                       className="h-7 w-7 text-muted-foreground hover:text-foreground cursor-pointer disabled:opacity-30"
-                      title="Переместить вниз / вправо"
+                      title={isTg ? "Ба поён / рост" : "Переместить вниз / вправо"}
                     >
                       <ArrowDown className="h-3.5 w-3.5" />
                     </Button>
@@ -230,7 +243,7 @@ export function ProjectGalleryManager({
                       disabled={photoList.length <= 1}
                       onClick={() => handleDelete(idx)}
                       className="h-7 w-7 text-muted-foreground hover:text-destructive hover:bg-destructive/10 cursor-pointer disabled:opacity-30"
-                      title="Удалить фото"
+                      title={isTg ? "Нест кардани акс" : "Удалить фото"}
                     >
                       <Trash2 className="h-3.5 w-3.5" />
                     </Button>

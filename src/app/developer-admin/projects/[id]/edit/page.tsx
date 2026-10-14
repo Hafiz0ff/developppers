@@ -49,22 +49,25 @@ import { ProjectViewsLayoutsManager } from "@/components/modules/developer-admin
 import { ProjectInsolationSettings } from "@/components/modules/developer-admin/project-insolation-settings";
 import { ProjectAnalyticsTab } from "@/components/modules/developer-admin/project-analytics-tab";
 import { ProjectPreviewModal } from "@/components/modules/developer-admin/project-preview-modal";
+import { useLanguage } from "@/lib/i18n/language-context";
 
 export default function EditProjectPage() {
   const router = useRouter();
   const params = useParams();
   const projectId = params?.id as string;
+  const { language } = useLanguage();
+  const isTg = language === "tg";
 
   const proj =
     INITIAL_PROJECTS.find((p) => p.id === projectId) || INITIAL_PROJECTS[0];
 
-  const [name, setName] = useState(proj.name);
+  const [name, setName] = useState(isTg && proj.nameTg ? proj.nameTg : proj.name);
   const [buildingClass, setBuildingClass] = useState(proj.buildingClass);
   const [finishing, setFinishing] = useState(proj.finishing);
   const [city, setCity] = useState(proj.city);
   const [district, setDistrict] = useState(proj.district);
-  const [address, setAddress] = useState(proj.address);
-  const [landmark, setLandmark] = useState(proj.landmark);
+  const [address, setAddress] = useState(isTg && proj.addressTg ? proj.addressTg : proj.address);
+  const [landmark, setLandmark] = useState(isTg && proj.landmarkTg ? proj.landmarkTg : proj.landmark);
   const [floorsCount, setFloorsCount] = useState(proj.floorsCount.toString());
   const [sectionsCount, setSectionsCount] = useState(proj.sectionsCount.toString());
   const [ceilingHeight, setCeilingHeight] = useState(proj.ceilingHeight || "3.00");
@@ -196,15 +199,17 @@ export default function EditProjectPage() {
           <Link href="/developer-admin/projects">
             <Button variant="outline" size="sm" className="h-8 text-xs gap-1">
               <ArrowLeft className="h-3.5 w-3.5" />
-              Назад к проектам
+              {isTg ? "Бозгашт ба лоиҳаҳо" : "Назад к проектам"}
             </Button>
           </Link>
           <div>
             <h1 className="text-2xl font-extrabold text-foreground">
-              Редактирование: {proj.name}
+              {isTg ? "Таҳрир:" : "Редактирование:"} {isTg && proj.nameTg ? proj.nameTg : proj.name}
             </h1>
             <p className="text-xs text-muted-foreground mt-0.5">
-              Управление витриной, 6D-слоями и характеристиками комплекса
+              {isTg
+                ? "Идоракунии витрина, қабатҳои 6D ва хусусиятҳои маҷмаа"
+                : "Управление витриной, 6D-слоями и характеристиками комплекса"}
             </p>
           </div>
         </div>
@@ -218,20 +223,20 @@ export default function EditProjectPage() {
             className="h-8 text-xs font-semibold gap-1.5 border-emerald-500/40 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-50 dark:hover:bg-emerald-950/20 cursor-pointer shadow-xs"
           >
             <Eye className="h-3.5 w-3.5 text-emerald-600" />
-            Предпросмотр на витрине
+            {isTg ? "Пешнамоиш дар витрина" : "Предпросмотр на витрине"}
           </Button>
 
           <Link href={`/developer-admin/projects/${proj.id}/units`}>
             <Button variant="outline" size="sm" className="h-8 text-xs gap-1.5 cursor-pointer">
               <Grid3X3 className="h-3.5 w-3.5 text-emerald-600" />
-              Шахматка квартир
+              {isTg ? "Ҷадвали шоҳмотии хонаҳо" : "Шахматка квартир"}
             </Button>
           </Link>
 
           {success && (
             <div className="flex items-center gap-1.5 text-xs font-semibold text-emerald-600 bg-emerald-50 dark:bg-emerald-950/40 px-3 py-1.5 rounded-lg border border-emerald-300">
               <CheckCircle2 className="h-4 w-4" />
-              Сохранено!
+              {isTg ? "Бомуваффақият сабт шуд!" : "Сохранено!"}
             </div>
           )}
         </div>
@@ -240,15 +245,27 @@ export default function EditProjectPage() {
       {/* Tab Switcher for Developer Admin (Section 3.4 of Spec) */}
       <div className="flex items-center gap-1.5 overflow-x-auto pb-1 [scrollbar-width:none]">
         {[
-          { id: "params", label: "Параметры и отделка", icon: Building2 },
+          {
+            id: "params",
+            label: isTg ? "Параметрҳо ва пардоз" : "Параметры и отделка",
+            icon: Building2,
+          },
           {
             id: "gallery",
-            label: "Галерея и обложка",
+            label: isTg ? "Нигористон ва муқова" : "Галерея и обложка",
             icon: ImageIcon,
             badge: images.length.toString(),
           },
-          { id: "interactive", label: "Интерактивные слои (6D)", icon: Layers },
-          { id: "analytics", label: "Аналитика объекта", icon: BarChart3 },
+          {
+            id: "interactive",
+            label: isTg ? "Қабатҳои интерактивии (6D)" : "Интерактивные слои (6D)",
+            icon: Layers,
+          },
+          {
+            id: "analytics",
+            label: isTg ? "Таҳлили иншоот" : "Аналитика объекта",
+            icon: BarChart3,
+          },
         ].map((tab) => {
           const Icon = tab.icon;
           const isActive = activeTab === tab.id;
@@ -287,14 +304,14 @@ export default function EditProjectPage() {
           <CardHeader className="p-4 pb-2">
             <CardTitle className="text-sm font-bold flex items-center gap-2">
               <Building2 className="h-4 w-4 text-emerald-600" />
-              Основные параметры
+              {isTg ? "Параметрҳои асосӣ" : "Основные параметры"}
             </CardTitle>
           </CardHeader>
           <CardContent className="p-4 space-y-4">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="space-y-1.5 sm:col-span-2">
                 <Label htmlFor="edit-name" className="text-xs font-semibold">
-                  Название комплекса
+                  {isTg ? "Номи маҷмаа" : "Название комплекса"}
                 </Label>
                 <Input
                   id="edit-name"
@@ -305,7 +322,9 @@ export default function EditProjectPage() {
               </div>
 
               <div className="space-y-1.5">
-                <Label className="text-xs font-semibold">Класс жилья</Label>
+                <Label className="text-xs font-semibold">
+                  {isTg ? "Синфи манзил" : "Класс жилья"}
+                </Label>
                 <Select
                   value={buildingClass}
                   onValueChange={(val) => {
@@ -316,16 +335,26 @@ export default function EditProjectPage() {
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="economy">Эконом-класс</SelectItem>
-                    <SelectItem value="comfort">Комфорт-класс</SelectItem>
-                    <SelectItem value="business">Бизнес-класс</SelectItem>
-                    <SelectItem value="premium">Премиум / Элит</SelectItem>
+                    <SelectItem value="economy">
+                      {isTg ? "Синфи эконом" : "Эконом-класс"}
+                    </SelectItem>
+                    <SelectItem value="comfort">
+                      {isTg ? "Синфи бароҳат (комфорт)" : "Комфорт-класс"}
+                    </SelectItem>
+                    <SelectItem value="business">
+                      {isTg ? "Синфи тиҷоратӣ (бизнес)" : "Бизнес-класс"}
+                    </SelectItem>
+                    <SelectItem value="premium">
+                      {isTg ? "Премиум / Элитӣ" : "Премиум / Элит"}
+                    </SelectItem>
                   </SelectContent>
                 </Select>
               </div>
 
               <div className="space-y-1.5">
-                <Label className="text-xs font-semibold">Отделка</Label>
+                <Label className="text-xs font-semibold">
+                  {isTg ? "Пардоз" : "Отделка"}
+                </Label>
                 <Select
                   value={finishing}
                   onValueChange={(val) => {
@@ -336,16 +365,22 @@ export default function EditProjectPage() {
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="rough">Черновая (коробка)</SelectItem>
-                    <SelectItem value="pre_finishing">Предчистовая (белый каркас)</SelectItem>
-                    <SelectItem value="turnkey">С ремонтом под ключ</SelectItem>
+                    <SelectItem value="rough">
+                      {isTg ? "Пардози аввалия (қуттӣ)" : "Черновая (коробка)"}
+                    </SelectItem>
+                    <SelectItem value="pre_finishing">
+                      {isTg ? "Пардози пешакӣ (қуттии сафед)" : "Предчистовая (белый каркас)"}
+                    </SelectItem>
+                    <SelectItem value="turnkey">
+                      {isTg ? "Бо таъмири пурра («калид дар даст»)" : "С ремонтом под ключ"}
+                    </SelectItem>
                   </SelectContent>
                 </Select>
               </div>
 
               <div className="space-y-1.5 sm:col-span-2">
                 <Label htmlFor="edit-short" className="text-xs font-semibold">
-                  Краткое описание
+                  {isTg ? "Тавсифи мухтасар" : "Краткое описание"}
                 </Label>
                 <Input
                   id="edit-short"
@@ -356,7 +391,7 @@ export default function EditProjectPage() {
 
               <div className="space-y-1.5 sm:col-span-2">
                 <Label htmlFor="edit-desc" className="text-xs font-semibold">
-                  Подробное описание
+                  {isTg ? "Тавсифи муфассал" : "Подробное описание"}
                 </Label>
                 <Textarea
                   id="edit-desc"
@@ -374,13 +409,15 @@ export default function EditProjectPage() {
           <CardHeader className="p-4 pb-2">
             <CardTitle className="text-sm font-bold flex items-center gap-2">
               <MapPin className="h-4 w-4 text-emerald-600" />
-              Локация и параметры
+              {isTg ? "Мавқеъ ва нишондиҳандаҳо" : "Локация и параметры"}
             </CardTitle>
           </CardHeader>
           <CardContent className="p-4 space-y-4">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="space-y-1.5">
-                <Label className="text-xs font-semibold">Город / Район</Label>
+                <Label className="text-xs font-semibold">
+                  {isTg ? "Шаҳр / Ноҳия" : "Город / Район"}
+                </Label>
                 <Select
                   value={city}
                   onValueChange={(val) => {
@@ -393,7 +430,7 @@ export default function EditProjectPage() {
                   <SelectContent>
                     {SOGD_CITIES.map((c) => (
                       <SelectItem key={c.value} value={c.value}>
-                        {c.nameRu}
+                        {isTg ? c.nameTj : c.nameRu}
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -402,7 +439,7 @@ export default function EditProjectPage() {
 
               <div className="space-y-1.5">
                 <Label htmlFor="edit-district" className="text-xs font-semibold">
-                  Микрорайон
+                  {isTg ? "Маҳалла" : "Микрорайон"}
                 </Label>
                 <Input
                   id="edit-district"
@@ -413,7 +450,7 @@ export default function EditProjectPage() {
 
               <div className="space-y-1.5">
                 <Label htmlFor="edit-address" className="text-xs font-semibold">
-                  Адрес
+                  {isTg ? "Суроға" : "Адрес"}
                 </Label>
                 <Input
                   id="edit-address"
@@ -424,7 +461,7 @@ export default function EditProjectPage() {
 
               <div className="space-y-1.5">
                 <Label htmlFor="edit-landmark" className="text-xs font-semibold">
-                  Ориентир
+                  {isTg ? "Нишона (ориентир)" : "Ориентир"}
                 </Label>
                 <Input
                   id="edit-landmark"
@@ -441,14 +478,14 @@ export default function EditProjectPage() {
           <CardHeader className="p-4 pb-2">
             <CardTitle className="text-sm font-bold flex items-center gap-2">
               <Calendar className="h-4 w-4 text-emerald-600" />
-              Характеристики здания и сроки сдачи
+              {isTg ? "Хусусиятҳои бино ва муҳлати супоридан" : "Характеристики здания и сроки сдачи"}
             </CardTitle>
           </CardHeader>
           <CardContent className="p-4 space-y-4">
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
               <div className="space-y-1.5">
                 <Label htmlFor="edit-floors" className="text-xs font-semibold">
-                  Этажей
+                  {isTg ? "Шумораи ошёнаҳо" : "Этажей"}
                 </Label>
                 <Input
                   id="edit-floors"
@@ -460,7 +497,7 @@ export default function EditProjectPage() {
 
               <div className="space-y-1.5">
                 <Label htmlFor="edit-sections" className="text-xs font-semibold">
-                  Секций (подъездов)
+                  {isTg ? "Бахшҳо (даромадгоҳҳо)" : "Секций (подъездов)"}
                 </Label>
                 <Input
                   id="edit-sections"
@@ -472,7 +509,7 @@ export default function EditProjectPage() {
 
               <div className="space-y-1.5">
                 <Label htmlFor="edit-quarter" className="text-xs font-semibold">
-                  Квартал сдачи
+                  {isTg ? "Семоҳаи супоридан" : "Квартал сдачи"}
                 </Label>
                 <Select
                   value={deadlineQuarter}
@@ -484,17 +521,17 @@ export default function EditProjectPage() {
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="1">1 квартал</SelectItem>
-                    <SelectItem value="2">2 квартал</SelectItem>
-                    <SelectItem value="3">3 квартал</SelectItem>
-                    <SelectItem value="4">4 квартал</SelectItem>
+                    <SelectItem value="1">{isTg ? "Семоҳаи 1" : "1 квартал"}</SelectItem>
+                    <SelectItem value="2">{isTg ? "Семоҳаи 2" : "2 квартал"}</SelectItem>
+                    <SelectItem value="3">{isTg ? "Семоҳаи 3" : "3 квартал"}</SelectItem>
+                    <SelectItem value="4">{isTg ? "Семоҳаи 4" : "4 квартал"}</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
 
               <div className="space-y-1.5">
                 <Label htmlFor="edit-year" className="text-xs font-semibold">
-                  Год сдачи
+                  {isTg ? "Соли супоридан" : "Год сдачи"}
                 </Label>
                 <Input
                   id="edit-year"
@@ -508,16 +545,16 @@ export default function EditProjectPage() {
             {/* Standard Building & Land Specs */}
             <div className="pt-2 border-t">
               <h4 className="text-xs font-bold text-foreground mb-3">
-                Конструктивные особенности и земельный участок
+                {isTg ? "Хусусиятҳои сохтмонӣ ва қитъаи замин" : "Конструктивные особенности и земельный участок"}
               </h4>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-1.5">
                   <Label htmlFor="edit-land-area" className="text-xs font-semibold">
-                    Площадь участка
+                    {isTg ? "Масоҳати қитъа" : "Площадь участка"}
                   </Label>
                   <Input
                     id="edit-land-area"
-                    placeholder="Площадь участка у застройщика"
+                    placeholder={isTg ? "Масоҳати қитъаи сохтмончӣ" : "Площадь участка у застройщика"}
                     value={landArea}
                     onChange={(e) => setLandArea(e.target.value)}
                   />
@@ -525,11 +562,11 @@ export default function EditProjectPage() {
 
                 <div className="space-y-1.5">
                   <Label htmlFor="edit-wall-material" className="text-xs font-semibold">
-                    Материал стен
+                    {isTg ? "Маводи деворҳо" : "Материал стен"}
                   </Label>
                   <Input
                     id="edit-wall-material"
-                    placeholder="Газоблок"
+                    placeholder={isTg ? "Газоблок / Хишт" : "Газоблок"}
                     value={wallMaterial}
                     onChange={(e) => setWallMaterial(e.target.value)}
                   />
@@ -537,11 +574,11 @@ export default function EditProjectPage() {
 
                 <div className="space-y-1.5">
                   <Label htmlFor="edit-facade" className="text-xs font-semibold">
-                    Фасад
+                    {isTg ? "Намои бино (фасад)" : "Фасад"}
                   </Label>
                   <Input
                     id="edit-facade"
-                    placeholder="Клинкерная плитка"
+                    placeholder={isTg ? "Плиткаи клинкерӣ / Санги табиӣ" : "Клинкерная плитка"}
                     value={facade}
                     onChange={(e) => setFacade(e.target.value)}
                   />
@@ -549,11 +586,11 @@ export default function EditProjectPage() {
 
                 <div className="space-y-1.5">
                   <Label htmlFor="edit-cadastral" className="text-xs font-semibold">
-                    Кадастровый номер
+                    {isTg ? "Рақами кадастрӣ" : "Кадастровый номер"}
                   </Label>
                   <Input
                     id="edit-cadastral"
-                    placeholder="Кадастровый код участка"
+                    placeholder={isTg ? "Рақами кадастрии қитъа" : "Кадастровый код участка"}
                     value={cadastralNumber}
                     onChange={(e) => setCadastralNumber(e.target.value)}
                   />
@@ -566,11 +603,15 @@ export default function EditProjectPage() {
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-1.5">
                   <h4 className="text-xs font-bold text-foreground">
-                    Пользовательские характеристики
+                    {isTg ? "Хусусиятҳои иловагӣ" : "Пользовательские характеристики"}
                   </h4>
                   <ResponsiveTooltip
-                    title="Пользовательские характеристики"
-                    content="Вы можете добавить свой заголовок, например „Отопление“, и указать его значение, например „Общее (собственная котельная)“"
+                    title={isTg ? "Хусусиятҳои иловагӣ" : "Пользовательские характеристики"}
+                    content={
+                      isTg
+                        ? "Шумо метавонед сарлавҳаи худро илова намоед, масалан «Гармидиҳӣ» ва қимати онро муайян кунед, масалан «Умумӣ (дегхонаи шахсӣ)»"
+                        : "Вы можете добавить свой заголовок, например „Отопление“, и указать его значение, например „Общее (собственная котельная)“"
+                    }
                   >
                     <span className="p-1 text-muted-foreground hover:text-emerald-600 cursor-pointer">
                       <HelpCircle className="h-3.5 w-3.5" />
@@ -578,7 +619,9 @@ export default function EditProjectPage() {
                   </ResponsiveTooltip>
                 </div>
                 <span className="text-[11px] text-muted-foreground">
-                  Добавлено {customBuildingFeatures.filter((f) => f.title.trim()).length} из 3
+                  {isTg
+                    ? `Илова шуд ${customBuildingFeatures.filter((f) => f.title.trim()).length} аз 3`
+                    : `Добавлено ${customBuildingFeatures.filter((f) => f.title.trim()).length} из 3`}
                 </span>
               </div>
 
@@ -594,11 +637,15 @@ export default function EditProjectPage() {
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-1">
                             <Label className="text-[11px] font-semibold text-foreground">
-                              Ваш заголовок
+                              {isTg ? "Сарлавҳаи шумо" : "Ваш заголовок"}
                             </Label>
                             <ResponsiveTooltip
-                              title="Пользовательский заголовок"
-                              content="Вы можете добавить свой заголовок, например „Отопление“, и указать его значение, например „Общее (собственная котельная)“"
+                              title={isTg ? "Сарлавҳаи шумо" : "Пользовательский заголовок"}
+                              content={
+                                isTg
+                                  ? "Шумо метавонед сарлавҳаи худро илова намоед, масалан «Гармидиҳӣ»"
+                                  : "Вы можете добавить свой заголовок, например „Отопление“, и указать его значение, например „Общее (собственная котельная)“"
+                              }
                             >
                               <span className="text-muted-foreground hover:text-emerald-600 cursor-pointer">
                                 <HelpCircle className="h-3 w-3" />
@@ -616,7 +663,7 @@ export default function EditProjectPage() {
                           </span>
                         </div>
                         <Input
-                          placeholder="Например, Отопление"
+                          placeholder={isTg ? "Масалан, Гармидиҳӣ" : "Например, Отопление"}
                           value={feat.title}
                           maxLength={40}
                           onChange={(e) =>
@@ -634,7 +681,7 @@ export default function EditProjectPage() {
                       <div className="space-y-1">
                         <div className="flex items-center justify-between">
                           <Label className="text-[11px] font-semibold text-foreground">
-                            Значение характеристики
+                            {isTg ? "Қимати нишондиҳанда" : "Значение характеристики"}
                           </Label>
                           <span
                             className={`text-[10px] ${
@@ -648,7 +695,11 @@ export default function EditProjectPage() {
                         </div>
                         <div className="flex items-center gap-2">
                           <Input
-                            placeholder="Например, Общее (собственная котельная)"
+                            placeholder={
+                              isTg
+                                ? "Масалан, Умумӣ (дегхонаи шахсӣ)"
+                                : "Например, Общее (собственная котельная)"
+                            }
                             value={feat.value}
                             maxLength={40}
                             onChange={(e) =>
@@ -667,7 +718,7 @@ export default function EditProjectPage() {
                             onClick={() =>
                               handleRemoveCustomBuildingFeature(feat.id)
                             }
-                            title="Удалить характеристику"
+                            title={isTg ? "Нест кардани нишондиҳанда" : "Удалить характеристику"}
                             className="h-9 w-9 text-muted-foreground hover:text-destructive hover:bg-destructive/10 rounded-lg shrink-0 cursor-pointer"
                           >
                             <Trash2 className="h-4 w-4" />
@@ -683,8 +734,12 @@ export default function EditProjectPage() {
               {customBuildingFeatures.length < 3 && (
                 <div className="pt-1 flex items-center justify-start">
                   <ResponsiveTooltip
-                    title="Добавление характеристики"
-                    content="Вы можете добавить свой заголовок, например „Отопление“, и указать его значение, например „Общее (собственная котельная)“"
+                    title={isTg ? "Иловаи нишондиҳанда" : "Добавление характеристики"}
+                    content={
+                      isTg
+                        ? "Шумо метавонед сарлавҳаи худро илова намоед, масалан «Гармидиҳӣ» ва қимати онро муайян кунед"
+                        : "Вы можете добавить свой заголовок, например „Отопление“, и указать его значение, например „Общее (собственная котельная)“"
+                    }
                   >
                     <Button
                       type="button"
@@ -699,8 +754,9 @@ export default function EditProjectPage() {
                       className="h-8 px-3 text-xs gap-1.5 border-dashed border-emerald-600/40 text-emerald-700 hover:border-emerald-600 hover:bg-emerald-50 dark:hover:bg-emerald-950/20 rounded-lg cursor-pointer"
                     >
                       <Plus className="h-3.5 w-3.5" />
-                      Добавить пользовательскую характеристику (
-                      {customBuildingFeatures.length}/3)
+                      {isTg
+                        ? `Иловаи хусусияти иловагӣ (${customBuildingFeatures.length}/3)`
+                        : `Добавить пользовательскую характеристику (${customBuildingFeatures.length}/3)`}
                     </Button>
                   </ResponsiveTooltip>
                 </div>
@@ -710,7 +766,9 @@ export default function EditProjectPage() {
             {/* Toggles */}
             <div className="pt-2 border-t grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
               <div className="flex items-center justify-between p-3 rounded-lg border bg-muted/30">
-                <span className="font-semibold">Подземный паркинг</span>
+                <span className="font-semibold">
+                  {isTg ? "Таваққуфгоҳи зеризаминӣ" : "Подземный паркинг"}
+                </span>
                 <Switch
                   checked={hasUndergroundParking}
                   onCheckedChange={setHasUndergroundParking}
@@ -718,12 +776,16 @@ export default function EditProjectPage() {
               </div>
 
               <div className="flex items-center justify-between p-3 rounded-lg border bg-muted/30">
-                <span className="font-semibold">Скоростные лифты</span>
+                <span className="font-semibold">
+                  {isTg ? "Лифтҳои тезрав" : "Скоростные лифты"}
+                </span>
                 <Switch checked={hasElevator} onCheckedChange={setHasElevator} />
               </div>
 
               <div className="flex items-center justify-between p-3 rounded-lg border bg-muted/30">
-                <span className="font-semibold">Автономное отопление</span>
+                <span className="font-semibold">
+                  {isTg ? "Гармидиҳии мустақил" : "Автономное отопление"}
+                </span>
                 <Switch
                   checked={hasAutonomousHeating}
                   onCheckedChange={setHasAutonomousHeating}
@@ -739,19 +801,21 @@ export default function EditProjectPage() {
             <div className="flex items-center justify-between">
               <CardTitle className="text-sm font-bold flex items-center gap-2">
                 <Paintbrush className="h-4 w-4 text-emerald-600" />
-                Отделка и комплектация
+                {isTg ? "Пардоз ва таҷҳизонидан" : "Отделка и комплектация"}
               </CardTitle>
               <div className="text-[11px] font-semibold px-2.5 py-1 rounded-md bg-emerald-50 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-300 border border-emerald-200">
-                Базовый тип:{" "}
+                {isTg ? "Намуди асосӣ: " : "Базовый тип: "}
                 {finishing === "rough"
-                  ? "Черновая"
+                  ? isTg ? "Пардози аввалия (қуттӣ)" : "Черновая"
                   : finishing === "pre_finishing"
-                  ? "Предчистовая (White box)"
-                  : "Под ключ"}
+                  ? isTg ? "Пардози пешакӣ (White box)" : "Предчистовая (White box)"
+                  : isTg ? "Бо таъмири пурра" : "Под ключ"}
               </div>
             </div>
             <CardDescription className="text-xs">
-              Добавьте до 3 расширенных характеристик отделки с подробным описанием в модальном окне
+              {isTg
+                ? "То 3 хусусияти васеи пардозро бо тавсифи муфассал дар равзанаи модалӣ илова намоед"
+                : "Добавьте до 3 расширенных характеристик отделки с подробным описанием в модальном окне"}
             </CardDescription>
           </CardHeader>
           <CardContent className="p-4 space-y-4">
@@ -773,7 +837,7 @@ export default function EditProjectPage() {
                         </span>
                       </div>
                       <p className="text-[11px] text-muted-foreground line-clamp-2 mt-1 leading-relaxed">
-                        {feat.description || "Без описания"}
+                        {feat.description || (isTg ? "Бе тавсиф" : "Без описания")}
                       </p>
                     </div>
 
@@ -783,18 +847,18 @@ export default function EditProjectPage() {
                         variant="ghost"
                         size="sm"
                         onClick={() => handleOpenViewFinishingDialog(feat)}
-                        title="Посмотреть полное описание"
+                        title={isTg ? "Дидани тавсифи пурра" : "Посмотреть полное описание"}
                         className="h-7 px-2 text-[11px] text-muted-foreground hover:text-emerald-600 rounded-md gap-1 cursor-pointer"
                       >
                         <Eye className="h-3 w-3" />
-                        Просмотр
+                        {isTg ? "Муоина" : "Просмотр"}
                       </Button>
                       <Button
                         type="button"
                         variant="ghost"
                         size="icon"
                         onClick={() => handleOpenEditFinishingDialog(feat)}
-                        title="Редактировать"
+                        title={isTg ? "Таҳрир кардан" : "Редактировать"}
                         className="h-7 w-7 text-muted-foreground hover:text-foreground rounded-md cursor-pointer"
                       >
                         <Edit3 className="h-3 w-3" />
@@ -804,7 +868,7 @@ export default function EditProjectPage() {
                         variant="ghost"
                         size="icon"
                         onClick={() => handleRemoveFinishingFeature(feat.id)}
-                        title="Удалить"
+                        title={isTg ? "Нест кардан" : "Удалить"}
                         className="h-7 w-7 text-muted-foreground hover:text-destructive hover:bg-destructive/10 rounded-md cursor-pointer"
                       >
                         <Trash2 className="h-3 w-3" />
@@ -819,10 +883,14 @@ export default function EditProjectPage() {
                   <Sparkles className="h-4 w-4" />
                 </div>
                 <p className="text-xs font-medium text-foreground">
-                  Индивидуальные характеристики отделки еще не добавлены
+                  {isTg
+                    ? "Хусусиятҳои инфиродии пардоз ҳоло илова нашудаанд"
+                    : "Индивидуальные характеристики отделки еще не добавлены"}
                 </p>
                 <p className="text-[11px] text-muted-foreground max-w-md mx-auto">
-                  Вы можете добавить до 3 уникальных параметров (домофон, входная дверь, звукоизоляция, стяжка) с подробным описанием.
+                  {isTg
+                    ? "Шумо метавонед то 3 нишондиҳандаи хосро (домофон, дари даромадгоҳ, садоизолятсия, ҳамворкунии фарш) бо тавсифи муфассал илова намоед."
+                    : "Вы можете добавить до 3 уникальных параметров (домофон, входная дверь, звукоизоляция, стяжка) с подробным описанием."}
                 </p>
               </div>
             )}
@@ -839,12 +907,18 @@ export default function EditProjectPage() {
                     className="h-9 px-4 text-xs font-semibold bg-white dark:bg-card border-emerald-600/40 text-emerald-700 hover:border-emerald-600 hover:bg-emerald-50 dark:hover:bg-emerald-950/20 rounded-xl gap-1.5 shadow-xs cursor-pointer"
                   >
                     <Plus className="h-3.5 w-3.5" />
-                    Добавить характеристику отделки ({finishingFeatures.length}/3)
+                    {isTg
+                      ? `Иловаи хусусияти пардоз (${finishingFeatures.length}/3)`
+                      : `Добавить характеристику отделки (${finishingFeatures.length}/3)`}
                   </Button>
 
                   <ResponsiveTooltip
-                    title="Характеристика отделки"
-                    content="Вы можете добавить свою характеристику, например „Домофон“, и дать ей расширенное описание, например „В каждой квартире установлен IP-видеодомофон с возможностью интеграции в систему «Умный дом»“"
+                    title={isTg ? "Хусусияти пардоз" : "Характеристика отделки"}
+                    content={
+                      isTg
+                        ? "Шумо метавонед хусусияти худро илова намоед, масалан «Домофон» ва тавсифи муфассали онро пешниҳод кунед"
+                        : "Вы можете добавить свою характеристику, например „Домофон“, и дать ей расширенное описание, например „В каждой квартире установлен IP-видеодомофон с возможностью интеграции в систему «Умный дом»“"
+                    }
                   >
                     <span className="p-1.5 text-muted-foreground hover:text-emerald-600 cursor-pointer">
                       <HelpCircle className="h-4 w-4" />
@@ -854,7 +928,9 @@ export default function EditProjectPage() {
               ) : (
                 <div className="text-xs text-emerald-700 dark:text-emerald-300 font-medium flex items-center gap-1.5 bg-emerald-50 dark:bg-emerald-950/40 px-3 py-1.5 rounded-lg border border-emerald-200">
                   <CheckCircle2 className="h-3.5 w-3.5" />
-                  Добавлено максимальное количество характеристик (3 из 3)
+                  {isTg
+                    ? "Шумораи ниҳоии хусусиятҳо илова шуд (3 аз 3)"
+                    : "Добавлено максимальное количество характеристик (3 из 3)"}
                 </div>
               )}
             </div>
@@ -865,7 +941,7 @@ export default function EditProjectPage() {
         <div className="flex justify-end gap-3 pt-2">
           <Link href="/developer-admin/projects">
             <Button variant="outline" type="button" className="text-xs">
-              Отмена
+              {isTg ? "Бекор кардан" : "Отмена"}
             </Button>
           </Link>
           <Button
@@ -874,7 +950,9 @@ export default function EditProjectPage() {
             className="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs px-6 gap-2 shadow-xs cursor-pointer"
           >
             <Save className="h-4 w-4" />
-            {saving ? "Сохранение..." : "Сохранить изменения"}
+            {saving
+              ? isTg ? "Дар ҳоли сабт..." : "Сохранение..."
+              : isTg ? "Сабти тағйирот" : "Сохранить изменения"}
           </Button>
         </div>
       </form>

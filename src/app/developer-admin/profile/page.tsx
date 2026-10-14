@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { INITIAL_DEVELOPERS } from "@/lib/data/mock-db";
+import { useLanguage } from "@/lib/i18n/language-context";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -27,6 +28,9 @@ import {
 } from "lucide-react";
 
 export default function DeveloperProfilePage() {
+  const { language } = useLanguage();
+  const isTg = language === "tg";
+
   const dev = INITIAL_DEVELOPERS[0]; // Рахш Сохтмон
   const [name, setName] = useState(dev.name);
   const [description, setDescription] = useState(dev.description);
@@ -55,16 +59,18 @@ export default function DeveloperProfilePage() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-extrabold text-foreground">
-            Профиль компании-застройщика
+            {isTg ? "Профили ширкати сохтмонӣ" : "Профиль компании-застройщика"}
           </h1>
           <p className="text-xs text-muted-foreground mt-0.5">
-            Информация отображается на публичной странице компании и карточках ваших ЖК
+            {isTg
+              ? "Маълумот дар саҳифаи расмии ширкат ва кортҳои маҷмааҳои истиқоматии шумо намоиш дода мешавад"
+              : "Информация отображается на публичной странице компании и карточках ваших ЖК"}
           </p>
         </div>
         {savedSuccess && (
           <div className="flex items-center gap-1.5 text-xs font-semibold text-emerald-600 bg-emerald-50 dark:bg-emerald-950/40 px-3 py-1.5 rounded-lg border border-emerald-300">
             <CheckCircle2 className="h-4 w-4" />
-            Изменения успешно сохранены!
+            {isTg ? "Тағйирот бомуваффақият сабт шуд!" : "Изменения успешно сохранены!"}
           </div>
         )}
       </div>
@@ -75,17 +81,19 @@ export default function DeveloperProfilePage() {
           <CardHeader className="p-4 pb-2">
             <CardTitle className="text-sm font-bold flex items-center gap-2">
               <Building2 className="h-4 w-4 text-emerald-600" />
-              Основная информация
+              {isTg ? "Маълумоти асосӣ" : "Основная информация"}
             </CardTitle>
             <CardDescription className="text-xs">
-              Официальное название и позиционирование на рынке Согдийской области
+              {isTg
+                ? "Номи расмӣ ва мавқеъ дар бозори вилояти Суғд"
+                : "Официальное название и позиционирование на рынке Согдийской области"}
             </CardDescription>
           </CardHeader>
           <CardContent className="p-4 space-y-4">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="space-y-1.5">
                 <Label htmlFor="dev-name" className="text-xs">
-                  Название компании
+                  {isTg ? "Номи ширкат" : "Название компании"}
                 </Label>
                 <Input
                   id="dev-name"
@@ -97,7 +105,7 @@ export default function DeveloperProfilePage() {
 
               <div className="space-y-1.5">
                 <Label htmlFor="dev-year" className="text-xs">
-                  Год основания
+                  {isTg ? "Соли таъсисёбӣ" : "Год основания"}
                 </Label>
                 <Input
                   id="dev-year"
@@ -110,7 +118,7 @@ export default function DeveloperProfilePage() {
 
             <div className="space-y-1.5">
               <Label htmlFor="dev-desc" className="text-xs">
-                Описание компании
+                {isTg ? "Тавсифи муфассали ширкат" : "Описание компании"}
               </Label>
               <Textarea
                 id="dev-desc"
@@ -127,17 +135,19 @@ export default function DeveloperProfilePage() {
           <CardHeader className="p-4 pb-2">
             <CardTitle className="text-sm font-bold flex items-center gap-2">
               <ImageIcon className="h-4 w-4 text-emerald-600" />
-              Логотип и обложка витрины
+              {isTg ? "Нишон (логотип) ва муқоваи витрина" : "Логотип и обложка витрины"}
             </CardTitle>
             <CardDescription className="text-xs">
-              URL-ссылки на изображения логотипа (квадратное) и главного баннера
+              {isTg
+                ? "Пайвандҳо ба акси нишон (чоркунҷа) ва баннери асосии ширкат"
+                : "URL-ссылки на изображения логотипа (квадратное) и главного баннера"}
             </CardDescription>
           </CardHeader>
           <CardContent className="p-4 space-y-4">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="space-y-1.5">
                 <Label htmlFor="dev-logo" className="text-xs">
-                  Ссылка на логотип (URL)
+                  {isTg ? "Пайванд ба нишон (URL)" : "Ссылка на логотип (URL)"}
                 </Label>
                 <Input
                   id="dev-logo"
@@ -145,13 +155,17 @@ export default function DeveloperProfilePage() {
                   onChange={(e) => setLogoUrl(e.target.value)}
                 />
                 <div className="mt-2 h-16 w-16 rounded-xl border overflow-hidden bg-muted">
-                  <img src={logoUrl} alt="Превью логотипа" className="w-full h-full object-cover" />
+                  <img
+                    src={logoUrl}
+                    alt={isTg ? "Пешнамоиши нишон" : "Превью логотипа"}
+                    className="w-full h-full object-cover"
+                  />
                 </div>
               </div>
 
               <div className="space-y-1.5">
                 <Label htmlFor="dev-cover" className="text-xs">
-                  Ссылка на обложку (URL)
+                  {isTg ? "Пайванд ба муқова (URL)" : "Ссылка на обложку (URL)"}
                 </Label>
                 <Input
                   id="dev-cover"
@@ -159,7 +173,11 @@ export default function DeveloperProfilePage() {
                   onChange={(e) => setCoverUrl(e.target.value)}
                 />
                 <div className="mt-2 h-16 w-full rounded-xl border overflow-hidden bg-muted">
-                  <img src={coverUrl} alt="Превью обложки" className="w-full h-full object-cover" />
+                  <img
+                    src={coverUrl}
+                    alt={isTg ? "Пешнамоиши муқова" : "Превью обложки"}
+                    className="w-full h-full object-cover"
+                  />
                 </div>
               </div>
             </div>
@@ -171,16 +189,18 @@ export default function DeveloperProfilePage() {
           <CardHeader className="p-4 pb-2">
             <CardTitle className="text-sm font-bold flex items-center gap-2">
               <MapPin className="h-4 w-4 text-emerald-600" />
-              Контакты и локация в Согде
+              {isTg ? "Тамос ва макон дар вилояти Суғд" : "Контакты и локация в Согде"}
             </CardTitle>
             <CardDescription className="text-xs">
-              Контакты, по которым клиенты смогут связаться с отделом продаж
+              {isTg
+                ? "Маълумот барои тамос бо шуъбаи фурӯш барои мизоҷон"
+                : "Контакты, по которым клиенты смогут связаться с отделом продаж"}
             </CardDescription>
           </CardHeader>
           <CardContent className="p-4 space-y-4">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="space-y-1.5">
-                <Label className="text-xs">Город офиса</Label>
+                <Label className="text-xs">{isTg ? "Шаҳри қароргоҳ" : "Город офиса"}</Label>
                 <Select
                   value={city}
                   onValueChange={(val) => {
@@ -193,7 +213,7 @@ export default function DeveloperProfilePage() {
                   <SelectContent>
                     {SOGD_CITIES.map((c) => (
                       <SelectItem key={c.value} value={c.value}>
-                        {c.nameRu}
+                        {isTg ? c.nameTj || c.nameRu : c.nameRu}
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -202,7 +222,7 @@ export default function DeveloperProfilePage() {
 
               <div className="space-y-1.5">
                 <Label htmlFor="dev-address" className="text-xs">
-                  Адрес офиса продаж
+                  {isTg ? "Суроғаи шуъбаи фурӯш" : "Адрес офиса продаж"}
                 </Label>
                 <Input
                   id="dev-address"
@@ -215,7 +235,7 @@ export default function DeveloperProfilePage() {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               <div className="space-y-1.5">
                 <Label htmlFor="dev-phone" className="text-xs">
-                  Основной телефон отдела продаж
+                  {isTg ? "Рақами асосии шуъбаи фурӯш" : "Основной телефон отдела продаж"}
                 </Label>
                 <Input
                   id="dev-phone"
@@ -227,7 +247,7 @@ export default function DeveloperProfilePage() {
 
               <div className="space-y-1.5">
                 <Label htmlFor="dev-whatsapp" className="text-xs">
-                  WhatsApp (для быстрых лидов)
+                  {isTg ? "WhatsApp (барои дархостҳои фаврӣ)" : "WhatsApp (для быстрых лидов)"}
                 </Label>
                 <Input
                   id="dev-whatsapp"
@@ -239,7 +259,7 @@ export default function DeveloperProfilePage() {
 
               <div className="space-y-1.5">
                 <Label htmlFor="dev-telegram" className="text-xs">
-                  Telegram канал / юзернейм
+                  {isTg ? "Канал ё корбари Telegram" : "Telegram канал / юзернейм"}
                 </Label>
                 <Input
                   id="dev-telegram"
@@ -250,7 +270,7 @@ export default function DeveloperProfilePage() {
 
               <div className="space-y-1.5">
                 <Label htmlFor="dev-email" className="text-xs">
-                  Электронная почта (Email)
+                  {isTg ? "Почтаи электронӣ (Email)" : "Электронная почта (Email)"}
                 </Label>
                 <Input
                   id="dev-email"
@@ -262,7 +282,7 @@ export default function DeveloperProfilePage() {
 
               <div className="space-y-1.5 sm:col-span-2">
                 <Label htmlFor="dev-site" className="text-xs">
-                  Официальный веб-сайт
+                  {isTg ? "Сомонаи расмӣ" : "Официальный веб-сайт"}
                 </Label>
                 <Input
                   id="dev-site"
@@ -279,10 +299,10 @@ export default function DeveloperProfilePage() {
         <div className="flex justify-end gap-3 pt-2">
           <Button
             type="submit"
-            className="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs px-6 shadow-xs gap-2"
+            className="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs px-6 shadow-xs gap-2 cursor-pointer"
           >
             <Save className="h-4 w-4" />
-            Сохранить изменения
+            {isTg ? "Сабти тағйирот" : "Сохранить изменения"}
           </Button>
         </div>
       </form>

@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Sun, Compass, CheckCircle2, RotateCw } from "lucide-react";
 import { SunTrackCompass } from "../sun-track-widget";
+import { useLanguage } from "@/lib/i18n/language-context";
 
 interface ProjectInsolationSettingsProps {
   initialAngle?: number;
@@ -18,6 +19,8 @@ export function ProjectInsolationSettings({
   initialAngle = 180, // Default: South facing
   onChange,
 }: ProjectInsolationSettingsProps) {
+  const { language } = useLanguage();
+  const isTg = language === "tg";
   const [angle, setAngle] = useState(initialAngle);
   const [saved, setSaved] = useState(false);
 
@@ -27,27 +30,35 @@ export function ProjectInsolationSettings({
   };
 
   const getOrientationName = (deg: number) => {
-    if (deg >= 337.5 || deg < 22.5) return "Север (С)";
-    if (deg >= 22.5 && deg < 67.5) return "Северо-Восток (СВ)";
-    if (deg >= 67.5 && deg < 112.5) return "Восток (В)";
-    if (deg >= 112.5 && deg < 157.5) return "Юго-Восток (ЮВ)";
-    if (deg >= 157.5 && deg < 202.5) return "Юг (Ю)";
-    if (deg >= 202.5 && deg < 247.5) return "Юго-Запад (ЮЗ)";
-    if (deg >= 247.5 && deg < 292.5) return "Запад (З)";
-    return "Северо-Запад (СЗ)";
+    if (deg >= 337.5 || deg < 22.5) return isTg ? "Шимол (Ш)" : "Север (С)";
+    if (deg >= 22.5 && deg < 67.5) return isTg ? "Шимолу Шарқ (ШШ)" : "Северо-Восток (СВ)";
+    if (deg >= 67.5 && deg < 112.5) return isTg ? "Шарқ (Шқ)" : "Восток (В)";
+    if (deg >= 112.5 && deg < 157.5) return isTg ? "Ҷанубу Шарқ (ҶШ)" : "Юго-Восток (ЮВ)";
+    if (deg >= 157.5 && deg < 202.5) return isTg ? "Ҷануб (Ҷ)" : "Юг (Ю)";
+    if (deg >= 202.5 && deg < 247.5) return isTg ? "Ҷанубу Ғарб (ҶҒ)" : "Юго-Запад (ЮЗ)";
+    if (deg >= 247.5 && deg < 292.5) return isTg ? "Ғарб (Ғ)" : "Запад (З)";
+    return isTg ? "Шимолу Ғарб (ШҒ)" : "Северо-Запад (СЗ)";
   };
 
   const getInsolationAdvice = (deg: number) => {
     if (deg >= 135 && deg <= 225) {
-      return "Идеальная инсоляция: главный фасад получает максимум солнечного света в дневные часы (с 11:00 до 16:00).";
+      return isTg
+        ? "Инсолятсияи беҳтарин: намои асосӣ дар соатҳои рӯзона (аз 11:00 то 16:00) ҳадди аксари нури офтобро мегирад."
+        : "Идеальная инсоляция: главный фасад получает максимум солнечного света в дневные часы (с 11:00 до 16:00).";
     }
     if (deg >= 45 && deg < 135) {
-      return "Восточная экспозиция: мягкое утреннее солнце с восхода до полудня, прохлада во второй половине дня.";
+      return isTg
+        ? "Экспозитсияи шарқӣ: нури мулоими субҳгоҳӣ то нисфирӯзӣ, салқинии гуворо дар нимаи дуюми рӯз."
+        : "Восточная экспозиция: мягкое утреннее солнце с восхода до полудня, прохлада во второй половине дня.";
     }
     if (deg > 225 && deg <= 315) {
-      return "Западная экспозиция: красивый вечерний закатный свет, рекомендуется энергоэффективное остекление.";
+      return isTg
+        ? "Экспозитсияи ғарбӣ: нури зебои шомгоҳии ғуруб, шишабандии сарфакунандаи нерӯ тавсия мешавад."
+        : "Западная экспозиция: красивый вечерний закатный свет, рекомендуется энергоэффективное остекление.";
     }
-    return "Северная экспозиция: рассеянный мягкий дневной свет без перегрева помещений летом.";
+    return isTg
+      ? "Экспозитсияи шимолӣ: нури мулоими рӯзона бидуни гармшавии аз ҳад зиёди хонаҳо дар тобистон."
+      : "Северная экспозиция: рассеянный мягкий дневной свет без перегрева помещений летом.";
   };
 
   const handleSave = () => {
@@ -61,14 +72,18 @@ export function ProjectInsolationSettings({
         <div className="flex items-center justify-between">
           <CardTitle className="text-sm font-bold flex items-center gap-2">
             <Sun className="h-4 w-4 text-amber-500 fill-amber-500/20" />
-            Ориентация здания и солнечный трек (Инсоляция)
+            {isTg
+              ? "Самти бино ва пайроҳаи офтоб (Инсолятсия)"
+              : "Ориентация здания и солнечный трек (Инсоляция)"}
           </CardTitle>
           <Badge variant="outline" className="text-xs">
             {getOrientationName(angle)} • {angle}°
           </Badge>
         </div>
         <CardDescription className="text-xs">
-          Задайте ориентацию главного фасада ЖК относительно севера. Это позволит покупателям точно оценивать освещенность комнат в разное время дня с 09:00 до 18:00.
+          {isTg
+            ? "Самти намои асосии МИ-ро нисбат ба шимол таъйин намоед. Ин ба харидорон имкон медиҳад, ки равшании ҳуҷраҳоро дар вақтҳои гуногуни рӯз аз соати 09:00 то 18:00 дақиқ арзёбӣ кунанд."
+            : "Задайте ориентацию главного фасада ЖК относительно севера. Это позволит покупателям точно оценивать освещенность комнат в разное время дня с 09:00 до 18:00."}
         </CardDescription>
       </CardHeader>
 
@@ -76,7 +91,7 @@ export function ProjectInsolationSettings({
         {saved && (
           <div className="p-2.5 rounded-lg bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-300 text-emerald-800 dark:text-emerald-300 text-xs font-semibold flex items-center gap-2">
             <CheckCircle2 className="h-4 w-4 shrink-0" />
-            Ориентация фасада сохранена!
+            {isTg ? "Самти намои бино сабт шуд!" : "Ориентация фасада сохранена!"}
           </div>
         )}
 
@@ -86,7 +101,7 @@ export function ProjectInsolationSettings({
             <div className="space-y-2">
               <div className="flex items-center justify-between text-xs">
                 <Label className="font-semibold text-foreground">
-                  Угол поворота главного фасада:
+                  {isTg ? "Зовияи гардиши намои асосӣ:" : "Угол поворота главного фасада:"}
                 </Label>
                 <span className="font-mono font-bold text-emerald-600 bg-muted px-2 py-0.5 rounded-md">
                   {angle}° ({getOrientationName(angle)})
@@ -102,22 +117,24 @@ export function ProjectInsolationSettings({
                 className="w-full h-2 bg-slate-200 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer accent-emerald-600"
               />
               <div className="flex justify-between text-[10px] text-muted-foreground font-mono">
-                <span>0° (Север)</span>
-                <span>90° (Восток)</span>
-                <span>180° (Юг)</span>
-                <span>270° (Запад)</span>
+                <span>0° ({isTg ? "Шимол" : "Север"})</span>
+                <span>90° ({isTg ? "Шарқ" : "Восток"})</span>
+                <span>180° ({isTg ? "Ҷануб" : "Юг"})</span>
+                <span>270° ({isTg ? "Ғарб" : "Запад"})</span>
                 <span>360°</span>
               </div>
             </div>
 
             {/* Quick Presets */}
             <div className="flex items-center gap-1.5 flex-wrap text-xs">
-              <span className="text-[11px] text-muted-foreground">Пресеты:</span>
+              <span className="text-[11px] text-muted-foreground">
+                {isTg ? "Шаблонҳо:" : "Пресеты:"}
+              </span>
               {[
-                { label: "Юг (180°)", val: 180 },
-                { label: "Юго-Запад (225°)", val: 225 },
-                { label: "Восток (90°)", val: 90 },
-                { label: "Север (0°)", val: 0 },
+                { label: isTg ? "Ҷануб (180°)" : "Юг (180°)", val: 180 },
+                { label: isTg ? "Ҷанубу Ғарб (225°)" : "Юго-Запад (225°)", val: 225 },
+                { label: isTg ? "Шарқ (90°)" : "Восток (90°)", val: 90 },
+                { label: isTg ? "Шимол (0°)" : "Север (0°)", val: 0 },
               ].map((p) => (
                 <button
                   key={p.label}
@@ -138,7 +155,7 @@ export function ProjectInsolationSettings({
             <div className="p-3 rounded-xl bg-amber-500/10 border border-amber-500/20 text-xs text-amber-900 dark:text-amber-200 space-y-1">
               <div className="font-bold flex items-center gap-1.5">
                 <Sun className="h-3.5 w-3.5 text-amber-500 fill-amber-500" />
-                Оценка инсоляции:
+                {isTg ? "Арзёбии инсолятсия:" : "Оценка инсоляции:"}
               </div>
               <p className="text-[11px] leading-relaxed opacity-90">
                 {getInsolationAdvice(angle)}
@@ -154,10 +171,12 @@ export function ProjectInsolationSettings({
 
             <div className="text-center space-y-0.5">
               <div className="text-xs font-bold text-foreground">
-                Компас витрины синхронизирован
+                {isTg ? "Қутбнамои витрина ҳамоҳанг шуд" : "Компас витрины синхронизирован"}
               </div>
               <div className="text-[11px] text-muted-foreground">
-                Траектория солнца рассчитывается с учётом ориентации фасада {angle}°
+                {isTg
+                  ? `Траекторияи офтоб бо назардошти самти намои ${angle}° ҳисоб карда мешавад`
+                  : `Траектория солнца рассчитывается с учётом ориентации фасада ${angle}°`}
               </div>
             </div>
           </div>

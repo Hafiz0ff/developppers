@@ -16,19 +16,26 @@ import {
   Sparkles,
   Link2,
 } from "lucide-react";
+import { useLanguage } from "@/lib/i18n/language-context";
 
 export function ProjectViewsLayoutsManager() {
+  const { language } = useLanguage();
+  const isTg = language === "tg";
   const [mappedNotification, setMappedNotification] = useState<string | null>(null);
 
   // Pool mapping state
-  const [selectedLayoutType, setSelectedLayoutType] = useState("2-комнатная (68.4 м²)");
-  const [targetSection, setTargetSection] = useState("Секция 1");
-  const [targetFloorRange, setTargetFloorRange] = useState("3 — 12 этажи");
+  const [selectedLayoutType, setSelectedLayoutType] = useState(
+    isTg ? "2-ҳуҷрагӣ (68.4 м²)" : "2-комнатная (68.4 м²)"
+  );
+  const [targetSection, setTargetSection] = useState(isTg ? "Бахши 1" : "Секция 1");
+  const [targetFloorRange, setTargetFloorRange] = useState(isTg ? "Ошёнаҳои 3 — 12" : "3 — 12 этажи");
   const [targetRooms, setTargetRooms] = useState("2");
 
   const handleApplyPoolMapping = () => {
     setMappedNotification(
-      `Планировка «${selectedLayoutType}» успешно привязана ко всем ${targetRooms}-комнатным квартирам (${targetSection}, ${targetFloorRange})!`
+      isTg
+        ? `Нақшаи «${selectedLayoutType}» ба ҳамаи хонаҳои ${targetRooms}-ҳуҷрагӣ (${targetSection}, ${targetFloorRange}) бомуваффақият пайваст карда шуд!`
+        : `Планировка «${selectedLayoutType}» успешно привязана ко всем ${targetRooms}-комнатным квартирам (${targetSection}, ${targetFloorRange})!`
     );
     setTimeout(() => setMappedNotification(null), 4000);
   };
@@ -36,26 +43,26 @@ export function ProjectViewsLayoutsManager() {
   const windowViews = [
     {
       id: "wv_1",
-      title: "Панорама на набережную Сырдарьи",
-      section: "Секция 1",
-      floors: "4 — 16 этажи",
-      direction: "Юго-Запад",
+      title: isTg ? "Манзараи соҳили Сирдарё" : "Панорама на набережную Сырдарьи",
+      section: isTg ? "Бахши 1" : "Секция 1",
+      floors: isTg ? "Ошёнаҳои 4 — 16" : "4 — 16 этажи",
+      direction: isTg ? "Ҷанубу Ғарб" : "Юго-Запад",
       imageUrl: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1600&h=1000&fit=crop",
     },
     {
       id: "wv_2",
-      title: "Тихий закрытый двор-парк без машин",
-      section: "Секция 1 & 2",
-      floors: "1 — 8 этажи",
-      direction: "Восток",
+      title: isTg ? "Ҳавлии орому маҳфуз бидуни мошинҳо" : "Тихий закрытый двор-парк без машин",
+      section: isTg ? "Бахши 1 & 2" : "Секция 1 & 2",
+      floors: isTg ? "Ошёнаҳои 1 — 8" : "1 — 8 этажи",
+      direction: isTg ? "Шарқ" : "Восток",
       imageUrl: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=1600&h=1000&fit=crop",
     },
     {
       id: "wv_3",
-      title: "Вид на Туркестанский хребет и горы",
-      section: "Секция 2",
-      floors: "9 — 16 этажи",
-      direction: "Север",
+      title: isTg ? "Манзара ба қаторкӯҳҳои Туркистон" : "Вид на Туркестанский хребет и горы",
+      section: isTg ? "Бахши 2" : "Секция 2",
+      floors: isTg ? "Ошёнаҳои 9 — 16" : "9 — 16 этажи",
+      direction: isTg ? "Шимол" : "Север",
       imageUrl: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1600&h=1000&fit=crop",
     },
   ];
@@ -90,14 +97,16 @@ export function ProjectViewsLayoutsManager() {
         <div className="flex items-center justify-between">
           <CardTitle className="text-sm font-bold flex items-center gap-2">
             <Layers className="h-4 w-4 text-emerald-600" />
-            Виды из окон и типовые планировки
+            {isTg ? "Намудҳо аз тиреза ва нақшаҳои намунавӣ" : "Виды из окон и типовые планировки"}
           </CardTitle>
           <Badge variant="outline" className="text-xs">
-            3 планировки • 3 ракурса окон
+            {isTg ? "3 нақша • 3 зовияи тиреза" : "3 планировки • 3 ракурса окон"}
           </Badge>
         </div>
         <CardDescription className="text-xs">
-          Привязывайте чертежи планировок и фотографии видов из окон к конкретным квартирам или сразу ко всему пулу однотипных квартир.
+          {isTg
+            ? "Нақшаҳои хонаҳо ва аксҳои намуд аз тирезаро ба манзилҳои мушаххас ё ба тамоми пули хонаҳои якхела пайваст намоед."
+            : "Привязывайте чертежи планировок и фотографии видов из окон к конкретным квартирам или сразу ко всему пулу однотипных квартир."}
         </CardDescription>
       </CardHeader>
 
@@ -114,51 +123,73 @@ export function ProjectViewsLayoutsManager() {
           <div className="flex items-center justify-between">
             <span className="text-xs font-bold text-foreground flex items-center gap-1.5">
               <Link2 className="h-3.5 w-3.5 text-emerald-600" />
-              Массовая привязка планировки к пулу квартир
+              {isTg
+                ? "Пайвасткунии оммавии нақша ба пули хонаҳо"
+                : "Массовая привязка планировки к пулу квартир"}
             </span>
             <Badge className="bg-emerald-600 text-white text-[10px]">
-              Экономия времени
+              {isTg ? "Сарфаи вақт" : "Экономия времени"}
             </Badge>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-4 gap-3 text-xs">
             <div className="space-y-1">
-              <Label className="text-[11px] font-semibold">Выберите планировку</Label>
+              <Label className="text-[11px] font-semibold">
+                {isTg ? "Нақшаро интихоб кунед" : "Выберите планировку"}
+              </Label>
               <select
                 value={selectedLayoutType}
                 onChange={(e) => setSelectedLayoutType(e.target.value)}
                 className="w-full h-8 text-xs bg-background border rounded-md px-2"
               >
-                <option value="1-комнатная (45.2 м²)">1-комн. (45.2 м²)</option>
-                <option value="2-комнатная (68.4 м²)">2-комн. (68.4 м²)</option>
-                <option value="3-комнатная (96.8 м²)">3-комн. (96.8 м²)</option>
+                <option value="1-комнатная (45.2 м²)">
+                  {isTg ? "1-ҳуҷр. (45.2 м²)" : "1-комн. (45.2 м²)"}
+                </option>
+                <option value="2-комнатная (68.4 м²)">
+                  {isTg ? "2-ҳуҷр. (68.4 м²)" : "2-комн. (68.4 м²)"}
+                </option>
+                <option value="3-комнатная (96.8 м²)">
+                  {isTg ? "3-ҳуҷр. (96.8 м²)" : "3-комн. (96.8 м²)"}
+                </option>
               </select>
             </div>
 
             <div className="space-y-1">
-              <Label className="text-[11px] font-semibold">Подъезд / Секция</Label>
+              <Label className="text-[11px] font-semibold">
+                {isTg ? "Даромадгоҳ / Бахш" : "Подъезд / Секция"}
+              </Label>
               <select
                 value={targetSection}
                 onChange={(e) => setTargetSection(e.target.value)}
                 className="w-full h-8 text-xs bg-background border rounded-md px-2"
               >
-                <option value="Секция 1">Секция 1</option>
-                <option value="Секция 2">Секция 2</option>
-                <option value="Все секции">Все секции</option>
+                <option value="Секция 1">{isTg ? "Бахши 1" : "Секция 1"}</option>
+                <option value="Секция 2">{isTg ? "Бахши 2" : "Секция 2"}</option>
+                <option value="Все секции">{isTg ? "Ҳамаи бахшҳо" : "Все секции"}</option>
               </select>
             </div>
 
             <div className="space-y-1">
-              <Label className="text-[11px] font-semibold">Диапазон этажей</Label>
+              <Label className="text-[11px] font-semibold">
+                {isTg ? "Фосилаи ошёнаҳо" : "Диапазон этажей"}
+              </Label>
               <select
                 value={targetFloorRange}
                 onChange={(e) => setTargetFloorRange(e.target.value)}
                 className="w-full h-8 text-xs bg-background border rounded-md px-2"
               >
-                <option value="1 — 16 этажи">Все этажи (1 — 16)</option>
-                <option value="1 — 4 этажи">Нижние (1 — 4)</option>
-                <option value="3 — 12 этажи">Средние (3 — 12)</option>
-                <option value="13 — 16 этажи">Верхние (13 — 16)</option>
+                <option value="1 — 16 этажи">
+                  {isTg ? "Ҳамаи ошёнаҳо (1 — 16)" : "Все этажи (1 — 16)"}
+                </option>
+                <option value="1 — 4 этажи">
+                  {isTg ? "Поёнӣ (1 — 4)" : "Нижние (1 — 4)"}
+                </option>
+                <option value="3 — 12 этажи">
+                  {isTg ? "Миёна (3 — 12)" : "Средние (3 — 12)"}
+                </option>
+                <option value="13 — 16 этажи">
+                  {isTg ? "Болоӣ (13 — 16)" : "Верхние (13 — 16)"}
+                </option>
               </select>
             </div>
 
@@ -169,7 +200,7 @@ export function ProjectViewsLayoutsManager() {
                 className="w-full h-8 text-xs font-semibold bg-emerald-600 hover:bg-emerald-700 text-white gap-1.5 cursor-pointer shadow-xs"
               >
                 <Sparkles className="h-3.5 w-3.5" />
-                Привязать к пулу
+                {isTg ? "Ба пул пайваст кардан" : "Привязать к пулу"}
               </Button>
             </div>
           </div>
@@ -179,7 +210,7 @@ export function ProjectViewsLayoutsManager() {
         <div className="space-y-2">
           <div className="text-xs font-bold text-foreground flex items-center gap-1.5">
             <Eye className="h-3.5 w-3.5 text-emerald-600" />
-            Ракурсы видов из окон
+            {isTg ? "Зовияҳои намуд аз тиреза" : "Ракурсы видов из окон"}
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -209,7 +240,7 @@ export function ProjectViewsLayoutsManager() {
         <div className="space-y-2 pt-2">
           <div className="text-xs font-bold text-foreground flex items-center gap-1.5">
             <FileText className="h-3.5 w-3.5 text-emerald-600" />
-            Типовые планировочные решения
+            {isTg ? "Қарорҳои нақшавии намунавӣ" : "Типовые планировочные решения"}
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -219,7 +250,11 @@ export function ProjectViewsLayoutsManager() {
                 className="rounded-xl border bg-card overflow-hidden flex flex-col justify-between p-3 space-y-2"
               >
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-bold text-foreground">{lay.name}</span>
+                  <span className="text-xs font-bold text-foreground">
+                    {isTg
+                      ? lay.name.replace("комнатная квартира", "ҳуҷрагӣ").replace("Тип", "Намуди")
+                      : lay.name}
+                  </span>
                   <Badge variant="outline" className="text-[10px] text-emerald-600 border-emerald-300">
                     {lay.area} м²
                   </Badge>
@@ -228,7 +263,9 @@ export function ProjectViewsLayoutsManager() {
                   <img src={lay.imageUrl} alt={lay.name} className="w-full h-full object-cover" />
                 </div>
                 <div className="text-[11px] text-muted-foreground">
-                  Экспликация: Кухня, Гостиная, Спальня, Санузел, Лоджия
+                  {isTg
+                    ? "Бахшҳо: Ошхона, Меҳмонхона, Хоби калон, Ҳаммом, Айвон"
+                    : "Экспликация: Кухня, Гостиная, Спальня, Санузел, Лоджия"}
                 </div>
               </div>
             ))}

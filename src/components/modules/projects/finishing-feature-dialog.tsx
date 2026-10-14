@@ -15,6 +15,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Sparkles, Edit3, Eye, Check } from "lucide-react";
 import type { FinishingFeature } from "@/lib/data/mock-db";
+import { useLanguage } from "@/lib/i18n/language-context";
 
 interface FinishingFeatureDialogProps {
   open: boolean;
@@ -36,6 +37,8 @@ export function FinishingFeatureDialog({
   onSave,
   onEditRequested,
 }: FinishingFeatureDialogProps) {
+  const { language } = useLanguage();
+  const isTg = language === "tg";
   const [currentMode, setCurrentMode] = useState<"add" | "edit" | "view">(mode);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -75,7 +78,11 @@ export function FinishingFeatureDialog({
     const cleanDesc = description.trim();
 
     if (!cleanTitle) {
-      setError("Пожалуйста, укажите заголовок характеристики");
+      setError(
+        isTg
+          ? "Лутфан, сарлавҳаи хусусиятро зикр намоед"
+          : "Пожалуйста, укажите заголовок характеристики"
+      );
       return;
     }
 
@@ -108,15 +115,19 @@ export function FinishingFeatureDialog({
             </div>
             <DialogTitle className="text-base font-bold">
               {isViewMode
-                ? "Просмотр характеристики отделки"
+                ? isTg ? "Муоинаи хусусияти пардоз" : "Просмотр характеристики отделки"
                 : currentMode === "edit"
-                ? "Редактирование характеристики отделки"
-                : "Добавление характеристики отделки"}
+                ? isTg ? "Таҳрири хусусияти пардоз" : "Редактирование характеристики отделки"
+                : isTg ? "Иловаи хусусияти пардоз" : "Добавление характеристики отделки"}
             </DialogTitle>
           </div>
           <DialogDescription className="text-xs text-muted-foreground">
             {isViewMode
-              ? "Подробное описание отделочного решения комплекса"
+              ? isTg
+                ? "Тавсифи муфассали қарори пардозии маҷмаа"
+                : "Подробное описание отделочного решения комплекса"
+              : isTg
+              ? "Сарлавҳа ва тавсифи васеи меъёри пардозро барои харидорон пур намоед"
               : "Заполните заголовок и расширенное описание стандарта отделки для покупателей"}
           </DialogDescription>
         </DialogHeader>
@@ -126,17 +137,17 @@ export function FinishingFeatureDialog({
           <div className="space-y-4 py-2">
             <div className="p-3.5 rounded-xl bg-muted/40 border space-y-1">
               <span className="text-[11px] font-medium text-muted-foreground uppercase tracking-wider block">
-                Заголовок
+                {isTg ? "Сарлавҳа" : "Заголовок"}
               </span>
               <p className="text-sm font-semibold text-foreground">{title}</p>
             </div>
 
             <div className="p-3.5 rounded-xl bg-muted/40 border space-y-1.5">
               <span className="text-[11px] font-medium text-muted-foreground uppercase tracking-wider block">
-                Подробное описание
+                {isTg ? "Тавсифи муфассал" : "Подробное описание"}
               </span>
               <p className="text-xs text-foreground/90 whitespace-pre-line leading-relaxed">
-                {description || "Описание не указано"}
+                {description || (isTg ? "Тавсиф зикр нашудааст" : "Описание не указано")}
               </p>
             </div>
           </div>
@@ -153,7 +164,7 @@ export function FinishingFeatureDialog({
             <div className="space-y-1.5">
               <div className="flex items-center justify-between">
                 <Label htmlFor="finishing-title" className="text-xs font-semibold">
-                  Заголовок характеристики *
+                  {isTg ? "Сарлавҳаи хусусият *" : "Заголовок характеристики *"}
                 </Label>
                 <span
                   className={`text-[11px] ${
@@ -167,7 +178,7 @@ export function FinishingFeatureDialog({
               </div>
               <Input
                 id="finishing-title"
-                placeholder="Например, Домофон"
+                placeholder={isTg ? "Масалан, Домофон" : "Например, Домофон"}
                 value={title}
                 onChange={handleTitleChange}
                 maxLength={MAX_TITLE_LENGTH}
@@ -175,7 +186,9 @@ export function FinishingFeatureDialog({
                 className="h-10 text-xs rounded-xl"
               />
               <p className="text-[11px] text-muted-foreground">
-                Краткое емкое название опции (до {MAX_TITLE_LENGTH} знаков)
+                {isTg
+                  ? `Номи мухтасари хосият (то ${MAX_TITLE_LENGTH} аломат)`
+                  : `Краткое емкое название опции (до ${MAX_TITLE_LENGTH} знаков)`}
               </p>
             </div>
 
@@ -183,7 +196,7 @@ export function FinishingFeatureDialog({
             <div className="space-y-1.5">
               <div className="flex items-center justify-between">
                 <Label htmlFor="finishing-desc" className="text-xs font-semibold">
-                  Описание характеристики
+                  {isTg ? "Тавсифи хусусият" : "Описание характеристики"}
                 </Label>
                 <span
                   className={`text-[11px] ${
@@ -198,14 +211,20 @@ export function FinishingFeatureDialog({
               <Textarea
                 id="finishing-desc"
                 rows={4}
-                placeholder="Опишите подробнее особенности: материалы, бренд фурнитуры, интеграцию в Умный дом..."
+                placeholder={
+                  isTg
+                    ? "Хусусиятҳоро муфассалтар шарҳ диҳед: маводҳо, бренди фурнитура, ҳамгироӣ бо «Хонаи ҳушманд»..."
+                    : "Опишите подробнее особенности: материалы, бренд фурнитуры, интеграцию в Умный дом..."
+                }
                 value={description}
                 onChange={handleDescriptionChange}
                 maxLength={MAX_DESCRIPTION_LENGTH}
                 className="text-xs rounded-xl resize-none"
               />
               <p className="text-[11px] text-muted-foreground">
-                Подробные детали для покупателей (до {MAX_DESCRIPTION_LENGTH} знаков)
+                {isTg
+                  ? `Тафсилоти муфассал барои харидорон (то ${MAX_DESCRIPTION_LENGTH} аломат)`
+                  : `Подробные детали для покупателей (до ${MAX_DESCRIPTION_LENGTH} знаков)`}
               </p>
             </div>
 
@@ -217,7 +236,7 @@ export function FinishingFeatureDialog({
                 onClick={() => onOpenChange(false)}
                 className="h-9 px-4 text-xs rounded-xl"
               >
-                Отмена
+                {isTg ? "Бекор кардан" : "Отмена"}
               </Button>
               <Button
                 type="submit"
@@ -226,7 +245,7 @@ export function FinishingFeatureDialog({
                 className="h-9 px-5 text-xs font-semibold bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl shadow-xs gap-1.5 cursor-pointer"
               >
                 <Check className="h-3.5 w-3.5" />
-                Сохранить
+                {isTg ? "Сабт кардан" : "Сохранить"}
               </Button>
             </DialogFooter>
           </form>
@@ -245,7 +264,7 @@ export function FinishingFeatureDialog({
                 }}
               >
                 <Edit3 className="h-3.5 w-3.5 text-emerald-600" />
-                Редактировать
+                {isTg ? "Таҳрир кардан" : "Редактировать"}
               </Button>
             )}
             <Button
@@ -254,7 +273,7 @@ export function FinishingFeatureDialog({
               onClick={() => onOpenChange(false)}
               className="h-9 px-5 text-xs font-semibold bg-slate-900 text-white dark:bg-slate-100 dark:text-slate-900 rounded-xl cursor-pointer"
             >
-              Закрыть
+              {isTg ? "Пӯшидан" : "Закрыть"}
             </Button>
           </DialogFooter>
         )}

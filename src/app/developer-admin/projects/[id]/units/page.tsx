@@ -16,12 +16,18 @@ import {
   ShieldAlert,
 } from "lucide-react";
 
+import { useLanguage } from "@/context/language-context";
+
 export default function DeveloperProjectUnitsPage() {
   const params = useParams();
   const projectId = params?.id as string;
+  const { language, tDual } = useLanguage();
 
   const project =
     INITIAL_PROJECTS.find((p) => p.id === projectId) || INITIAL_PROJECTS[0];
+
+  const displayName = language === "tg" && project.nameTg ? project.nameTg : project.name;
+  const displayAddress = language === "tg" && project.addressTg ? project.addressTg : project.address;
 
   const [units, setUnits] = useState<UnitData[]>(() => {
     const filtered = INITIAL_UNITS.filter(
@@ -40,13 +46,21 @@ export default function DeveloperProjectUnitsPage() {
     );
     const unit = units.find((u) => u.id === unitId);
     setLastUpdated(
-      `Статус ${unit?.unitNumber || "квартиры"} изменен на: ${
-        newStatus === "available"
-          ? "Свободно"
-          : newStatus === "reserved"
-          ? "Забронировано"
-          : "Продано"
-      }`
+      language === "tg"
+        ? `Ҳолати ${unit?.unitNumber ? `хонадони ${unit.unitNumber}` : "хонадон"} ба «${
+            newStatus === "available"
+              ? "Озод"
+              : newStatus === "reserved"
+              ? "Брон"
+              : "Фурӯхта шудааст"
+          }» иваз карда шуд`
+        : `Статус ${unit?.unitNumber ? `квартиры ${unit.unitNumber}` : "квартиры"} изменен на: ${
+            newStatus === "available"
+              ? "Свободно"
+              : newStatus === "reserved"
+              ? "Забронировано"
+              : "Продано"
+          }`
     );
     setTimeout(() => setLastUpdated(null), 3500);
   };
@@ -60,25 +74,27 @@ export default function DeveloperProjectUnitsPage() {
             <Link href="/developer-admin/projects">
               <Button variant="outline" size="sm" className="h-7 text-xs gap-1">
                 <ArrowLeft className="h-3.5 w-3.5" />
-                К списку ЖК
+                {tDual("К списку ЖК", "Ба рӯйхати МИ")}
               </Button>
             </Link>
             <Badge variant="outline" className="text-xs">
-              {project.buildingClass === "business" ? "Бизнес-класс" : project.buildingClass}
+              {project.buildingClass === "business"
+                ? tDual("Бизнес-класс", "Синфи тиҷоратӣ (Бизнес)")
+                : project.buildingClass}
             </Badge>
           </div>
           <h1 className="text-2xl font-extrabold text-foreground flex items-center gap-2">
-            Шахматка квартир: {project.name}
+            {tDual(`Шахматка квартир: ${displayName}`, `Ҷадвали шоҳмотии хонаҳо: ${displayName}`)}
           </h1>
           <p className="text-xs text-muted-foreground">
-            {project.address} • {project.floorsCount} этажей • {project.sectionsCount} секции
+            {displayAddress} • {project.floorsCount} {tDual("этажей", "ошёна")} • {project.sectionsCount} {tDual("секции", "бахш")}
           </p>
         </div>
 
         <div className="flex items-center gap-2">
           <Link href={`/projects/${project.slug}`}>
             <Button variant="outline" size="sm" className="text-xs gap-1">
-              Витрина для покупателей
+              {tDual("Витрина для покупателей", "Витрина барои харидорон")}
               <ArrowUpRight className="h-3.5 w-3.5" />
             </Button>
           </Link>
@@ -99,10 +115,13 @@ export default function DeveloperProjectUnitsPage() {
         </div>
         <div className="space-y-0.5">
           <p className="font-bold text-foreground">
-            Режим управления шахматкой активен:
+            {tDual("Режим управления шахматкой активен:", "Реҷаи идоракунии ҷадвал фаъол аст:")}
           </p>
           <p className="text-muted-foreground text-[11px]">
-            Кликните на любую квартиру на сетке или в таблице, чтобы мгновенно сменить ее статус (Свободно / Бронь / Продано). Изменения отобразятся покупателям в реальном времени.
+            {tDual(
+              "Кликните на любую квартиру на сетке или в таблице, чтобы мгновенно сменить ее статус (Свободно / Бронь / Продано). Изменения отобразятся покупателям в реальном времени.",
+              "Ба дилхоҳ хонадон дар ҷадвал ё рӯйхат клик намоед, то ҳолати онро зуд тағйир диҳед (Озод / Брон / Фурӯхта шуд). Тағйирот дар реҷаи вақти воқеӣ ба харидорон нишон дода мешавад."
+            )}
           </p>
         </div>
       </div>
@@ -110,6 +129,7 @@ export default function DeveloperProjectUnitsPage() {
       {/* CHESSBOARD COMPONENT IN EDITABLE MODE */}
       <Chessboard
         units={units}
+        projectName={displayName}
         onUpdateUnitStatus={handleUpdateStatus}
         isEditable={true}
       />

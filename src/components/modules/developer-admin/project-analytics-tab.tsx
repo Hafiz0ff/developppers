@@ -15,6 +15,7 @@ import {
   PhoneCall,
   Sparkles,
 } from "lucide-react";
+import { useLanguage } from "@/lib/i18n/language-context";
 
 interface ProjectAnalyticsTabProps {
   projectName: string;
@@ -31,46 +32,49 @@ export function ProjectAnalyticsTab({
   favsMonth = 24,
   favsTotal = 32,
 }: ProjectAnalyticsTabProps) {
+  const { language } = useLanguage();
+  const isTg = language === "tg";
+
   const modeStats = [
     {
-      name: "Вид в срезе / Шахматка",
+      name: isTg ? "Намуди бурриш / Ҷадвали шоҳмотӣ" : "Вид в срезе / Шахматка",
       percent: 42,
-      count: "104 просмотра",
+      count: isTg ? "104 тамошо" : "104 просмотра",
       icon: Layers,
       color: "bg-emerald-500",
     },
     {
-      name: "Планировка с экспликацией",
+      name: isTg ? "Нақша бо шарҳи бахшҳо" : "Планировка с экспликацией",
       percent: 26,
-      count: "65 просмотров",
+      count: isTg ? "65 тамошо" : "65 просмотров",
       icon: FileText,
       color: "bg-blue-500",
     },
     {
-      name: "Фотогалерея фасадов",
+      name: isTg ? "Нигористони намоҳо" : "Фотогалерея фасадов",
       percent: 14,
-      count: "35 просмотров",
+      count: isTg ? "35 тамошо" : "35 просмотров",
       icon: Camera,
       color: "bg-indigo-500",
     },
     {
-      name: "Общий вид / Инфраструктура (POI)",
+      name: isTg ? "Намуди умумӣ / Инфрасохтор (POI)" : "Общий вид / Инфраструктура (POI)",
       percent: 9,
-      count: "22 просмотра",
+      count: isTg ? "22 тамошо" : "22 просмотра",
       icon: Compass,
       color: "bg-amber-500",
     },
     {
-      name: "Вид из окон квартир",
+      name: isTg ? "Намуд аз тирезаҳои хонаҳо" : "Вид из окон квартир",
       percent: 6,
-      count: "15 просмотров",
+      count: isTg ? "15 тамошо" : "15 просмотров",
       icon: Eye,
       color: "bg-pink-500",
     },
     {
-      name: "Солнечный трек / Инсоляция",
+      name: isTg ? "Пайроҳаи офтоб / Инсолятсия" : "Солнечный трек / Инсоляция",
       percent: 3,
-      count: "7 просмотров",
+      count: isTg ? "7 тамошо" : "7 просмотров",
       icon: Sun,
       color: "bg-orange-500",
     },
@@ -82,47 +86,55 @@ export function ProjectAnalyticsTab({
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         <Card className="border shadow-xs p-3.5 space-y-1">
           <div className="flex items-center justify-between text-muted-foreground">
-            <span className="text-[11px] font-semibold">Просмотры за 30 дней</span>
+            <span className="text-[11px] font-semibold">
+              {isTg ? "Тамошоҳо дар 30 рӯз" : "Просмотры за 30 дней"}
+            </span>
             <Eye className="h-4 w-4 text-emerald-600" />
           </div>
           <div className="text-2xl font-black text-foreground">{viewsMonth}</div>
           <div className="text-[10px] text-emerald-600 font-semibold flex items-center gap-1">
             <TrendingUp className="h-3 w-3" />
-            <span>+18% к прошлому мес.</span>
+            <span>{isTg ? "+18% нисбат ба моҳи гузашта" : "+18% к прошлому мес."}</span>
           </div>
         </Card>
 
         <Card className="border shadow-xs p-3.5 space-y-1">
           <div className="flex items-center justify-between text-muted-foreground">
-            <span className="text-[11px] font-semibold">Всего просмотров</span>
+            <span className="text-[11px] font-semibold">
+              {isTg ? "Ҳамагӣ тамошоҳо" : "Всего просмотров"}
+            </span>
             <Eye className="h-4 w-4 text-slate-500" />
           </div>
           <div className="text-2xl font-black text-foreground">{viewsTotal}</div>
           <div className="text-[10px] text-muted-foreground">
-            Уникальные посетители
+            {isTg ? "Боздидкунандагони нодир" : "Уникальные посетители"}
           </div>
         </Card>
 
         <Card className="border shadow-xs p-3.5 space-y-1">
           <div className="flex items-center justify-between text-muted-foreground">
-            <span className="text-[11px] font-semibold">В избранном (30 дней)</span>
+            <span className="text-[11px] font-semibold">
+              {isTg ? "Дар баргузидаҳо (30 рӯз)" : "В избранном (30 дней)"}
+            </span>
             <Heart className="h-4 w-4 text-rose-500 fill-rose-500" />
           </div>
           <div className="text-2xl font-black text-foreground">{favsMonth}</div>
           <div className="text-[10px] text-rose-600 font-semibold flex items-center gap-1">
             <TrendingUp className="h-3 w-3" />
-            <span>+8 новых добавлений</span>
+            <span>{isTg ? "+8 иловакунии нав" : "+8 новых добавлений"}</span>
           </div>
         </Card>
 
         <Card className="border shadow-xs p-3.5 space-y-1">
           <div className="flex items-center justify-between text-muted-foreground">
-            <span className="text-[11px] font-semibold">Конверсия в лиды</span>
+            <span className="text-[11px] font-semibold">
+              {isTg ? "Конверсия ба мизоҷон" : "Конверсия в лиды"}
+            </span>
             <PhoneCall className="h-4 w-4 text-amber-500" />
           </div>
           <div className="text-2xl font-black text-foreground">8.4%</div>
           <div className="text-[10px] text-muted-foreground">
-            Звонки и WhatsApp заявки
+            {isTg ? "Зангҳо ва дархостҳои WhatsApp" : "Звонки и WhatsApp заявки"}
           </div>
         </Card>
       </div>
@@ -133,14 +145,18 @@ export function ProjectAnalyticsTab({
           <div className="flex items-center justify-between">
             <CardTitle className="text-sm font-bold flex items-center gap-2">
               <Sparkles className="h-4 w-4 text-emerald-600" />
-              Популярность 6 интерактивных слоёв витрины
+              {isTg
+                ? "Маҳбубияти 6 қабати интерактивии витрина"
+                : "Популярность 6 интерактивных слоёв витрины"}
             </CardTitle>
             <Badge variant="outline" className="text-xs">
-              248 взаимодействий
+              {isTg ? "248 муроҷиат" : "248 взаимодействий"}
             </Badge>
           </div>
           <CardDescription className="text-xs">
-            Анализ поведения покупателей: какие визуальные материалы вызывают наибольший интерес и приводят к бронированию квартир.
+            {isTg
+              ? "Таҳлили рафтори харидорон: кадом маводи визуалӣ таваҷҷуҳи бештарро ҷалб мекунанд ва ба бронкунии хонаҳо оварда мерасонанд."
+              : "Анализ поведения покупателей: какие визуальные материалы вызывают наибольший интерес и приводят к бронированию квартир."}
           </CardDescription>
         </CardHeader>
 
