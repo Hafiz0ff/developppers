@@ -219,6 +219,11 @@ export default function PublicProjectPage() {
           images={project.images}
           installmentMonths={project.installmentMonths}
           installmentDownPaymentPercent={project.installmentDownPaymentPercent}
+          units={units}
+          developerContact={{
+            phone: developer.phone,
+            whatsapp: developer.whatsapp,
+          }}
           onSelectUnitMode={() => {
             document.getElementById("chessboard-section")?.scrollIntoView({ behavior: "smooth" });
           }}

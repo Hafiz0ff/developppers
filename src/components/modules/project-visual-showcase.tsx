@@ -16,6 +16,8 @@ import {
 } from "lucide-react";
 import { ShaderBackground } from "@/components/ui/shader-background";
 import { Badge } from "@/components/ui/badge";
+import { UnitData } from "@/lib/data/mock-db";
+import { BuildingCrossSection } from "./building-cross-section";
 
 export type ShowcaseMode =
   | "photos"
@@ -31,6 +33,11 @@ interface ProjectVisualShowcaseProps {
   images: string[];
   installmentMonths?: number;
   installmentDownPaymentPercent?: number;
+  units?: UnitData[];
+  developerContact?: {
+    phone: string;
+    whatsapp: string;
+  };
   onSelectUnitMode?: () => void;
 }
 
@@ -40,6 +47,8 @@ export function ProjectVisualShowcase({
   images,
   installmentMonths = 24,
   installmentDownPaymentPercent = 30,
+  units = [],
+  developerContact,
   onSelectUnitMode,
 }: ProjectVisualShowcaseProps) {
   // Ordered gallery photos with cover first
@@ -186,52 +195,58 @@ export function ProjectVisualShowcase({
           </div>
         )}
 
-        {/* Placeholder / Integration Container for Other Modes */}
-        {activeMode !== "photos" && (
-          <div className="relative h-[340px] sm:h-[480px] w-full bg-slate-900/95 flex flex-col items-center justify-center p-6 text-center text-white space-y-4">
-            <div className="h-14 w-14 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 flex items-center justify-center">
-              {activeMode === "general_view" && <Compass className="h-7 w-7" />}
-              {activeMode === "section_plan" && <Building className="h-7 w-7" />}
-              {activeMode === "cross_section" && <Layers className="h-7 w-7" />}
-              {activeMode === "window_view" && <Eye className="h-7 w-7" />}
-              {activeMode === "layout" && <FileText className="h-7 w-7" />}
-            </div>
-
-            <div className="max-w-md space-y-1.5">
-              <h3 className="text-lg font-bold">
-                {activeMode === "general_view" && "Интерактивный общий вид территории"}
-                {activeMode === "section_plan" && "План секции и поэтажный выбор"}
-                {activeMode === "cross_section" && "Интерактивный срез здания и шахматка"}
-                {activeMode === "window_view" && "Виды из окон квартир"}
-                {activeMode === "layout" && "Архитектурные планировки"}
-              </h3>
-              <p className="text-xs text-slate-300 leading-relaxed">
-                {activeMode === "cross_section"
-                  ? "Ниже на странице доступна интерактивная шахматка квартир с актуальными статусами и планировками."
-                  : "Данный визуальный режим подключается в рамках следующих этапов ТЗ. Все фотоматериалы доступны во вкладке «Фото»."}
-              </p>
-            </div>
-
-            <div className="flex items-center gap-3 pt-2">
-              <button
-                type="button"
-                onClick={() => setActiveMode("photos")}
-                className="h-9 px-4 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-medium transition-colors cursor-pointer"
-              >
-                Вернуться к фото
-              </button>
-              {activeMode === "cross_section" && onSelectUnitMode && (
-                <button
-                  type="button"
-                  onClick={onSelectUnitMode}
-                  className="h-9 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold shadow-xs transition-colors cursor-pointer"
-                >
-                  Перейти к шахматке квартир ↓
-                </button>
-              )}
-            </div>
+        {/* 2. CROSS SECTION & SECTION PLAN MODE (Sections 7 & 8 of Spec) */}
+        {(activeMode === "cross_section" || activeMode === "section_plan") && units && units.length > 0 && (
+          <div className="p-4 sm:p-5 bg-card text-foreground">
+            <BuildingCrossSection
+              units={units}
+              projectName={projectName}
+              developerContact={developerContact}
+            />
           </div>
         )}
+
+        {/* 3. Placeholder Container for Upcoming Modes (General view, Window view, Layout) */}
+        {activeMode !== "photos" &&
+          activeMode !== "cross_section" &&
+          activeMode !== "section_plan" && (
+            <div className="relative h-[340px] sm:h-[480px] w-full bg-slate-900/95 flex flex-col items-center justify-center p-6 text-center text-white space-y-4">
+              <div className="h-14 w-14 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 flex items-center justify-center">
+                {activeMode === "general_view" && <Compass className="h-7 w-7" />}
+                {activeMode === "window_view" && <Eye className="h-7 w-7" />}
+                {activeMode === "layout" && <FileText className="h-7 w-7" />}
+              </div>
+
+              <div className="max-w-md space-y-1.5">
+                <h3 className="text-lg font-bold">
+                  {activeMode === "general_view" && "Интерактивный общий вид территории (Генплан)"}
+                  {activeMode === "window_view" && "Виды из окон квартир"}
+                  {activeMode === "layout" && "Архитектурные планировки"}
+                </h3>
+                <p className="text-xs text-slate-300 leading-relaxed">
+                  Данный визуальный режим подключается в рамках следующих этапов ТЗ.
+                  Вы можете исследовать объект на вкладках «Фото» и «Вид в срезе».
+                </p>
+              </div>
+
+              <div className="flex items-center gap-3 pt-2">
+                <button
+                  type="button"
+                  onClick={() => setActiveMode("photos")}
+                  className="h-9 px-4 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-medium transition-colors cursor-pointer"
+                >
+                  Вернуться к фото
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setActiveMode("cross_section")}
+                  className="h-9 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold shadow-xs transition-colors cursor-pointer"
+                >
+                  Смотреть срез здания →
+                </button>
+              </div>
+            </div>
+          )}
       </div>
 
       {/* 2. HORIZONTAL 6D MODE NAVIGATION STRIP (Section 5 of Specification) */}
