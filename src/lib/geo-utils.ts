@@ -261,3 +261,110 @@ export function getAllMapProperties(): MapPropertyItem[] {
 
   return items;
 }
+
+/**
+ * Formats short price for compact map pin badges
+ */
+export function formatPriceShort(
+  priceUsd: number,
+  priceTjs: number,
+  currency: "USD" | "TJS",
+  language: "ru" | "tg" = "ru"
+): string {
+  if (currency === "USD") {
+    if (priceUsd >= 1000000) {
+      return `$${(priceUsd / 1000000).toFixed(1)}M`;
+    }
+    return `$${priceUsd.toLocaleString()}`;
+  }
+
+  // TJS formatting
+  if (priceTjs >= 1000000) {
+    const mln = (priceTjs / 1000000).toFixed(1);
+    return language === "tg" ? `${mln} млн сомонӣ` : `${mln} млн TJS`;
+  }
+  const th = Math.round(priceTjs / 1000);
+  return language === "tg" ? `${th} ҳ. сомонӣ` : `${th} тыс. TJS`;
+}
+
+export interface MapCluster {
+  id: string;
+  isCluster: true;
+  lat: number;
+  lng: number;
+  count: number;
+  properties: MapPropertyItem[];
+  minPriceUsd: number;
+  minPriceTjs: number;
+}
+
+export type MapPinOrCluster =
+  | { isCluster: false; property: MapPropertyItem }
+  | MapCluster;
+
+/**
+ * Spatial clustering algorithm for grouping close map pins based on current zoom level
+ */
+export function clusterMapProperties(
+  properties: MapPropertyItem[],
+  zoom: number
+): MapPinOrCluster[] {
+  if (properties.length === 0) return [];
+
+  // Determine radius in kilometers based on zoom level
+  let radiusKm = 0.05; // default ~50 meters for high zoom (zoom >= 14)
+  if (zoom <= 10) radiusKm = 5.0; // Regional
+  else if (zoom === 11) radiusKm = 2.5; // City cluster
+  else if (zoom === 12) radiusKm = 1.0; // District cluster
+  else if (zoom === 13) radiusKm = 0.35; // Neighborhood cluster
+
+  const processed = new Set<string>();
+  const result: MapPinOrCluster[] = [];
+
+  for (let i = 0; i < properties.length; i++) {
+    const current = properties[i];
+    if (processed.has(current.id)) continue;
+
+    const clusterGroup: MapPropertyItem[] = [current];
+    processed.add(current.id);
+
+    for (let j = i + 1; j < properties.length; j++) {
+      const candidate = properties[j];
+      if (processed.has(candidate.id)) continue;
+
+      const dist = calculateDistanceKm(
+        { lat: current.lat, lng: current.lng },
+        { lat: candidate.lat, lng: candidate.lng }
+      );
+
+      if (dist <= radiusKm) {
+        clusterGroup.push(candidate);
+        processed.add(candidate.id);
+      }
+    }
+
+    if (clusterGroup.length === 1) {
+      result.push({ isCluster: false, property: current });
+    } else {
+      // Calculate center coordinate
+      const sumLat = clusterGroup.reduce((acc, p) => acc + p.lat, 0);
+      const sumLng = clusterGroup.reduce((acc, p) => acc + p.lng, 0);
+      const minUsd = Math.min(...clusterGroup.map((p) => p.priceUsd));
+      const minTjs = Math.min(...clusterGroup.map((p) => p.priceTjs));
+
+      result.push({
+        id: `cluster-${current.id}-${clusterGroup.length}`,
+        isCluster: true,
+        lat: sumLat / clusterGroup.length,
+        lng: sumLng / clusterGroup.length,
+        count: clusterGroup.length,
+        properties: clusterGroup,
+        minPriceUsd: minUsd,
+        minPriceTjs: minTjs,
+      });
+    }
+  }
+
+  return result;
+}
+

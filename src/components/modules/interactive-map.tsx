@@ -8,6 +8,10 @@ import {
   CityMapPreset,
   getCityMapPreset,
   generateYandexMapsRouteUrl,
+  clusterMapProperties,
+  formatPriceShort,
+  MapCluster,
+  MapPinOrCluster,
 } from "@/lib/geo-utils";
 import {
   Layers,
@@ -248,7 +252,7 @@ export function InteractiveMap({
     }
   }, [selectedPropertyId, properties]);
 
-  // Render Markers
+  // Render Markers and Clusters
   useEffect(() => {
     const map = mapInstanceRef.current;
     const markersLayer = markersLayerRef.current;
@@ -256,158 +260,272 @@ export function InteractiveMap({
 
     markersLayer.clearLayers();
 
-    properties.forEach((prop) => {
-      const isSelected = prop.id === selectedPropertyId;
-      const isHovered = prop.id === hoveredPropertyId;
+    // Group properties into clusters or standalone pins based on current zoom
+    const mapItems: MapPinOrCluster[] = clusterMapProperties(properties, currentZoom);
 
-      // Color scheme based on category
-      let categoryBg = "bg-emerald-600";
-      let categoryBadge = "ЖК";
-      let categoryBadgeTg = "МҶ";
+    mapItems.forEach((item) => {
+      if (item.isCluster) {
+        // --- CLUSTER PIN ---
+        const minPriceFormatted = formatPriceShort(
+          item.minPriceUsd,
+          item.minPriceTjs,
+          currency,
+          language
+        );
 
-      if (prop.category === "apartment") {
-        categoryBg = "bg-sky-600";
-        categoryBadge = `${prop.rooms || 1}-к`;
-        categoryBadgeTg = `${prop.rooms || 1}-ҳ`;
-      } else if (prop.category === "house") {
-        categoryBg = "bg-amber-600";
-        categoryBadge = "Ҳавлӣ";
-        categoryBadgeTg = "Ҳавлӣ";
-      } else if (prop.category === "commercial") {
-        categoryBg = "bg-purple-600";
-        categoryBadge = "Коммерция";
-        categoryBadgeTg = "Тиҷоратӣ";
-      }
-
-      // Price Formatting
-      const priceText =
-        currency === "USD"
-          ? `$${prop.priceUsd.toLocaleString()}`
-          : `${(prop.priceTjs / 1000).toFixed(0)} тыс. TJS`;
-
-      const badgeLabel = isTg ? categoryBadgeTg : categoryBadge;
-
-      // Pin HTML
-      const pinHtml = `
-        <div class="group relative cursor-pointer transition-all duration-200 ${
-          isSelected ? "scale-110 z-50" : isHovered ? "scale-105 z-40" : "scale-100 z-10"
-        }">
-          <div class="flex items-center gap-1.5 px-2.5 py-1.5 rounded-full shadow-lg border border-white/90 text-white font-bold text-xs tracking-tight ${categoryBg} ${
-            isSelected
-              ? "ring-4 ring-emerald-400 ring-offset-2 ring-offset-white shadow-2xl scale-105"
-              : isHovered
-              ? "shadow-xl ring-2 ring-white"
-              : ""
-          }">
-            <span class="text-[10px] font-extrabold uppercase px-1.5 py-0.5 rounded bg-black/20">
-              ${badgeLabel}
-            </span>
-            <span>${priceText}</span>
+        const clusterHtml = `
+          <div class="group relative cursor-pointer transition-all duration-200 hover:scale-110 active:scale-95">
+            <div class="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-900/95 hover:bg-slate-900 text-white shadow-xl border-2 border-white text-xs font-bold backdrop-blur-md">
+              <span class="w-5 h-5 rounded-full bg-emerald-500 flex items-center justify-center text-[10px] font-black shadow-sm text-white">
+                ${item.count}
+              </span>
+              <span>${isTg ? "аз" : "от"} ${minPriceFormatted}</span>
+            </div>
+            <div class="w-2.5 h-2.5 bg-slate-900 rotate-45 mx-auto -mt-1 shadow-sm border-r border-b border-white"></div>
           </div>
-          <div class="w-2 h-2 ${categoryBg} rotate-45 mx-auto -mt-1 shadow-sm border-r border-b border-white"></div>
-        </div>
-      `;
+        `;
 
-      const customIcon = L.divIcon({
-        html: pinHtml,
-        className: "custom-map-pin",
-        iconSize: [110, 36],
-        iconAnchor: [55, 36],
-        popupAnchor: [0, -36],
-      });
+        const clusterIcon = L.divIcon({
+          html: clusterHtml,
+          className: "custom-map-cluster-pin",
+          iconSize: [120, 36],
+          iconAnchor: [60, 36],
+          popupAnchor: [0, -36],
+        });
 
-      const marker = L.marker([prop.lat, prop.lng], { icon: customIcon });
+        const clusterMarker = L.marker([item.lat, item.lng], { icon: clusterIcon });
 
-      // Build rich popup HTML
-      const title = isTg && prop.titleTg ? prop.titleTg : prop.title;
-      const district = isTg && prop.districtTg ? prop.districtTg : prop.district;
-      const primaryPrice =
-        currency === "USD"
-          ? `$${prop.priceUsd.toLocaleString()}`
-          : `${prop.priceTjs.toLocaleString()} TJS`;
-      const secondaryPrice =
-        currency === "USD"
-          ? `${prop.priceTjs.toLocaleString()} TJS`
-          : `$${prop.priceUsd.toLocaleString()}`;
+        // Click on cluster: zoom in and center
+        clusterMarker.on("click", () => {
+          if (map.getZoom() < 15) {
+            map.flyTo([item.lat, item.lng], Math.min(map.getZoom() + 2, 16), {
+              duration: 0.6,
+            });
+          }
+        });
 
-      const yandexRouteUrl = generateYandexMapsRouteUrl(prop.lat, prop.lng);
-
-      const specsLabel = prop.category === "house"
-        ? `${prop.rooms || 0} ${isTg ? "ҳуҷра" : "комн."} · ${prop.landAreaSotki || "6"} сот.`
-        : `${prop.rooms || 0} ${isTg ? "ҳуҷра" : "комн."} · ${prop.areaM2} м²`;
-
-      const popupHtml = `
-        <div class="w-64 sm:w-72 p-0 overflow-hidden font-sans">
-          <div class="relative h-32 w-full bg-slate-100">
-            <img src="${prop.coverImage}" alt="${title}" class="w-full h-full object-cover" />
-            <div class="absolute top-2 left-2">
-              <span class="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase text-white ${categoryBg}">
-                ${badgeLabel}
+        // If zoom is high (zoom >= 14) and properties are still in cluster, show list popup
+        const clusterListHtml = `
+          <div class="w-72 sm:w-80 p-0 overflow-hidden font-sans">
+            <div class="bg-slate-900 text-white px-3.5 py-2.5 flex items-center justify-between">
+              <div class="text-xs font-bold flex items-center gap-1.5">
+                <span>📍</span>
+                <span>${isTg ? "Объектҳо дар ин ҷо" : "Объекты в этой локации"}</span>
+              </div>
+              <span class="px-2 py-0.5 rounded-full text-[10px] font-black bg-emerald-500 text-white">
+                ${item.count}
               </span>
             </div>
-            ${
-              prop.stage
-                ? `<div class="absolute bottom-2 left-2 bg-black/60 backdrop-blur-md px-2 py-0.5 rounded text-[10px] font-medium text-white">
-                    ${isTg && prop.stageTg ? prop.stageTg : prop.stage}
-                  </div>`
-                : ""
-            }
-          </div>
-          <div class="p-3.5">
-            <div class="text-xs text-slate-500 font-medium truncate mb-1">
-              📍 ${district}
-            </div>
-            <h4 class="text-sm font-bold text-slate-900 line-clamp-1 mb-1.5 leading-snug">
-              ${title}
-            </h4>
-            <div class="flex items-baseline justify-between gap-2 mb-2">
-              <div class="text-base font-extrabold text-emerald-600">
-                ${primaryPrice}
-              </div>
-              <div class="text-[11px] text-slate-400 font-medium">
-                ${secondaryPrice}
-              </div>
-            </div>
-            <div class="text-xs text-slate-600 font-medium pb-3 mb-3 border-b border-slate-100 flex items-center gap-2">
-              <span>📐 ${specsLabel}</span>
-            </div>
-            <div class="grid grid-cols-2 gap-2">
-              <a 
-                href="${prop.url}" 
-                class="flex items-center justify-center gap-1.5 px-3 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold transition-colors shadow-sm"
-              >
-                <span>${isTg ? "Муфассал" : "Подробнее"}</span>
-                <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-              </a>
-              <a 
-                href="${yandexRouteUrl}" 
-                target="_blank" 
-                rel="noopener noreferrer" 
-                class="flex items-center justify-center gap-1.5 px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-semibold transition-colors"
-                title="${isTg ? "Хатсайр дар Харитаи Яндекс" : "Маршрут в Яндекс.Картах"}"
-              >
-                <span>Маршрут</span>
-                <svg class="w-3 h-3 text-red-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>
-              </a>
+            <div class="max-h-64 overflow-y-auto divide-y divide-slate-100 p-2 space-y-2">
+              ${item.properties
+                .map((p) => {
+                  const pTitle = isTg && p.titleTg ? p.titleTg : p.title;
+                  const pPrice =
+                    currency === "USD"
+                      ? `$${p.priceUsd.toLocaleString()}`
+                      : `${(p.priceTjs / 1000).toFixed(0)} тыс. TJS`;
+                  return `
+                    <a href="${p.url}" class="flex items-center gap-2.5 p-1.5 rounded-lg hover:bg-slate-50 transition-colors group">
+                      <img src="${p.coverImage}" alt="${pTitle}" class="w-12 h-12 rounded-lg object-cover flex-shrink-0" />
+                      <div class="min-w-0 flex-1">
+                        <div class="text-xs font-bold text-slate-800 line-clamp-1 group-hover:text-emerald-600 transition-colors">
+                          ${pTitle}
+                        </div>
+                        <div class="text-[11px] font-extrabold text-emerald-600">
+                          ${pPrice}
+                        </div>
+                      </div>
+                    </a>
+                  `;
+                })
+                .join("")}
             </div>
           </div>
-        </div>
-      `;
+        `;
 
-      marker.bindPopup(popupHtml, {
-        maxWidth: 320,
-        className: "custom-leaflet-popup",
-      });
+        clusterMarker.bindPopup(clusterListHtml, {
+          maxWidth: 320,
+          className: "custom-leaflet-popup",
+        });
 
-      marker.on("click", () => {
-        if (onSelectProperty) {
-          onSelectProperty(prop);
+        markersLayer.addLayer(clusterMarker);
+      } else {
+        // --- STANDALONE PROPERTY PIN ---
+        const prop = item.property;
+        const isSelected = prop.id === selectedPropertyId;
+        const isHovered = prop.id === hoveredPropertyId;
+
+        // Color scheme and badge based on category
+        let categoryBg = "bg-emerald-600";
+        let categoryBadge = "ЖК";
+        let categoryBadgeTg = "МҶ";
+
+        if (prop.category === "apartment") {
+          categoryBg = "bg-sky-600";
+          categoryBadge = `${prop.rooms || 1}-к`;
+          categoryBadgeTg = `${prop.rooms || 1}-ҳ`;
+        } else if (prop.category === "house") {
+          categoryBg = "bg-amber-600";
+          categoryBadge = "Ҳавлӣ";
+          categoryBadgeTg = "Ҳавлӣ";
+        } else if (prop.category === "commercial") {
+          categoryBg = "bg-purple-600";
+          categoryBadge = "Коммерция";
+          categoryBadgeTg = "Тиҷоратӣ";
         }
-      });
 
-      markersLayer.addLayer(marker);
+        const priceText = formatPriceShort(
+          prop.priceUsd,
+          prop.priceTjs,
+          currency,
+          language
+        );
+
+        const badgeLabel = isTg ? categoryBadgeTg : categoryBadge;
+
+        // Pin HTML
+        const pinHtml = `
+          <div class="group relative cursor-pointer transition-all duration-200 ${
+            isSelected ? "scale-115 z-50 -translate-y-1" : isHovered ? "scale-110 z-40 -translate-y-0.5" : "scale-100 z-10"
+          }">
+            <div class="flex items-center gap-1.5 px-2.5 py-1.5 rounded-full shadow-lg border border-white/95 text-white font-bold text-xs tracking-tight ${categoryBg} ${
+              isSelected
+                ? "ring-4 ring-emerald-400 ring-offset-2 ring-offset-white shadow-2xl scale-105"
+                : isHovered
+                ? "shadow-xl ring-2 ring-white"
+                : ""
+            }">
+              <span class="text-[10px] font-extrabold uppercase px-1.5 py-0.5 rounded bg-black/20">
+                ${badgeLabel}
+              </span>
+              <span>${priceText}</span>
+            </div>
+            <div class="w-2 h-2 ${categoryBg} rotate-45 mx-auto -mt-1 shadow-sm border-r border-b border-white"></div>
+          </div>
+        `;
+
+        const customIcon = L.divIcon({
+          html: pinHtml,
+          className: "custom-map-pin",
+          iconSize: [110, 36],
+          iconAnchor: [55, 36],
+          popupAnchor: [0, -36],
+        });
+
+        const marker = L.marker([prop.lat, prop.lng], { icon: customIcon });
+
+        // Build rich popup HTML
+        const title = isTg && prop.titleTg ? prop.titleTg : prop.title;
+        const district = isTg && prop.districtTg ? prop.districtTg : prop.district;
+        const primaryPrice =
+          currency === "USD"
+            ? `$${prop.priceUsd.toLocaleString()}`
+            : `${prop.priceTjs.toLocaleString()} TJS`;
+        const secondaryPrice =
+          currency === "USD"
+            ? `${prop.priceTjs.toLocaleString()} TJS`
+            : `$${prop.priceUsd.toLocaleString()}`;
+
+        const yandexRouteUrl = generateYandexMapsRouteUrl(prop.lat, prop.lng);
+
+        const specsLabel = prop.category === "house"
+          ? `${prop.rooms || 0} ${isTg ? "ҳуҷра" : "комн."} · ${prop.landAreaSotki || "6"} сот.`
+          : `${prop.rooms || 0} ${isTg ? "ҳуҷра" : "комн."} · ${prop.areaM2} м²`;
+
+        const cleanPhone = prop.phone.replace(/[^0-9+]/g, "");
+        const cleanWa = (prop.whatsapp || prop.phone).replace(/[^0-9]/g, "");
+
+        const popupHtml = `
+          <div class="w-64 sm:w-72 p-0 overflow-hidden font-sans">
+            <div class="relative h-32 w-full bg-slate-100">
+              <img src="${prop.coverImage}" alt="${title}" class="w-full h-full object-cover" />
+              <div class="absolute top-2 left-2">
+                <span class="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase text-white ${categoryBg}">
+                  ${badgeLabel}
+                </span>
+              </div>
+              ${
+                prop.stage
+                  ? `<div class="absolute bottom-2 left-2 bg-black/60 backdrop-blur-md px-2 py-0.5 rounded text-[10px] font-medium text-white">
+                      ${isTg && prop.stageTg ? prop.stageTg : prop.stage}
+                    </div>`
+                  : ""
+              }
+            </div>
+            <div class="p-3.5">
+              <div class="text-xs text-slate-500 font-medium truncate mb-1">
+                📍 ${district}
+              </div>
+              <h4 class="text-sm font-bold text-slate-900 line-clamp-1 mb-1.5 leading-snug">
+                ${title}
+              </h4>
+              <div class="flex items-baseline justify-between gap-2 mb-2">
+                <div class="text-base font-extrabold text-emerald-600">
+                  ${primaryPrice}
+                </div>
+                <div class="text-[11px] text-slate-400 font-medium">
+                  ${secondaryPrice}
+                </div>
+              </div>
+              <div class="text-xs text-slate-600 font-medium pb-2.5 mb-2.5 border-b border-slate-100 flex items-center gap-2">
+                <span>📐 ${specsLabel}</span>
+              </div>
+              <div class="grid grid-cols-2 gap-2 mb-2">
+                <a 
+                  href="${prop.url}" 
+                  class="flex items-center justify-center gap-1.5 px-3 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold transition-colors shadow-sm"
+                >
+                  <span>${isTg ? "Муфассал" : "Подробнее"}</span>
+                  <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </a>
+                <a 
+                  href="${yandexRouteUrl}" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  class="flex items-center justify-center gap-1.5 px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-semibold transition-colors"
+                  title="${isTg ? "Хатсайр дар Харитаи Яндекс" : "Маршрут в Яндекс.Картах"}"
+                >
+                  <span>Маршрут</span>
+                  <svg class="w-3 h-3 text-red-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>
+                </a>
+              </div>
+              <div class="flex items-center gap-1.5">
+                <a 
+                  href="tel:${cleanPhone}" 
+                  class="flex-1 flex items-center justify-center gap-1.5 py-1.5 px-2 bg-slate-50 hover:bg-emerald-50 text-slate-700 hover:text-emerald-700 rounded-lg text-[11px] font-semibold border border-slate-200 transition-colors"
+                >
+                  <svg class="w-3 h-3 text-emerald-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                  <span>${isTg ? "Занг" : "Звонок"}</span>
+                </a>
+                <a 
+                  href="https://wa.me/${cleanWa}" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  class="flex-1 flex items-center justify-center gap-1.5 py-1.5 px-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 rounded-lg text-[11px] font-semibold border border-emerald-200 transition-colors"
+                >
+                  <svg class="w-3 h-3 text-emerald-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+                  <span>WhatsApp</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        `;
+
+        marker.bindPopup(popupHtml, {
+          maxWidth: 320,
+          className: "custom-leaflet-popup",
+        });
+
+        marker.on("click", () => {
+          if (onSelectProperty) {
+            onSelectProperty(prop);
+          }
+        });
+
+        markersLayer.addLayer(marker);
+      }
     });
-  }, [properties, selectedPropertyId, hoveredPropertyId, currency, language]);
+  }, [properties, selectedPropertyId, hoveredPropertyId, currency, language, currentZoom]);
 
   // Geolocation Handler
   const handleLocateUser = () => {
