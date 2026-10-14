@@ -20,12 +20,10 @@ export function LanguageSwitcher({ className = "" }: LanguageSwitcherProps) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger
-        className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-slate-200 bg-white/90 hover:bg-white text-slate-800 text-xs font-bold shadow-xs hover:border-emerald-500 hover:text-emerald-700 transition-all outline-hidden cursor-pointer ${className}`}
-        aria-label="Переключить язык / Забонро иваз кунед"
+        className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl border border-slate-200 bg-white/90 hover:bg-white text-slate-800 text-xs font-bold shadow-xs hover:border-emerald-500 transition-all outline-hidden cursor-pointer ${className}`}
+        aria-label={language === "ru" ? "Русский язык" : "Забони тоҷикӣ"}
       >
-        <Globe className="h-3.5 w-3.5 text-emerald-600 shrink-0" />
-        <span className="text-sm leading-none">{language === "ru" ? "🇷🇺" : "🇹🇯"}</span>
-        <span className="tracking-tight">{language === "ru" ? "РУ" : "ТҶ"}</span>
+        <span className="text-base leading-none select-none">{language === "ru" ? "🇷🇺" : "🇹🇯"}</span>
         <ChevronDown className="h-3 w-3 text-slate-400" />
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-40 p-1.5 rounded-xl bg-white shadow-xl border border-slate-200/80 z-50">

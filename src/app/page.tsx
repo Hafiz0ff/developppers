@@ -396,28 +396,28 @@ export default function HomePage() {
                   <button
                     type="button"
                     onClick={() => setLanguage("ru")}
-                    className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
+                    className={`px-2 py-1 rounded-lg text-sm transition-all flex items-center justify-center cursor-pointer ${
                       language === "ru"
-                        ? "bg-white text-emerald-800 shadow-xs border border-emerald-300"
-                        : "text-slate-600 hover:text-slate-900 hover:bg-white/50"
+                        ? "bg-white shadow-xs border border-emerald-300 ring-1 ring-emerald-200"
+                        : "hover:bg-white/50 opacity-60 hover:opacity-100"
                     }`}
                     title="Русский язык"
+                    aria-label="Русский язык"
                   >
-                    <span>🇷🇺</span>
-                    <span>РУ</span>
+                    <span className="leading-none select-none">🇷🇺</span>
                   </button>
                   <button
                     type="button"
                     onClick={() => setLanguage("tg")}
-                    className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
+                    className={`px-2 py-1 rounded-lg text-sm transition-all flex items-center justify-center cursor-pointer ${
                       language === "tg"
-                        ? "bg-white text-emerald-800 shadow-xs border border-emerald-300"
-                        : "text-slate-600 hover:text-slate-900 hover:bg-white/50"
+                        ? "bg-white shadow-xs border border-emerald-300 ring-1 ring-emerald-200"
+                        : "hover:bg-white/50 opacity-60 hover:opacity-100"
                     }`}
                     title="Забони тоҷикӣ"
+                    aria-label="Забони тоҷикӣ"
                   >
-                    <span>🇹🇯</span>
-                    <span>ТҶ</span>
+                    <span className="leading-none select-none">🇹🇯</span>
                   </button>
                 </div>
               </div>
