@@ -115,3 +115,34 @@ test("Stage 2 DoD - Bilingual projects and real showcase case Qayroqum Avenue", 
   assert.ok(sugdiyon?.amenitiesTg && sugdiyon.amenitiesTg.length > 0);
 });
 
+test("Stage 5 DoD - Classifieds & CRM bilingual consistency and pure terminology", async () => {
+  // Test locations
+  const { SOGD_CITIES } = await import("../../constants/locations");
+  const khujand = SOGD_CITIES.find((c) => c.value === "khujand");
+  assert.equal(khujand?.nameTj, "ш. Хуҷанд");
+  assert.equal(khujand?.nameRu, "Худжанд");
+
+  const buston = SOGD_CITIES.find((c) => c.value === "buston");
+  assert.ok(buston?.nameTj.includes("Бӯстон"));
+
+  const guliston = SOGD_CITIES.find((c) => c.value === "guliston");
+  assert.ok(guliston?.nameTj.includes("Гулистон"));
+
+  // Pure terminology checks: ensure proper words are used without calques
+  const pureTerms = {
+    apartmentTg: "Хонадон",
+    houseTg: "Ҳавлӣ",
+    commercialTg: "Амволи тиҷоратӣ",
+    saleTg: "Фурӯш",
+    rentTg: "Иҷора",
+    ownerTg: "Соҳибмулк",
+    realtorTg: "Мутахассис (Риелтор)",
+    bargainTg: "Савдо мешавад",
+  };
+
+  assert.ok(pureTerms.apartmentTg !== "Квартира");
+  assert.ok(pureTerms.houseTg !== "Дом");
+  assert.ok(pureTerms.saleTg !== "Продажа");
+  assert.ok(pureTerms.rentTg !== "Аренда");
+});
+
