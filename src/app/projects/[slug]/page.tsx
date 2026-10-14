@@ -33,7 +33,14 @@ import {
   Heart,
   Layers,
   Sparkles,
+  Paintbrush,
 } from "lucide-react";
+
+const FINISHING_LABELS: Record<string, string> = {
+  rough: "Черновая отделка",
+  pre_finishing: "Предчистовая отделка (White box)",
+  turnkey: "Чистовая под ключ",
+};
 
 export default function PublicProjectPage() {
   const params = useParams();
@@ -49,6 +56,70 @@ export default function PublicProjectPage() {
 
   const [activeImage, setActiveImage] = useState(project.coverImageUrl);
   const [units, setUnits] = useState<UnitData[]>(INITIAL_UNITS);
+
+  // Сбор всех доступных характеристик с фильтрацией пустых значений
+  const rawSpecs: Array<{
+    label: string;
+    value: string | number | null | undefined;
+    highlight?: boolean;
+  }> = [
+    {
+      label: "Срок сдачи",
+      value:
+        project.deadlineQuarter && project.deadlineYear
+          ? `${project.deadlineQuarter} кв. ${project.deadlineYear} г.`
+          : null,
+    },
+    {
+      label: "Этажность",
+      value: project.floorsCount ? `${project.floorsCount} этажей` : null,
+    },
+    {
+      label: "Секций (подъездов)",
+      value: project.sectionsCount ? `${project.sectionsCount} секции` : null,
+    },
+    {
+      label: "Высота потолков",
+      value: project.ceilingHeight ? `${project.ceilingHeight} м` : null,
+    },
+    {
+      label: "Конструкция",
+      value: project.constructionType || null,
+    },
+    {
+      label: "Сейсмостойкость",
+      value: "До 9 баллов",
+      highlight: true,
+    },
+    {
+      label: "Площадь участка",
+      value: project.landArea || null,
+    },
+    {
+      label: "Материал стен",
+      value: project.wallMaterial || null,
+    },
+    {
+      label: "Фасад",
+      value: project.facade || null,
+    },
+    {
+      label: "Кадастровый номер",
+      value: project.cadastralNumber || null,
+    },
+    ...(project.customBuildingFeatures || []).map((cf) => ({
+      label: cf.title,
+      value: cf.value,
+      highlight: false,
+    })),
+  ];
+
+  const buildingSpecs = rawSpecs.filter(
+    (item): item is { label: string; value: string | number; highlight?: boolean } =>
+      item.value !== null &&
+      item.value !== undefined &&
+      String(item.value).trim() !== ""
+  );
 
   return (
     <div className="pb-24 space-y-10">
@@ -191,49 +262,95 @@ export default function PublicProjectPage() {
             </div>
 
             {/* Specifications Grid */}
-            <div className="space-y-3">
-              <h3 className="text-base font-bold text-foreground">
-                Характеристики дома
-              </h3>
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 text-xs">
-                <div className="p-3 rounded-xl bg-card border space-y-1">
-                  <span className="text-muted-foreground text-[11px] block">Срок сдачи:</span>
-                  <strong className="text-foreground text-xs">
-                    {project.deadlineQuarter} кв. {project.deadlineYear} г.
-                  </strong>
-                </div>
-                <div className="p-3 rounded-xl bg-card border space-y-1">
-                  <span className="text-muted-foreground text-[11px] block">Этажность:</span>
-                  <strong className="text-foreground text-xs">
-                    {project.floorsCount} этажей
-                  </strong>
-                </div>
-                <div className="p-3 rounded-xl bg-card border space-y-1">
-                  <span className="text-muted-foreground text-[11px] block">Секций (подъездов):</span>
-                  <strong className="text-foreground text-xs">
-                    {project.sectionsCount} секции
-                  </strong>
-                </div>
-                <div className="p-3 rounded-xl bg-card border space-y-1">
-                  <span className="text-muted-foreground text-[11px] block">Высота потолков:</span>
-                  <strong className="text-foreground text-xs">
-                    {project.ceilingHeight} м
-                  </strong>
-                </div>
-                <div className="p-3 rounded-xl bg-card border space-y-1">
-                  <span className="text-muted-foreground text-[11px] block">Конструкция:</span>
-                  <strong className="text-foreground text-xs">
-                    {project.constructionType}
-                  </strong>
-                </div>
-                <div className="p-3 rounded-xl bg-card border space-y-1">
-                  <span className="text-muted-foreground text-[11px] block">Сейсмостойкость:</span>
-                  <strong className="text-foreground text-xs text-emerald-600">
-                    До 9 баллов
-                  </strong>
+            {buildingSpecs.length > 0 && (
+              <div className="space-y-3">
+                <h3 className="text-base font-bold text-foreground">
+                  Характеристики дома
+                </h3>
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 text-xs">
+                  {buildingSpecs.map((spec, idx) => (
+                    <div
+                      key={idx}
+                      className="p-3 rounded-xl bg-card border space-y-1"
+                    >
+                      <span className="text-muted-foreground text-[11px] block truncate" title={spec.label}>
+                        {spec.label}:
+                      </span>
+                      <strong
+                        className={`text-xs block break-words ${
+                          spec.highlight
+                            ? "text-emerald-600 font-bold"
+                            : "text-foreground font-semibold"
+                        }`}
+                      >
+                        {spec.value}
+                      </strong>
+                    </div>
+                  ))}
                 </div>
               </div>
-            </div>
+            )}
+
+            {/* Finishing & Fit-out Block */}
+            {(project.finishing || (project.finishingFeatures && project.finishingFeatures.length > 0)) && (
+              <div className="space-y-3">
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <div className="flex items-center gap-2">
+                    <Paintbrush className="h-4 w-4 text-emerald-600" />
+                    <h3 className="text-base font-bold text-foreground">
+                      Отделка и комплектация
+                    </h3>
+                  </div>
+                  {project.finishing && (
+                    <Badge
+                      variant="outline"
+                      className="bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 border-emerald-500/20 text-xs px-2.5 py-1 font-medium"
+                    >
+                      {FINISHING_LABELS[project.finishing] || project.finishing}
+                    </Badge>
+                  )}
+                </div>
+
+                {project.finishingFeatures && project.finishingFeatures.length > 0 ? (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+                    {project.finishingFeatures.map((feature) => (
+                      <div
+                        key={feature.id}
+                        className="p-4 rounded-xl bg-card border border-border/80 hover:border-emerald-500/40 transition-colors space-y-2 flex flex-col justify-between"
+                      >
+                        <div className="space-y-1.5">
+                          <div className="flex items-center gap-2">
+                            <div className="p-1 rounded-md bg-emerald-500/10 text-emerald-600 shrink-0">
+                              <Sparkles className="h-3.5 w-3.5" />
+                            </div>
+                            <h4
+                              className="text-xs font-bold text-foreground line-clamp-1"
+                              title={feature.title}
+                            >
+                              {feature.title}
+                            </h4>
+                          </div>
+                          <p className="text-xs text-muted-foreground leading-relaxed">
+                            {feature.description}
+                          </p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="p-3.5 rounded-xl bg-muted/30 border border-border/60 text-xs text-muted-foreground flex items-center gap-2">
+                    <Layers className="h-4 w-4 text-emerald-600 shrink-0" />
+                    <span>
+                      Стандарт базовой отделки:{" "}
+                      <strong className="text-foreground">
+                        {project.finishing ? FINISHING_LABELS[project.finishing] || project.finishing : "По запросу"}
+                      </strong>
+                      . Подробности уточняйте в отделе продаж застройщика.
+                    </span>
+                  </div>
+                )}
+              </div>
+            )}
 
             {/* Amenities Pills */}
             <div className="space-y-3">
