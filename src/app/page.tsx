@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useCurrency } from "@/context/currency-context";
+import { useLanguage } from "@/context/language-context";
 import { SOGD_CITIES } from "@/lib/constants/locations";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -47,12 +48,18 @@ const FEATURED_PROJECTS = [
   {
     id: "proj_sirdaryo_plaza",
     name: "ЖК «Сирдарё Плаза»",
+    nameTg: "МҶ «Сирдарё Плаза»",
     slug: "sirdaryo-plaza",
     developerName: "Рахш Сохтмон",
+    developerNameTg: "Рахш Сохтмон",
     status: "Строится (4 кв. 2026)",
+    statusTg: "Дар ҳоли сохтмон (семоҳаи 4-уми 2026)",
     buildingClass: "Бизнес-класс",
+    buildingClassTg: "Дараҷаи тиҷоратӣ (Бизнес)",
     city: "г. Худжанд",
+    cityTg: "ш. Хуҷанд",
     district: "19 мкр, Набережная Сырдарьи",
+    districtTg: "микрорайони 19, соҳили Сирдарё",
     floors: 16,
     coverImage:
       "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=1200&h=750&fit=crop",
@@ -61,19 +68,28 @@ const FEATURED_PROJECTS = [
     minPriceTjs: 348210,
     minPriceUsd: 31800,
     installment: "Рассрочка 0% до 24 мес",
+    installmentTg: "Пардохти қисм-қисми бефоиз то 24 моҳ",
     downPayment: "Взнос от 30%",
+    downPaymentTg: "Пешпардохт аз 30%",
     tags: ["Вид на Сырдарью", "Подземный паркинг", "Автономное отопление"],
+    tagsTg: ["Манзара ба Сирдарё", "Таваққуфгоҳи зеризаминӣ", "Гармидиҳии мустақил"],
     availableUnitsCount: 34,
   },
   {
     id: "proj_sugdiyon",
     name: "ЖК «Суғдиён Сити»",
+    nameTg: "МҶ «Суғдиён Сити»",
     slug: "sugdiyon-city",
     developerName: "Сайҳун Девелопмент",
+    developerNameTg: "Сайҳун Девелопмент",
     status: "Строится (2 кв. 2027)",
+    statusTg: "Дар ҳоли сохтмон (семоҳаи 2-юми 2027)",
     buildingClass: "Комфорт-класс",
+    buildingClassTg: "Дараҷаи бароҳат (Комфорт)",
     city: "г. Худжанд",
+    cityTg: "ш. Хуҷанд",
     district: "18 мкр, пр. Гафурова",
+    districtTg: "микрорайони 18, хиёбони Ғафуров",
     floors: 12,
     coverImage:
       "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1200&h=750&fit=crop",
@@ -82,19 +98,28 @@ const FEATURED_PROJECTS = [
     minPriceTjs: 262800,
     minPriceUsd: 24000,
     installment: "Рассрочка до 36 мес",
+    installmentTg: "Пардохти қисм-қисм то 36 моҳ",
     downPayment: "Взнос от 20%",
+    downPaymentTg: "Пешпардохт аз 20%",
     tags: ["Рядом школа №28", "Супермаркет «Амид»", "Закрытый двор"],
+    tagsTg: ["Мактаби №28 дар наздикӣ", "Супермаркети «Амид»", "Ҳавлии пӯшида"],
     availableUnitsCount: 52,
   },
   {
     id: "proj_qayroqum",
     name: "ЖК «Qayroqum Avenue»",
+    nameTg: "МҶ «Qayroqum Avenue»",
     slug: "qayroqum-avenue",
     developerName: "«Qayroqum Avenue» Development",
+    developerNameTg: "«Qayroqum Avenue» Development",
     status: "Строится (4 кв. 2027)",
+    statusTg: "Дар ҳоли сохтмон (семоҳаи 4-уми 2027)",
     buildingClass: "Премиум-класс",
+    buildingClassTg: "Дараҷаи олӣ (Премиум)",
     city: "г. Гулистон (Кайраккум)",
+    cityTg: "ш. Гулистон (Қайроққум)",
     district: "Побережье «Баҳри Тоҷик»",
+    districtTg: "Соҳили «Баҳри Тоҷик»",
     floors: 14,
     coverImage: "/images/qayroqum/qayroqum-9.jpg",
     pricePerMeterTjs: 5250,
@@ -102,13 +127,22 @@ const FEATURED_PROJECTS = [
     minPriceTjs: 252000,
     minPriceUsd: 23040,
     installment: "Беспроцентная рассрочка до 60 мес (5 лет!)",
+    installmentTg: "Пардохти қисм-қисми бефоиз то 60 моҳ (5 сол!)",
     downPayment: "Взнос от 0% (акция)",
+    downPaymentTg: "Пешпардохт аз 0% (аксия)",
     tags: [
+      "🔑 0% первоначальный взнос",
+      "🚗 Розыгрыш BMW",
+      "📚 Школа и детский сад",
+      "🏊‍♂️ Бассейн и фитнес",
+      "⚡ Зарядки для электромобилей",
+    ],
+    tagsTg: [
       "🔑 0% пешпардохт",
       "🚗 Бурди BMW",
       "📚 Мактаб ва боғча",
       "🏊‍♂️ Ҳавзи шиноварӣ",
-      "⚡ Зарядки для электромобилей",
+      "⚡ Нуқтаҳои пуркунии барқӣ",
     ],
     availableUnitsCount: 56,
   },
@@ -183,6 +217,7 @@ const RECENT_CLASSIFIEDS = [
 
 export default function HomePage() {
   const { formatPrice, currency } = useCurrency();
+  const { t, tDual, language } = useLanguage();
   const [activeTab, setActiveTab] = useState<"new" | "resale" | "rent" | "houses">("new");
   const [selectedCity, setSelectedCity] = useState("khujand");
   const [selectedRooms, setSelectedRooms] = useState<string>("all");
@@ -238,8 +273,8 @@ export default function HomePage() {
   };
 
   const roomOptions = [
-    { id: "all", label: "Все" },
-    { id: "studio", label: "Студия" },
+    { id: "all", label: t.common.all },
+    { id: "studio", label: t.catalog.studio },
     { id: "1", label: "1" },
     { id: "2", label: "2" },
     { id: "3", label: "3" },
@@ -270,10 +305,10 @@ export default function HomePage() {
               {/* Segment Tabs (CIAN Underline Style) */}
               <div className="flex items-center gap-6 overflow-x-auto overflow-y-hidden [scrollbar-width:none] [&::-webkit-scrollbar]:hidden pb-0 mb-5 border-b border-slate-200/80">
                 {[
-                  { id: "new", label: "Новостройки (ЖК)", icon: Building2 },
-                  { id: "resale", label: "Купить вторичку", icon: Home },
-                  { id: "houses", label: "Дома и Ҳавлӣ", icon: Trees },
-                  { id: "rent", label: "Аренда & Коммерция", icon: Store },
+                  { id: "new", label: tDual("Новостройки (ЖК)", "Биноҳои навсохт (Маҷмааҳо)"), icon: Building2 },
+                  { id: "resale", label: tDual("Купить вторичку", "Хонаҳои пешина (Вторичка)"), icon: Home },
+                  { id: "houses", label: tDual("Дома и Ҳавлӣ", "Ҳавлиҳо ва бӯстонсароҳо"), icon: Trees },
+                  { id: "rent", label: tDual("Аренда & Коммерция", "Иҷора ва амволи тиҷоратӣ"), icon: Store },
                 ].map((tab) => {
                   const Icon = tab.icon;
                   const isActive = activeTab === tab.id;
@@ -300,7 +335,7 @@ export default function HomePage() {
                 {/* 1. City / Region */}
                 <div className="min-w-0">
                   <label className="text-xs font-semibold text-slate-700 mb-1.5 block">
-                    Город
+                    {t.catalog.city}
                   </label>
                   <Select
                     value={selectedCity}
@@ -309,14 +344,17 @@ export default function HomePage() {
                     }}
                   >
                     <SelectTrigger className="w-full h-10 rounded-xl bg-white border border-slate-200 text-sm font-medium px-3 shadow-none">
-                      <SelectValue placeholder="Худжанд">
-                        {SOGD_CITIES.find((c) => c.value === selectedCity)?.nameRu || "Худжанд"}
+                      <SelectValue placeholder={tDual("Худжанд", "ш. Хуҷанд")}>
+                        {(() => {
+                          const c = SOGD_CITIES.find((item) => item.value === selectedCity);
+                          return language === "tg" ? c?.nameTj : c?.nameRu || "Худжанд";
+                        })()}
                       </SelectValue>
                     </SelectTrigger>
                     <SelectContent>
                       {SOGD_CITIES.map((c) => (
                         <SelectItem key={c.value} value={c.value}>
-                          {c.nameRu}
+                          {language === "tg" ? c.nameTj : c.nameRu}
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -326,7 +364,7 @@ export default function HomePage() {
                 {/* 2. Room Buttons */}
                 <div className="min-w-0">
                   <label className="text-xs font-semibold text-slate-700 mb-1.5 block">
-                    Комнатность
+                    {t.catalog.roomsCount}
                   </label>
                   <div className="flex h-10 min-w-0 items-center gap-1 rounded-xl border border-slate-200 bg-white p-1">
                     {roomOptions.map((opt) => (
@@ -349,17 +387,17 @@ export default function HomePage() {
                 {/* 3. Price Range From - To */}
                 <div className="min-w-0">
                   <label className="text-xs font-semibold text-slate-700 mb-1.5 block">
-                    Цена
+                    {t.catalog.priceRange}
                   </label>
                   <div className="flex h-10 items-center gap-2">
                     <Input
-                      placeholder="от"
+                      placeholder={t.common.from}
                       value={priceFrom}
                       onChange={(e) => setPriceFrom(e.target.value)}
                       className="h-10 w-24 rounded-xl border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500"
                     />
                     <Input
-                      placeholder="до"
+                      placeholder={t.common.to}
                       value={priceTo}
                       onChange={(e) => setPriceTo(e.target.value)}
                       className="h-10 w-24 rounded-xl border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500"
@@ -371,7 +409,7 @@ export default function HomePage() {
                 <div className="min-w-0">
                   <Button className="flex h-10 w-full items-center justify-center gap-2 rounded-xl bg-emerald-600 px-5 text-sm font-medium text-white shadow-sm transition-all hover:bg-emerald-700">
                     <Search className="h-4 w-4" />
-                    Найти 342 объекта
+                    {tDual("Найти 342 объекта", "Ҷустуҷӯи 342 амвол")}
                   </Button>
                 </div>
               </div>
@@ -379,22 +417,22 @@ export default function HomePage() {
               {/* Quick Filter Chips (Text-only, compact) */}
               <div className="mt-4 pt-3.5 border-t border-slate-200/50 flex flex-wrap items-center gap-2 text-xs">
                 <span className="font-semibold text-slate-500 mr-1 text-[11px] uppercase tracking-wider">
-                  Быстрый выбор:
+                  {tDual("Быстрый выбор:", "Интихоби фаврӣ:")}
                 </span>
                 {[
-                  "Рассрочка 0%",
-                  "Вид на Сырдарью",
-                  "18 и 19 мкр",
-                  "Дома с хаузом",
-                  "Сданные ЖК",
-                  "С паркингом",
-                ].map((chipText) => (
+                  { ru: "Рассрочка 0%", tg: "Пардохти қисм-қисм 0%" },
+                  { ru: "Вид на Сырдарью", tg: "Манзара ба Сирдарё" },
+                  { ru: "18 и 19 мкр", tg: "микрорайонҳои 18 ва 19" },
+                  { ru: "Дома с хаузом", tg: "Ҳавлиҳо бо ҳавз" },
+                  { ru: "Сданные ЖК", tg: "Биноҳои супоридашуда" },
+                  { ru: "С паркингом", tg: "Бо таваққуфгоҳ" },
+                ].map((chip) => (
                   <button
-                    key={chipText}
+                    key={chip.ru}
                     type="button"
                     className="inline-flex items-center rounded-lg border border-slate-200/80 bg-white/80 px-3 py-1 text-xs text-slate-700 transition-all hover:bg-white"
                   >
-                    {chipText}
+                    {tDual(chip.ru, chip.tg)}
                   </button>
                 ))}
               </div>
@@ -409,124 +447,142 @@ export default function HomePage() {
           <div>
             <div className="inline-flex items-center gap-1.5 text-xs uppercase font-bold tracking-wider text-emerald-600 mb-1">
               <Sparkles className="h-3.5 w-3.5" />
-              Каталог новостроек Согда
+              {tDual("Каталог новостроек Согда", "Феҳристи биноҳои навсохти Суғд")}
             </div>
             <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">
-              Премиальные ЖК и застройщики Худжанда
+              {tDual(
+                "Премиальные ЖК и застройщики Худжанда",
+                "Маҷмааҳои истиқоматии дараҷаи олӣ ва сохтмончиёни Суғд"
+              )}
             </h2>
             <p className="text-xs sm:text-sm text-slate-500 mt-0.5">
-              Жилые комплексы с официальной документацией, беспроцентной рассрочкой и поэтажной шахматкой
+              {tDual(
+                "Жилые комплексы с официальной документацией, беспроцентной рассрочкой и поэтажной шахматкой",
+                "Маҷмааҳои истиқоматӣ бо ҳуҷҷатҳои расмӣ, пардохти қисм-қисми бефоиз ва ҷадвали шоҳмотии ошёнаҳо"
+              )}
             </p>
           </div>
           <Link
             href="#new-buildings"
             className="text-sm font-semibold text-emerald-600 hover:text-emerald-700 flex items-center gap-1 shrink-0"
           >
-            Все 14 комплексов
+            {tDual("Все 14 комплексов", "Ҳамаи 14 маҷмаа")}
             <ChevronRight className="h-4 w-4" />
           </Link>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {FEATURED_PROJECTS.map((proj) => (
-            <Card
-              key={proj.id}
-              className="bg-white rounded-xl border border-slate-200/80 hover:border-emerald-300 hover:shadow-xl transition-all duration-300 overflow-hidden group"
-            >
-              <div className="relative h-64 sm:h-72 w-full overflow-hidden bg-slate-100">
-                <img
-                  src={proj.coverImage}
-                  alt={proj.name}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                />
+          {FEATURED_PROJECTS.map((proj) => {
+            const projName = tDual(proj.name, proj.nameTg || proj.name);
+            const projStatus = tDual(proj.status, proj.statusTg || proj.status);
+            const projClass = tDual(proj.buildingClass, proj.buildingClassTg || proj.buildingClass);
+            const projCity = tDual(proj.city, proj.cityTg || proj.city);
+            const projDistrict = tDual(proj.district, proj.districtTg || proj.district);
+            const projInstallment = tDual(proj.installment, proj.installmentTg || proj.installment);
+            const projDownPayment = tDual(proj.downPayment, proj.downPaymentTg || proj.downPayment);
+            const projTags = language === "tg" && proj.tagsTg ? proj.tagsTg : proj.tags;
+            const projDevName = tDual(proj.developerName, proj.developerNameTg || proj.developerName);
 
-                <div className="absolute top-3.5 left-3.5 flex flex-wrap gap-2">
-                  <Badge className="bg-emerald-600 text-white font-medium text-xs shadow-sm">
-                    {proj.status}
-                  </Badge>
-                  <Badge variant="secondary" className="backdrop-blur-md bg-white/90 text-slate-800 font-medium text-xs shadow-xs">
-                    {proj.buildingClass}
-                  </Badge>
+            return (
+              <Card
+                key={proj.id}
+                className="bg-white rounded-xl border border-slate-200/80 hover:border-emerald-300 hover:shadow-xl transition-all duration-300 overflow-hidden group"
+              >
+                <div className="relative h-64 sm:h-72 w-full overflow-hidden bg-slate-100">
+                  <img
+                    src={proj.coverImage}
+                    alt={projName}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                  />
+
+                  <div className="absolute top-3.5 left-3.5 flex flex-wrap gap-2">
+                    <Badge className="bg-emerald-600 text-white font-medium text-xs shadow-sm">
+                      {projStatus}
+                    </Badge>
+                    <Badge variant="secondary" className="backdrop-blur-md bg-white/90 text-slate-800 font-medium text-xs shadow-xs">
+                      {projClass}
+                    </Badge>
+                  </div>
+
+                  <div className="absolute bottom-3.5 left-3.5 bg-white/95 backdrop-blur-md text-emerald-700 font-semibold text-xs px-3 py-1.5 rounded-lg shadow-sm flex items-center gap-1.5 border border-slate-200/50">
+                    <Percent className="h-3.5 w-3.5 text-emerald-600" />
+                    {projInstallment} ({projDownPayment})
+                  </div>
+
+                  <div className="absolute bottom-3.5 right-3.5 z-10">
+                    <ProjectCatalogCardBadge slug={proj.slug} />
+                  </div>
+
+                  <div className="absolute top-3.5 right-3.5 bg-white/95 backdrop-blur-md px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-900 shadow-sm flex items-center gap-2 border border-slate-200/50">
+                    <DeveloperAvatar name={projDevName} size="sm" className="h-5 w-5 text-[9px]" />
+                    <span>{projDevName}</span>
+                    <CheckCircle2 className="h-3.5 w-3.5 text-emerald-600" />
+                  </div>
                 </div>
 
-                <div className="absolute bottom-3.5 left-3.5 bg-white/95 backdrop-blur-md text-emerald-700 font-semibold text-xs px-3 py-1.5 rounded-lg shadow-sm flex items-center gap-1.5 border border-slate-200/50">
-                  <Percent className="h-3.5 w-3.5 text-emerald-600" />
-                  {proj.installment} ({proj.downPayment})
-                </div>
-
-                <div className="absolute bottom-3.5 right-3.5 z-10">
-                  <ProjectCatalogCardBadge slug={proj.slug} />
-                </div>
-
-                <div className="absolute top-3.5 right-3.5 bg-white/95 backdrop-blur-md px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-900 shadow-sm flex items-center gap-2 border border-slate-200/50">
-                  <DeveloperAvatar name={proj.developerName} size="sm" className="h-5 w-5 text-[9px]" />
-                  <span>{proj.developerName}</span>
-                  <CheckCircle2 className="h-3.5 w-3.5 text-emerald-600" />
-                </div>
-              </div>
-
-              <CardContent className="p-5 sm:p-6 space-y-4">
-                <div>
-                  <h3 className="text-xl font-bold text-slate-900 group-hover:text-emerald-600 transition-colors">
-                    {proj.name}
-                  </h3>
-                  <p className="text-xs text-slate-500 flex items-center gap-1 mt-1 font-medium">
-                    <MapPin className="h-3.5 w-3.5 text-emerald-600 shrink-0" />
-                    {proj.city}, {proj.district} • {proj.floors} этажей
-                  </p>
-                </div>
-
-                <div className="flex flex-wrap gap-1.5">
-                  {proj.tags.map((tag) => (
-                    <span
-                      key={tag}
-                      className="text-[11px] font-medium px-2.5 py-1 rounded-md bg-slate-100 text-slate-600"
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-
-                <div className="pt-3.5 border-t border-slate-100 flex items-center justify-between">
+                <CardContent className="p-5 sm:p-6 space-y-4">
                   <div>
-                    <div className="text-[11px] text-slate-400">Цена за м²:</div>
-                    <div className="text-sm font-semibold text-slate-800">
-                      от{" "}
-                      {formatPrice(
-                        proj.pricePerMeterTjs,
-                        proj.pricePerMeterUsd
-                      )}{" "}
-                      / м²
-                    </div>
+                    <h3 className="text-xl font-bold text-slate-900 group-hover:text-emerald-600 transition-colors">
+                      {projName}
+                    </h3>
+                    <p className="text-xs text-slate-500 flex items-center gap-1 mt-1 font-medium">
+                      <MapPin className="h-3.5 w-3.5 text-emerald-600 shrink-0" />
+                      {projCity}, {projDistrict} • {proj.floors} {tDual("этажей", "ошёна")}
+                    </p>
                   </div>
-                  <div className="text-right">
-                    <div className="text-[11px] text-slate-400">Квартиры от:</div>
-                    <div className="text-lg font-bold text-emerald-600">
-                      от {formatPrice(proj.minPriceTjs, proj.minPriceUsd)}
-                    </div>
-                  </div>
-                </div>
 
-                <div className="pt-1 flex items-center gap-3">
-                  <Link href={`/projects/${proj.slug}`} className="flex-1">
-                    <Button className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-medium text-xs h-10 px-4 rounded-xl shadow-xs">
-                      Смотреть {proj.availableUnitsCount} квартир
-                    </Button>
-                  </Link>
-                  <a
-                    href="https://wa.me/992927005555"
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    <Button variant="outline" size="sm" className="text-xs font-semibold h-10 px-3.5 rounded-xl gap-1.5 border-slate-200">
-                      <MessageCircle className="h-4 w-4 text-emerald-600" />
-                      Отдел продаж
-                    </Button>
-                  </a>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
+                  <div className="flex flex-wrap gap-1.5">
+                    {projTags.map((tag) => (
+                      <span
+                        key={tag}
+                        className="text-[11px] font-medium px-2.5 py-1 rounded-md bg-slate-100 text-slate-600"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+
+                  <div className="pt-3.5 border-t border-slate-100 flex items-center justify-between">
+                    <div>
+                      <div className="text-[11px] text-slate-400">{tDual("Цена за м²:", "Нархи 1 м²:")}</div>
+                      <div className="text-sm font-semibold text-slate-800">
+                        {t.common.from}{" "}
+                        {formatPrice(
+                          proj.pricePerMeterTjs,
+                          proj.pricePerMeterUsd
+                        )}{" "}
+                        / {t.common.sqm}
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <div className="text-[11px] text-slate-400">{tDual("Квартиры от:", "Хонадон аз:")}</div>
+                      <div className="text-lg font-bold text-emerald-600">
+                        {t.common.from} {formatPrice(proj.minPriceTjs, proj.minPriceUsd)}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="pt-1 flex items-center gap-3">
+                    <Link href={`/projects/${proj.slug}`} className="flex-1">
+                      <Button className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-medium text-xs h-10 px-4 rounded-xl shadow-xs">
+                        {tDual(`Смотреть ${proj.availableUnitsCount} квартир`, `Дидани ${proj.availableUnitsCount} хонадон`)}
+                      </Button>
+                    </Link>
+                    <a
+                      href="https://wa.me/992927005555"
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      <Button variant="outline" size="sm" className="text-xs font-semibold h-10 px-3.5 rounded-xl gap-1.5 border-slate-200">
+                        <MessageCircle className="h-4 w-4 text-emerald-600" />
+                        {tDual("Отдел продаж", "Шӯъбаи фурӯш")}
+                      </Button>
+                    </a>
+                  </div>
+                </CardContent>
+              </Card>
+            );
+          })}
         </div>
       </section>
 

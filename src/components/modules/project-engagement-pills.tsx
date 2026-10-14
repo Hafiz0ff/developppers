@@ -3,6 +3,7 @@
 import React from "react";
 import { Eye, Heart } from "lucide-react";
 import { useProjectAnalytics } from "@/hooks/use-project-analytics";
+import { useLanguage } from "@/context/language-context";
 
 interface ProjectEngagementProps {
   slug: string;
@@ -15,6 +16,7 @@ interface ProjectEngagementProps {
  */
 export function ProjectEngagementHeaderPill({ slug, autoRecordView = true }: ProjectEngagementProps) {
   const { stats, isFavorite, toggleFavorite } = useProjectAnalytics(slug, autoRecordView);
+  const { tDual } = useLanguage();
 
   return (
     <div className="bg-card border rounded-2xl p-3 sm:p-4 shadow-xs flex items-center gap-4 sm:gap-6 shrink-0">
@@ -28,7 +30,7 @@ export function ProjectEngagementHeaderPill({ slug, autoRecordView = true }: Pro
             {stats.viewsMonthCount}
           </div>
           <div className="text-[11px] text-muted-foreground whitespace-nowrap">
-            Просмотров за 30 дней
+            {tDual("Просмотров за 30 дней", "Боздидҳо дар 30 рӯз")}
           </div>
         </div>
       </div>
@@ -40,7 +42,11 @@ export function ProjectEngagementHeaderPill({ slug, autoRecordView = true }: Pro
         type="button"
         onClick={toggleFavorite}
         className="group flex items-center gap-2.5 text-left cursor-pointer transition-transform active:scale-95"
-        title={isFavorite ? "Удалить из избранного" : "Добавить в избранное"}
+        title={
+          isFavorite
+            ? tDual("Удалить из избранного", "Аз баргузидаҳо нест кардан")
+            : tDual("Добавить в избранное", "Ба баргузидаҳо илова кардан")
+        }
       >
         <div
           className={`h-9 w-9 rounded-xl flex items-center justify-center transition-colors shrink-0 ${
@@ -56,7 +62,7 @@ export function ProjectEngagementHeaderPill({ slug, autoRecordView = true }: Pro
             {stats.favoritesMonthCount}
           </div>
           <div className="text-[11px] text-muted-foreground whitespace-nowrap">
-            В избранном за 30 дней
+            {tDual("В избранном за 30 дней", "Дар баргузидаҳо дар 30 рӯз")}
           </div>
         </div>
       </button>
@@ -70,6 +76,7 @@ export function ProjectEngagementHeaderPill({ slug, autoRecordView = true }: Pro
  */
 export function ProjectCatalogCardBadge({ slug }: { slug: string }) {
   const { stats, isFavorite, toggleFavorite } = useProjectAnalytics(slug, false);
+  const { tDual } = useLanguage();
 
   return (
     <div
@@ -83,7 +90,11 @@ export function ProjectCatalogCardBadge({ slug }: { slug: string }) {
         type="button"
         onClick={toggleFavorite}
         className="inline-flex items-center gap-1 hover:text-rose-300 transition-colors cursor-pointer"
-        title={isFavorite ? "В избранном" : "Добавить в избранное"}
+        title={
+          isFavorite
+            ? tDual("В избранном", "Дар баргузидаҳо")
+            : tDual("Добавить в избранное", "Ба баргузидаҳо илова кардан")
+        }
       >
         <Heart className={`h-3.5 w-3.5 ${isFavorite ? "fill-rose-500 text-rose-500" : ""}`} />
         <span>{stats.favoritesCount}</span>
@@ -91,7 +102,10 @@ export function ProjectCatalogCardBadge({ slug }: { slug: string }) {
 
       <span className="opacity-40">•</span>
 
-      <div className="inline-flex items-center gap-1 opacity-90" title="Уникальных просмотров">
+      <div
+        className="inline-flex items-center gap-1 opacity-90"
+        title={tDual("Уникальных просмотров", "Шумораи боздидҳои беназир")}
+      >
         <Eye className="h-3.5 w-3.5" />
         <span>{stats.viewsCount}</span>
       </div>

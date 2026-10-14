@@ -73,3 +73,45 @@ test("Localization - RU dictionary has pristine real estate terminology", () => 
   assert.equal(ru.showcase.interactiveChessboard, "Интерактивная шахматка квартир");
   assert.equal(ru.showcase.modeCutaway, "Вид в срезе");
 });
+
+test("Stage 2 DoD - Bilingual projects and real showcase case Qayroqum Avenue", async () => {
+  const { INITIAL_PROJECTS } = await import("../../data/mock-db");
+  const { SOGD_CITIES } = await import("../../constants/locations");
+
+  // Verify all cities have both RU and TG names
+  for (const city of SOGD_CITIES) {
+    assert.ok(city.nameRu && city.nameRu.length > 0, `City ${city.value} must have nameRu`);
+    assert.ok(city.nameTj && city.nameTj.length > 0, `City ${city.value} must have nameTj`);
+  }
+
+  // Verify Qayroqum Avenue bilingual data
+  const qayroqum = INITIAL_PROJECTS.find((p) => p.slug === "qayroqum-avenue");
+  assert.ok(qayroqum, "Qayroqum Avenue project must exist");
+
+  // Tajik authentic copy
+  assert.equal(qayroqum.nameTg, "МҶ «Qayroqum Avenue»");
+  assert.ok(qayroqum.shortDescriptionTg?.includes("Баҳри Тоҷик"), "TG short description must mention Баҳри Тоҷик");
+  assert.ok(qayroqum.descriptionTg?.includes("мактаб ва боғчаи кӯдакон"), "TG description must retain authentic facilities");
+  assert.ok(qayroqum.amenitiesTg?.some((a) => a.includes("0% пешпардохт")), "TG amenities must contain 0% пешпардохт");
+  assert.ok(qayroqum.amenitiesTg?.some((a) => a.includes("бурди BMW")), "TG amenities must contain BMW lottery");
+  assert.ok(qayroqum.amenitiesTg?.some((a) => a.includes("60 моҳ")), "TG amenities must contain 60-month installment");
+
+  // Russian pristine copy
+  assert.ok(qayroqum.shortDescription.includes("Таджикского моря"), "RU short description must mention Таджикское море");
+  assert.ok(qayroqum.description.includes("Кайраккумского водохранилища"), "RU description must mention Кайраккумское водохранилище");
+  assert.ok(qayroqum.amenities.some((a) => a.includes("0% первоначальный взнос")), "RU amenities must contain 0% down payment");
+  assert.ok(qayroqum.amenities.some((a) => a.includes("розыгрыш BMW") || a.includes("выиграть BMW")), "RU amenities must contain BMW raffle");
+  assert.ok(qayroqum.amenities.some((a) => a.includes("60 месяцев")), "RU amenities must contain 60 months");
+
+  // Sirdaryo Plaza and Sugdiyon bilingual data
+  const sirdaryo = INITIAL_PROJECTS.find((p) => p.slug === "sirdaryo-plaza");
+  assert.ok(sirdaryo?.nameTg === "МҶ «Сирдарё Плаза»");
+  assert.ok(sirdaryo?.shortDescriptionTg && sirdaryo.shortDescriptionTg.length > 0);
+  assert.ok(sirdaryo?.amenitiesTg && sirdaryo.amenitiesTg.length > 0);
+
+  const sugdiyon = INITIAL_PROJECTS.find((p) => p.slug === "sugdiyon-city");
+  assert.ok(sugdiyon?.nameTg === "МҶ «Суғдиён Сити»");
+  assert.ok(sugdiyon?.shortDescriptionTg && sugdiyon.shortDescriptionTg.length > 0);
+  assert.ok(sugdiyon?.amenitiesTg && sugdiyon.amenitiesTg.length > 0);
+});
+
