@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useLanguage } from "@/context/language-context";
@@ -19,6 +19,8 @@ import {
   MapPin,
   SlidersHorizontal,
   ChevronRight,
+  ChevronUp,
+  ChevronDown,
   List,
   Map as MapIcon,
   Phone,
@@ -26,6 +28,7 @@ import {
   Compass,
   X,
   ExternalLink,
+  ArrowUpDown,
 } from "lucide-react";
 
 export default function MapPage() {
@@ -33,19 +36,56 @@ export default function MapPage() {
   const { currency } = useCurrency();
   const isTg = language === "tg";
 
-  // Data & State
+  // Data
   const allProperties = useMemo(() => getAllMapProperties(), []);
 
+  // Filter & UI State
   const [activeCityId, setActiveCityId] = useState("khujand");
   const [selectedCategory, setSelectedCategory] = useState<
     "all" | "complex" | "apartment" | "house"
   >("all");
   const [selectedRooms, setSelectedRooms] = useState<number | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
+  const [sortBy, setSortBy] = useState<"default" | "price-asc" | "price-desc" | "area-desc">("default");
   const [selectedPropertyId, setSelectedPropertyId] = useState<string | null>(null);
   const [hoveredPropertyId, setHoveredPropertyId] = useState<string | null>(null);
   const [mobileView, setMobileView] = useState<"map" | "list">("map");
-  const [showFiltersModal, setShowFiltersModal] = useState(false);
+  const [isSheetExpanded, setIsSheetExpanded] = useState(false);
+
+  const carouselRef = useRef<HTMLDivElement>(null);
+
+  // Read URL query parameters on initial mount
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const params = new URLSearchParams(window.location.search);
+    const city = params.get("city");
+    const type = params.get("type");
+    const rooms = params.get("rooms");
+    const sort = params.get("sort");
+
+    if (city && SOGD_MAP_PRESETS.some((p) => p.id === city)) setActiveCityId(city);
+    if (type && ["all", "complex", "apartment", "house"].includes(type)) {
+      setSelectedCategory(type as any);
+    }
+    if (rooms) setSelectedRooms(Number(rooms));
+    if (sort && ["default", "price-asc", "price-desc", "area-desc"].includes(sort)) {
+      setSortBy(sort as any);
+    }
+  }, []);
+
+  // Update URL query parameters on state changes
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const params = new URLSearchParams();
+    if (activeCityId !== "khujand") params.set("city", activeCityId);
+    if (selectedCategory !== "all") params.set("type", selectedCategory);
+    if (selectedRooms !== null) params.set("rooms", String(selectedRooms));
+    if (sortBy !== "default") params.set("sort", sortBy);
+
+    const queryString = params.toString();
+    const newUrl = queryString ? `/map?${queryString}` : "/map";
+    window.history.replaceState(null, "", newUrl);
+  }, [activeCityId, selectedCategory, selectedRooms, sortBy]);
 
   // Filter properties
   const filteredProperties = useMemo(() => {
@@ -57,16 +97,34 @@ export default function MapPage() {
 
       // 2. City Filter (unless all-sughd)
       if (activeCityId !== "all-sughd") {
-        if (activeCityId === "khujand" && !item.city.toLowerCase().includes("худжанд") && !item.city.toLowerCase().includes("хуҷанд")) {
+        if (
+          activeCityId === "khujand" &&
+          !item.city.toLowerCase().includes("худжанд") &&
+          !item.city.toLowerCase().includes("хуҷанд")
+        ) {
           return false;
         }
-        if (activeCityId === "guliston" && !item.city.toLowerCase().includes("гулистон") && !item.city.toLowerCase().includes("қайроққум") && !item.district.toLowerCase().includes("таджикского моря") && !item.district.toLowerCase().includes("баҳри тоҷик")) {
+        if (
+          activeCityId === "guliston" &&
+          !item.city.toLowerCase().includes("гулистон") &&
+          !item.city.toLowerCase().includes("қайроққум") &&
+          !item.district.toLowerCase().includes("таджикского моря") &&
+          !item.district.toLowerCase().includes("баҳри тоҷик")
+        ) {
           return false;
         }
-        if (activeCityId === "gafurov" && !item.city.toLowerCase().includes("ғафуров") && !item.city.toLowerCase().includes("гафуров") && !item.district.toLowerCase().includes("ғафуров")) {
+        if (
+          activeCityId === "gafurov" &&
+          !item.city.toLowerCase().includes("ғафуров") &&
+          !item.city.toLowerCase().includes("гафуров") &&
+          !item.district.toLowerCase().includes("ғафуров")
+        ) {
           return false;
         }
-        if (activeCityId === "istaravshan" && !item.city.toLowerCase().includes("истаравшан")) {
+        if (
+          activeCityId === "istaravshan" &&
+          !item.city.toLowerCase().includes("истаравшан")
+        ) {
           return false;
         }
       }
@@ -83,9 +141,15 @@ export default function MapPage() {
       // 4. Search Query Filter
       if (searchQuery.trim()) {
         const query = searchQuery.toLowerCase();
-        const matchTitle = item.title.toLowerCase().includes(query) || (item.titleTg && item.titleTg.toLowerCase().includes(query));
-        const matchDistrict = item.district.toLowerCase().includes(query) || (item.districtTg && item.districtTg.toLowerCase().includes(query));
-        const matchCity = item.city.toLowerCase().includes(query) || (item.cityTg && item.cityTg.toLowerCase().includes(query));
+        const matchTitle =
+          item.title.toLowerCase().includes(query) ||
+          (item.titleTg && item.titleTg.toLowerCase().includes(query));
+        const matchDistrict =
+          item.district.toLowerCase().includes(query) ||
+          (item.districtTg && item.districtTg.toLowerCase().includes(query));
+        const matchCity =
+          item.city.toLowerCase().includes(query) ||
+          (item.cityTg && item.cityTg.toLowerCase().includes(query));
         if (!matchTitle && !matchDistrict && !matchCity) return false;
       }
 
@@ -93,9 +157,42 @@ export default function MapPage() {
     });
   }, [allProperties, selectedCategory, activeCityId, selectedRooms, searchQuery]);
 
+  // Sort properties
+  const sortedProperties = useMemo(() => {
+    const list = [...filteredProperties];
+    if (sortBy === "price-asc") {
+      list.sort((a, b) =>
+        currency === "USD" ? a.priceUsd - b.priceUsd : a.priceTjs - b.priceTjs
+      );
+    } else if (sortBy === "price-desc") {
+      list.sort((a, b) =>
+        currency === "USD" ? b.priceUsd - a.priceUsd : b.priceTjs - a.priceTjs
+      );
+    } else if (sortBy === "area-desc") {
+      list.sort((a, b) => b.areaM2 - a.areaM2);
+    }
+    return list;
+  }, [filteredProperties, sortBy, currency]);
+
   const selectedProperty = useMemo(() => {
     return allProperties.find((p) => p.id === selectedPropertyId) || null;
   }, [allProperties, selectedPropertyId]);
+
+  // Scroll left desktop list to selected item
+  useEffect(() => {
+    if (selectedPropertyId) {
+      const cardEl = document.getElementById(`property-card-${selectedPropertyId}`);
+      if (cardEl) {
+        cardEl.scrollIntoView({ behavior: "smooth", block: "nearest" });
+      }
+
+      // Also scroll mobile carousel
+      const carouselEl = document.getElementById(`carousel-card-${selectedPropertyId}`);
+      if (carouselEl) {
+        carouselEl.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+      }
+    }
+  }, [selectedPropertyId]);
 
   return (
     <div className="relative w-full h-[calc(100vh-64px)] flex flex-col overflow-hidden bg-slate-50">
@@ -162,7 +259,11 @@ export default function MapPage() {
               {mobileView === "map" ? (
                 <>
                   <List className="w-3.5 h-3.5" />
-                  <span>{isTg ? `Рӯйхат (${filteredProperties.length})` : `Списком (${filteredProperties.length})`}</span>
+                  <span>
+                    {isTg
+                      ? `Рӯйхат (${sortedProperties.length})`
+                      : `Списком (${sortedProperties.length})`}
+                  </span>
                 </>
               ) : (
                 <>
@@ -175,7 +276,7 @@ export default function MapPage() {
         </div>
       </div>
 
-      {/* Main Content Area */}
+      {/* Main Content Area: Desktop Split-View (List 40% / Map 60%) */}
       <div className="flex-1 flex overflow-hidden relative">
         {/* Left Column: Properties List (Desktop) */}
         <div
@@ -183,14 +284,18 @@ export default function MapPage() {
             mobileView === "list" ? "flex" : "hidden md:flex"
           }`}
         >
-          {/* Search & Rooms Filter Bar */}
-          <div className="p-3.5 border-b border-slate-100 bg-slate-50/50 space-y-2.5">
+          {/* Search, Sort & Rooms Bar */}
+          <div className="p-3.5 border-b border-slate-100 bg-slate-50/60 space-y-2.5">
             {/* Search Input */}
             <div className="relative">
               <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
               <input
                 type="text"
-                placeholder={isTg ? "Ҷустуҷӯ аз рӯи микрорайон, кӯча..." : "Поиск по микрорайону, улице..."}
+                placeholder={
+                  isTg
+                    ? "Ҷустуҷӯ аз рӯи микрорайон, кӯча..."
+                    : "Поиск по микрорайону, улице..."
+                }
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full pl-9 pr-8 py-2 bg-white border border-slate-200 rounded-xl text-xs font-medium focus:outline-hidden focus:ring-2 focus:ring-emerald-500 transition-all"
@@ -205,46 +310,61 @@ export default function MapPage() {
               )}
             </div>
 
-            {/* Room Selector Chips */}
-            <div className="flex items-center gap-1.5">
-              <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider shrink-0 mr-1">
-                {isTg ? "Ҳуҷраҳо:" : "Комнат:"}
-              </span>
-              {[
-                { val: null, label: isTg ? "Ҳама" : "Все" },
-                { val: 1, label: "1" },
-                { val: 2, label: "2" },
-                { val: 3, label: "3" },
-                { val: 4, label: "4+" },
-              ].map((r) => {
-                const isActive = selectedRooms === r.val;
-                return (
-                  <button
-                    key={String(r.val)}
-                    onClick={() => setSelectedRooms(r.val)}
-                    className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer ${
-                      isActive
-                        ? "bg-emerald-600 text-white"
-                        : "bg-white border border-slate-200 text-slate-700 hover:bg-slate-100"
-                    }`}
-                  >
-                    {r.label}
-                  </button>
-                );
-              })}
+            {/* Room Selector & Sort Row */}
+            <div className="flex items-center justify-between gap-2">
+              {/* Room Selector Chips */}
+              <div className="flex items-center gap-1">
+                {[
+                  { val: null, label: isTg ? "Ҳама" : "Все" },
+                  { val: 1, label: "1" },
+                  { val: 2, label: "2" },
+                  { val: 3, label: "3" },
+                  { val: 4, label: "4+" },
+                ].map((r) => {
+                  const isActive = selectedRooms === r.val;
+                  return (
+                    <button
+                      key={String(r.val)}
+                      onClick={() => setSelectedRooms(r.val)}
+                      className={`px-2 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                        isActive
+                          ? "bg-emerald-600 text-white"
+                          : "bg-white border border-slate-200 text-slate-700 hover:bg-slate-100"
+                      }`}
+                    >
+                      {r.label}
+                    </button>
+                  );
+                })}
+              </div>
+
+              {/* Sort Selector */}
+              <div className="flex items-center gap-1 text-xs">
+                <ArrowUpDown className="w-3.5 h-3.5 text-slate-400" />
+                <select
+                  value={sortBy}
+                  onChange={(e) => setSortBy(e.target.value as any)}
+                  className="bg-white border border-slate-200 rounded-lg py-1 px-2 text-xs font-semibold text-slate-700 focus:outline-hidden focus:ring-1 focus:ring-emerald-500"
+                >
+                  <option value="default">{isTg ? "Стандартӣ" : "По умолчанию"}</option>
+                  <option value="price-asc">{isTg ? "Арзонтар" : "Сначала дешевле"}</option>
+                  <option value="price-desc">{isTg ? "Гаронтар" : "Сначала дороже"}</option>
+                  <option value="area-desc">{isTg ? "Масоҳат" : "По площади"}</option>
+                </select>
+              </div>
             </div>
 
             {/* Results counter */}
             <div className="flex items-center justify-between text-xs text-slate-500 font-medium pt-1">
               <span>
                 {isTg
-                  ? `${filteredProperties.length} амвол дар харита ёфт шуд`
-                  : `Найдено ${filteredProperties.length} объектов на карте`}
+                  ? `${sortedProperties.length} амвол дар харита ёфт шуд`
+                  : `Найдено ${sortedProperties.length} объектов на карте`}
               </span>
               {selectedPropertyId && (
                 <button
                   onClick={() => setSelectedPropertyId(null)}
-                  className="text-emerald-600 hover:underline text-[11px] font-bold"
+                  className="text-emerald-600 hover:underline text-[11px] font-bold cursor-pointer"
                 >
                   {isTg ? "Тоза кардани интихоб" : "Сбросить выбор"}
                 </button>
@@ -254,7 +374,7 @@ export default function MapPage() {
 
           {/* Cards Scrollable Feed */}
           <div className="flex-1 overflow-y-auto p-3 space-y-2.5 divide-y divide-slate-100">
-            {filteredProperties.length === 0 ? (
+            {sortedProperties.length === 0 ? (
               <div className="py-16 text-center text-slate-500">
                 <MapPin className="w-10 h-10 text-slate-300 mx-auto mb-2" />
                 <div className="text-sm font-bold text-slate-700">
@@ -265,7 +385,7 @@ export default function MapPage() {
                 </div>
               </div>
             ) : (
-              filteredProperties.map((prop) => {
+              sortedProperties.map((prop) => {
                 const isSelected = prop.id === selectedPropertyId;
                 const isHovered = prop.id === hoveredPropertyId;
 
@@ -295,17 +415,18 @@ export default function MapPage() {
                 return (
                   <div
                     key={prop.id}
+                    id={`property-card-${prop.id}`}
                     onMouseEnter={() => setHoveredPropertyId(prop.id)}
                     onMouseLeave={() => setHoveredPropertyId(null)}
                     onClick={() => {
                       setSelectedPropertyId(prop.id);
-                      if (window.innerWidth < 768) {
+                      if (typeof window !== "undefined" && window.innerWidth < 768) {
                         setMobileView("map");
                       }
                     }}
                     className={`pt-2.5 first:pt-0 cursor-pointer rounded-xl transition-all ${
                       isSelected
-                        ? "bg-emerald-50/90 ring-2 ring-emerald-500 p-2.5"
+                        ? "bg-emerald-50/90 ring-2 ring-emerald-500 p-2.5 shadow-sm"
                         : isHovered
                         ? "bg-slate-50 p-2.5"
                         : "p-2 hover:bg-slate-50/70"
@@ -368,7 +489,7 @@ export default function MapPage() {
           }`}
         >
           <InteractiveMapWrapper
-            properties={filteredProperties}
+            properties={sortedProperties}
             selectedPropertyId={selectedPropertyId}
             hoveredPropertyId={hoveredPropertyId}
             onSelectProperty={(prop) => setSelectedPropertyId(prop.id)}
@@ -378,59 +499,126 @@ export default function MapPage() {
             className="w-full h-full"
           />
 
-          {/* Mobile Bottom Sheet Card: Displays when an item is selected on mobile map view */}
-          {selectedProperty && (
-            <div className="md:hidden absolute bottom-4 left-3 right-3 z-30 bg-white/98 backdrop-blur-md rounded-2xl shadow-2xl border border-slate-200/90 p-3.5 animate-in fade-in slide-in-from-bottom-6 duration-300">
-              <div className="flex items-start justify-between gap-3">
-                <div className="flex gap-3 min-w-0">
-                  <img
-                    src={selectedProperty.coverImage}
-                    alt={selectedProperty.title}
-                    className="w-20 h-20 rounded-xl object-cover shrink-0"
-                  />
-                  <div className="min-w-0">
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-600">
-                      {selectedProperty.city} · {selectedProperty.district}
-                    </span>
-                    <h4 className="text-sm font-bold text-slate-900 truncate mt-0.5">
-                      {isTg && selectedProperty.titleTg ? selectedProperty.titleTg : selectedProperty.title}
-                    </h4>
-                    <div className="text-sm font-extrabold text-emerald-600 mt-1">
-                      {currency === "USD"
-                        ? `$${selectedProperty.priceUsd.toLocaleString()}`
-                        : `${selectedProperty.priceTjs.toLocaleString()} TJS`}
+          {/* Mobile Bottom Sheet: Floating Interactive Carousel & Detail Card */}
+          <div className="md:hidden absolute bottom-3 left-2 right-2 z-30">
+            {selectedProperty ? (
+              // Selected Single Property Card
+              <div className="bg-white/98 backdrop-blur-md rounded-2xl shadow-2xl border border-slate-200/90 p-3.5 animate-in fade-in slide-in-from-bottom-4 duration-200">
+                <div className="flex items-start justify-between gap-3">
+                  <div className="flex gap-3 min-w-0">
+                    <img
+                      src={selectedProperty.coverImage}
+                      alt={selectedProperty.title}
+                      className="w-20 h-20 rounded-xl object-cover shrink-0"
+                    />
+                    <div className="min-w-0">
+                      <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-600">
+                        {selectedProperty.city} · {selectedProperty.district}
+                      </span>
+                      <h4 className="text-sm font-bold text-slate-900 truncate mt-0.5">
+                        {isTg && selectedProperty.titleTg
+                          ? selectedProperty.titleTg
+                          : selectedProperty.title}
+                      </h4>
+                      <div className="text-sm font-extrabold text-emerald-600 mt-1">
+                        {currency === "USD"
+                          ? `$${selectedProperty.priceUsd.toLocaleString()}`
+                          : `${selectedProperty.priceTjs.toLocaleString()} TJS`}
+                      </div>
                     </div>
                   </div>
+
+                  <button
+                    onClick={() => setSelectedPropertyId(null)}
+                    className="w-7 h-7 rounded-full bg-slate-100 flex items-center justify-center text-slate-500 hover:bg-slate-200 shrink-0"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
                 </div>
 
-                <button
-                  onClick={() => setSelectedPropertyId(null)}
-                  className="w-7 h-7 rounded-full bg-slate-100 flex items-center justify-center text-slate-500 hover:bg-slate-200 shrink-0"
-                >
-                  <X className="w-4 h-4" />
-                </button>
+                <div className="grid grid-cols-2 gap-2 mt-3 pt-3 border-t border-slate-100">
+                  <Link
+                    href={selectedProperty.url}
+                    className="flex items-center justify-center gap-1.5 py-2 px-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold transition-colors shadow-sm"
+                  >
+                    <span>{isTg ? "Муфассал" : "Подробнее"}</span>
+                    <ExternalLink className="w-3.5 h-3.5" />
+                  </Link>
+                  <a
+                    href={generateYandexMapsRouteUrl(
+                      selectedProperty.lat,
+                      selectedProperty.lng
+                    )}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-center gap-1.5 py-2 px-3 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-semibold transition-colors"
+                  >
+                    <Navigation className="w-3.5 h-3.5 text-red-500" />
+                    <span>{isTg ? "Хатсайр" : "Маршрут"}</span>
+                  </a>
+                </div>
               </div>
+            ) : (
+              // Swipeable Horizontal Bottom Carousel
+              <div className="bg-white/95 backdrop-blur-md rounded-2xl shadow-xl border border-slate-200/90 p-2.5">
+                <div className="flex items-center justify-between px-1.5 mb-2">
+                  <span className="text-[11px] font-bold text-slate-600">
+                    📍{" "}
+                    {isTg
+                      ? `${sortedProperties.length} объект дар харита`
+                      : `${sortedProperties.length} объектов на карте`}
+                  </span>
+                  <button
+                    onClick={() => setMobileView("list")}
+                    className="text-xs font-bold text-emerald-600 hover:underline"
+                  >
+                    {isTg ? "Ҳамааш дар рӯйхат" : "Показать списком"}
+                  </button>
+                </div>
 
-              <div className="grid grid-cols-2 gap-2 mt-3 pt-3 border-t border-slate-100">
-                <Link
-                  href={selectedProperty.url}
-                  className="flex items-center justify-center gap-1.5 py-2 px-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold transition-colors shadow-sm"
+                <div
+                  ref={carouselRef}
+                  className="flex gap-2.5 overflow-x-auto no-scrollbar snap-x snap-mandatory scroll-smooth pb-0.5"
                 >
-                  <span>{isTg ? "Муфассал" : "Подробнее"}</span>
-                  <ExternalLink className="w-3.5 h-3.5" />
-                </Link>
-                <a
-                  href={generateYandexMapsRouteUrl(selectedProperty.lat, selectedProperty.lng)}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center justify-center gap-1.5 py-2 px-3 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-semibold transition-colors"
-                >
-                  <Navigation className="w-3.5 h-3.5 text-red-500" />
-                  <span>{isTg ? "Хатсайр" : "Маршрут"}</span>
-                </a>
+                  {sortedProperties.slice(0, 15).map((prop) => {
+                    const title = isTg && prop.titleTg ? prop.titleTg : prop.title;
+                    const price =
+                      currency === "USD"
+                        ? `$${prop.priceUsd.toLocaleString()}`
+                        : `${(prop.priceTjs / 1000).toFixed(0)} тыс. TJS`;
+
+                    return (
+                      <div
+                        key={prop.id}
+                        id={`carousel-card-${prop.id}`}
+                        onClick={() => setSelectedPropertyId(prop.id)}
+                        className="w-56 shrink-0 snap-start bg-slate-50 hover:bg-emerald-50/50 p-2 rounded-xl border border-slate-200/80 cursor-pointer transition-all"
+                      >
+                        <div className="flex gap-2 items-center">
+                          <img
+                            src={prop.coverImage}
+                            alt={title}
+                            className="w-14 h-14 rounded-lg object-cover shrink-0"
+                          />
+                          <div className="min-w-0 flex-1">
+                            <h5 className="text-xs font-bold text-slate-900 truncate">
+                              {title}
+                            </h5>
+                            <div className="text-[10px] text-slate-500 truncate mt-0.5">
+                              {prop.district}
+                            </div>
+                            <div className="text-xs font-black text-emerald-600 mt-1">
+                              {price}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
-            </div>
-          )}
+            )}
+          </div>
         </div>
       </div>
     </div>
