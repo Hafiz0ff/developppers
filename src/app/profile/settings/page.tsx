@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { useLanguage } from "@/lib/i18n/language-context";
+import { ProfileNav } from "@/components/profile/profile-nav";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
@@ -151,38 +152,18 @@ export default function ProfileSettingsPage() {
     <div className="min-h-screen bg-[#F8FAFC] text-slate-900 pb-24">
       {/* 1. TOP HEADER */}
       <div className="bg-white border-b border-slate-200/80 px-4 sm:px-6 lg:px-8 py-5">
-        <div className="max-w-4xl mx-auto flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div>
-            <div className="flex items-center gap-2 text-xs uppercase font-bold tracking-wider text-emerald-600 mb-1">
-              <Link href="/profile/crm" className="hover:underline flex items-center gap-1 font-semibold">
-                <ArrowLeft className="h-3 w-3" />
-                {isTg ? "Кабинети шахсӣ" : "Личный кабинет"}
-              </Link>
-            </div>
-            <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+        <div className="max-w-4xl mx-auto">
+          <ProfileNav />
+
+          <div className="mt-4 pt-4 border-t border-slate-100">
+            <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight">
               {isTg ? "Танзимоти профил ва пайвастшавиҳо" : "Настройки профиля & Интеграции"}
-            </h1>
+            </h2>
             <p className="text-xs sm:text-sm text-slate-500 mt-1">
               {isTg
                 ? "Идоракунии маълумоти шахсӣ, амният ва огоҳиномаҳои фаврӣ"
                 : "Управление персональными данными, безопасностью и моментальными уведомлениями"}
             </p>
-          </div>
-
-          <div className="flex items-center gap-2.5">
-            <Link href="/profile/crm">
-              <Button variant="outline" className="h-9 px-3 text-xs font-semibold gap-1.5 border-slate-200 cursor-pointer">
-                <Users className="h-3.5 w-3.5 text-emerald-600" />
-                {isTg ? "Канбан CRM" : "Канбан CRM"}
-              </Button>
-            </Link>
-
-            <Link href="/profile/analytics">
-              <Button variant="outline" className="h-9 px-3 text-xs font-semibold gap-1.5 border-slate-200 cursor-pointer">
-                <TrendingUp className="h-3.5 w-3.5 text-slate-600" />
-                {isTg ? "Таҳлил" : "Аналитика"}
-              </Button>
-            </Link>
           </div>
         </div>
       </div>

@@ -44,9 +44,11 @@ import {
   Square,
   Search,
   Filter,
+  Send,
 } from "lucide-react";
 import { CATALOG_PROPERTIES, CatalogProperty } from "@/lib/catalog-data";
 import { useLanguage } from "@/lib/i18n/language-context";
+import { ProfileNav } from "@/components/profile/profile-nav";
 
 type LeadStatus = "new" | "contacted" | "showing" | "deal" | "closed";
 
@@ -358,52 +360,49 @@ export default function BrokerCrmPage() {
     <div className="min-h-screen bg-[#F8FAFC] pb-24 text-slate-900">
       {/* 1. TOP HEADER & NAVIGATION */}
       <div className="bg-white border-b border-slate-200/80 px-4 sm:px-6 lg:px-8 py-5">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <div>
-            <div className="flex items-center gap-2 text-xs uppercase font-bold tracking-wider text-emerald-600 mb-1">
-              <Users className="h-3.5 w-3.5" />
-              {isTg ? "B2B CRM-и даллал ва агентӣ" : "B2B CRM Маклера и Агентства"}
+        <div className="max-w-7xl mx-auto">
+          <ProfileNav />
+
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mt-4 pt-4 border-t border-slate-100">
+            <div>
+              <div className="flex items-center gap-2 text-xs uppercase font-bold tracking-wider text-emerald-600 mb-1">
+                <Users className="h-3.5 w-3.5" />
+                {isTg ? "B2B CRM-и даллал ва агентӣ" : "B2B CRM Маклера и Агентства"}
+              </div>
+              <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight flex items-center gap-3">
+                {isTg ? "Воронкаи канбании мизоҷон ва муомилаҳо" : "Канбан-воронка лидов & Сделок"}
+                <Badge className="bg-emerald-50 text-emerald-800 border-emerald-200 text-xs font-semibold">
+                  Sogd CRM Lite
+                </Badge>
+              </h2>
+              <p className="text-xs sm:text-sm text-slate-500 mt-1">
+                {isTg
+                  ? "Баҳисобгирии зангҳои даромад, муроҷиатҳои WhatsApp, нишондиҳиҳо ва ҳисобкунаки ҳаққи хизмат"
+                  : "Учет входящих звонков, WhatsApp-откликов, показов и калькулятор ожидаемой комиссии"}
+              </p>
             </div>
-            <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight flex items-center gap-3">
-              {isTg ? "Воронкаи канбании мизоҷон ва муомилаҳо" : "Канбан-воронка лидов & Сделок"}
-              <Badge className="bg-emerald-50 text-emerald-800 border-emerald-200 text-xs font-semibold">
-                Sogd CRM Lite
-              </Badge>
-            </h1>
-            <p className="text-xs sm:text-sm text-slate-500 mt-1">
-              {isTg
-                ? "Баҳисобгирии зангҳои даромад, муроҷиатҳои WhatsApp, нишондиҳиҳо ва ҳисобкунаки ҳаққи хизмат"
-                : "Учет входящих звонков, WhatsApp-откликов, показов и калькулятор ожидаемой комиссии"}
-            </p>
-          </div>
 
-          <div className="flex flex-wrap items-center gap-2.5">
-            <Link href="/profile/analytics">
-              <Button variant="outline" className="h-9 px-3 text-xs font-medium gap-1.5 border-slate-200">
-                <TrendingUp className="h-3.5 w-3.5 text-slate-600" />
-                {isTg ? "Таҳлил ва ҳисоботҳо" : "Аналитика & Отчеты"}
+            <div className="flex flex-wrap items-center gap-2.5">
+              <Button
+                variant="outline"
+                onClick={() => {
+                  setGeneratedShareUrl(null);
+                  setIsCreateCollectionOpen(true);
+                }}
+                className="h-9 px-3 text-xs font-semibold gap-1.5 border-emerald-300 text-emerald-700 bg-emerald-50/50 hover:bg-emerald-100/50 cursor-pointer"
+              >
+                <Share2 className="h-3.5 w-3.5 text-emerald-600" />
+                {isTg ? "Маҷмӯа ба WhatsApp" : "Подборка в WhatsApp"}
               </Button>
-            </Link>
 
-            <Button
-              variant="outline"
-              onClick={() => {
-                setGeneratedShareUrl(null);
-                setIsCreateCollectionOpen(true);
-              }}
-              className="h-9 px-3 text-xs font-semibold gap-1.5 border-emerald-300 text-emerald-700 bg-emerald-50/50 hover:bg-emerald-100/50"
-            >
-              <Share2 className="h-3.5 w-3.5 text-emerald-600" />
-              {isTg ? "Маҷмӯа ба WhatsApp" : "Подборка в WhatsApp"}
-            </Button>
-
-            <Button
-              onClick={() => setIsNewLeadOpen(true)}
-              className="h-9 px-3.5 text-xs font-semibold gap-1.5 bg-emerald-600 hover:bg-emerald-700 text-white shadow-xs"
-            >
-              <Plus className="h-4 w-4" />
-              {isTg ? "Мизоҷи нав" : "Новый лид"}
-            </Button>
+              <Button
+                onClick={() => setIsNewLeadOpen(true)}
+                className="h-9 px-3.5 text-xs font-semibold gap-1.5 bg-emerald-600 hover:bg-emerald-700 text-white shadow-xs cursor-pointer"
+              >
+                <Plus className="h-4 w-4" />
+                {isTg ? "Мизоҷи нав" : "Новый лид"}
+              </Button>
+            </div>
           </div>
         </div>
 
@@ -659,28 +658,58 @@ export default function BrokerCrmPage() {
                                 </div>
                               </div>
 
-                              {/* Quick Actions (Call & WhatsApp) */}
+                              {/* Quick Actions (Stage Selector, Call & WhatsApp) */}
                               <div
-                                className="flex items-center justify-end gap-1.5 pt-1.5 border-t border-slate-100"
+                                className="flex items-center justify-between gap-1.5 pt-1.5 border-t border-slate-100"
                                 onClick={(e) => e.stopPropagation()}
                               >
-                                <a
-                                  href={`tel:${cleanPhone}`}
-                                  className="h-7 w-7 rounded-lg border border-slate-200 text-slate-600 hover:text-emerald-600 hover:border-emerald-300 flex items-center justify-center transition-colors"
-                                  title={isTg ? "Ба мизоҷ занг задан" : "Позвонить клиенту"}
+                                <select
+                                  value={lead.status}
+                                  onChange={async (e) => {
+                                    e.stopPropagation();
+                                    const newStatus = e.target.value as LeadStatus;
+                                    setLeads((prev) =>
+                                      prev.map((l) => (l.id === lead.id ? { ...l, status: newStatus } : l))
+                                    );
+                                    try {
+                                      await fetch("/api/crm/leads", {
+                                        method: "PATCH",
+                                        headers: { "Content-Type": "application/json" },
+                                        body: JSON.stringify({ id: lead.id, status: newStatus }),
+                                      });
+                                    } catch (err) {
+                                      console.error("Failed to update status", err);
+                                    }
+                                  }}
+                                  onClick={(e) => e.stopPropagation()}
+                                  className="h-7 text-[10px] rounded-lg border border-slate-200 bg-slate-50 font-semibold px-1.5 text-slate-700 cursor-pointer max-w-[130px] truncate"
                                 >
-                                  <Phone className="h-3.5 w-3.5" />
-                                </a>
+                                  {COLUMNS.map((c) => (
+                                    <option key={c.id} value={c.id}>
+                                      {isTg ? c.titleTg : c.title}
+                                    </option>
+                                  ))}
+                                </select>
 
-                                <a
-                                  href={`https://wa.me/${cleanPhone}?text=${waText}`}
-                                  target="_blank"
-                                  rel="noreferrer"
-                                  className="h-7 w-7 rounded-lg bg-emerald-50 text-emerald-600 hover:bg-emerald-600 hover:text-white flex items-center justify-center transition-colors border border-emerald-100"
-                                  title={isTg ? "Ба WhatsApp навиштан" : "Написать в WhatsApp"}
-                                >
-                                  <MessageCircle className="h-3.5 w-3.5" />
-                                </a>
+                                <div className="flex items-center gap-1.5">
+                                  <a
+                                    href={`tel:${cleanPhone}`}
+                                    className="h-7 w-7 rounded-lg border border-slate-200 text-slate-600 hover:text-emerald-600 hover:border-emerald-300 flex items-center justify-center transition-colors"
+                                    title={isTg ? "Ба мизоҷ занг задан" : "Позвонить клиенту"}
+                                  >
+                                    <Phone className="h-3.5 w-3.5" />
+                                  </a>
+
+                                  <a
+                                    href={`https://wa.me/${cleanPhone}?text=${waText}`}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                    className="h-7 w-7 rounded-lg bg-emerald-50 text-emerald-600 hover:bg-emerald-600 hover:text-white flex items-center justify-center transition-colors border border-emerald-100"
+                                    title={isTg ? "Ба WhatsApp навиштан" : "Написать в WhatsApp"}
+                                  >
+                                    <MessageCircle className="h-3.5 w-3.5" />
+                                  </a>
+                                </div>
                               </div>
                             </div>
                           );
