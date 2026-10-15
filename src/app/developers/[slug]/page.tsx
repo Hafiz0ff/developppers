@@ -6,6 +6,7 @@ import Link from "next/link";
 import { INITIAL_DEVELOPERS, INITIAL_PROJECTS } from "@/lib/data/mock-db";
 import { useCurrency } from "@/context/currency-context";
 import { useLanguage } from "@/context/language-context";
+import { formatNewBuildingPricePerMeter, getPricePerMeterLabel } from "@/lib/pricing/new-building-price";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
@@ -35,7 +36,7 @@ import {
 export default function PublicDeveloperPage() {
   const params = useParams();
   const slug = params?.slug as string;
-  const { formatPrice } = useCurrency();
+  const { formatPrice, currency } = useCurrency();
   const { language, tDual } = useLanguage();
   const isTg = language === "tg";
 
@@ -507,16 +508,22 @@ export default function PublicDeveloperPage() {
                     <div className="pt-3 border-t flex items-center justify-between">
                       <div>
                         <div className="text-[11px] text-muted-foreground">
-                          {tDual("Цена за м²:", "Нарх ба 1 м²:")}
+                          {getPricePerMeterLabel(language)}
                         </div>
                         <div className="text-xs font-semibold text-foreground">
-                          {tDual("от ", "аз ")}
-                          {formatPrice(proj.minPricePerMeterTjs, proj.minPricePerMeterUsd)}
+                          {formatNewBuildingPricePerMeter({
+                            pricePerMeterTjs: proj.minPricePerMeterTjs,
+                            pricePerMeterUsd: proj.minPricePerMeterUsd,
+                            totalPriceTjs: proj.minTotalPriceTjs,
+                            totalPriceUsd: proj.minTotalPriceUsd,
+                            currency,
+                            language,
+                          }) || "—"}
                         </div>
                       </div>
                       <div className="text-right">
                         <div className="text-[11px] text-muted-foreground">
-                          {tDual("Квартиры от:", "Хонадон аз:")}
+                          {tDual("Стоимость квартир:", "Нархи хонадонҳо:")}
                         </div>
                         <div className="text-base font-extrabold text-emerald-600">
                           {tDual("от ", "аз ")}

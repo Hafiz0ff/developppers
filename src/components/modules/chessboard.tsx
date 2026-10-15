@@ -43,6 +43,7 @@ import {
 } from "lucide-react";
 
 import { useLanguage } from "@/context/language-context";
+import { formatNewBuildingPricePerMeter, getPricePerMeterLabel } from "@/lib/pricing/new-building-price";
 
 interface ChessboardProps {
   units: UnitData[];
@@ -534,22 +535,45 @@ export function Chessboard({
                 </div>
 
                 {/* Price block */}
-                <div className="p-3.5 bg-emerald-50 dark:bg-emerald-950/20 border border-emerald-200 dark:border-emerald-800/40 rounded-xl flex items-center justify-between">
-                  <div>
-                    <span className="text-[11px] text-emerald-700 dark:text-emerald-400 block font-semibold">
-                      {tDual("Стоимость квартиры:", "Арзиши хонадон:")}
-                    </span>
-                    <div className="text-2xl font-extrabold text-emerald-700 dark:text-emerald-300">
-                      {formatPrice(selectedUnit.priceTjs, selectedUnit.priceUsd)}
+                {(() => {
+                  const unitPricePerMeter = formatNewBuildingPricePerMeter({
+                    pricePerMeterTjs: selectedUnit.pricePerMeterTjs,
+                    pricePerMeterUsd: selectedUnit.pricePerMeterUsd,
+                    totalPriceTjs: selectedUnit.priceTjs,
+                    totalPriceUsd: selectedUnit.priceUsd,
+                    areaSqm: selectedUnit.totalArea,
+                    currency,
+                    language,
+                  });
+
+                  return (
+                    <div className="p-3.5 bg-emerald-50 dark:bg-emerald-950/20 border border-emerald-200 dark:border-emerald-800/40 rounded-xl space-y-2">
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <span className="text-[11px] text-emerald-700 dark:text-emerald-400 block font-semibold">
+                            {tDual("Стоимость квартиры:", "Арзиши хонадон:")}
+                          </span>
+                          <div className="text-2xl font-extrabold text-emerald-700 dark:text-emerald-300">
+                            {formatPrice(selectedUnit.priceTjs, selectedUnit.priceUsd)}
+                          </div>
+                        </div>
+                        <div className="text-[10px] text-emerald-600 font-semibold self-start pt-1">
+                          {tDual("Рассрочка от 0% до 24 мес", "Пардохти қисм-қисм аз 0% то 24 моҳ")}
+                        </div>
+                      </div>
+                      {unitPricePerMeter && (
+                        <div className="flex items-center justify-between gap-3 pt-2 border-t border-emerald-200/60 dark:border-emerald-800/40 text-xs">
+                          <span className="text-emerald-800/80 dark:text-emerald-400 font-normal">
+                            {getPricePerMeterLabel(language)}
+                          </span>
+                          <span className="font-bold text-emerald-950 dark:text-emerald-100 tabular-nums">
+                            {unitPricePerMeter}
+                          </span>
+                        </div>
+                      )}
                     </div>
-                  </div>
-                  <div className="text-right text-xs text-muted-foreground">
-                    <div>{formatPrice(selectedUnit.pricePerMeterTjs, selectedUnit.pricePerMeterUsd)} / м²</div>
-                    <div className="text-[10px] text-emerald-600 font-semibold mt-0.5">
-                      {tDual("Рассрочка от 0% до 24 мес", "Пардохти қисм-қисм аз 0% то 24 моҳ")}
-                    </div>
-                  </div>
-                </div>
+                  );
+                })()}
 
                 {/* DEVELOPER BACKOFFICE CONTROLS: QUICK STATUS CHANGE */}
                 {isEditable ? (

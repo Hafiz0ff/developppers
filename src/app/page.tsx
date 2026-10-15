@@ -14,6 +14,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { ProjectCatalogCardBadge } from "@/components/modules/project-engagement-pills";
 import { PropertyMetricsBadge } from "@/components/modules/common/property-metrics-badge";
+import { formatNewBuildingPricePerMeter, getPricePerMeterLabel } from "@/lib/pricing/new-building-price";
 import {
   Select,
   SelectContent,
@@ -762,18 +763,20 @@ export default function HomePage() {
 
                     <div className="pt-3.5 border-t border-slate-100 flex items-center justify-between">
                       <div>
-                        <div className="text-[11px] text-slate-400">{tDual("Цена за м²:", "Нархи 1 м²:")}</div>
+                        <div className="text-[11px] text-slate-400">{getPricePerMeterLabel(language)}</div>
                         <div className="text-sm font-semibold text-slate-800">
-                          {t.common.from}{" "}
-                          {formatPrice(
-                            proj.minPricePerMeterTjs,
-                            proj.minPricePerMeterUsd
-                          )}{" "}
-                          / {t.common.sqm}
+                          {formatNewBuildingPricePerMeter({
+                            pricePerMeterTjs: proj.minPricePerMeterTjs,
+                            pricePerMeterUsd: proj.minPricePerMeterUsd,
+                            totalPriceTjs: proj.minTotalPriceTjs,
+                            totalPriceUsd: proj.minTotalPriceUsd,
+                            currency,
+                            language,
+                          }) || "—"}
                         </div>
                       </div>
                       <div className="text-right">
-                        <div className="text-[11px] text-slate-400">{tDual("Квартиры от:", "Хонадон аз:")}</div>
+                        <div className="text-[11px] text-slate-400">{tDual("Стоимость квартир:", "Нархи хонадонҳо:")}</div>
                         <div className="text-lg font-bold text-emerald-600">
                           {t.common.from} {formatPrice(proj.minTotalPriceTjs, proj.minTotalPriceUsd)}
                         </div>

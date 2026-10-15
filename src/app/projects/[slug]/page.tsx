@@ -26,6 +26,7 @@ import { ParkingChessboardModal } from "@/components/modules/projects/parking-ch
 import { StorageChessboardModal } from "@/components/modules/projects/storage-chessboard-modal";
 import { ProjectDocumentsSection } from "@/components/modules/projects/project-documents-section";
 import { InteractiveMapWrapper } from "@/components/modules/interactive-map-wrapper";
+import { formatNewBuildingPricePerMeter, getPricePerMeterLabel } from "@/lib/pricing/new-building-price";
 
 import {
   Building2,
@@ -69,6 +70,15 @@ export default function PublicProjectPage() {
   const displayAddress = language === "tg" && project.addressTg ? project.addressTg : project.address;
   const displayLandmark = language === "tg" && project.landmarkTg ? project.landmarkTg : project.landmark;
   const displayAmenities = language === "tg" && project.amenitiesTg ? project.amenitiesTg : project.amenities;
+
+  const pricePerMeterFormatted = formatNewBuildingPricePerMeter({
+    pricePerMeterTjs: project.minPricePerMeterTjs,
+    pricePerMeterUsd: project.minPricePerMeterUsd,
+    totalPriceTjs: project.minTotalPriceTjs,
+    totalPriceUsd: project.minTotalPriceUsd,
+    currency,
+    language,
+  });
 
   const finishingLabels: Record<string, string> = {
     rough: tDual("Черновая отделка", "Пардози аввалия (қуттӣ)"),
@@ -250,14 +260,21 @@ export default function PublicProjectPage() {
             <ProjectEngagementHeaderPill slug={project.slug} autoRecordView={true} />
 
             {/* Pricing Highlight Card */}
-            <div className="bg-card border rounded-2xl p-4 sm:p-5 shadow-sm text-left sm:text-right shrink-0 flex flex-col justify-center min-w-[200px]">
+            <div className="bg-card border rounded-2xl p-4 sm:p-5 shadow-sm text-left shrink-0 flex flex-col justify-center min-w-[240px]">
               <div className="text-xs text-muted-foreground">{tDual("Стоимость квартир:", "Нархи хонадонҳо:")}</div>
-              <div className="text-2xl sm:text-3xl font-extrabold text-emerald-600">
+              <div className="text-2xl sm:text-3xl font-extrabold text-emerald-600 sm:text-right">
                 {tDual("от", "аз")} {formatPrice(project.minTotalPriceTjs, project.minTotalPriceUsd)}
               </div>
-              <div className="text-xs font-semibold text-foreground mt-0.5">
-                {tDual("от", "аз")} {formatPrice(project.minPricePerMeterTjs, project.minPricePerMeterUsd)} / м²
-              </div>
+              {pricePerMeterFormatted && (
+                <div className="flex items-center justify-between gap-4 pt-2 mt-2 border-t border-border/60 text-xs">
+                  <span className="text-muted-foreground font-normal">
+                    {getPricePerMeterLabel(language)}
+                  </span>
+                  <span className="font-bold text-foreground tabular-nums text-right">
+                    {pricePerMeterFormatted}
+                  </span>
+                </div>
+              )}
             </div>
           </div>
         </div>
