@@ -94,12 +94,12 @@ export function InteractiveMap({
         attributionControl: false,
       });
 
-      // CartoDB Voyager Tile Layer (Crisp, bilingual)
+      // Google Maps Roadmap Layer (Crisp, bilingual, high-res)
       const streetLayer = L.tileLayer(
-        "https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png",
+        "https://mt{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}",
         {
-          maxZoom: 19,
-          subdomains: "abcd",
+          maxZoom: 20,
+          subdomains: ["0", "1", "2", "3"],
         }
       );
 
@@ -110,7 +110,7 @@ export function InteractiveMap({
       L.control
         .attribution({ position: "bottomright", prefix: false })
         .addAttribution(
-          '&copy; <a href="https://carto.com/">CARTO</a> &copy; <a href="https://openstreetmap.org">OSM</a>'
+          '&copy; <a href="https://maps.google.com/" target="_blank" rel="noopener noreferrer">Google Maps</a>'
         )
         .addTo(map);
 
@@ -205,14 +205,15 @@ export function InteractiveMap({
     }
 
     if (tileMode === "street") {
+      // Google Maps Roadmap (Clean, sharp streets and labels, no watermarks)
       const streetLayer = L.tileLayer(
-        "https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png",
-        { maxZoom: 19, subdomains: "abcd" }
+        "https://mt{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}",
+        { maxZoom: 20, subdomains: ["0", "1", "2", "3"] }
       );
       streetLayer.addTo(map);
       tileLayerRef.current = streetLayer;
     } else if (tileMode === "google" || tileMode === "hybrid") {
-      // Google Hybrid (High-Resolution Satellite + Roads & Place Names)
+      // Google Hybrid (High-Resolution Satellite + Roads & Place Names, no watermarks)
       const googleLayer = L.tileLayer(
         "https://mt{s}.google.com/vt/lyrs=y&x={x}&y={y}&z={z}",
         {
@@ -223,19 +224,13 @@ export function InteractiveMap({
       googleLayer.addTo(map);
       tileLayerRef.current = googleLayer;
     } else if (tileMode === "satellite") {
+      // Google Satellite (Pure High-Resolution Satellite, no watermarks)
       const satLayer = L.tileLayer(
-        "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
-        { maxZoom: 18 }
+        "https://mt{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}",
+        { maxZoom: 20, subdomains: ["0", "1", "2", "3"] }
       );
       satLayer.addTo(map);
       tileLayerRef.current = satLayer;
-
-      const labelLayer = L.tileLayer(
-        "https://{s}.basemaps.cartocdn.com/rastertiles/voyager_only_labels/{z}/{x}/{y}{r}.png",
-        { maxZoom: 19, subdomains: "abcd", pane: "overlayPane" }
-      );
-      labelLayer.addTo(map);
-      labelLayerRef.current = labelLayer;
     }
   }, [tileMode]);
 
@@ -649,15 +644,15 @@ export function InteractiveMap({
               <span>{isTg ? "Харита" : "Схема"}</span>
             </button>
             <button
-              onClick={() => setTileMode("google")}
+              onClick={() => setTileMode("hybrid")}
               className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg transition-all cursor-pointer ${
-                tileMode === "google" || tileMode === "hybrid"
+                tileMode === "hybrid" || tileMode === "google"
                   ? "bg-emerald-600 text-white shadow-sm font-bold"
                   : "hover:bg-slate-100 text-slate-600"
               }`}
             >
               <Layers className="w-3.5 h-3.5" />
-              <span>Google {isTg ? "Моҳвора" : "Спутник"}</span>
+              <span>{isTg ? "Гибрид" : "Гибрид"}</span>
             </button>
             <button
               onClick={() => setTileMode("satellite")}
@@ -668,7 +663,7 @@ export function InteractiveMap({
               }`}
             >
               <Layers className="w-3.5 h-3.5" />
-              <span>{isTg ? "Моҳвора" : "Спутник"} HD</span>
+              <span>{isTg ? "Моҳвора" : "Спутник"}</span>
             </button>
           </div>
 
