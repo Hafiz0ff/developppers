@@ -16,6 +16,7 @@ import {
   ArrowUpRight,
   ShieldCheck,
   ChevronRight,
+  Sparkles,
 } from "lucide-react";
 
 import { INITIAL_DEVELOPERS } from "@/lib/data/mock-db";
@@ -47,6 +48,12 @@ function AdminNavList() {
       icon: Grid3X3,
     },
     {
+      title: tDual("⚡ Управление стройкой (ERP)", "⚡ Идоракунии сохтмон (ERP)"),
+      href: "/erp",
+      icon: Sparkles,
+      badge: "PRO",
+    },
+    {
       title: tDual("Профиль застройщика", "Профили сохтмончӣ"),
       href: "/developer-admin/profile",
       icon: Building,
@@ -66,14 +73,27 @@ function AdminNavList() {
           <Link
             key={item.href}
             href={item.href}
-            className={`flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-semibold transition-all ${
+            className={`flex items-center justify-between px-3 py-2 rounded-lg text-xs font-semibold transition-all ${
               active
                 ? "bg-emerald-600 text-white shadow-xs"
                 : "text-muted-foreground hover:text-foreground hover:bg-muted"
             }`}
           >
-            <Icon className="h-4 w-4 shrink-0" />
-            <span>{item.title}</span>
+            <div className="flex items-center gap-2.5">
+              <Icon className="h-4 w-4 shrink-0" />
+              <span>{item.title}</span>
+            </div>
+            {"badge" in item && item.badge && (
+              <span
+                className={`text-[9px] font-bold px-1.5 py-0.2 rounded ${
+                  active
+                    ? "bg-white/20 text-white"
+                    : "bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300"
+                }`}
+              >
+                {item.badge}
+              </span>
+            )}
           </Link>
         );
       })}

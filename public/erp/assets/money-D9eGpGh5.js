@@ -1,0 +1,1 @@
+import{r as e,t}from"./utils-BXza46oy.js";import{o as n}from"./formatters-BhBlWXxm.js";var r=e();function i({amount:e,currency:i=`TJS`,compact:a=!1,className:o,signColor:s=!1}){return(0,r.jsx)(`span`,{className:t(`tnum`,s?e<0?`text-[var(--color-risk-600)]`:e>0?`text-[var(--color-positive-600)]`:``:``,o),children:n(e,i,a)})}export{i as t};
