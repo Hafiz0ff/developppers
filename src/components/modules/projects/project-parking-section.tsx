@@ -165,86 +165,42 @@ export function ProjectParkingSection({
             </div>
           </div>
 
-          {/* 3-Photo Visual Collage */}
+          {/* Photos Grid Unified with Storage Section Style (Section 3.2) */}
           {images.length > 0 && (
             <div className="lg:col-span-7">
-              {images.length >= 3 ? (
-                <div className="grid grid-cols-1 sm:grid-cols-12 gap-3 h-72 sm:h-80">
-                  {/* Photo 1: Large primary view (7 cols) */}
+              <div
+                className={`grid gap-3 ${
+                  images.length === 1
+                    ? "grid-cols-1 h-64"
+                    : images.length === 2
+                    ? "grid-cols-2 h-64"
+                    : "grid-cols-3 h-52 sm:h-64"
+                }`}
+              >
+                {images.slice(0, 3).map((img, idx) => (
                   <div
-                    onClick={() => openLightboxAt(0)}
-                    className="sm:col-span-7 relative rounded-2xl overflow-hidden group cursor-pointer border border-slate-200/70 shadow-sm bg-slate-100 dark:bg-slate-800"
+                    key={idx}
+                    onClick={() => openLightboxAt(idx)}
+                    className="relative rounded-2xl overflow-hidden group cursor-pointer border border-slate-200/70 shadow-sm bg-slate-100 dark:bg-slate-800 h-full"
                   >
                     <img
-                      src={images[0]}
-                      alt={`${title} — главный вид`}
+                      src={img}
+                      alt={`${title} — фото ${idx + 1}`}
                       className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                     />
                     <div className="absolute inset-0 bg-black/0 group-hover:bg-black/25 transition-colors flex items-center justify-center">
                       <div className="opacity-0 group-hover:opacity-100 transition-opacity p-2.5 rounded-full bg-white/20 backdrop-blur-md text-white border border-white/20 shadow-md">
-                        <ZoomIn className="h-5 w-5" />
+                        <ZoomIn className="h-4 w-4" />
                       </div>
                     </div>
+                    {idx === 2 && images.length > 3 && (
+                      <div className="absolute inset-0 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center text-white font-bold text-sm">
+                        +{images.length - 3} {tDual("фото", "акс")}
+                      </div>
+                    )}
                   </div>
-
-                  {/* Photos 2 & 3: Stacked secondary views (5 cols) */}
-                  <div className="sm:col-span-5 grid grid-rows-2 gap-3">
-                    <div
-                      onClick={() => openLightboxAt(1)}
-                      className="relative rounded-2xl overflow-hidden group cursor-pointer border border-slate-200/70 shadow-sm bg-slate-100 dark:bg-slate-800"
-                    >
-                      <img
-                        src={images[1]}
-                        alt={`${title} — вид 2`}
-                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                      />
-                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/25 transition-colors flex items-center justify-center">
-                        <div className="opacity-0 group-hover:opacity-100 transition-opacity p-2 rounded-full bg-white/20 backdrop-blur-md text-white border border-white/20 shadow-md">
-                          <ZoomIn className="h-4 w-4" />
-                        </div>
-                      </div>
-                    </div>
-
-                    <div
-                      onClick={() => openLightboxAt(2)}
-                      className="relative rounded-2xl overflow-hidden group cursor-pointer border border-slate-200/70 shadow-sm bg-slate-100 dark:bg-slate-800"
-                    >
-                      <img
-                        src={images[2]}
-                        alt={`${title} — вид 3`}
-                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                      />
-                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/25 transition-colors flex items-center justify-center">
-                        <div className="opacity-0 group-hover:opacity-100 transition-opacity p-2 rounded-full bg-white/20 backdrop-blur-md text-white border border-white/20 shadow-md">
-                          <ZoomIn className="h-4 w-4" />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ) : (
-                /* Fallback grid if 1 or 2 images */
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 h-64">
-                  {images.map((img, idx) => (
-                    <div
-                      key={idx}
-                      onClick={() => openLightboxAt(idx)}
-                      className="relative rounded-2xl overflow-hidden group cursor-pointer border border-slate-200/70 shadow-sm bg-slate-100 dark:bg-slate-800"
-                    >
-                      <img
-                        src={img}
-                        alt={`${title} — фото ${idx + 1}`}
-                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                      />
-                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/25 transition-colors flex items-center justify-center">
-                        <div className="opacity-0 group-hover:opacity-100 transition-opacity p-2 rounded-full bg-white/20 backdrop-blur-md text-white border border-white/20 shadow-md">
-                          <ZoomIn className="h-4 w-4" />
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
+                ))}
+              </div>
             </div>
           )}
         </div>

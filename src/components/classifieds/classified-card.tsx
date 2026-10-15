@@ -8,6 +8,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { MapPin, MessageCircle, Phone } from "lucide-react";
 import { useLanguage } from "@/lib/i18n/language-context";
 import type { ClassifiedCard as ClassifiedCardData } from "@/lib/classifieds/map-card";
+import { PropertyMetricsBadge } from "@/components/modules/common/property-metrics-badge";
 
 type Props = {
   item: ClassifiedCardData;
@@ -82,6 +83,9 @@ export function ClassifiedCard({ item, formatPrice }: Props) {
             >
               {propertyTypeDisplay}
             </Badge>
+          </div>
+          <div className="absolute top-3 right-3 z-10">
+            <PropertyMetricsBadge idOrSlug={item.slug || item.id} />
           </div>
           {item.isNegotiable && (
             <div className="absolute bottom-3 right-3 bg-white/95 backdrop-blur-md text-[10px] font-semibold text-slate-700 px-2.5 py-1 rounded-md shadow-xs">

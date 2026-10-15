@@ -22,6 +22,7 @@ export type ClassifiedCard = CatalogProperty & {
   status: string;
   viewsCount: number;
   userId: string;
+  createdAt?: string | Date;
 };
 
 export function toNumber(value: string | number | null | undefined): number {
@@ -93,5 +94,6 @@ export function mapClassifiedToCard(row: Classified): ClassifiedCard {
     status: row.status,
     viewsCount: row.viewsCount,
     userId: row.userId,
+    createdAt: row.createdAt ? row.createdAt.toISOString() : undefined,
   };
 }

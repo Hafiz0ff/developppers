@@ -65,7 +65,7 @@ export function ProjectDocumentsSection({
   return (
     <section id="documents-section" className="container mx-auto px-4 py-4 space-y-6">
       <div className="rounded-3xl border border-slate-200/80 bg-linear-to-b from-slate-50/70 via-white to-slate-50/40 dark:from-slate-900/40 dark:via-background dark:to-slate-900/20 p-6 sm:p-8 shadow-sm space-y-6">
-        {/* Header with Title and Verification Pill */}
+        {/* Header with Title */}
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-6 border-b border-slate-200/60 dark:border-slate-800">
           <div className="space-y-1.5">
             <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-emerald-600">
@@ -85,13 +85,6 @@ export function ProjectDocumentsSection({
                 "Хулосаҳои расмии мақомоти давлатӣ, иҷозатномаи сохтмон ва ба истифода додан"
               )}
             </p>
-          </div>
-
-          <div className="flex items-center gap-2 shrink-0">
-            <Badge variant="outline" className="bg-emerald-50 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-300 border-emerald-200 text-xs py-1 px-3">
-              <ShieldCheck className="h-3.5 w-3.5 mr-1.5 text-emerald-600" />
-              {tDual("Юридически проверено", "Аз ҷиҳати ҳуқуқӣ тасдиқшуда")}
-            </Badge>
           </div>
         </div>
 
@@ -167,10 +160,11 @@ export function ProjectDocumentsSection({
                       download
                       target="_blank"
                       rel="noopener noreferrer"
-                      title={tDual("Скачать оригинал", "Боргирии аслӣ")}
-                      className="inline-flex items-center justify-center h-9 w-9 rounded-xl border border-border hover:bg-muted text-muted-foreground hover:text-foreground transition-colors shrink-0"
+                      title={tDual("Скачать PDF", "Боргирии PDF")}
+                      className="inline-flex items-center justify-center h-9 px-3 rounded-xl border border-border hover:bg-muted text-muted-foreground hover:text-foreground text-xs font-semibold gap-1.5 transition-colors shrink-0"
                     >
                       <Download className="h-3.5 w-3.5" />
+                      <span className="hidden sm:inline">{tDual("Скачать", "Боргирӣ")}</span>
                     </a>
                   </div>
                 </div>

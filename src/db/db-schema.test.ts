@@ -71,8 +71,16 @@ test("Drizzle Enums: Geographic and domain enums match Sughd region specificatio
   // 2. Currencies
   assert.deepEqual(currencyEnum.enumValues, ["TJS", "USD"]);
 
-  // 3. User roles
-  assert.deepEqual(userRoleEnum.enumValues, ["user", "realtor", "developer", "admin"]);
+  // 3. User roles (7 RBAC levels)
+  assert.deepEqual(userRoleEnum.enumValues, [
+    "user",
+    "realtor",
+    "developer",
+    "agency",
+    "agency_agent",
+    "admin",
+    "super_admin",
+  ]);
 
   // 4. Project status
   assert.deepEqual(projectStatusEnum.enumValues, [

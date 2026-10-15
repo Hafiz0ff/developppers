@@ -19,51 +19,59 @@ export function ProjectEngagementHeaderPill({ slug, autoRecordView = true }: Pro
   const { tDual } = useLanguage();
 
   return (
-    <div className="bg-card border rounded-2xl p-3 sm:p-4 shadow-xs flex items-center gap-4 sm:gap-6 shrink-0">
-      {/* 30-day Unique Views */}
-      <div className="flex items-center gap-2.5">
-        <div className="h-9 w-9 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-600 dark:text-slate-300 shrink-0">
-          <Eye className="h-4 w-4" />
+    <div className="flex flex-col justify-between gap-2 shrink-0 sm:w-60">
+      {/* 1. Views Block */}
+      <div className="bg-card border rounded-xl px-3.5 py-2 shadow-2xs flex items-center justify-between gap-3 min-h-[44px]">
+        <div className="flex items-center gap-2.5 text-xs text-muted-foreground font-medium">
+          <div className="h-7 w-7 rounded-lg bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-600 dark:text-slate-300 shrink-0">
+            <Eye className="h-3.5 w-3.5" />
+          </div>
+          <span>{tDual("Просмотры", "Боздидҳо")}</span>
         </div>
-        <div>
-          <div className="text-base sm:text-lg font-bold text-foreground leading-tight">
-            {stats.viewsMonthCount}
-          </div>
-          <div className="text-[11px] text-muted-foreground whitespace-nowrap">
-            {tDual("Просмотров за 30 дней", "Боздидҳо дар 30 рӯз")}
-          </div>
+        <div className="text-sm font-bold text-foreground font-mono">
+          {stats.viewsCount}
         </div>
       </div>
 
-      <div className="h-8 w-px bg-border/80" />
-
-      {/* 30-day Favorites with Interactive Click */}
+      {/* 2. Favorites Block (Interactive) */}
       <button
         type="button"
         onClick={toggleFavorite}
-        className="group flex items-center gap-2.5 text-left cursor-pointer transition-transform active:scale-95"
+        className={`bg-card border rounded-xl px-3.5 py-2 shadow-2xs flex items-center justify-between gap-3 min-h-[44px] transition-colors cursor-pointer group text-left ${
+          isFavorite
+            ? "border-rose-200 dark:border-rose-900/60 bg-rose-50/40 dark:bg-rose-950/20"
+            : "hover:border-slate-300 dark:hover:border-slate-700"
+        }`}
         title={
           isFavorite
             ? tDual("Удалить из избранного", "Аз баргузидаҳо нест кардан")
             : tDual("Добавить в избранное", "Ба баргузидаҳо илова кардан")
         }
       >
+        <div className="flex items-center gap-2.5 text-xs text-muted-foreground font-medium">
+          <div
+            className={`h-7 w-7 rounded-lg flex items-center justify-center transition-colors shrink-0 ${
+              isFavorite
+                ? "bg-rose-100 text-rose-600 dark:bg-rose-950/60"
+                : "bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-300 group-hover:bg-rose-50 group-hover:text-rose-500"
+            }`}
+          >
+            <Heart
+              className={`h-3.5 w-3.5 transition-transform group-hover:scale-110 ${
+                isFavorite ? "fill-rose-600 text-rose-600" : ""
+              }`}
+            />
+          </div>
+          <span className={isFavorite ? "text-rose-600 font-semibold" : ""}>
+            {tDual("В избранном", "Дар баргузидаҳо")}
+          </span>
+        </div>
         <div
-          className={`h-9 w-9 rounded-xl flex items-center justify-center transition-colors shrink-0 ${
-            isFavorite
-              ? "bg-rose-50 text-rose-600 dark:bg-rose-950/40"
-              : "bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-300 group-hover:bg-rose-50 group-hover:text-rose-500"
+          className={`text-sm font-bold font-mono ${
+            isFavorite ? "text-rose-600" : "text-foreground"
           }`}
         >
-          <Heart className={`h-4 w-4 transition-transform group-hover:scale-110 ${isFavorite ? "fill-rose-600" : ""}`} />
-        </div>
-        <div>
-          <div className="text-base sm:text-lg font-bold text-foreground leading-tight flex items-center gap-1.5">
-            {stats.favoritesMonthCount}
-          </div>
-          <div className="text-[11px] text-muted-foreground whitespace-nowrap">
-            {tDual("В избранном за 30 дней", "Дар баргузидаҳо дар 30 рӯз")}
-          </div>
+          {stats.favoritesCount}
         </div>
       </button>
     </div>

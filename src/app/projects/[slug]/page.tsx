@@ -244,12 +244,12 @@ export default function PublicProjectPage() {
             </p>
           </div>
 
-          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 shrink-0">
-            {/* 30-Day Activity Stats Pill (Section 3.1) */}
+          <div className="flex flex-col sm:flex-row items-stretch gap-3 shrink-0">
+            {/* 30-Day Activity Stats (Section 3.1: Vertical column alongside price) */}
             <ProjectEngagementHeaderPill slug={project.slug} autoRecordView={true} />
 
             {/* Pricing Highlight Card */}
-            <div className="bg-card border rounded-2xl p-4 sm:p-5 shadow-sm text-left sm:text-right shrink-0">
+            <div className="bg-card border rounded-2xl p-4 sm:p-5 shadow-sm text-left sm:text-right shrink-0 flex flex-col justify-center min-w-[200px]">
               <div className="text-xs text-muted-foreground">{tDual("Стоимость квартир:", "Нархи хонадонҳо:")}</div>
               <div className="text-2xl sm:text-3xl font-extrabold text-emerald-600">
                 {tDual("от", "аз")} {formatPrice(project.minTotalPriceTjs, project.minTotalPriceUsd)}

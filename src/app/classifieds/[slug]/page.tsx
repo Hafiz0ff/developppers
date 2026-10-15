@@ -14,6 +14,7 @@ import { CATALOG_PROPERTIES, getPropertyById, type CatalogProperty } from "@/lib
 import type { ClassifiedCard } from "@/lib/classifieds/map-card";
 import {
   ArrowLeft,
+  ArrowLeftRight,
   Building2,
   Calendar,
   Check,
@@ -44,6 +45,8 @@ import {
 } from "lucide-react";
 import { InteractiveMapWrapper } from "@/components/modules/interactive-map-wrapper";
 import { generateYandexMapsRouteUrl } from "@/lib/geo-utils";
+import { useEntityMetrics } from "@/hooks/use-entity-metrics";
+import { formatPublicationDate, formatPricePerSquareMeter } from "@/lib/classifieds/format-utils";
 
 export default function ClassifiedDetailPage() {
   const params = useParams();
@@ -59,8 +62,14 @@ export default function ClassifiedDetailPage() {
   const [activePhotoIndex, setActivePhotoIndex] = useState(0);
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
   const [phoneRevealed, setPhoneRevealed] = useState(false);
-  const [isFavorite, setIsFavorite] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
+  const [isCompared, setIsCompared] = useState(false);
+
+  // Unified Entity Metrics (24h view deduplication & synchronized favorites)
+  const { stats, isFavorite, toggleFavorite } = useEntityMetrics(
+    item ? item.slug || item.id : slug,
+    { autoRecordView: true }
+  );
 
   // Quick inquiry form
   const [inquiryName, setInquiryName] = useState("");
@@ -129,32 +138,6 @@ export default function ClassifiedDetailPage() {
     }
     fetchClassified();
   }, [slug]);
-
-  // Favorites state in localStorage
-  useEffect(() => {
-    if (!item) return;
-    try {
-      const favs = JSON.parse(localStorage.getItem("sogd_favorites") || "[]");
-      setIsFavorite(favs.includes(item.id || item.slug));
-    } catch {}
-  }, [item]);
-
-  const toggleFavorite = () => {
-    if (!item) return;
-    try {
-      const favs: string[] = JSON.parse(localStorage.getItem("sogd_favorites") || "[]");
-      const id = item.id || item.slug;
-      let next: string[];
-      if (favs.includes(id)) {
-        next = favs.filter((f) => f !== id);
-        setIsFavorite(false);
-      } else {
-        next = [...favs, id];
-        setIsFavorite(true);
-      }
-      localStorage.setItem("sogd_favorites", JSON.stringify(next));
-    } catch {}
-  };
 
   const handleShare = async () => {
     const url = typeof window !== "undefined" ? window.location.href : "";
@@ -414,12 +397,12 @@ export default function ClassifiedDetailPage() {
           </p>
         </div>
 
-        {/* 3. PHOTO GALLERY (CIAN / AIRBNB STYLE) */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
+        {/* 3. PHOTO GALLERY: MAIN PHOTO + SQUARE THUMBNAILS ROW UNDERNEATH (Section 4.1) */}
+        <div className="space-y-3">
           {/* Main Large Image */}
           <div
             onClick={() => setIsLightboxOpen(true)}
-            className="md:col-span-3 relative h-72 sm:h-96 md:h-[460px] rounded-2xl overflow-hidden bg-slate-900 cursor-pointer group shadow-sm"
+            className="relative w-full h-72 sm:h-96 md:h-[480px] rounded-2xl overflow-hidden bg-slate-900 cursor-pointer group shadow-sm"
           >
             <img
               src={activePhoto}
@@ -462,61 +445,36 @@ export default function ClassifiedDetailPage() {
             )}
           </div>
 
-          {/* Thumbnails Sidebar */}
-          <div className="grid grid-cols-3 md:grid-cols-1 gap-2.5 h-full">
-            {photos.slice(0, 3).map((p, idx) => (
-              <div
-                key={p + idx}
-                onClick={() => setActivePhotoIndex(idx)}
-                className={`relative h-24 sm:h-28 md:h-[146px] rounded-xl overflow-hidden cursor-pointer border-2 transition-all ${
-                  activePhotoIndex === idx
-                    ? "border-emerald-600 ring-2 ring-emerald-500/20 shadow-md"
-                    : "border-transparent opacity-80 hover:opacity-100"
-                }`}
-              >
-                <img
-                  src={p}
-                  alt={`Thumbnail ${idx + 1}`}
-                  className="w-full h-full object-cover"
-                />
-                {idx === 2 && photos.length > 3 && (
-                  <div
-                    onClick={() => setIsLightboxOpen(true)}
-                    className="absolute inset-0 bg-slate-900/70 backdrop-blur-xs flex items-center justify-center text-white font-bold text-sm"
-                  >
-                    +{photos.length - 3} {tDual("фото", "акс")}
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
+          {/* Thumbnails Row Strictly Underneath with Square Aspect Ratio (Section 4.1) */}
+          {photos.length > 1 && (
+            <div className="flex items-center gap-2.5 overflow-x-auto py-1 no-scrollbar snap-x">
+              {photos.map((p, idx) => (
+                <button
+                  key={p + idx}
+                  type="button"
+                  onClick={() => setActivePhotoIndex(idx)}
+                  className={`relative aspect-square h-18 w-18 sm:h-22 sm:w-22 rounded-xl overflow-hidden cursor-pointer border-2 shrink-0 transition-all snap-start ${
+                    activePhotoIndex === idx
+                      ? "border-emerald-600 ring-2 ring-emerald-500/20 shadow-md scale-102"
+                      : "border-slate-200/80 opacity-70 hover:opacity-100 hover:border-slate-300"
+                  }`}
+                  aria-label={`View photo ${idx + 1}`}
+                >
+                  <img
+                    src={p}
+                    alt={`Thumbnail ${idx + 1}`}
+                    className="w-full h-full object-cover"
+                  />
+                </button>
+              ))}
+            </div>
+          )}
         </div>
 
-        {/* 4. MAIN CONTENT GRID (2 COLUMNS) */}
+        {/* 4. MAIN CONTENT GRID (2 COLUMNS: SPECS & RIGHT STICKY ACTIONS) */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
           {/* LEFT 2 COLUMNS: SPECS, AMENITIES, DESCRIPTION, MAP */}
           <div className="lg:col-span-2 space-y-8">
-            {/* Price Box for Mobile / Tablet */}
-            <div className="bg-white border border-slate-200/80 rounded-2xl p-6 shadow-sm space-y-3">
-              <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2">
-                <div>
-                  <div className="text-xs text-slate-400 font-medium">
-                    {tDual("Стоимость объекта:", "Нархи амвол:")}
-                  </div>
-                  <div className="text-3xl sm:text-4xl font-extrabold text-emerald-600 tracking-tight">
-                    {formatPrice(item.priceTjs, item.priceUsd)}
-                  </div>
-                </div>
-                {item.area > 0 && (
-                  <div className="text-xs text-slate-500 sm:text-right">
-                    <span className="font-semibold text-slate-800">
-                      ${pricePerSqm} / м²
-                    </span>{" "}
-                    ({pricePerSqmTjs.toLocaleString()} TJS / м²)
-                  </div>
-                )}
-              </div>
-            </div>
 
             {/* Specifications Card */}
             <div className="bg-white border border-slate-200/80 rounded-2xl p-6 sm:p-7 shadow-sm space-y-5">
@@ -762,9 +720,87 @@ export default function ClassifiedDetailPage() {
             </div>
           </div>
 
-          {/* RIGHT 1 COLUMN: STICKY CONTACT CARD & INQUIRY */}
+          {/* RIGHT 1 COLUMN: PRICE & ACTIONS, SELLER, DATE & VIEWS, INQUIRY (Sections 4.2 - 4.4) */}
           <div className="space-y-6 lg:sticky lg:top-20">
-            {/* Seller Contact Card */}
+            {/* 1. Price & Actions Block (Section 4.2) */}
+            <div className="bg-white border border-slate-200/80 rounded-2xl p-6 shadow-sm space-y-4">
+              <div>
+                <div className="text-xs text-slate-400 font-medium mb-1">
+                  {tDual("Стоимость объекта", "Нархи амвол")}
+                </div>
+                <div className="text-3xl sm:text-4xl font-extrabold text-emerald-600 tracking-tight">
+                  {formatPrice(item.priceTjs, item.priceUsd)}
+                </div>
+                {item.area > 0 && (
+                  <div className="text-xs font-semibold text-slate-700 mt-1.5">
+                    {formatPricePerSquareMeter(item.priceTjs, item.area, language)}
+                  </div>
+                )}
+              </div>
+
+              {/* Action Buttons: Поделиться, В избранное, Сравнить (Section 4.2) */}
+              <div className="pt-3 border-t border-slate-100 grid grid-cols-3 gap-2">
+                {/* Share */}
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={handleShare}
+                  className="h-10 px-2 text-xs font-semibold gap-1.5 rounded-xl border-slate-200 text-slate-700 hover:bg-slate-50 cursor-pointer flex flex-col justify-center items-center py-1"
+                >
+                  {isCopied ? (
+                    <>
+                      <Check className="h-4 w-4 text-emerald-600" />
+                      <span className="text-[11px] text-emerald-700">{tDual("Скопировано", "Нусха шуд")}</span>
+                    </>
+                  ) : (
+                    <>
+                      <Share2 className="h-4 w-4 text-slate-500" />
+                      <span className="text-[11px]">{tDual("Поделиться", "Мубодила")}</span>
+                    </>
+                  )}
+                </Button>
+
+                {/* Favorite */}
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={toggleFavorite}
+                  className={`h-10 px-2 text-xs font-semibold gap-1.5 rounded-xl border-slate-200 cursor-pointer flex flex-col justify-center items-center py-1 transition-colors ${
+                    isFavorite
+                      ? "bg-rose-50 text-rose-600 border-rose-200 hover:bg-rose-100"
+                      : "text-slate-700 hover:bg-slate-50"
+                  }`}
+                >
+                  <Heart
+                    className={`h-4 w-4 ${
+                      isFavorite ? "fill-rose-600 text-rose-600" : "text-slate-500"
+                    }`}
+                  />
+                  <span className="text-[11px]">
+                    {isFavorite ? tDual("В избранном", "Дар писандида") : tDual("В избранное", "Ба писандида")}
+                  </span>
+                </Button>
+
+                {/* Compare */}
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setIsCompared(!isCompared)}
+                  className={`h-10 px-2 text-xs font-semibold gap-1.5 rounded-xl border-slate-200 cursor-pointer flex flex-col justify-center items-center py-1 transition-colors ${
+                    isCompared
+                      ? "bg-blue-50 text-blue-600 border-blue-200 hover:bg-blue-100"
+                      : "text-slate-700 hover:bg-slate-50"
+                  }`}
+                >
+                  <ArrowLeftRight className={`h-4 w-4 ${isCompared ? "text-blue-600" : "text-slate-500"}`} />
+                  <span className="text-[11px]">
+                    {isCompared ? tDual("В сравнении", "Дар муқоиса") : tDual("Сравнить", "Муқоиса")}
+                  </span>
+                </Button>
+              </div>
+            </div>
+
+            {/* 2. Seller Contact Card (Section 4.3) */}
             <div className="bg-white border border-slate-200/80 rounded-2xl p-6 shadow-sm space-y-5">
               <div className="flex items-center gap-3.5 pb-4 border-b border-slate-100">
                 <div className="h-12 w-12 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold text-base shrink-0">
@@ -820,6 +856,19 @@ export default function ClassifiedDetailPage() {
                   "Ба фурӯшанда гӯед, ки эълонро дар Maskani.tj пайдо кардед"
                 )}
               </p>
+            </div>
+
+            {/* 3. Publication Date & Views Line (Section 4.4) */}
+            <div className="bg-white border border-slate-200/80 rounded-2xl px-5 py-3.5 shadow-xs flex items-center justify-between text-xs text-slate-600">
+              <span className="font-medium">
+                {formatPublicationDate(item.createdAt, language, item.id || item.slug)}
+              </span>
+              <div className="flex items-center gap-1.5 font-semibold text-slate-700">
+                <Eye className="h-3.5 w-3.5 text-slate-400" />
+                <span>
+                  {stats.viewsCount} {tDual("просмотров", "боздид")}
+                </span>
+              </div>
             </div>
 
             {/* Quick Inquiry Form */}
