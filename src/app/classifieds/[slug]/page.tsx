@@ -47,6 +47,8 @@ import { InteractiveMapWrapper } from "@/components/modules/interactive-map-wrap
 import { generateYandexMapsRouteUrl } from "@/lib/geo-utils";
 import { useEntityMetrics } from "@/hooks/use-entity-metrics";
 import { formatPublicationDate, formatPricePerSquareMeter } from "@/lib/classifieds/format-utils";
+import { AdBlock1 } from "@/components/modules/ads/ad-block-1";
+import { AdBlock2 } from "@/components/modules/ads/ad-block-2";
 
 export default function ClassifiedDetailPage() {
   const params = useParams();
@@ -351,7 +353,7 @@ export default function ClassifiedDetailPage() {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 space-y-6">
+      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 pt-6 space-y-4 sm:space-y-6">
         {/* 2. HEADER: TITLE & LOCATION */}
         <div className="space-y-2">
           <div className="flex flex-wrap items-center gap-2">
@@ -472,7 +474,7 @@ export default function ClassifiedDetailPage() {
         </div>
 
         {/* 4. MAIN CONTENT GRID (2 COLUMNS: SPECS & RIGHT STICKY ACTIONS) */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-6 items-start">
           {/* LEFT 2 COLUMNS: SPECS, AMENITIES, DESCRIPTION, MAP */}
           <div className="lg:col-span-2 space-y-8">
 
@@ -720,8 +722,8 @@ export default function ClassifiedDetailPage() {
             </div>
           </div>
 
-          {/* RIGHT 1 COLUMN: PRICE & ACTIONS, SELLER, DATE & VIEWS, INQUIRY (Sections 4.2 - 4.4) */}
-          <div className="space-y-6 lg:sticky lg:top-20">
+          {/* RIGHT 1 COLUMN: PRICE & ACTIONS, SELLER, ADS, DATE & VIEWS, INQUIRY */}
+          <div className="space-y-4 lg:space-y-5">
             {/* 1. Price & Actions Block (Section 4.2) */}
             <div className="bg-white border border-slate-200/80 rounded-2xl p-6 shadow-sm space-y-4">
               <div>
@@ -857,6 +859,10 @@ export default function ClassifiedDetailPage() {
                 )}
               </p>
             </div>
+
+            {/* Programmatic Ad Blocks 1 & 2 */}
+            <AdBlock1 seed={item.id || item.slug} className="lg:sticky lg:top-20 z-10" />
+            <AdBlock2 seed={item.id || item.slug} className="relative z-20" />
 
             {/* 3. Publication Date & Views Line (Section 4.4) */}
             <div className="bg-white border border-slate-200/80 rounded-2xl px-5 py-3.5 shadow-xs flex items-center justify-between text-xs text-slate-600">
