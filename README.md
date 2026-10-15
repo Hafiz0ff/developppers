@@ -67,8 +67,8 @@
 | **4. Кабинет девелопера (`/developer-admin`)** | 🟢 **100%** | Управление жилыми комплексами, секциями, этажами, шахматкой, загрузка планов, настройка инсоляции и POI, аналитика просмотров. |
 | **5. Реестр застройщиков (`/developers`, `/[slug]`)** | 🟢 **100%** | Профили строительных компаний Согдийской области (Спитамен Билдинг, Согд Сити Строй, Долина Согда, Баракат Инвест, Ориён Строй) с лицензиями, портфолио и прямыми контактами. |
 | **6. B2B CRM и Аналитика маклера (`/profile/*`)** | 🟢 **100%** | Канбан-воронка лидов (Новый ➔ Квалификация ➔ Показ ➔ Бронь ➔ Сделка), авторасчет комиссии 2%, персональные WhatsApp-витрины `/p/[share_code]`, экспорт PDF, Telegram Push-уведомления. |
-| **7. База данных Drizzle ORM (`src/db`)** | 🟢 **100%** | 14 реляционных таблиц PostgreSQL, автоматический сидирование реальными данными, **104 автоматизированных модульных теста** (100% pass). |
-| **8. Интерактивная гео-карта Согда (`/map`)** | 🟢 **100%** | Полноэкранный Split-View (десктоп) и Bottom Sheet (мобильные), CartoDB Voyager + Esri Satellite, кастомные пины цен TJS/USD, пресеты городов (Худжанд, Гулистон, Гафуров, Истаравшан), маршруты в Яндекс.Картах. |
+| **7. База данных Drizzle ORM (`src/db`)** | 🟢 **100%** | 14 реляционных таблиц PostgreSQL, автоматический сидирование реальными данными, **114 автоматизированных модульных тестов** (100% pass). |
+| **8. Интерактивная гео-карта Согда (`/map`)** | 🟢 **100%** | Полноэкранный Split-View (десктоп 40/60) и Bottom Sheet карусель (мобильные), CartoDB Voyager + Esri Satellite (Гибрид), кастомные пины цен TJS/USD, пространственная кластеризация, радиусный поиск, пресеты городов (Худжанд, Гулистон, Гафуров, Истаравшан), маршруты в Яндекс.Картах. |
 
 ---
 
@@ -82,6 +82,7 @@ flowchart TD
 
     subgraph ClientLayer ["Клиентский слой Next.js 16.4"]
         WebApp --> Hero["Главная витрина + WebGL Shaders"]
+        WebApp --> MapView["🗺️ Интерактивная гео-карта /map"]
         WebApp --> Showcase6D["6D Apple-витрина ЖК /projects/slug"]
         WebApp --> Secondary["Вторичка и Ҳавлӣ 15 реальных объектов"]
         CRM --> Kanban["Канбан-пайплайн + Расчет комиссии 2%"]
@@ -113,13 +114,17 @@ flowchart TD
 
     BackendLayer --> DB
 
-    subgraph Integrations ["Внешние сервисы"]
+    subgraph Integrations ["Внешние сервисы и картография"]
         TG["🤖 Telegram Bot API мгновенные Push-уведомления"]
+        CartoTiles["🗺️ CartoDB Voyager + Esri Satellite Tiles"]
+        YandexNav["🚗 Яндекс.Карты Deep Links навигация"]
         SomonCDN["🖼️ Somon.tj CDN медиасервер"]
         VercelEdge["⚡ Vercel Edge Network"]
     end
 
     BackendLayer --> TG
+    MapView --> CartoTiles
+    MapView --> YandexNav
     Secondary --> SomonCDN
 ```
 
@@ -132,9 +137,10 @@ Frontend                     Backend & ORM                Инфраструкт
 ────────────────────────     ────────────────────────     ────────────────────────
 Next.js 16.4 (App Router)     Drizzle ORM 0.45             Vercel (Production Edge)
 React 19.3                   PostgreSQL (Supabase/Neon)   PWA (Service Worker + Manifest)
-TypeScript 5.x               Better Auth 1.7              Telegram Bot API
-Tailwind CSS v4              Zod Validation               Node.js 20+ Test Runner
-Lucide Icons                 Custom WebGL Shaders         88 Automated Unit Tests
+Leaflet 1.9 + Carto/Esri     Better Auth 1.7              Telegram Bot API
+TypeScript 5.x               Zod Validation               Node.js 20+ Test Runner
+Tailwind CSS v4              Custom WebGL Shaders         114 Automated Unit Tests
+Lucide Icons                 Spatial Clustering           100% Test Pass Rate
 ```
 
 ---
@@ -213,7 +219,7 @@ pnpm db:seed      # Заполнение реальными объектами �
 
 ### 5. Запуск тестов
 ```bash
-pnpm test         # Запуск 88 модульных тестов
+pnpm test         # Запуск 114 автоматизированных модульных тестов
 ```
 
 ### 6. Запуск сервера разработки
@@ -238,7 +244,8 @@ maskani/
 │   ├── app/                    # Next.js 16 App Router
 │   │   ├── page.tsx            # Главная витрина: Hero с WebGL, Поиск, Топ новостроек
 │   │   ├── layout.tsx          # Root Layout (Шапка, PWA-баннер, провайдеры)
-│   │   ├── projects/[slug]/    # 6D Apple-витрина ЖК (Шахматка, Солнцеход, POI, Паркинг)
+│   │   ├── map/                # Полноэкранная гео-карта Согда (Split-View 40/60, кластеры, карусель)
+│   │   ├── projects/[slug]/    # 6D Apple-витрина ЖК (Шахматка, Солнцеход, мини-карта, Паркинг)
 │   │   ├── classifieds/        # Каталог вторичного жилья и традиционных домов (ҳавлӣ)
 │   │   ├── developers/         # Реестр и витрины строительных компаний
 │   │   ├── developer-admin/    # Кабинет застройщика (CRUD ЖК, шахматки, инсоляция)
@@ -250,7 +257,7 @@ maskani/
 │   │   └── api/                # REST API эндпоинты
 │   ├── components/             # React компоненты
 │   │   ├── layout/             # Шапка, Навигация, Футер, Переключатели языка и валют
-│   │   ├── modules/            # Шахматка, Солнцеход, POI, Паркинг, Документы, PWA
+│   │   ├── modules/            # Карта Leaflet, Шахматка, Солнцеход, POI, Паркинг, Документы, PWA
 │   │   └── ui/                 # UI-кит на Tailwind v4 + WebGL Shader Background
 │   ├── context/                # Языковой (RU/TG) и валютный (TJS/USD) контексты
 │   ├── db/

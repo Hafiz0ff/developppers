@@ -25,6 +25,7 @@ import { ProjectStorageSection } from "@/components/modules/projects/project-sto
 import { ParkingChessboardModal } from "@/components/modules/projects/parking-chessboard-modal";
 import { StorageChessboardModal } from "@/components/modules/projects/storage-chessboard-modal";
 import { ProjectDocumentsSection } from "@/components/modules/projects/project-documents-section";
+import { InteractiveMapWrapper } from "@/components/modules/interactive-map-wrapper";
 
 import {
   Building2,
@@ -44,6 +45,7 @@ import {
   Sparkles,
   Paintbrush,
   Navigation,
+  ExternalLink,
 } from "lucide-react";
 import { useLanguage } from "@/context/language-context";
 import { generateYandexMapsRouteUrl } from "@/lib/geo-utils";
@@ -51,7 +53,7 @@ import { generateYandexMapsRouteUrl } from "@/lib/geo-utils";
 export default function PublicProjectPage() {
   const params = useParams();
   const slug = params?.slug as string;
-  const { formatPrice } = useCurrency();
+  const { formatPrice, currency } = useCurrency();
   const { language, t, tDual } = useLanguage();
 
   const project =
@@ -399,6 +401,82 @@ export default function PublicProjectPage() {
                 ))}
               </div>
             </div>
+
+            {/* Interactive Mini-Map Section */}
+            {project.coordinates?.lat && project.coordinates?.lng && (
+              <div className="space-y-4 pt-2">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                  <div>
+                    <h3 className="text-base font-bold text-foreground flex items-center gap-2">
+                      <MapPin className="h-4 w-4 text-emerald-600" />
+                      {tDual("Расположение на карте", "Мавқеи ҷойгиршавӣ дар харита")}
+                    </h3>
+                    <p className="text-xs text-muted-foreground mt-0.5">
+                      {project.address} · {project.district}
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <a
+                      href={generateYandexMapsRouteUrl(
+                        project.coordinates.lat,
+                        project.coordinates.lng
+                      )}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-semibold transition-colors"
+                    >
+                      <Navigation className="w-3.5 h-3.5 text-red-500" />
+                      <span>{tDual("Маршрут в Яндекс", "Хатсайр дар Яндекс")}</span>
+                    </a>
+                    <Link
+                      href={`/map?city=${project.city}`}
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200/60 text-xs font-semibold transition-colors"
+                    >
+                      <ExternalLink className="w-3.5 h-3.5" />
+                      <span>{tDual("На карте Согда", "Дар харитаи Суғд")}</span>
+                    </Link>
+                  </div>
+                </div>
+
+                <div className="h-72 w-full rounded-2xl overflow-hidden border border-border shadow-sm">
+                  <InteractiveMapWrapper
+                    properties={[
+                      {
+                        id: `project-${project.id}`,
+                        slug: project.slug,
+                        title: project.name,
+                        titleTg: project.nameTg,
+                        category: "complex",
+                        dealType: "sale",
+                        city: project.city,
+                        cityTg: project.city === "guliston" ? "Гулистон" : "Хуҷанд",
+                        district: project.district,
+                        districtTg: project.districtTg,
+                        lat: project.coordinates.lat,
+                        lng: project.coordinates.lng,
+                        priceTjs: project.minTotalPriceTjs,
+                        priceUsd: project.minTotalPriceUsd,
+                        areaM2: 54,
+                        rooms: 1,
+                        coverImage: project.coverImageUrl,
+                        phone: developer.phone,
+                        whatsapp: developer.whatsapp,
+                        url: `/projects/${project.slug}`,
+                        developerName: developer.name,
+                        stage: project.status === "ready" ? "Сдан" : "Строится",
+                        isVerified: true,
+                      },
+                    ]}
+                    defaultCenter={[project.coordinates.lat, project.coordinates.lng]}
+                    defaultZoom={15}
+                    currency={currency}
+                    language={language}
+                    showControls={true}
+                    className="w-full h-full"
+                  />
+                </div>
+              </div>
+            )}
           </div>
 
           {/* DEVELOPER CONTACT CARD & INSTALLMENT CALCULATOR */}
