@@ -45,10 +45,11 @@ import {
   Sparkles,
   Paintbrush,
   Navigation,
+  Compass,
   ExternalLink,
 } from "lucide-react";
 import { useLanguage } from "@/context/language-context";
-import { generateYandexMapsRouteUrl } from "@/lib/geo-utils";
+import { generateYandexMapsRouteUrl, generateGoogleMapsUrl } from "@/lib/geo-utils";
 
 export default function PublicProjectPage() {
   const params = useParams();
@@ -532,15 +533,28 @@ export default function PublicProjectPage() {
                 </a>
 
                 {project.coordinates?.lat && project.coordinates?.lng && (
-                  <a
-                    href={generateYandexMapsRouteUrl(project.coordinates.lat, project.coordinates.lng)}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-full inline-flex items-center justify-center gap-2 h-10 px-4 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-semibold text-xs transition-colors"
-                  >
-                    <Navigation className="h-3.5 w-3.5 text-red-500" />
-                    <span>{tDual("Маршрут в Яндекс.Картах", "Хатсайр дар Харитаи Яндекс")}</span>
-                  </a>
+                  <div className="grid grid-cols-2 gap-2">
+                    <a
+                      href={generateYandexMapsRouteUrl(project.coordinates.lat, project.coordinates.lng)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center justify-center gap-1.5 h-10 px-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-semibold text-xs transition-colors"
+                      title={tDual("Маршрут в Яндекс.Картах", "Хатсайр дар Харитаи Яндекс")}
+                    >
+                      <Navigation className="h-3.5 w-3.5 text-red-500 shrink-0" />
+                      <span>{tDual("Яндекс.Карты", "Харитаи Яндекс")}</span>
+                    </a>
+                    <a
+                      href={generateGoogleMapsUrl(project.coordinates.lat, project.coordinates.lng)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center justify-center gap-1.5 h-10 px-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-semibold text-xs transition-colors"
+                      title={tDual("Маршрут в Google Maps", "Хатсайр дар Google Maps")}
+                    >
+                      <Compass className="h-3.5 w-3.5 text-blue-500 shrink-0" />
+                      <span>Google Maps</span>
+                    </a>
+                  </div>
                 )}
               </div>
             </Card>
