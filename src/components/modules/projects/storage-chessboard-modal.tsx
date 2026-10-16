@@ -16,8 +16,10 @@ import {
   Lock,
   ThermometerSun,
   Layers,
+  Plus,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 
 interface StorageChessboardModalProps {
   isOpen: boolean;
@@ -28,6 +30,7 @@ interface StorageChessboardModalProps {
     phone: string;
     whatsapp: string;
   };
+  onAddToDeal?: (unit: StorageUnit) => void;
 }
 
 export function StorageChessboardModal({
@@ -36,6 +39,7 @@ export function StorageChessboardModal({
   projectName,
   units,
   developerContact,
+  onAddToDeal,
 }: StorageChessboardModalProps) {
   const { language, tDual } = useLanguage();
   const { formatPrice } = useCurrency();
@@ -315,11 +319,25 @@ export function StorageChessboardModal({
 
                 {/* Booking Action Buttons */}
                 <div className="space-y-2 pt-2">
+                  {onAddToDeal && activeUnit.status === "available" && (
+                    <Button
+                      type="button"
+                      onClick={() => {
+                        onAddToDeal(activeUnit);
+                        onClose();
+                      }}
+                      className="w-full h-11 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-md transition-all gap-2 cursor-pointer"
+                    >
+                      <Plus className="h-4 w-4" />
+                      <span>{tDual("Добавить к заявке", "Илова ба дархост")}</span>
+                    </Button>
+                  )}
+
                   <a
                     href={buildWhatsappBookingUrl(activeUnit)}
                     target="_blank"
                     rel="noreferrer"
-                    className="w-full inline-flex items-center justify-center gap-2 h-11 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs shadow-md transition-all cursor-pointer"
+                    className="w-full inline-flex items-center justify-center gap-2 h-10 px-4 rounded-xl border border-emerald-500/30 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-50 font-semibold text-xs transition-colors cursor-pointer"
                   >
                     <MessageCircle className="h-4 w-4" />
                     <span>{tDual("Забронировать в WhatsApp", "Банд кардан дар WhatsApp")}</span>

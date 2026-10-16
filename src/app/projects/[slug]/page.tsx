@@ -28,6 +28,11 @@ import { ProjectDocumentsSection } from "@/components/modules/projects/project-d
 import { InteractiveMapWrapper } from "@/components/modules/interactive-map-wrapper";
 import { formatNewBuildingPricePerMeter, getPricePerMeterLabel } from "@/lib/pricing/new-building-price";
 import { NewBuildingPriceBlock } from "@/components/modules/new-building-price-block";
+import { SelectedDealBundle, DeveloperCrmSettings } from "@/types/crm-booking";
+import { ParkingSpot, StorageUnit } from "@/types/parking-storage";
+import { getDeveloperCrmSettings } from "@/lib/crm-booking-store";
+import { ProjectDealBuilderBlock } from "@/components/modules/projects/project-deal-builder-block";
+import { LeadRequestDrawer } from "@/components/modules/projects/lead-request-drawer";
 
 import {
   Building2,
@@ -49,6 +54,8 @@ import {
   Navigation,
   Compass,
   ExternalLink,
+  PhoneCall,
+  Bookmark,
 } from "lucide-react";
 import { useLanguage } from "@/context/language-context";
 import { generateYandexMapsRouteUrl, generateGoogleMapsUrl } from "@/lib/geo-utils";
@@ -90,6 +97,81 @@ export default function PublicProjectPage() {
   const { isFavorite, toggleFavorite } = useProjectAnalytics(project.slug, true);
   const [isParkingModalOpen, setIsParkingModalOpen] = useState(false);
   const [isStorageModalOpen, setIsStorageModalOpen] = useState(false);
+
+  // CRM Settings & Booking Scenario State
+  const [crmSettings, setCrmSettings] = useState<DeveloperCrmSettings>(() =>
+    getDeveloperCrmSettings(developer.id || "dev-1")
+  );
+
+  React.useEffect(() => {
+    const handleSettingsUpdate = () => {
+      setCrmSettings(getDeveloperCrmSettings(developer.id || "dev-1"));
+    };
+    window.addEventListener("maskani-crm-settings-changed", handleSettingsUpdate);
+    return () => window.removeEventListener("maskani-crm-settings-changed", handleSettingsUpdate);
+  }, [developer.id]);
+
+  // Deal Bundle (Cart) State
+  const [dealBundle, setDealBundle] = useState<SelectedDealBundle>({
+    unit: null,
+    parking: null,
+    storage: null,
+  });
+
+  // Drawer Request State (Booking vs Callback)
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [drawerType, setDrawerType] = useState<"booking" | "callback">("booking");
+
+  const handleSelectUnitForDeal = (u: UnitData) => {
+    setDealBundle((prev) => ({
+      ...prev,
+      unit: {
+        id: u.id,
+        number: u.unitNumber,
+        roomsCount: u.roomsCount,
+        floor: u.floor,
+        totalArea: u.totalArea,
+        priceTjs: u.priceTjs,
+        priceUsd: u.priceUsd,
+      },
+    }));
+  };
+
+  const handleAddParkingToDeal = (spot: ParkingSpot) => {
+    setDealBundle((prev) => ({
+      ...prev,
+      parking: {
+        id: spot.id,
+        number: spot.number,
+        level: spot.level,
+        area: spot.area,
+        priceTjs: spot.priceTjs,
+        priceUsd: spot.priceUsd,
+      },
+    }));
+  };
+
+  const handleAddStorageToDeal = (st: StorageUnit) => {
+    setDealBundle((prev) => ({
+      ...prev,
+      storage: {
+        id: st.id,
+        number: st.number,
+        level: st.level,
+        area: st.area,
+        priceTjs: st.priceTjs,
+        priceUsd: st.priceUsd,
+      },
+    }));
+  };
+
+  const handleRemoveParking = () => {
+    setDealBundle((prev) => ({ ...prev, parking: null }));
+  };
+
+  const handleRemoveStorage = () => {
+    setDealBundle((prev) => ({ ...prev, storage: null }));
+  };
 
   const [units, setUnits] = useState<UnitData[]>(() => {
     return generateUnitsForAnyProject(project);
@@ -519,6 +601,52 @@ export default function PublicProjectPage() {
               </div>
 
               <div className="space-y-2 pt-2">
+                {crmSettings.crmConnected && crmSettings.bookingScenarioEnabled ? (
+                  <div className="space-y-2">
+                    <div className="grid grid-cols-2 gap-2">
+                      <Button
+                        type="button"
+                        onClick={() => {
+                          setDrawerType("booking");
+                          setIsDrawerOpen(true);
+                        }}
+                        className="w-full h-11 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-md gap-1.5 cursor-pointer"
+                      >
+                        <Bookmark className="h-4 w-4" />
+                        <span>{tDual("Забронировать", "Банд кардан")}</span>
+                      </Button>
+
+                      <Button
+                        type="button"
+                        variant="outline"
+                        onClick={() => {
+                          setDrawerType("callback");
+                          setIsDrawerOpen(true);
+                        }}
+                        className="w-full h-11 rounded-xl border-border hover:bg-muted font-bold text-xs gap-1.5 cursor-pointer"
+                      >
+                        <PhoneCall className="h-4 w-4 text-emerald-600" />
+                        <span>{tDual("Звонок", "Занг")}</span>
+                      </Button>
+                    </div>
+
+                    <div className="text-[11px] text-center text-muted-foreground pt-0.5">
+                      {tDual(
+                        `Принимаем звонки с ${crmSettings.workHoursStart} до ${crmSettings.workHoursEnd}`,
+                        `Қабули зангҳо аз ${crmSettings.workHoursStart} то ${crmSettings.workHoursEnd}`
+                      )}
+                    </div>
+                  </div>
+                ) : (
+                  <a
+                    href={`tel:${developer.phone}`}
+                    className="w-full inline-flex items-center justify-center gap-2 h-10 px-4 rounded-xl border hover:bg-muted font-semibold text-xs transition-colors"
+                  >
+                    <Phone className="h-4 w-4" />
+                    {developer.phone}
+                  </a>
+                )}
+
                 <a
                   href={`https://wa.me/${developer.whatsapp.replace(/\D/g, "")}?text=${encodeURIComponent(
                     language === "tg"
@@ -527,18 +655,10 @@ export default function PublicProjectPage() {
                   )}`}
                   target="_blank"
                   rel="noreferrer"
-                  className="w-full inline-flex items-center justify-center gap-2 h-10 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs shadow-xs transition-colors"
+                  className="w-full inline-flex items-center justify-center gap-2 h-10 px-4 rounded-xl border border-emerald-500/30 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-50 font-semibold text-xs transition-colors"
                 >
                   <MessageCircle className="h-4 w-4" />
                   {tDual("Консультация в WhatsApp", "Машварат дар WhatsApp")}
-                </a>
-
-                <a
-                  href={`tel:${developer.phone}`}
-                  className="w-full inline-flex items-center justify-center gap-2 h-10 px-4 rounded-xl border hover:bg-muted font-semibold text-xs transition-colors"
-                >
-                  <Phone className="h-4 w-4" />
-                  {developer.phone}
                 </a>
 
                 {project.coordinates?.lat && project.coordinates?.lng && (
@@ -590,6 +710,20 @@ export default function PublicProjectPage() {
                 )}
               </p>
             </div>
+
+            {/* DEAL BUILDER (Cart & Bundle calculation - Priority 2 under Installment) */}
+            <ProjectDealBuilderBlock
+              bundle={dealBundle}
+              onRemoveParking={handleRemoveParking}
+              onRemoveStorage={handleRemoveStorage}
+              onOpenParkingModal={() => setIsParkingModalOpen(true)}
+              onOpenStorageModal={() => setIsStorageModalOpen(true)}
+              onScrollToChessboard={() => {
+                document.getElementById("chessboard-section")?.scrollIntoView({ behavior: "smooth" });
+              }}
+              hasParkingConfigured={Boolean(project.parkingSpots && project.parkingSpots.length > 0)}
+              hasStorageConfigured={Boolean(project.storageUnits && project.storageUnits.length > 0)}
+            />
           </div>
         </div>
       </div>
@@ -618,6 +752,7 @@ export default function PublicProjectPage() {
             phone: developer.phone,
             whatsapp: developer.whatsapp,
           }}
+          onAddToDeal={handleAddParkingToDeal}
         />
       )}
 
@@ -631,6 +766,7 @@ export default function PublicProjectPage() {
             phone: developer.phone,
             whatsapp: developer.whatsapp,
           }}
+          onAddToDeal={handleAddStorageToDeal}
         />
       )}
 
@@ -663,6 +799,7 @@ export default function PublicProjectPage() {
             phone: developer.phone,
             whatsapp: developer.whatsapp,
           }}
+          onSelectUnitForDeal={handleSelectUnitForDeal}
         />
       </section>
 
@@ -710,6 +847,19 @@ export default function PublicProjectPage() {
         projectName={displayName}
         config={project.documentsConfig}
         documents={project.officialDocuments}
+      />
+
+      {/* LEAD REQUEST DRAWER (BOOKING & CALLBACK) */}
+      <LeadRequestDrawer
+        isOpen={isDrawerOpen}
+        onClose={() => setIsDrawerOpen(false)}
+        type={drawerType}
+        developerId={developer.id || "dev-1"}
+        projectId={project.id}
+        projectName={displayName}
+        bundle={dealBundle}
+        workHoursStart={crmSettings.workHoursStart}
+        workHoursEnd={crmSettings.workHoursEnd}
       />
     </div>
   );

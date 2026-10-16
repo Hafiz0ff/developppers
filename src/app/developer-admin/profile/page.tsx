@@ -26,6 +26,7 @@ import {
   MapPin,
   Image as ImageIcon,
 } from "lucide-react";
+import { DeveloperCrmBookingSettings } from "@/components/modules/developer-admin/developer-crm-booking-settings";
 
 export default function DeveloperProfilePage() {
   const { language } = useLanguage();
@@ -294,6 +295,9 @@ export default function DeveloperProfilePage() {
             </div>
           </CardContent>
         </Card>
+
+        {/* CRM & Booking Scenario Section */}
+        <DeveloperCrmBookingSettings developerId={dev.id || "dev-1"} />
 
         {/* Submit */}
         <div className="flex justify-end gap-3 pt-2">

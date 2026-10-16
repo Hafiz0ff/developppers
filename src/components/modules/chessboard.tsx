@@ -54,6 +54,7 @@ interface ChessboardProps {
     phone: string;
     whatsapp: string;
   };
+  onSelectUnitForDeal?: (unit: UnitData) => void;
 }
 
 export function Chessboard({
@@ -65,6 +66,7 @@ export function Chessboard({
     phone: "+992 92 700 5555",
     whatsapp: "+992927005555",
   },
+  onSelectUnitForDeal,
 }: ChessboardProps) {
   const { formatPrice, currency } = useCurrency();
   const { language, t, tDual } = useLanguage();
@@ -634,7 +636,21 @@ export function Chessboard({
                         )}
                       </div>
                     ) : (
-                      <>
+                      <div className="flex flex-col gap-2 w-full">
+                        {onSelectUnitForDeal && selectedUnit.status === "available" && (
+                          <Button
+                            type="button"
+                            onClick={() => {
+                              onSelectUnitForDeal(selectedUnit);
+                              setSelectedUnit(null);
+                            }}
+                            className="w-full h-11 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-md gap-2 cursor-pointer"
+                          >
+                            <CheckCircle2 className="h-4 w-4" />
+                            <span>{tDual("Выбрать эту квартиру для заявки", "Интихоби ин хонадон барои дархост")}</span>
+                          </Button>
+                        )}
+                        <div className="flex flex-col sm:flex-row gap-2">
                         <a
                           href={`https://wa.me/${developerContact.whatsapp.replace(
                             /\D/g,
@@ -658,8 +674,9 @@ export function Chessboard({
                           <Phone className="h-4 w-4" />
                           {tDual("Позвонить в офис", "Занг ба дафтар")}
                         </a>
-                      </>
-                    )}
+                      </div>
+                    </div>
+                  )}
                   </div>
                 )}
               </div>

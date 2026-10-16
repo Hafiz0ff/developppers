@@ -41,6 +41,7 @@ import {
   SlidersHorizontal,
   Car,
   FileText,
+  PhoneCall,
 } from "lucide-react";
 import { ResponsiveTooltip } from "@/components/ui/responsive-tooltip";
 import { FinishingFeatureDialog } from "@/components/modules/projects/finishing-feature-dialog";
@@ -53,6 +54,7 @@ import { ProjectAnalyticsTab } from "@/components/modules/developer-admin/projec
 import { ProjectPreviewModal } from "@/components/modules/developer-admin/project-preview-modal";
 import { ProjectParkingStorageManager } from "@/components/modules/developer-admin/project-parking-storage-manager";
 import { ProjectDocumentsManager } from "@/components/modules/developer-admin/project-documents-manager";
+import { DeveloperCrmBookingSettings } from "@/components/modules/developer-admin/developer-crm-booking-settings";
 import { useLanguage } from "@/lib/i18n/language-context";
 
 export default function EditProjectPage() {
@@ -117,7 +119,7 @@ export default function EditProjectPage() {
   const [images, setImages] = useState<string[]>(proj.images || [proj.coverImageUrl]);
   const [previewOpen, setPreviewOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<
-    "params" | "gallery" | "interactive" | "parking_storage" | "documents" | "analytics"
+    "params" | "gallery" | "interactive" | "parking_storage" | "documents" | "analytics" | "booking_crm"
   >("params");
 
   // Custom building features handlers
@@ -282,6 +284,11 @@ export default function EditProjectPage() {
             id: "analytics",
             label: isTg ? "Таҳлили иншоот" : "Аналитика объекта",
             icon: BarChart3,
+          },
+          {
+            id: "booking_crm",
+            label: isTg ? "Бандкунӣ ва CRM" : "Бронирование и CRM",
+            icon: PhoneCall,
           },
         ].map((tab) => {
           const Icon = tab.icon;
@@ -1030,6 +1037,11 @@ export default function EditProjectPage() {
       {/* TAB 6: Complex Engagement Analytics (Section 3.4 of Spec) */}
       {activeTab === "analytics" && (
         <ProjectAnalyticsTab projectName={proj.name} />
+      )}
+
+      {/* TAB 7: CRM & Booking Scenario Settings (Section 3 of Spec) */}
+      {activeTab === "booking_crm" && (
+        <DeveloperCrmBookingSettings developerId={proj.developerId || "dev-1"} />
       )}
 
       {/* Finishing Feature Dialog */}
