@@ -45,6 +45,14 @@ export function formatNewBuildingPricePerMeter(params: PricePerMeterParams): str
         numericPrice = total / area;
       }
     }
+
+    // Fallback: convert from TJS if USD price per meter is not directly set
+    if (numericPrice == null && params.pricePerMeterTjs != null) {
+      const parsedTjs = typeof params.pricePerMeterTjs === "string" ? parseFloat(params.pricePerMeterTjs) : params.pricePerMeterTjs;
+      if (!isNaN(parsedTjs) && parsedTjs > 0 && isFinite(parsedTjs)) {
+        numericPrice = parsedTjs / 10.95;
+      }
+    }
   } else {
     // TJS
     if (params.pricePerMeterTjs != null) {
@@ -59,6 +67,14 @@ export function formatNewBuildingPricePerMeter(params: PricePerMeterParams): str
       const area = typeof params.areaSqm === "string" ? parseFloat(params.areaSqm) : params.areaSqm;
       if (!isNaN(total) && !isNaN(area) && total > 0 && area > 0 && isFinite(total) && isFinite(area)) {
         numericPrice = total / area;
+      }
+    }
+
+    // Fallback: convert from USD if TJS price per meter is not directly set
+    if (numericPrice == null && params.pricePerMeterUsd != null) {
+      const parsedUsd = typeof params.pricePerMeterUsd === "string" ? parseFloat(params.pricePerMeterUsd) : params.pricePerMeterUsd;
+      if (!isNaN(parsedUsd) && parsedUsd > 0 && isFinite(parsedUsd)) {
+        numericPrice = parsedUsd * 10.95;
       }
     }
   }

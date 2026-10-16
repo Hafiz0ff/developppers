@@ -7,6 +7,7 @@ import { INITIAL_DEVELOPERS, INITIAL_PROJECTS } from "@/lib/data/mock-db";
 import { useCurrency } from "@/context/currency-context";
 import { useLanguage } from "@/context/language-context";
 import { formatNewBuildingPricePerMeter, getPricePerMeterLabel } from "@/lib/pricing/new-building-price";
+import { NewBuildingPriceBlock } from "@/components/modules/new-building-price-block";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
@@ -505,32 +506,13 @@ export default function PublicDeveloperPage() {
 
                   {/* Pricing and Action Link */}
                   <div className="p-5 pt-0 space-y-3">
-                    <div className="pt-3 border-t flex items-center justify-between">
-                      <div>
-                        <div className="text-[11px] text-muted-foreground">
-                          {getPricePerMeterLabel(language)}
-                        </div>
-                        <div className="text-xs font-semibold text-foreground">
-                          {formatNewBuildingPricePerMeter({
-                            pricePerMeterTjs: proj.minPricePerMeterTjs,
-                            pricePerMeterUsd: proj.minPricePerMeterUsd,
-                            totalPriceTjs: proj.minTotalPriceTjs,
-                            totalPriceUsd: proj.minTotalPriceUsd,
-                            currency,
-                            language,
-                          }) || "—"}
-                        </div>
-                      </div>
-                      <div className="text-right">
-                        <div className="text-[11px] text-muted-foreground">
-                          {tDual("Стоимость квартир:", "Нархи хонадонҳо:")}
-                        </div>
-                        <div className="text-base font-extrabold text-emerald-600">
-                          {tDual("от ", "аз ")}
-                          {formatPrice(proj.minTotalPriceTjs, proj.minTotalPriceUsd)}
-                        </div>
-                      </div>
-                    </div>
+                    <NewBuildingPriceBlock
+                      minTotalPriceTjs={proj.minTotalPriceTjs}
+                      minTotalPriceUsd={proj.minTotalPriceUsd}
+                      minPricePerMeterTjs={proj.minPricePerMeterTjs}
+                      minPricePerMeterUsd={proj.minPricePerMeterUsd}
+                      variant="card"
+                    />
 
                     <div className="grid grid-cols-2 gap-2">
                       <Link href={`/projects/${proj.slug}`} className="block">

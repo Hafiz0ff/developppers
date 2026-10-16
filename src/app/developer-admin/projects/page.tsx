@@ -9,6 +9,7 @@ import { Card } from "@/components/ui/card";
 import { useCurrency } from "@/context/currency-context";
 import { useLanguage } from "@/context/language-context";
 import { formatNewBuildingPricePerMeter, getPricePerMeterLabel } from "@/lib/pricing/new-building-price";
+import { NewBuildingPriceBlock } from "@/components/modules/new-building-price-block";
 import {
   PlusCircle,
   Grid3X3,
@@ -156,35 +157,15 @@ export default function DeveloperProjectsPage() {
 
                 {/* Price & Action Buttons */}
                 <div className="pt-3 border-t flex flex-wrap items-center justify-between gap-3">
-                  <div className="text-xs space-y-1">
-                    <div>
-                      <span className="text-muted-foreground">{tDual("Стоимость квартир: ", "Нархи хонадонҳо: ")}</span>
-                      <strong className="text-emerald-600 text-sm">
-                        {tDual("от ", "аз ")}{formatPrice(proj.minTotalPriceTjs, proj.minTotalPriceUsd)}
-                      </strong>
-                    </div>
-                    {formatNewBuildingPricePerMeter({
-                      pricePerMeterTjs: proj.minPricePerMeterTjs,
-                      pricePerMeterUsd: proj.minPricePerMeterUsd,
-                      totalPriceTjs: proj.minTotalPriceTjs,
-                      totalPriceUsd: proj.minTotalPriceUsd,
-                      currency,
-                      language,
-                    }) && (
-                      <div className="flex items-center gap-2 text-[11px] text-muted-foreground">
-                        <span>{getPricePerMeterLabel(language)}:</span>
-                        <span className="font-semibold text-foreground">
-                          {formatNewBuildingPricePerMeter({
-                            pricePerMeterTjs: proj.minPricePerMeterTjs,
-                            pricePerMeterUsd: proj.minPricePerMeterUsd,
-                            totalPriceTjs: proj.minTotalPriceTjs,
-                            totalPriceUsd: proj.minTotalPriceUsd,
-                            currency,
-                            language,
-                          })}
-                        </span>
-                      </div>
-                    )}
+                  <div className="w-full sm:w-auto">
+                    <NewBuildingPriceBlock
+                      minTotalPriceTjs={proj.minTotalPriceTjs}
+                      minTotalPriceUsd={proj.minTotalPriceUsd}
+                      minPricePerMeterTjs={proj.minPricePerMeterTjs}
+                      minPricePerMeterUsd={proj.minPricePerMeterUsd}
+                      variant="card"
+                      className="pt-0 border-t-0"
+                    />
                   </div>
 
                   <div className="flex flex-wrap items-center gap-2">

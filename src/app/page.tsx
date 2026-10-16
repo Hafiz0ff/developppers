@@ -15,6 +15,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { ProjectCatalogCardBadge } from "@/components/modules/project-engagement-pills";
 import { PropertyMetricsBadge } from "@/components/modules/common/property-metrics-badge";
 import { formatNewBuildingPricePerMeter, getPricePerMeterLabel } from "@/lib/pricing/new-building-price";
+import { NewBuildingPriceBlock } from "@/components/modules/new-building-price-block";
 import {
   Select,
   SelectContent,
@@ -761,27 +762,13 @@ export default function HomePage() {
                       ))}
                     </div>
 
-                    <div className="pt-3.5 border-t border-slate-100 flex items-center justify-between">
-                      <div>
-                        <div className="text-[11px] text-slate-400">{getPricePerMeterLabel(language)}</div>
-                        <div className="text-sm font-semibold text-slate-800">
-                          {formatNewBuildingPricePerMeter({
-                            pricePerMeterTjs: proj.minPricePerMeterTjs,
-                            pricePerMeterUsd: proj.minPricePerMeterUsd,
-                            totalPriceTjs: proj.minTotalPriceTjs,
-                            totalPriceUsd: proj.minTotalPriceUsd,
-                            currency,
-                            language,
-                          }) || "—"}
-                        </div>
-                      </div>
-                      <div className="text-right">
-                        <div className="text-[11px] text-slate-400">{tDual("Стоимость квартир:", "Нархи хонадонҳо:")}</div>
-                        <div className="text-lg font-bold text-emerald-600">
-                          {t.common.from} {formatPrice(proj.minTotalPriceTjs, proj.minTotalPriceUsd)}
-                        </div>
-                      </div>
-                    </div>
+                    <NewBuildingPriceBlock
+                      minTotalPriceTjs={proj.minTotalPriceTjs}
+                      minTotalPriceUsd={proj.minTotalPriceUsd}
+                      minPricePerMeterTjs={proj.minPricePerMeterTjs}
+                      minPricePerMeterUsd={proj.minPricePerMeterUsd}
+                      variant="card"
+                    />
 
                     <div className="pt-1 flex items-center gap-3">
                       <Link href={`/projects/${proj.slug}`} className="flex-1">

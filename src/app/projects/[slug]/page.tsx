@@ -27,6 +27,7 @@ import { StorageChessboardModal } from "@/components/modules/projects/storage-ch
 import { ProjectDocumentsSection } from "@/components/modules/projects/project-documents-section";
 import { InteractiveMapWrapper } from "@/components/modules/interactive-map-wrapper";
 import { formatNewBuildingPricePerMeter, getPricePerMeterLabel } from "@/lib/pricing/new-building-price";
+import { NewBuildingPriceBlock } from "@/components/modules/new-building-price-block";
 
 import {
   Building2,
@@ -260,22 +261,13 @@ export default function PublicProjectPage() {
             <ProjectEngagementHeaderPill slug={project.slug} autoRecordView={true} />
 
             {/* Pricing Highlight Card */}
-            <div className="bg-card border rounded-2xl p-4 sm:p-5 shadow-sm text-left shrink-0 flex flex-col justify-center min-w-[240px]">
-              <div className="text-xs text-muted-foreground">{tDual("Стоимость квартир:", "Нархи хонадонҳо:")}</div>
-              <div className="text-2xl sm:text-3xl font-extrabold text-emerald-600 sm:text-right">
-                {tDual("от", "аз")} {formatPrice(project.minTotalPriceTjs, project.minTotalPriceUsd)}
-              </div>
-              {pricePerMeterFormatted && (
-                <div className="flex items-center justify-between gap-4 pt-2 mt-2 border-t border-border/60 text-xs">
-                  <span className="text-muted-foreground font-normal">
-                    {getPricePerMeterLabel(language)}
-                  </span>
-                  <span className="font-bold text-foreground tabular-nums text-right">
-                    {pricePerMeterFormatted}
-                  </span>
-                </div>
-              )}
-            </div>
+            <NewBuildingPriceBlock
+              minTotalPriceTjs={project.minTotalPriceTjs}
+              minTotalPriceUsd={project.minTotalPriceUsd}
+              minPricePerMeterTjs={project.minPricePerMeterTjs}
+              minPricePerMeterUsd={project.minPricePerMeterUsd}
+              variant="detail"
+            />
           </div>
         </div>
 
