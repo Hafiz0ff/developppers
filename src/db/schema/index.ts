@@ -9,5 +9,6 @@ export * from "./analytics";
 export * from "./api-keys";
 export * from "./crm";
 export * from "./audit-logs";
+export * from "./ads";
 export * from "./relations";
 

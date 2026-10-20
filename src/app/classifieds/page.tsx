@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Plus, Home, ArrowLeft, SearchX, Sparkles, MapPin } from "lucide-react";
 import type { ClassifiedCard as ClassifiedCardData } from "@/lib/classifieds/map-card";
 import { CATALOG_PROPERTIES } from "@/lib/catalog-data";
+import { SponsoredPartnerBanner } from "@/components/modules/ads/sponsored-partner-banner";
 
 function ClassifiedsCatalogContent() {
   const { language } = useLanguage();
@@ -107,7 +108,14 @@ function ClassifiedsCatalogContent() {
       </div>
 
       {/* Main Grid */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 space-y-6">
+        {/* Sponsored Partner Showcase */}
+        <SponsoredPartnerBanner
+          slot="catalog_banner"
+          category="secondary"
+          variant="horizontal"
+        />
+
         <div className="flex items-center justify-between mb-4">
           <p className="text-xs text-slate-600 font-medium">
             {isTg ? (

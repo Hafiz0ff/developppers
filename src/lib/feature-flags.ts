@@ -51,7 +51,7 @@ export interface FeatureFlagsConfig {
 }
 
 export const DEFAULT_FEATURE_FLAGS: FeatureFlagsConfig = {
-  superAdminPanel: false, // Strict: full UI is disabled on current stage
+  superAdminPanel: false,
   superAdminAuditLogs: false,
   developerAdminV2: true,
   agencyMultiAgent: false,

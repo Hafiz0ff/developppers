@@ -8,6 +8,7 @@ import { favorites } from "./favorites";
 import { classifiedAnalytics } from "./analytics";
 import { apiKeys } from "./api-keys";
 import { crmLeads, crmCollections } from "./crm";
+import { adAdvertisers, adCampaigns, adCreatives } from "./ads";
 
 export const usersRelations = relations(users, ({ many }) => ({
   sessions: many(sessions),
@@ -112,6 +113,29 @@ export const crmLeadsRelations = relations(crmLeads, ({ one }) => ({
   classified: one(classifieds, {
     fields: [crmLeads.classifiedId],
     references: [classifieds.id],
+  }),
+}));
+
+export const adAdvertisersRelations = relations(adAdvertisers, ({ one, many }) => ({
+  user: one(users, {
+    fields: [adAdvertisers.userId],
+    references: [users.id],
+  }),
+  campaigns: many(adCampaigns),
+}));
+
+export const adCampaignsRelations = relations(adCampaigns, ({ one, many }) => ({
+  advertiser: one(adAdvertisers, {
+    fields: [adCampaigns.advertiserId],
+    references: [adAdvertisers.id],
+  }),
+  creatives: many(adCreatives),
+}));
+
+export const adCreativesRelations = relations(adCreatives, ({ one }) => ({
+  campaign: one(adCampaigns, {
+    fields: [adCreatives.campaignId],
+    references: [adCampaigns.id],
   }),
 }));
 
