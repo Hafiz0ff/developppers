@@ -7,6 +7,7 @@ import {
   ShieldAlert,
   BarChart3,
   Megaphone,
+  CreditCard,
   Building2,
   FileCheck2,
   Sliders,
@@ -36,6 +37,12 @@ export default function SuperAdminLayout({
       href: "/super-admin/ads",
       icon: Megaphone,
       badge: "Эсхата, Мегафон",
+    },
+    {
+      title: "Платежи и FinTech",
+      href: "/super-admin/payments",
+      icon: CreditCard,
+      badge: "Корти Милли, DC",
     },
     {
       title: "Кабинет рекламодателя",

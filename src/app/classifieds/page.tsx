@@ -8,10 +8,12 @@ import { useCurrency } from "@/context/currency-context";
 import { ClassifiedsFilters } from "@/components/classifieds/classifieds-filters";
 import { ClassifiedCard } from "@/components/classifieds/classified-card";
 import { Button } from "@/components/ui/button";
-import { Plus, Home, ArrowLeft, SearchX, Sparkles, MapPin } from "lucide-react";
+import { Plus, Home, ArrowLeft, SearchX, Sparkles, MapPin, Zap } from "lucide-react";
 import type { ClassifiedCard as ClassifiedCardData } from "@/lib/classifieds/map-card";
 import { CATALOG_PROPERTIES } from "@/lib/catalog-data";
 import { SponsoredPartnerBanner } from "@/components/modules/ads/sponsored-partner-banner";
+import { PaymentModal } from "@/components/modules/payments/payment-modal";
+import { VAS_SERVICES } from "@/lib/payments/payment-gateway";
 
 function ClassifiedsCatalogContent() {
   const { language } = useLanguage();
@@ -21,6 +23,8 @@ function ClassifiedsCatalogContent() {
 
   const [items, setItems] = useState<ClassifiedCardData[]>([]);
   const [loading, setLoading] = useState(true);
+  const [vasModalOpen, setVasModalOpen] = useState(false);
+  const [selectedVas, setSelectedVas] = useState<"classified_top" | "classified_highlight" | "classified_urgent" | "classified_turbo">("classified_top");
 
   useEffect(() => {
     async function loadData() {
@@ -86,6 +90,14 @@ function ClassifiedsCatalogContent() {
             </div>
 
             <div className="flex items-center gap-2.5 shrink-0">
+              <Button
+                onClick={() => setVasModalOpen(true)}
+                variant="outline"
+                className="border-amber-300 bg-amber-50/80 hover:bg-amber-100/90 text-amber-900 font-bold text-xs h-10 px-3.5 rounded-xl gap-1.5 cursor-pointer shadow-xs"
+              >
+                <Zap className="h-4 w-4 text-amber-600 fill-amber-500" />
+                <span>{isTg ? "Пешбарӣ (ТОП)" : "Продвижение (ТОП)"}</span>
+              </Button>
               <Link href="/map?type=apartment">
                 <Button variant="outline" className="border-slate-300 hover:bg-slate-100 font-semibold text-xs h-10 px-4 rounded-xl gap-2 cursor-pointer text-slate-700">
                   <MapPin className="h-4 w-4 text-emerald-600" />
@@ -161,6 +173,24 @@ function ClassifiedsCatalogContent() {
           </div>
         )}
       </div>
+
+      {/* Promotional VAS Services Payment Modal */}
+      <PaymentModal
+        isOpen={vasModalOpen}
+        onClose={() => setVasModalOpen(false)}
+        purpose={selectedVas}
+        title={
+          isTg
+            ? "Пешбарии эълон ба ТОП"
+            : "Продвижение объявления в ТОП каталога"
+        }
+        subtitle={
+          isTg
+            ? "Ҷойгиркунӣ дар сатри аввали феҳрист бо нишони ТОП (Корти Миллӣ, DC, Alif, Эсхата)"
+            : "Закрепление на 7 дней в топе каталога вторички через Корти Милли, DC, Alif или Эсхата"
+        }
+        amountTjs={VAS_SERVICES[selectedVas]?.priceTjs || 25}
+      />
     </div>
   );
 }

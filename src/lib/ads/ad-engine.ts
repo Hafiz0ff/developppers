@@ -591,6 +591,20 @@ export function recordAdClick(campaignId: string, creativeId: string): boolean {
   return false;
 }
 
+export function topUpAdvertiserBalance(
+  advertiserId: string,
+  amountTjs: number,
+  amountUsd?: number
+): AdvertiserDto | null {
+  const adv = advertisersStore.find((a) => a.id === advertiserId);
+  if (adv) {
+    adv.balanceTjs += amountTjs;
+    adv.balanceUsd += amountUsd ?? Math.round(amountTjs / 10.9);
+    return adv;
+  }
+  return null;
+}
+
 /**
  * Super Admin Executive Analytics Summary
  */

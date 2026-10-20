@@ -9,6 +9,7 @@ import { classifiedAnalytics } from "./analytics";
 import { apiKeys } from "./api-keys";
 import { crmLeads, crmCollections } from "./crm";
 import { adAdvertisers, adCampaigns, adCreatives } from "./ads";
+import { paymentTransactions, paymentWebhooksLog } from "./payments";
 
 export const usersRelations = relations(users, ({ many }) => ({
   sessions: many(sessions),
@@ -138,5 +139,25 @@ export const adCreativesRelations = relations(adCreatives, ({ one }) => ({
     references: [adCampaigns.id],
   }),
 }));
+
+export const paymentTransactionsRelations = relations(paymentTransactions, ({ one }) => ({
+  user: one(users, {
+    fields: [paymentTransactions.userId],
+    references: [users.id],
+  }),
+  advertiser: one(adAdvertisers, {
+    fields: [paymentTransactions.advertiserId],
+    references: [adAdvertisers.id],
+  }),
+  classified: one(classifieds, {
+    fields: [paymentTransactions.classifiedId],
+    references: [classifieds.id],
+  }),
+  unit: one(units, {
+    fields: [paymentTransactions.unitId],
+    references: [units.id],
+  }),
+}));
+
 
 

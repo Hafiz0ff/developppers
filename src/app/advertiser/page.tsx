@@ -21,6 +21,7 @@ import {
   Send,
   Zap,
   Globe2,
+  CreditCard,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -28,6 +29,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { useLanguage } from "@/context/language-context";
 import { useCurrency } from "@/context/currency-context";
+import { PaymentModal } from "@/components/modules/payments/payment-modal";
 
 export default function AdvertiserPortalPage() {
   const { language, tDual } = useLanguage();
@@ -48,6 +50,7 @@ export default function AdvertiserPortalPage() {
   const [comment, setComment] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
+  const [payModalOpen, setPayModalOpen] = useState(false);
 
   // Estimator math
   const cpmRateTjs = 25; // 25 TJS per 1,000 views
@@ -542,15 +545,30 @@ export default function AdvertiserPortalPage() {
                 </div>
               </div>
 
-              <Button
-                onClick={() => {
-                  document.getElementById("contact-form")?.scrollIntoView({ behavior: "smooth" });
-                }}
-                className="w-full h-11 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs shadow-sm gap-2"
-              >
-                <span>{isTg ? "Фармоиш додани ин ҳаҷм" : "Заказать данный объем"}</span>
-                <ArrowRight className="h-3.5 w-3.5" />
-              </Button>
+              <div className="space-y-2">
+                <Button
+                  onClick={() => setPayModalOpen(true)}
+                  className="w-full h-11 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs shadow-md gap-2"
+                >
+                  <CreditCard className="h-4 w-4" />
+                  <span>
+                    {isTg
+                      ? `Пардохти онлайн (${estimatedCostTjs.toLocaleString("ru-RU")} смн)`
+                      : `Оплатить онлайн (${estimatedCostTjs.toLocaleString("ru-RU")} сомони)`}
+                  </span>
+                </Button>
+
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    document.getElementById("contact-form")?.scrollIntoView({ behavior: "smooth" });
+                  }}
+                  className="w-full h-10 rounded-xl border-slate-700 bg-slate-900/60 hover:bg-slate-800 text-slate-300 font-semibold text-xs gap-2"
+                >
+                  <span>{isTg ? "Дархости шартнома бо менеҷер" : "Оставить заявку на договор"}</span>
+                  <ArrowRight className="h-3.5 w-3.5" />
+                </Button>
+              </div>
             </div>
           </div>
         </div>
@@ -703,6 +721,23 @@ export default function AdvertiserPortalPage() {
           )}
         </div>
       </div>
+
+      {/* Online Payment Modal */}
+      <PaymentModal
+        isOpen={payModalOpen}
+        onClose={() => setPayModalOpen(false)}
+        purpose="ad_balance"
+        title={isTg ? "Пардохти онлайни тавозуни таблиғот" : "Пополнение рекламного баланса онлайн"}
+        subtitle={
+          isTg
+            ? `Фарогирии тахминии ${selectedImpressions.toLocaleString("ru-RU")} намоишҳо дар вилояти Суғд`
+            : `Расчетный охват: ${selectedImpressions.toLocaleString("ru-RU")} показов по городам Согда`
+        }
+        amountTjs={estimatedCostTjs}
+        onSuccess={() => {
+          setSubmitSuccess(true);
+        }}
+      />
     </div>
   );
 }
