@@ -12,6 +12,7 @@
     "db:push": "drizzle-kit push",
     "db:studio": "drizzle-kit studio",
     "db:seed": "tsx src/db/seed.ts",
+    "arch:trace": "tsx .agents/skills/codebase-architecture/scripts/trace-dependency-chain.ts",
     "test": "tsx --test 'src/**/*.test.ts'"
   },
   "dependencies": {

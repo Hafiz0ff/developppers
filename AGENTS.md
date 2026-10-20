@@ -1,27 +1,28 @@
-# Instructions for AI Agents (Antigravity / Gemini / Claude / Codex)
+# Codebase Architecture & Dependency Chain Rules for Maskani.tj (Sogd Realty)
 
-You are an expert Full-Stack Software Engineer building a high-performance Real Estate portal for Tajikistan (Sughd Region).
+You are an expert full-stack engineer and software architect working on **Maskani.tj / Sogd Realty**.
+Follow these mandatory architecture rules at all times:
 
-## Your Constraints
-1. Always write strict TypeScript. Avoid implicit or explicit `any`.
-2. Follow Next.js App Router best practices (use React Server Components for data fetching, Client Components only when state/interactivity is required).
-3. Check `RULES.md` and `ARCHITECTURE.md` before adding new folders or database models.
-4. Keep `TASKS.md` updated as you complete features.
-5. Provide clear, modular, and self-documenting code.
+## 1. Complete Dependency Chain Rule (Never Edit in Isolation)
+When any user request mentions or touches a file, component, endpoint, or feature:
+- **Do not treat any file as isolated.**
+- Always examine the full architectural flow:
+  `Database Schema (src/db/schema) ➔ Domain Logic & Stores (src/lib) ➔ API Routes (src/app/api) ➔ Context/Hooks (src/context, src/hooks) ➔ UI Modules (src/components) ➔ Page Views (src/app)`
+- Trace **Upstream Dependencies** (what this file relies on) and **Downstream Consumers** (what pages or components will be impacted).
+- Use the built-in dependency tracer:
+  ```bash
+  npm run arch:trace <keyword_or_filename>
+  ```
+- Refer to the system map in [`ARCHITECTURE.md`](file:///Users/hafizov/Developers/sogd-realty/ARCHITECTURE.md) and the `.agents/skills/codebase-architecture/` skill.
 
-## Agent Specific Guidelines
+## 2. Cross-Cutting Contracts
+- **Bilingual Localization (`ru` & `tg`)**: Always use `tDual(ruText, tgText)` from `useLanguage()`. Never render unlocalized user-facing strings.
+- **Dual Currency (`TJS` & `USD`)**: Always support both currencies. Use `formatPrice(priceTjs, priceUsd)` from `useCurrency()`.
+- **Geographic Precision**: Follow Sughd regions, districts, and coordinates defined in `src/lib/constants/locations.ts`.
+- **Responsive Layout Integrity**: Ensure desktop sticky elements (e.g. `lg:sticky lg:top-20 self-start`) and mobile breakpoints behave cleanly without overflow.
 
-### Claude
-- Focus on architectural purity, robust error handling, domain modeling, and edge cases.
-- Maintain accessible, polished UI with Shadcn components and Tailwind CSS.
-- Ensure strict multi-tenancy boundaries between developers and citizen data.
-
-### Codex
-- Optimize SQL queries and Drizzle ORM operations.
-- Ensure zero schema drift and generate clean migration files.
-- Ensure robust type safety across server-client boundaries.
-
-### Antigravity (Gemini 3.8 Flash)
-- Rapid end-to-end execution and verified builds.
-- Seamless component integration, state management, and real-time currency conversions.
-- Proactive testing of terminal commands, type checks, and migrations.
+## 3. Verification Protocol
+After making any code changes:
+- Run the test suite: `npm test`
+- Run the production build: `npm run build`
+- Ensure zero TypeScript or linting regressions.
