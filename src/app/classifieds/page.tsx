@@ -12,7 +12,7 @@ import { Plus, Home, ArrowLeft, SearchX, Sparkles, MapPin, Zap } from "lucide-re
 import type { ClassifiedCard as ClassifiedCardData } from "@/lib/classifieds/map-card";
 import { CATALOG_PROPERTIES } from "@/lib/catalog-data";
 import { SponsoredPartnerBanner } from "@/components/modules/ads/sponsored-partner-banner";
-import { PaymentModal } from "@/components/modules/payments/payment-modal";
+import { PromoteClassifiedModal } from "@/components/modules/classifieds/promote-classified-modal";
 import { VAS_SERVICES } from "@/lib/payments/payment-gateway";
 
 function ClassifiedsCatalogContent() {
@@ -23,35 +23,36 @@ function ClassifiedsCatalogContent() {
 
   const [items, setItems] = useState<ClassifiedCardData[]>([]);
   const [loading, setLoading] = useState(true);
-  const [vasModalOpen, setVasModalOpen] = useState(false);
-  const [selectedVas, setSelectedVas] = useState<"classified_top" | "classified_highlight" | "classified_urgent" | "classified_turbo">("classified_top");
+  const [promoteModalOpen, setPromoteModalOpen] = useState(false);
+  const [selectedCardToPromote, setSelectedCardToPromote] = useState<ClassifiedCardData | null>(null);
+
+  const loadData = async () => {
+    try {
+      setLoading(true);
+      const qs = searchParams.toString();
+      const res = await fetch(qs ? `/api/classifieds?${qs}` : "/api/classifieds");
+      const json = (await res.json()) as { success: boolean; classifieds?: ClassifiedCardData[] };
+
+      if (json.success && Array.isArray(json.classifieds)) {
+        setItems(json.classifieds);
+      } else {
+        setItems([]);
+      }
+    } catch {
+      const fallback: ClassifiedCardData[] = CATALOG_PROPERTIES.map((prop) => ({
+        ...prop,
+        slug: prop.slug || `classified-${prop.id}`,
+        status: "active",
+        viewsCount: 24,
+        userId: "demo",
+      }));
+      setItems(fallback);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    async function loadData() {
-      try {
-        setLoading(true);
-        const qs = searchParams.toString();
-        const res = await fetch(qs ? `/api/classifieds?${qs}` : "/api/classifieds");
-        const json = (await res.json()) as { success: boolean; classifieds?: ClassifiedCardData[] };
-
-        if (json.success && Array.isArray(json.classifieds)) {
-          setItems(json.classifieds);
-        } else {
-          setItems([]);
-        }
-      } catch {
-        const fallback: ClassifiedCardData[] = CATALOG_PROPERTIES.map((prop) => ({
-          ...prop,
-          slug: prop.slug || `classified-${prop.id}`,
-          status: "active",
-          viewsCount: 24,
-          userId: "demo",
-        }));
-        setItems(fallback);
-      } finally {
-        setLoading(false);
-      }
-    }
     loadData();
   }, [searchParams]);
 
@@ -91,7 +92,10 @@ function ClassifiedsCatalogContent() {
 
             <div className="flex items-center gap-2.5 shrink-0">
               <Button
-                onClick={() => setVasModalOpen(true)}
+                onClick={() => {
+                  setSelectedCardToPromote(items[0] || null);
+                  setPromoteModalOpen(true);
+                }}
                 variant="outline"
                 className="border-amber-300 bg-amber-50/80 hover:bg-amber-100/90 text-amber-900 font-bold text-xs h-10 px-3.5 rounded-xl gap-1.5 cursor-pointer shadow-xs"
               >
@@ -168,28 +172,28 @@ function ClassifiedsCatalogContent() {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {items.map((item) => (
-              <ClassifiedCard key={item.id} item={item} formatPrice={formatPrice} />
+              <ClassifiedCard
+                key={item.id}
+                item={item}
+                formatPrice={formatPrice}
+                onPromote={(c) => {
+                  setSelectedCardToPromote(c);
+                  setPromoteModalOpen(true);
+                }}
+              />
             ))}
           </div>
         )}
       </div>
 
-      {/* Promotional VAS Services Payment Modal */}
-      <PaymentModal
-        isOpen={vasModalOpen}
-        onClose={() => setVasModalOpen(false)}
-        purpose={selectedVas}
-        title={
-          isTg
-            ? "Пешбарии эълон ба ТОП"
-            : "Продвижение объявления в ТОП каталога"
-        }
-        subtitle={
-          isTg
-            ? "Ҷойгиркунӣ дар сатри аввали феҳрист бо нишони ТОП (Корти Миллӣ, DC, Alif, Эсхата)"
-            : "Закрепление на 7 дней в топе каталога вторички через Корти Милли, DC, Alif или Эсхата"
-        }
-        amountTjs={VAS_SERVICES[selectedVas]?.priceTjs || 25}
+      {/* Promotional VAS Services Modal */}
+      <PromoteClassifiedModal
+        isOpen={promoteModalOpen}
+        onClose={() => setPromoteModalOpen(false)}
+        card={selectedCardToPromote}
+        onPromotionSuccess={() => {
+          loadData();
+        }}
       />
     </div>
   );

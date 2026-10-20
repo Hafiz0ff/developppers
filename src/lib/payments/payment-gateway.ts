@@ -10,6 +10,7 @@
  */
 
 import { topUpAdvertiserBalance } from "@/lib/ads/ad-engine";
+import { promoteClassified, VasPlan } from "@/lib/classifieds/vas-engine";
 
 export const TJS_TO_USD_RATE = 10.9;
 
@@ -149,12 +150,12 @@ export interface VasServiceMeta {
 export const VAS_SERVICES: Record<string, VasServiceMeta> = {
   classified_top: {
     id: "classified_top",
-    nameRu: "ТОП-размещение (7 дней)",
-    nameTg: "Маҳкамкунӣ дар ТОП (7 рӯз)",
+    nameRu: "Поднять в ТОП на 7 дней",
+    nameTg: "Баровардан ба ТОП (7 рӯз)",
     descriptionRu: "Объявление закрепляется в самом верху каталога вторички с приоритетом",
     descriptionTg: "Эълон дар болои феҳристи бозори дуюмдараҷа бо афзалият меистад",
-    priceTjs: 25,
-    priceUsd: 2.3,
+    priceTjs: 10,
+    priceUsd: 0.92,
     durationDays: 7,
     badgeRu: "ТОП",
     badgeTg: "ТОП",
@@ -162,12 +163,12 @@ export const VAS_SERVICES: Record<string, VasServiceMeta> = {
   },
   classified_highlight: {
     id: "classified_highlight",
-    nameRu: "Выделение цветом и рамкой",
-    nameTg: "Ҷудокунӣ бо чаҳорчӯбаи заррин",
-    descriptionRu: "Яркая рамка с градиентом привлекает в 3 раза больше кликов",
-    descriptionTg: "Чаҳорчӯбаи равшан диққати бештарро ҷалб мекунад",
-    priceTjs: 15,
-    priceUsd: 1.4,
+    nameRu: "Выделение цветом",
+    nameTg: "Ҷудокунӣ бо ранг ва чаҳорчӯба",
+    descriptionRu: "Яркая рамка с золотым градиентом привлекает в 3 раза больше просмотров",
+    descriptionTg: "Чаҳорчӯбаи заррин диққати бештарро ҷалб мекунад",
+    priceTjs: 8,
+    priceUsd: 0.73,
     durationDays: 14,
     badgeRu: "VIP",
     badgeTg: "VIP",
@@ -175,12 +176,12 @@ export const VAS_SERVICES: Record<string, VasServiceMeta> = {
   },
   classified_urgent: {
     id: "classified_urgent",
-    nameRu: "Срочная продажа (бейдж «Срочно»)",
-    nameTg: "Фурӯши таъҷилӣ (бейҷи «Таъҷилӣ»)",
-    descriptionRu: "Значок огня и бейдж «Срочно» ускоряют поиск реального покупателя",
-    descriptionTg: "Аломати оташ ва бейҷи махсус фурӯшро метезонад",
-    priceTjs: 20,
-    priceUsd: 1.85,
+    nameRu: "Срочная продажа (значок огня)",
+    nameTg: "Фурӯши таъҷилӣ (нишонаи оташ)",
+    descriptionRu: "Значок огня и бейдж «Срочно» привлекают покупателей с живыми деньгами",
+    descriptionTg: "Аломати оташ ва бейҷи таъҷилӣ фурӯшро метезонад",
+    priceTjs: 7,
+    priceUsd: 0.64,
     durationDays: 10,
     badgeRu: "Срочно",
     badgeTg: "Таъҷилӣ",
@@ -188,15 +189,15 @@ export const VAS_SERVICES: Record<string, VasServiceMeta> = {
   },
   classified_turbo: {
     id: "classified_turbo",
-    nameRu: "Турбо-пакет «Все включено»",
+    nameRu: "Турбо-пакет: Все включено",
     nameTg: "Бастаи «Турбо-фурӯш» (Ҳамааш дар як)",
-    descriptionRu: "ТОП + Выделение рамкой + Бейдж «Срочно» со скидкой 25%",
-    descriptionTg: "ТОП + Ранг + Таъҷилӣ бо тахфифи 25%",
-    priceTjs: 45,
-    priceUsd: 4.15,
+    descriptionRu: "ТОП на 7 дней + Выделение рамкой + Срочная продажа со скидкой 20%",
+    descriptionTg: "ТОП + Ранг + Нишонаи оташ бо тахфифи 20%",
+    priceTjs: 20,
+    priceUsd: 1.85,
     durationDays: 14,
-    badgeRu: "Турбо -25%",
-    badgeTg: "Турбо -25%",
+    badgeRu: "Турбо -20%",
+    badgeTg: "Турбо -20%",
     iconName: "Zap",
   },
 };
@@ -292,9 +293,9 @@ let transactionsStore: PaymentTransactionDto[] = [
   },
   {
     id: "pay_vas_khujand_top",
-    classifiedId: "classified-1",
-    amountTjs: 25,
-    amountUsd: 2.3,
+    classifiedId: "17034738",
+    amountTjs: 10,
+    amountUsd: 1,
     currency: "TJS",
     provider: "korti_milli",
     method: "card",
@@ -312,9 +313,9 @@ let transactionsStore: PaymentTransactionDto[] = [
   },
   {
     id: "pay_vas_istaravshan_turbo",
-    classifiedId: "classified-2",
-    amountTjs: 45,
-    amountUsd: 4.15,
+    classifiedId: "17038924",
+    amountTjs: 20,
+    amountUsd: 2,
     currency: "TJS",
     provider: "alif_mobi",
     method: "installment_salom",
@@ -510,9 +511,22 @@ export function confirmPayment(
  * Internal effect handler when payment reaches 'completed'
  */
 function applySuccessfulPaymentEffects(tx: PaymentTransactionDto) {
-  // If payment is for advertising balance top-up
+  // 1. If payment is for advertising balance top-up
   if (tx.purpose === "ad_balance" && tx.advertiserId) {
     topUpAdvertiserBalance(tx.advertiserId, tx.amountTjs, tx.amountUsd);
+  }
+
+  // 2. If payment is for classifieds VAS promotion
+  if (tx.classifiedId) {
+    if (tx.purpose === "classified_top") {
+      promoteClassified(tx.classifiedId, "top", 7, tx.amountTjs);
+    } else if (tx.purpose === "classified_highlight") {
+      promoteClassified(tx.classifiedId, "highlight", 14, tx.amountTjs);
+    } else if (tx.purpose === "classified_urgent") {
+      promoteClassified(tx.classifiedId, "urgent", 10, tx.amountTjs);
+    } else if (tx.purpose === "classified_turbo") {
+      promoteClassified(tx.classifiedId, "turbo", 14, tx.amountTjs);
+    }
   }
 }
 

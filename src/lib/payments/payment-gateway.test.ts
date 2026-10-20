@@ -18,14 +18,14 @@ describe("Tajikistan National Payment Gateway & FinTech Engine", () => {
   test("creates Korti Milli payment order with 3D Secure challenge", () => {
     const tx = createPaymentOrder({
       purpose: "classified_top",
-      amountTjs: 25,
+      amountTjs: 10,
       provider: "korti_milli",
       payerPhone: "+992 92 700 1122",
       payerName: "Джамшед Умаров",
     });
 
     assert.ok(tx.id.startsWith("pay_kor_"));
-    assert.equal(tx.amountTjs, 25);
+    assert.equal(tx.amountTjs, 10);
     assert.equal(tx.currency, "TJS");
     assert.equal(tx.provider, "korti_milli");
     assert.equal(tx.method, "card");
@@ -124,13 +124,15 @@ describe("Tajikistan National Payment Gateway & FinTech Engine", () => {
     assert.ok(p1.formattedUsd.includes("$100"));
   });
 
-  test("verifies VAS services catalog covers all promotional formats", () => {
+  test("verifies VAS services catalog covers all promotional formats with exact pricing", () => {
     assert.ok(VAS_SERVICES.classified_top);
     assert.ok(VAS_SERVICES.classified_highlight);
     assert.ok(VAS_SERVICES.classified_urgent);
     assert.ok(VAS_SERVICES.classified_turbo);
 
-    assert.equal(VAS_SERVICES.classified_top.priceTjs, 25);
-    assert.equal(VAS_SERVICES.classified_turbo.priceTjs, 45);
+    assert.equal(VAS_SERVICES.classified_top.priceTjs, 10);
+    assert.equal(VAS_SERVICES.classified_highlight.priceTjs, 8);
+    assert.equal(VAS_SERVICES.classified_urgent.priceTjs, 7);
+    assert.equal(VAS_SERVICES.classified_turbo.priceTjs, 20);
   });
 });

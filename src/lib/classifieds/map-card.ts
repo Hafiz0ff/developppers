@@ -23,6 +23,13 @@ export type ClassifiedCard = CatalogProperty & {
   viewsCount: number;
   userId: string;
   createdAt?: string | Date;
+  isTop?: boolean;
+  topExpiresAt?: string | Date;
+  isHighlighted?: boolean;
+  highlightExpiresAt?: string | Date;
+  isUrgent?: boolean;
+  urgentExpiresAt?: string | Date;
+  vasPlan?: "top" | "highlight" | "urgent" | "turbo";
 };
 
 export function toNumber(value: string | number | null | undefined): number {

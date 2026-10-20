@@ -16,6 +16,7 @@ import { getClassifiedsActor } from "@/lib/classifieds/session";
 import { makeClassifiedSlug } from "@/lib/classifieds/slug";
 import { canCreateAnotherAd } from "@/lib/classifieds/rate-limit";
 import { CATALOG_PROPERTIES } from "@/lib/catalog-data";
+import { sortClassifiedsWithVas } from "@/lib/classifieds/vas-engine";
 
 function numeric(value: number | null | undefined): string | null {
   if (value == null) return null;
@@ -102,7 +103,7 @@ export async function GET(req: NextRequest) {
         return true;
       });
 
-      return NextResponse.json({ success: true, classifieds: filteredDemo });
+      return NextResponse.json({ success: true, classifieds: sortClassifiedsWithVas(filteredDemo) });
     }
 
     const listed = filterPublicClassifieds(rows.map(toFilterable), query);
@@ -112,7 +113,7 @@ export async function GET(req: NextRequest) {
       .filter((row): row is NonNullable<typeof row> => Boolean(row))
       .map(mapClassifiedToCard);
 
-    return NextResponse.json({ success: true, classifieds: classifiedsOut });
+    return NextResponse.json({ success: true, classifieds: sortClassifiedsWithVas(classifiedsOut) });
   } catch (error) {
     console.error("Classifieds GET error:", error);
     return NextResponse.json({ success: false, error: "internal_error" }, { status: 500 });
