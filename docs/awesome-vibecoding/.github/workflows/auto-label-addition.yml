@@ -1,0 +1,44 @@
+name: Auto Label Addition
+
+# Adds the `addition` label to newly opened issues that contain a URL but were
+# not created via the issue template (which would add the label automatically).
+#
+# NOTE: This is now purely cosmetic/organisational. It does NOT unblock
+# `auto-process-issue.yml`: this workflow adds the label with the default
+# GITHUB_TOKEN, and label events created by GITHUB_TOKEN do not trigger other
+# workflows. `auto-process-issue.yml` therefore detects the URL itself on the
+# `opened` event rather than waiting for this label.
+
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  label:
+    if: ${{ !endsWith(github.actor, '[bot]') }}
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    steps:
+      - name: Add 'addition' label if body contains a URL
+        uses: actions/github-script@v9
+        with:
+          script: |
+            const issue = context.payload.issue;
+            const labels = issue.labels.map(l => l.name);
+            if (labels.includes('addition')) {
+              core.info("Already has 'addition' label; nothing to do.");
+              return;
+            }
+            const body = issue.body || '';
+            if (!/https?:\/\/[^\s)]+/i.test(body)) {
+              core.info('No URL found in issue body; skipping.');
+              return;
+            }
+            await github.rest.issues.addLabels({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: issue.number,
+              labels: ['addition']
+            });
+            core.info(`Added 'addition' label to issue #${issue.number}`);

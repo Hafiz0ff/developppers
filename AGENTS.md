@@ -26,3 +26,7 @@ After making any code changes:
 - Run the test suite: `npm test`
 - Run the production build: `npm run build`
 - Ensure zero TypeScript or linting regressions.
+
+## 4. Vibe Coding Methodology (roboco-io/awesome-vibecoding)
+- Follow the **Vibe Development Lifecycle (VDLC)**: Intent & Spec ➔ Architectural Dependency Trace ➔ Staged Atomic Edits ➔ Verification Gates (`npm test` & `npm run build`) ➔ Git Checkpoint.
+- Reference curated tools, workflows and guides in [`docs/awesome-vibecoding/`](file:///Users/hafizov/Developers/sogd-realty/docs/awesome-vibecoding/README.md) and skill [`.agents/skills/vibe-coding/SKILL.md`](file:///Users/hafizov/Developers/sogd-realty/.agents/skills/vibe-coding/SKILL.md).

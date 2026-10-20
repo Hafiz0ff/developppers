@@ -166,3 +166,12 @@ Before committing any change:
    ```bash
    npm run build
    ```
+
+---
+
+## 6. Vibe Coding Integration (`roboco-io/awesome-vibecoding`)
+
+The project embeds the open-source Vibe Coding catalog and playbook:
+- **Directory**: [`docs/awesome-vibecoding/`](file:///Users/hafizov/Developers/sogd-realty/docs/awesome-vibecoding/README.md)
+- **Skill**: [`.agents/skills/vibe-coding/SKILL.md`](file:///Users/hafizov/Developers/sogd-realty/.agents/skills/vibe-coding/SKILL.md)
+- **Methodology**: Follows the Vibe Development Lifecycle (VDLC) to pair rapid, intuitive AI-driven prototyping with rigorous, test-guarded architectural verification.
