@@ -145,25 +145,10 @@ export function ProjectStorageSection({
               </Badge>
             </div>
           </div>
-
-          {/* Button: "Выбрать кладовую" (Only if chessboard published) */}
-          {showSelectButton && (
-            <div className="shrink-0">
-              <Button
-                type="button"
-                onClick={onSelectUnitClick}
-                className="w-full sm:w-auto h-11 px-5 rounded-xl bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white font-semibold text-xs sm:text-sm shadow-md transition-all gap-2 cursor-pointer group"
-              >
-                <Archive className="h-4 w-4 transition-transform group-hover:scale-110" />
-                <span>{tDual("Выбрать кладовую", "Интихоби анборхона")}</span>
-                <ChevronRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-              </Button>
-            </div>
-          )}
         </div>
 
         {/* Content: Description, Advantages & Photos */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 pt-6 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 pt-6 items-end">
           {/* Description & Advantages Column */}
           <div className={`${images.length > 0 ? "lg:col-span-6" : "lg:col-span-12"} space-y-4`}>
             {trimmedDescription && (
@@ -188,7 +173,7 @@ export function ProjectStorageSection({
           {/* Photos Grid */}
           {images.length > 0 && (
             <div className="lg:col-span-6">
-              <div className={`grid gap-3 ${images.length === 1 ? "grid-cols-1 h-64" : images.length === 2 ? "grid-cols-2 h-64" : "grid-cols-3 h-52 sm:h-64"}`}>
+              <div className={`grid gap-3 ${images.length === 1 ? "grid-cols-1 h-64" : images.length === 2 ? "grid-cols-2 h-64" : "grid-cols-3 h-52 sm:h-56"}`}>
                 {images.slice(0, 3).map((img, idx) => (
                   <div
                     key={idx}
@@ -211,6 +196,24 @@ export function ProjectStorageSection({
             </div>
           )}
         </div>
+
+        {/* Action Button: placed in right part under the 3rd (last) photo */}
+        {showSelectButton && (
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 pt-3">
+            <div className="hidden lg:block lg:col-span-6" />
+            <div className="lg:col-span-6 flex justify-end">
+              <Button
+                type="button"
+                onClick={onSelectUnitClick}
+                className="w-full sm:w-auto h-11 px-5 rounded-xl bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white font-semibold text-xs sm:text-sm shadow-md transition-all gap-2 cursor-pointer group"
+              >
+                <Archive className="h-4 w-4 transition-transform group-hover:scale-110" />
+                <span>{tDual("Выбрать кладовую", "Интихоби анборхона")}</span>
+                <ChevronRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+              </Button>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Apple-Style Lightbox */}

@@ -47,8 +47,6 @@ import { InteractiveMapWrapper } from "@/components/modules/interactive-map-wrap
 import { generateYandexMapsRouteUrl } from "@/lib/geo-utils";
 import { useEntityMetrics } from "@/hooks/use-entity-metrics";
 import { formatPublicationDate, formatPricePerSquareMeter } from "@/lib/classifieds/format-utils";
-import { AdBlock1 } from "@/components/modules/ads/ad-block-1";
-import { AdBlock2 } from "@/components/modules/ads/ad-block-2";
 
 export default function ClassifiedDetailPage() {
   const params = useParams();
@@ -356,34 +354,44 @@ export default function ClassifiedDetailPage() {
       <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 pt-6 space-y-4 sm:space-y-6">
         {/* 2. HEADER: TITLE & LOCATION */}
         <div className="space-y-2">
-          <div className="flex flex-wrap items-center gap-2">
-            <Badge className="bg-emerald-600 text-white font-medium text-xs">
-              {isTg
-                ? item.dealType === "Аренда"
-                  ? "Иҷора"
-                  : "Фурӯш"
-                : item.dealType}
-            </Badge>
-            <Badge variant="secondary" className="bg-white text-slate-800 border border-slate-200 font-medium text-xs">
-              {isTg
-                ? item.propertyType === "Квартира"
-                  ? "Хонадон"
-                  : item.propertyType.includes("Ҳавлӣ") || item.propertyType.includes("Дом")
-                  ? "Ҳавлӣ"
-                  : item.propertyType === "Коммерция"
-                  ? "Амволи тиҷоратӣ"
-                  : item.propertyType
-                : item.propertyType}
-            </Badge>
-            {item.isNegotiable && (
-              <Badge variant="outline" className="text-emerald-700 border-emerald-200 bg-emerald-50 text-xs font-medium">
-                {tDual("Торг уместен", "Савдо мешавад")}
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <div className="flex flex-wrap items-center gap-2">
+              <Badge className="bg-emerald-600 text-white font-medium text-xs">
+                {isTg
+                  ? item.dealType === "Аренда"
+                    ? "Иҷора"
+                    : "Фурӯш"
+                  : item.dealType}
               </Badge>
-            )}
-            <span className="text-xs text-slate-400 flex items-center gap-1 ml-auto">
-              <Eye className="h-3.5 w-3.5" />
-              {item.viewsCount || 24} {tDual("просмотров", "биниш")}
-            </span>
+              <Badge variant="secondary" className="bg-white text-slate-800 border border-slate-200 font-medium text-xs">
+                {isTg
+                  ? item.propertyType === "Квартира"
+                    ? "Хонадон"
+                    : item.propertyType.includes("Ҳавлӣ") || item.propertyType.includes("Дом")
+                    ? "Ҳавлӣ"
+                    : item.propertyType === "Коммерция"
+                    ? "Амволи тиҷоратӣ"
+                    : item.propertyType
+                  : item.propertyType}
+              </Badge>
+              {item.isNegotiable && (
+                <Badge variant="outline" className="text-emerald-700 border-emerald-200 bg-emerald-50 text-xs font-medium">
+                  {tDual("Торг уместен", "Савдо мешавад")}
+                </Badge>
+              )}
+            </div>
+
+            {/* Publication Date & Views Line at Badge Level */}
+            <div className="text-xs text-slate-500 flex items-center gap-2 sm:gap-3 ml-auto shrink-0">
+              <span className="font-medium text-slate-600">
+                {formatPublicationDate(item.createdAt, language, item.id || item.slug)}
+              </span>
+              <span className="text-slate-300">•</span>
+              <span className="flex items-center gap-1 font-semibold text-slate-700">
+                <Eye className="h-3.5 w-3.5 text-slate-400" />
+                <span>{stats.viewsCount} {tDual("просмотров", "боздид")}</span>
+              </span>
+            </div>
           </div>
 
           <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight leading-tight">
@@ -399,84 +407,83 @@ export default function ClassifiedDetailPage() {
           </p>
         </div>
 
-        {/* 3. PHOTO GALLERY: MAIN PHOTO + SQUARE THUMBNAILS ROW UNDERNEATH (Section 4.1) */}
-        <div className="space-y-3">
-          {/* Main Large Image */}
-          <div
-            onClick={() => setIsLightboxOpen(true)}
-            className="relative w-full h-72 sm:h-96 md:h-[480px] rounded-2xl overflow-hidden bg-slate-900 cursor-pointer group shadow-sm"
-          >
-            <img
-              src={activePhoto}
-              alt={item.title}
-              className="w-full h-full object-cover group-hover:scale-102 transition-transform duration-500"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+        {/* 3. MAIN CONTENT GRID (2 COLUMNS: LEFT = PHOTO & SPECS, RIGHT = STICKY ACTIONS) */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
+          {/* LEFT 2 COLUMNS: PHOTO GALLERY, SPECS, AMENITIES, DESCRIPTION, MAP */}
+          <div className="lg:col-span-2 space-y-6">
+            {/* PHOTO GALLERY: MAIN PHOTO + SQUARE THUMBNAILS ROW UNDERNEATH */}
+            <div className="space-y-3">
+              {/* Main Large Image */}
+              <div
+                onClick={() => setIsLightboxOpen(true)}
+                className="relative w-full h-72 sm:h-96 md:h-[480px] rounded-2xl overflow-hidden bg-slate-900 cursor-pointer group shadow-sm"
+              >
+                <img
+                  src={activePhoto}
+                  alt={item.title}
+                  className="w-full h-full object-cover group-hover:scale-102 transition-transform duration-500"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
 
-            <div className="absolute bottom-4 left-4 bg-black/60 backdrop-blur-md text-white text-xs font-semibold px-3 py-1.5 rounded-xl flex items-center gap-2">
-              <Maximize2 className="h-3.5 w-3.5" />
-              {tDual("Нажмите для полноэкранного просмотра", "Барои дидани пурра пахш кунед")} (
-              {activePhotoIndex + 1}/{photos.length})
+                <div className="absolute bottom-4 left-4 bg-black/60 backdrop-blur-md text-white text-xs font-semibold px-3 py-1.5 rounded-xl flex items-center gap-2">
+                  <Maximize2 className="h-3.5 w-3.5" />
+                  {tDual("Нажмите для полноэкранного просмотра", "Барои дидани пурра пахш кунед")} (
+                  {activePhotoIndex + 1}/{photos.length})
+                </div>
+
+                {photos.length > 1 && (
+                  <>
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setActivePhotoIndex((prev) => (prev > 0 ? prev - 1 : photos.length - 1));
+                      }}
+                      className="absolute left-3 top-1/2 -translate-y-1/2 h-9 w-9 rounded-full bg-white/90 hover:bg-white text-slate-800 shadow-lg flex items-center justify-center transition-all cursor-pointer"
+                      aria-label="Previous photo"
+                    >
+                      <ChevronLeft className="h-5 w-5" />
+                    </button>
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setActivePhotoIndex((prev) => (prev < photos.length - 1 ? prev + 1 : 0));
+                      }}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 h-9 w-9 rounded-full bg-white/90 hover:bg-white text-slate-800 shadow-lg flex items-center justify-center transition-all cursor-pointer"
+                      aria-label="Next photo"
+                    >
+                      <ChevronRight className="h-5 w-5" />
+                    </button>
+                  </>
+                )}
+              </div>
+
+              {/* Thumbnails Row Strictly Underneath with Square Aspect Ratio (Section 4.1) */}
+              {photos.length > 1 && (
+                <div className="flex items-center gap-2.5 overflow-x-auto py-1 no-scrollbar snap-x">
+                  {photos.map((p, idx) => (
+                    <button
+                      key={p + idx}
+                      type="button"
+                      onClick={() => setActivePhotoIndex(idx)}
+                      className={`relative aspect-square h-18 w-18 sm:h-22 sm:w-22 rounded-xl overflow-hidden cursor-pointer border-2 shrink-0 transition-all snap-start ${
+                        activePhotoIndex === idx
+                          ? "border-emerald-600 ring-2 ring-emerald-500/20 shadow-md scale-102"
+                          : "border-slate-200/80 opacity-70 hover:opacity-100 hover:border-slate-300"
+                      }`}
+                      aria-label={`View photo ${idx + 1}`}
+                    >
+                      <img
+                        src={p}
+                        alt={`Thumbnail ${idx + 1}`}
+                        className="w-full h-full object-cover"
+                      />
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
-
-            {photos.length > 1 && (
-              <>
-                <button
-                  type="button"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setActivePhotoIndex((prev) => (prev > 0 ? prev - 1 : photos.length - 1));
-                  }}
-                  className="absolute left-3 top-1/2 -translate-y-1/2 h-9 w-9 rounded-full bg-white/90 hover:bg-white text-slate-800 shadow-lg flex items-center justify-center transition-all cursor-pointer"
-                  aria-label="Previous photo"
-                >
-                  <ChevronLeft className="h-5 w-5" />
-                </button>
-                <button
-                  type="button"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setActivePhotoIndex((prev) => (prev < photos.length - 1 ? prev + 1 : 0));
-                  }}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 h-9 w-9 rounded-full bg-white/90 hover:bg-white text-slate-800 shadow-lg flex items-center justify-center transition-all cursor-pointer"
-                  aria-label="Next photo"
-                >
-                  <ChevronRight className="h-5 w-5" />
-                </button>
-              </>
-            )}
-          </div>
-
-          {/* Thumbnails Row Strictly Underneath with Square Aspect Ratio (Section 4.1) */}
-          {photos.length > 1 && (
-            <div className="flex items-center gap-2.5 overflow-x-auto py-1 no-scrollbar snap-x">
-              {photos.map((p, idx) => (
-                <button
-                  key={p + idx}
-                  type="button"
-                  onClick={() => setActivePhotoIndex(idx)}
-                  className={`relative aspect-square h-18 w-18 sm:h-22 sm:w-22 rounded-xl overflow-hidden cursor-pointer border-2 shrink-0 transition-all snap-start ${
-                    activePhotoIndex === idx
-                      ? "border-emerald-600 ring-2 ring-emerald-500/20 shadow-md scale-102"
-                      : "border-slate-200/80 opacity-70 hover:opacity-100 hover:border-slate-300"
-                  }`}
-                  aria-label={`View photo ${idx + 1}`}
-                >
-                  <img
-                    src={p}
-                    alt={`Thumbnail ${idx + 1}`}
-                    className="w-full h-full object-cover"
-                  />
-                </button>
-              ))}
-            </div>
-          )}
-        </div>
-
-        {/* 4. MAIN CONTENT GRID (2 COLUMNS: SPECS & RIGHT STICKY ACTIONS) */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-6 items-start">
-          {/* LEFT 2 COLUMNS: SPECS, AMENITIES, DESCRIPTION, MAP */}
-          <div className="lg:col-span-2 space-y-8">
 
             {/* Specifications Card */}
             <div className="bg-white border border-slate-200/80 rounded-2xl p-6 sm:p-7 shadow-sm space-y-5">
@@ -722,9 +729,28 @@ export default function ClassifiedDetailPage() {
             </div>
           </div>
 
-          {/* RIGHT 1 COLUMN: PRICE & ACTIONS, SELLER, ADS, DATE & VIEWS, INQUIRY */}
-          <div className="space-y-4 lg:space-y-5">
-            {/* 1. Price & Actions Block (Section 4.2) */}
+          {/* RIGHT 1 COLUMN: STICKY ACTIONS BESIDE MAIN PHOTO & CONTENT */}
+          <div className="space-y-4 lg:space-y-5 lg:sticky lg:top-20 self-start">
+            {/* 1. Блок «Дата публикации и просмотры» (Размещен над блоком «Стоимость объекта», ширина равна блоку стоимости) */}
+            <div className="bg-white border border-slate-200/80 rounded-2xl px-5 py-4 shadow-xs flex items-center justify-between text-xs text-slate-600">
+              <div className="flex items-center gap-2">
+                <div className="h-7 w-7 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
+                  <Calendar className="h-3.5 w-3.5" />
+                </div>
+                <span className="font-semibold text-slate-800">
+                  {formatPublicationDate(item.createdAt, language, item.id || item.slug)}
+                </span>
+              </div>
+
+              <div className="flex items-center gap-1.5 font-bold text-slate-900 bg-slate-50 px-3 py-1.5 rounded-xl border border-slate-100">
+                <Eye className="h-3.5 w-3.5 text-slate-400" />
+                <span>
+                  {stats.viewsCount} {tDual("просмотров", "боздид")}
+                </span>
+              </div>
+            </div>
+
+            {/* 2. Блок «Стоимость объекта» */}
             <div className="bg-white border border-slate-200/80 rounded-2xl p-6 shadow-sm space-y-4">
               <div>
                 <div className="text-xs text-slate-400 font-medium mb-1">
@@ -802,7 +828,7 @@ export default function ClassifiedDetailPage() {
               </div>
             </div>
 
-            {/* 2. Seller Contact Card (Section 4.3) */}
+            {/* 3. Блок «Собственник» */}
             <div className="bg-white border border-slate-200/80 rounded-2xl p-6 shadow-sm space-y-5">
               <div className="flex items-center gap-3.5 pb-4 border-b border-slate-100">
                 <div className="h-12 w-12 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold text-base shrink-0">
@@ -860,24 +886,7 @@ export default function ClassifiedDetailPage() {
               </p>
             </div>
 
-            {/* Programmatic Ad Blocks 1 & 2 */}
-            <AdBlock1 seed={item.id || item.slug} className="lg:sticky lg:top-20 z-10" />
-            <AdBlock2 seed={item.id || item.slug} className="relative z-20" />
-
-            {/* 3. Publication Date & Views Line (Section 4.4) */}
-            <div className="bg-white border border-slate-200/80 rounded-2xl px-5 py-3.5 shadow-xs flex items-center justify-between text-xs text-slate-600">
-              <span className="font-medium">
-                {formatPublicationDate(item.createdAt, language, item.id || item.slug)}
-              </span>
-              <div className="flex items-center gap-1.5 font-semibold text-slate-700">
-                <Eye className="h-3.5 w-3.5 text-slate-400" />
-                <span>
-                  {stats.viewsCount} {tDual("просмотров", "боздид")}
-                </span>
-              </div>
-            </div>
-
-            {/* Quick Inquiry Form */}
+            {/* 4. Блок «Задать вопрос продавцу» */}
             <div className="bg-white border border-slate-200/80 rounded-2xl p-6 shadow-sm space-y-4">
               <h3 className="font-bold text-slate-900 text-sm">
                 {tDual("Задать вопрос продавцу", "Савол ба фурӯшанда")}

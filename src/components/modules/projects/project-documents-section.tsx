@@ -144,15 +144,15 @@ export function ProjectDocumentsSection({
                     </strong>
                   </div>
 
-                  <div className="flex items-center gap-2 pt-1">
+                  <div className="grid grid-cols-[3fr_1fr] gap-2 pt-1 w-full min-w-0">
                     <Button
                       type="button"
                       onClick={() => handleOpenPdf(doc)}
-                      className="w-full h-9 rounded-xl bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white font-semibold text-xs gap-1.5 shadow-2xs transition-all cursor-pointer"
+                      className="w-full h-9 rounded-xl bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white font-semibold text-xs gap-1.5 shadow-2xs transition-all cursor-pointer px-2 min-w-0"
                     >
-                      <Eye className="h-3.5 w-3.5" />
-                      <span>{tDual("Открыть PDF", "Кушодани PDF")}</span>
-                      <ExternalLink className="h-3 w-3 ml-0.5 opacity-80" />
+                      <Eye className="h-3.5 w-3.5 shrink-0" />
+                      <span className="truncate">{tDual("Открыть PDF", "Кушодани PDF")}</span>
+                      <ExternalLink className="h-3 w-3 ml-0.5 opacity-80 shrink-0 hidden sm:inline-block" />
                     </Button>
 
                     <a
@@ -161,10 +161,10 @@ export function ProjectDocumentsSection({
                       target="_blank"
                       rel="noopener noreferrer"
                       title={tDual("Скачать PDF", "Боргирии PDF")}
-                      className="inline-flex items-center justify-center h-9 px-3 rounded-xl border border-border hover:bg-muted text-muted-foreground hover:text-foreground text-xs font-semibold gap-1.5 transition-colors shrink-0"
+                      className="w-full inline-flex items-center justify-center h-9 px-2 rounded-xl border border-border hover:bg-muted text-muted-foreground hover:text-foreground text-xs font-semibold gap-1 transition-colors min-w-0 overflow-hidden"
                     >
-                      <Download className="h-3.5 w-3.5" />
-                      <span className="hidden sm:inline">{tDual("Скачать", "Боргирӣ")}</span>
+                      <Download className="h-3.5 w-3.5 shrink-0" />
+                      <span className="truncate">{tDual("Скачать", "Боргирӣ")}</span>
                     </a>
                   </div>
                 </div>

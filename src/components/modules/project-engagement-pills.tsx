@@ -19,9 +19,9 @@ export function ProjectEngagementHeaderPill({ slug, autoRecordView = true }: Pro
   const { tDual } = useLanguage();
 
   return (
-    <div className="flex flex-col justify-between gap-2 shrink-0 sm:w-60">
-      {/* 1. Views Block */}
-      <div className="bg-card border rounded-xl px-3.5 py-2 shadow-2xs flex items-center justify-between gap-3 min-h-[44px]">
+    <div className="bg-card border rounded-2xl p-2.5 sm:p-3 shadow-2xs flex flex-col justify-between gap-2 shrink-0 sm:w-60">
+      {/* 1. Views Row */}
+      <div className="flex items-center justify-between gap-3 px-1 py-1">
         <div className="flex items-center gap-2.5 text-xs text-muted-foreground font-medium">
           <div className="h-7 w-7 rounded-lg bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-600 dark:text-slate-300 shrink-0">
             <Eye className="h-3.5 w-3.5" />
@@ -33,14 +33,16 @@ export function ProjectEngagementHeaderPill({ slug, autoRecordView = true }: Pro
         </div>
       </div>
 
-      {/* 2. Favorites Block (Interactive) */}
+      <div className="h-px bg-border/60" />
+
+      {/* 2. Favorites Row (Interactive) */}
       <button
         type="button"
         onClick={toggleFavorite}
-        className={`bg-card border rounded-xl px-3.5 py-2 shadow-2xs flex items-center justify-between gap-3 min-h-[44px] transition-colors cursor-pointer group text-left ${
+        className={`flex items-center justify-between gap-3 px-1 py-1 rounded-xl transition-all cursor-pointer group text-left ${
           isFavorite
-            ? "border-rose-200 dark:border-rose-900/60 bg-rose-50/40 dark:bg-rose-950/20"
-            : "hover:border-slate-300 dark:hover:border-slate-700"
+            ? "text-rose-600"
+            : "text-muted-foreground hover:text-foreground"
         }`}
         title={
           isFavorite
@@ -48,7 +50,7 @@ export function ProjectEngagementHeaderPill({ slug, autoRecordView = true }: Pro
             : tDual("Добавить в избранное", "Ба баргузидаҳо илова кардан")
         }
       >
-        <div className="flex items-center gap-2.5 text-xs text-muted-foreground font-medium">
+        <div className="flex items-center gap-2.5 text-xs font-medium">
           <div
             className={`h-7 w-7 rounded-lg flex items-center justify-center transition-colors shrink-0 ${
               isFavorite

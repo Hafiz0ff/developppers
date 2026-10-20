@@ -126,25 +126,10 @@ export function ProjectParkingSection({
               </Badge>
             </div>
           </div>
-
-          {/* Button: "Выбрать машино-место" (Only if chessboard published) */}
-          {showSelectButton && (
-            <div className="shrink-0">
-              <Button
-                type="button"
-                onClick={onSelectSpotClick}
-                className="w-full sm:w-auto h-11 px-5 rounded-xl bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white font-semibold text-xs sm:text-sm shadow-md transition-all gap-2 cursor-pointer group"
-              >
-                <Car className="h-4 w-4 transition-transform group-hover:scale-110" />
-                <span>{tDual("Выбрать машино-место", "Интихоби ҷойи мошин")}</span>
-                <ChevronRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-              </Button>
-            </div>
-          )}
         </div>
 
         {/* Content: Description & 3-Photo Collage */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 pt-6 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 pt-6 items-end">
           {/* Description Column */}
           <div className={`${images.length > 0 ? "lg:col-span-5" : "lg:col-span-12"} space-y-4`}>
             {trimmedDescription && (
@@ -165,7 +150,7 @@ export function ProjectParkingSection({
             </div>
           </div>
 
-          {/* Photos Grid Unified with Storage Section Style (Section 3.2) */}
+          {/* Photos Grid Unified with Storage Section Style */}
           {images.length > 0 && (
             <div className="lg:col-span-7">
               <div
@@ -174,7 +159,7 @@ export function ProjectParkingSection({
                     ? "grid-cols-1 h-64"
                     : images.length === 2
                     ? "grid-cols-2 h-64"
-                    : "grid-cols-3 h-52 sm:h-64"
+                    : "grid-cols-3 h-52 sm:h-56"
                 }`}
               >
                 {images.slice(0, 3).map((img, idx) => (
@@ -204,6 +189,24 @@ export function ProjectParkingSection({
             </div>
           )}
         </div>
+
+        {/* Action Button: placed in right part under the 3rd (last) photo */}
+        {showSelectButton && (
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 pt-3">
+            <div className="hidden lg:block lg:col-span-5" />
+            <div className="lg:col-span-7 flex justify-end">
+              <Button
+                type="button"
+                onClick={onSelectSpotClick}
+                className="w-full sm:w-auto h-11 px-5 rounded-xl bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white font-semibold text-xs sm:text-sm shadow-md transition-all gap-2 cursor-pointer group"
+              >
+                <Car className="h-4 w-4 transition-transform group-hover:scale-110" />
+                <span>{tDual("Выбрать машино-место", "Интихоби ҷойи мошин")}</span>
+                <ChevronRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+              </Button>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Apple-Style Lightbox */}
