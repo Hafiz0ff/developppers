@@ -11,6 +11,7 @@
 
 import { topUpAdvertiserBalance } from "@/lib/ads/ad-engine";
 import { promoteClassified, VasPlan } from "@/lib/classifieds/vas-engine";
+import { notifyTelegramPaymentSuccess } from "@/lib/telegram";
 
 export const TJS_TO_USD_RATE = 10.9;
 
@@ -528,6 +529,22 @@ function applySuccessfulPaymentEffects(tx: PaymentTransactionDto) {
       promoteClassified(tx.classifiedId, "turbo", 14, tx.amountTjs);
     }
   }
+
+  // 3. Dispatch instant Telegram alert to management & sales channel
+  try {
+    notifyTelegramPaymentSuccess({
+      transactionId: tx.id,
+      purpose: tx.purpose,
+      amountTjs: tx.amountTjs,
+      amountUsd: tx.amountUsd,
+      providerName: PAYMENT_PROVIDERS[tx.provider]?.nameRu || tx.provider,
+      payerName: tx.payerName,
+      payerPhone: tx.payerPhone,
+      targetTitle: tx.descriptionRu,
+      targetId: tx.classifiedId || tx.advertiserId || tx.unitId,
+      completedAt: tx.completedAt,
+    }).catch(() => {});
+  } catch {}
 }
 
 /**

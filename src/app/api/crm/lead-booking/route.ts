@@ -3,7 +3,7 @@ import { LeadSubmissionPayload } from "@/types/crm-booking";
 import { DEFAULT_CRM_SETTINGS } from "@/lib/crm-booking-store";
 import { db } from "@/db";
 import { crmLeads } from "@/db/schema";
-import { notifyAgentAboutNewLead } from "@/lib/telegram";
+import { notifyAgentAboutNewLead, notifyTelegramBookingRequest } from "@/lib/telegram";
 
 // Memory storage fallback
 const inMemoryBookingLeads: LeadSubmissionPayload[] = [];
@@ -172,6 +172,22 @@ export async function POST(req: NextRequest) {
         notes: `${timingText}. Сумма: ${fullLead.totalPriceTjs.toLocaleString("ru-RU")} сомони.`,
         crmUrl: "https://sogd-realty.vercel.app/developer-admin",
       }).catch((err) => console.error("[Telegram Push Error]:", err));
+
+      if (type === "booking") {
+        notifyTelegramBookingRequest({
+          projectName: fullLead.projectName || "Новостройка",
+          unitNumber: fullLead.unitNumber,
+          unitPriceTjs: fullLead.unitPriceTjs,
+          parkingNumber: fullLead.parkingNumber,
+          storageNumber: fullLead.storageNumber,
+          totalPriceTjs: fullLead.totalPriceTjs,
+          depositTjs: 1000,
+          clientPhone: fullLead.phone || "",
+          clientName: "Покупатель новостройки",
+          contactMode: fullLead.contactMode,
+          crmUrl: "https://maskani.tj/developer-admin",
+        }).catch(() => {});
+      }
     } catch {
       // Ignored
     }

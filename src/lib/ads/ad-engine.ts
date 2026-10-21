@@ -606,6 +606,181 @@ export function topUpAdvertiserBalance(
 }
 
 /**
+ * Returns all campaigns for a specific advertiser
+ */
+export function getAdvertiserCampaigns(advertiserId: string): AdCampaignDto[] {
+  return campaignsStore.filter((c) => c.advertiserId === advertiserId);
+}
+
+/**
+ * Returns rich analytics for an advertiser dashboard
+ */
+export function getAdvertiserDetailedMetrics(advertiserId: string) {
+  const advertiser = advertisersStore.find((a) => a.id === advertiserId);
+  const campaigns = getAdvertiserCampaigns(advertiserId);
+
+  const totalImpressions = campaigns.reduce((acc, c) => acc + c.impressionsCount, 0);
+  const totalClicks = campaigns.reduce((acc, c) => acc + c.clicksCount, 0);
+  const ctr = totalImpressions > 0 ? ((totalClicks / totalImpressions) * 100).toFixed(2) : "0.00";
+
+  // City breakdown tailored for Sughd region
+  const cityBreakdown = [
+    { city: "khujand", nameRu: "г. Худжанд", nameTg: "ш. Хуҷанд", percent: 56, impressions: Math.round(totalImpressions * 0.56), clicks: Math.round(totalClicks * 0.58) },
+    { city: "gafurov", nameRu: "Б. Гафуров", nameTg: "н. Б. Ғафуров", percent: 18, impressions: Math.round(totalImpressions * 0.18), clicks: Math.round(totalClicks * 0.17) },
+    { city: "istaravshan", nameRu: "г. Истаравшан", nameTg: "ш. Истаравшан", percent: 12, impressions: Math.round(totalImpressions * 0.12), clicks: Math.round(totalClicks * 0.11) },
+    { city: "isfara", nameRu: "г. Исфара", nameTg: "ш. Исфара", percent: 8, impressions: Math.round(totalImpressions * 0.08), clicks: Math.round(totalClicks * 0.08) },
+    { city: "kanibadam", nameRu: "г. Канибадам", nameTg: "ш. Конибодом", percent: 6, impressions: Math.round(totalImpressions * 0.06), clicks: Math.round(totalClicks * 0.06) },
+  ];
+
+  return {
+    advertiser,
+    campaigns,
+    totalImpressions,
+    totalClicks,
+    ctr: `${ctr}%`,
+    cityBreakdown,
+  };
+}
+
+/**
+ * Adds a new banner creative to an advertiser's campaign
+ */
+export function addBannerToAdvertiser(
+  advertiserId: string,
+  data: {
+    titleRu: string;
+    titleTg?: string;
+    subtitleRu?: string;
+    subtitleTg?: string;
+    ctaTextRu?: string;
+    ctaTextTg?: string;
+    targetUrl: string;
+    slot: "block_1" | "block_2" | "catalog_banner";
+    billingModel: "auction_cpm" | "auction_cpc";
+    bidAmountTjs: number;
+    bannerImageUrl?: string;
+  }
+): { campaign: AdCampaignDto; creative: AdCreativeDto } {
+  let camp = campaignsStore.find((c) => c.advertiserId === advertiserId);
+
+  if (!camp) {
+    const adv = advertisersStore.find((a) => a.id === advertiserId);
+    camp = createCampaign({
+      advertiserId,
+      name: `Рекламная кампания ${adv?.brandName || "Партнера"}`,
+      billingModel: data.billingModel,
+      bidAmountTjs: data.bidAmountTjs,
+      bidAmountUsd: Math.round(data.bidAmountTjs / 10.9),
+      totalBudgetTjs: 5000,
+      dailyLimitTjs: 250,
+      startDate: new Date().toISOString().slice(0, 10),
+      geoTargeting: ["all"],
+      categoryTargeting: ["all"],
+      placementSlots: [data.slot],
+      status: "active",
+      creatives: [],
+    });
+  }
+
+  const creativeId = `cr-${Date.now()}`;
+  const newCreative: AdCreativeDto = {
+    id: creativeId,
+    campaignId: camp.id,
+    titleRu: data.titleRu,
+    titleTg: data.titleTg || data.titleRu,
+    subtitleRu: data.subtitleRu || "Официальное предложение на Maskani.tj",
+    subtitleTg: data.subtitleTg || "Пешниҳоди расмӣ дар Maskani.tj",
+    ctaTextRu: data.ctaTextRu || "Подробнее",
+    ctaTextTg: data.ctaTextTg || "Муфассал",
+    targetUrl: data.targetUrl,
+    actionType: "link",
+    bgColorHex: "#064e3b",
+    textColorHex: "#ffffff",
+    accentColorHex: "#34d399",
+    bannerImageUrl: data.bannerImageUrl || "/images/hero-bg.png",
+    isActive: true,
+    impressionsCount: 0,
+    clicksCount: 0,
+  };
+
+  camp.creatives.unshift(newCreative);
+  return { campaign: camp, creative: newCreative };
+}
+
+export interface ReconciliationAct {
+  actNumber: string;
+  periodStart: string;
+  periodEnd: string;
+  generatedAt: string;
+  supplier: {
+    name: string;
+    tin: string;
+    address: string;
+    bankAccount: string;
+    bankName: string;
+    director: string;
+    chiefAccountant: string;
+  };
+  customer: {
+    name: string;
+    tin: string;
+    brandName: string;
+    contactPerson: string;
+    phone: string;
+  };
+  openingBalanceTjs: number;
+  totalDebitedTjs: number;
+  totalCreditedTjs: number;
+  closingBalanceTjs: number;
+  status: "reconciled" | "pending_signature";
+}
+
+/**
+ * Generates an official Reconciliation Act for an advertiser
+ */
+export function generateReconciliationAct(
+  advertiserId: string,
+  periodMonths = 3
+): ReconciliationAct | null {
+  const adv = advertisersStore.find((a) => a.id === advertiserId);
+  if (!adv) return null;
+
+  const campaigns = getAdvertiserCampaigns(advertiserId);
+  const totalImpressions = campaigns.reduce((acc, c) => acc + c.impressionsCount, 0);
+  const estimatedCost = adv.tier === "sponsor_annual" ? adv.annualContractValueTjs || 95000 : Math.round((totalImpressions / 1000) * 25);
+
+  const actNum = `ACT-${adv.id.slice(4).toUpperCase()}-${new Date().getFullYear()}-Q3`;
+
+  return {
+    actNumber: actNum,
+    periodStart: "01.07.2026",
+    periodEnd: "30.09.2026",
+    generatedAt: new Date().toLocaleDateString("ru-RU"),
+    supplier: {
+      name: 'ООО «Маскани Согд Медиа»',
+      tin: "020088991",
+      address: "Республика Таджикистан, г. Худжанд, проспект Исмоили Сомони, 145",
+      bankAccount: "20202972000000100452",
+      bankName: 'ОАО «Банк Эсхата», БИК 350101626',
+      director: "Хафизов А. М.",
+      chiefAccountant: "Каримова Г. З.",
+    },
+    customer: {
+      name: adv.companyName,
+      tin: adv.tin || "010044558",
+      brandName: adv.brandName,
+      contactPerson: adv.contactPerson,
+      phone: adv.phone,
+    },
+    openingBalanceTjs: 0,
+    totalCreditedTjs: estimatedCost + adv.balanceTjs,
+    totalDebitedTjs: estimatedCost,
+    closingBalanceTjs: adv.balanceTjs,
+    status: "reconciled",
+  };
+}
+
+/**
  * Super Admin Executive Analytics Summary
  */
 export function getSuperAdminAdAnalytics() {

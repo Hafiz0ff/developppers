@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import {
   Megaphone,
@@ -30,11 +30,55 @@ import { Input } from "@/components/ui/input";
 import { useLanguage } from "@/context/language-context";
 import { useCurrency } from "@/context/currency-context";
 import { PaymentModal } from "@/components/modules/payments/payment-modal";
+import { AdvertiserDashboard } from "@/components/modules/advertiser/advertiser-dashboard";
+import { AdvertiserLoginModal } from "@/components/modules/advertiser/advertiser-login-modal";
+import type { AdvertiserDto } from "@/lib/ads/ad-engine";
 
 export default function AdvertiserPortalPage() {
   const { language, tDual } = useLanguage();
   const { formatPrice, currency } = useCurrency();
   const isTg = language === "tg";
+
+  // Advertiser auth session
+  const [currentAdvertiser, setCurrentAdvertiser] = useState<AdvertiserDto | null>(null);
+  const [viewMode, setViewMode] = useState<"landing" | "dashboard">("landing");
+  const [loginModalOpen, setLoginModalOpen] = useState(false);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const savedId = localStorage.getItem("maskani_advertiser_id");
+    if (savedId) {
+      fetch("/api/advertiser/auth", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ advertiserId: savedId }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.success && data.advertiser) {
+            setCurrentAdvertiser(data.advertiser);
+            setViewMode("dashboard");
+          }
+        })
+        .catch(() => {});
+    }
+  }, []);
+
+  const handleLoginSuccess = (adv: AdvertiserDto) => {
+    setCurrentAdvertiser(adv);
+    setViewMode("dashboard");
+    if (typeof window !== "undefined") {
+      localStorage.setItem("maskani_advertiser_id", adv.id);
+    }
+  };
+
+  const handleLogout = () => {
+    setCurrentAdvertiser(null);
+    setViewMode("landing");
+    if (typeof window !== "undefined") {
+      localStorage.removeItem("maskani_advertiser_id");
+    }
+  };
 
   // Reach Estimator Calculator
   const [selectedImpressions, setSelectedImpressions] = useState<number>(25000);
@@ -115,14 +159,58 @@ export default function AdvertiserPortalPage() {
             </span>
           </div>
 
-          <Link href="/super-admin" className="text-emerald-400 hover:text-emerald-300 font-semibold flex items-center gap-1 text-[11px]">
-            <ShieldCheck className="h-3.5 w-3.5" />
-            <span>{isTg ? "Вуруд ба Super Admin" : "Вход в Super Admin"}</span>
-          </Link>
-        </div>
+          <div className="flex items-center gap-2.5">
+            {currentAdvertiser ? (
+              <div className="flex items-center gap-2">
+                <Button
+                  size="sm"
+                  onClick={() => setViewMode(viewMode === "dashboard" ? "landing" : "dashboard")}
+                  className={`h-8 px-3 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                    viewMode === "dashboard"
+                      ? "bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700"
+                      : "bg-emerald-600 hover:bg-emerald-500 text-white shadow-xs"
+                  }`}
+                >
+                  <BarChart3 className="h-3.5 w-3.5" />
+                  <span>
+                    {viewMode === "dashboard"
+                      ? isTg
+                        ? "Дидани тарофаҳо"
+                        : "Смотреть тарифы"
+                      : `Кабинет: ${currentAdvertiser.brandName}`}
+                  </span>
+                </Button>
+              </div>
+            ) : (
+              <Button
+                size="sm"
+                onClick={() => setLoginModalOpen(true)}
+                className="h-8 px-3.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold gap-1.5 shadow-sm cursor-pointer"
+              >
+                <ShieldCheck className="h-3.5 w-3.5" />
+                <span>{isTg ? "Вуруд ба утоқи таблиғотӣ" : "Вход в B2B Кабинет"}</span>
+              </Button>
+            )}
 
-        {/* Hero Section */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 text-center relative overflow-hidden">
+            <Link
+              href="/super-admin"
+              className="text-slate-400 hover:text-slate-200 font-semibold flex items-center gap-1 text-[11px] px-2 py-1 rounded-md hover:bg-slate-800/80 transition-colors"
+            >
+              <span>Super Admin</span>
+            </Link>
+          </div>
+        </div>
+      </div>
+
+      {currentAdvertiser && viewMode === "dashboard" ? (
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
+          <AdvertiserDashboard advertiser={currentAdvertiser} onLogout={handleLogout} />
+        </div>
+      ) : (
+        <>
+          {/* Hero Section */}
+          <div className="bg-slate-900 text-white border-b border-slate-800">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 text-center relative overflow-hidden">
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
 
           <Badge className="bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-xs font-bold px-3 py-1 rounded-full mb-4 inline-flex items-center gap-1.5">
@@ -721,6 +809,8 @@ export default function AdvertiserPortalPage() {
           )}
         </div>
       </div>
+        </>
+      )}
 
       {/* Online Payment Modal */}
       <PaymentModal
@@ -737,6 +827,13 @@ export default function AdvertiserPortalPage() {
         onSuccess={() => {
           setSubmitSuccess(true);
         }}
+      />
+
+      {/* Advertiser Self-Service Login Modal */}
+      <AdvertiserLoginModal
+        open={loginModalOpen}
+        onOpenChange={setLoginModalOpen}
+        onLoginSuccess={handleLoginSuccess}
       />
     </div>
   );

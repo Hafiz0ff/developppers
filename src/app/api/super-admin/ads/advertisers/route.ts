@@ -4,6 +4,7 @@ import {
   createAdvertiser,
   updateAdvertiser,
 } from "@/lib/ads/ad-engine";
+import { notifyTelegramSponsorshipLead } from "@/lib/telegram";
 
 export async function GET() {
   try {
@@ -47,6 +48,20 @@ export async function POST(req: NextRequest) {
       annualContractValueTjs: Number(body.annualContractValueTjs) || 0,
       notes: body.notes || "",
     });
+
+    // Notify Telegram channel about new B2B partner / sponsorship lead
+    try {
+      notifyTelegramSponsorshipLead({
+        companyName: body.companyName,
+        brandName: body.brandName,
+        contactPerson: body.contactPerson,
+        phone: body.phone,
+        email: body.email,
+        packageType: body.tier || "annual_sponsor",
+        estimatedBudgetTjs: Number(body.annualContractValueTjs) || 35000,
+        notes: body.notes,
+      }).catch(() => {});
+    } catch {}
 
     return NextResponse.json({
       success: true,
