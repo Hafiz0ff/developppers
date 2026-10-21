@@ -47,6 +47,8 @@ import { InteractiveMapWrapper } from "@/components/modules/interactive-map-wrap
 import { generateYandexMapsRouteUrl } from "@/lib/geo-utils";
 import { useEntityMetrics } from "@/hooks/use-entity-metrics";
 import { formatPublicationDate, formatPricePerSquareMeter } from "@/lib/classifieds/format-utils";
+import { useCompare } from "@/context/compare-context";
+import { classifiedToCompareProperty } from "@/lib/compare/compare-store";
 
 export default function ClassifiedDetailPage() {
   const params = useParams();
@@ -63,7 +65,7 @@ export default function ClassifiedDetailPage() {
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
   const [phoneRevealed, setPhoneRevealed] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
-  const [isCompared, setIsCompared] = useState(false);
+  const { toggleCompare, isInCompare } = useCompare();
 
   // Unified Entity Metrics (24h view deduplication & synchronized favorites)
   const { stats, isFavorite, toggleFavorite } = useEntityMetrics(
@@ -810,21 +812,30 @@ export default function ClassifiedDetailPage() {
                 </Button>
 
                 {/* Compare */}
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => setIsCompared(!isCompared)}
-                  className={`h-10 px-2 text-xs font-semibold gap-1.5 rounded-xl border-slate-200 cursor-pointer flex flex-col justify-center items-center py-1 transition-colors ${
-                    isCompared
-                      ? "bg-blue-50 text-blue-600 border-blue-200 hover:bg-blue-100"
-                      : "text-slate-700 hover:bg-slate-50"
-                  }`}
-                >
-                  <ArrowLeftRight className={`h-4 w-4 ${isCompared ? "text-blue-600" : "text-slate-500"}`} />
-                  <span className="text-[11px]">
-                    {isCompared ? tDual("В сравнении", "Дар муқоиса") : tDual("Сравнить", "Муқоиса")}
-                  </span>
-                </Button>
+                {(() => {
+                  const isCompared = item ? isInCompare(item.id) || isInCompare(item.slug || slug) : false;
+                  return (
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => {
+                        if (item) {
+                          toggleCompare(classifiedToCompareProperty(item));
+                        }
+                      }}
+                      className={`h-10 px-2 text-xs font-semibold gap-1.5 rounded-xl border-slate-200 cursor-pointer flex flex-col justify-center items-center py-1 transition-colors ${
+                        isCompared
+                          ? "bg-blue-50 text-blue-600 border-blue-200 hover:bg-blue-100"
+                          : "text-slate-700 hover:bg-slate-50"
+                      }`}
+                    >
+                      <ArrowLeftRight className={`h-4 w-4 ${isCompared ? "text-blue-600" : "text-slate-500"}`} />
+                      <span className="text-[11px]">
+                        {isCompared ? tDual("В сравнении", "Дар муқоиса") : tDual("Сравнить", "Муқоиса")}
+                      </span>
+                    </Button>
+                  );
+                })()}
               </div>
             </div>
 

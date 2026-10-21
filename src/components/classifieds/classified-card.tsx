@@ -5,10 +5,12 @@ import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { MapPin, MessageCircle, Phone, Zap } from "lucide-react";
+import { MapPin, MessageCircle, Phone, Zap, ArrowLeftRight } from "lucide-react";
 import { useLanguage } from "@/lib/i18n/language-context";
 import type { ClassifiedCard as ClassifiedCardData } from "@/lib/classifieds/map-card";
 import { PropertyMetricsBadge } from "@/components/modules/common/property-metrics-badge";
+import { useCompare } from "@/context/compare-context";
+import { classifiedToCompareProperty } from "@/lib/compare/compare-store";
 
 type Props = {
   item: ClassifiedCardData;
@@ -36,6 +38,8 @@ function postLead(item: ClassifiedCardData, source: "phone_click" | "whatsapp_cl
 export function ClassifiedCard({ item, formatPrice, onPromote }: Props) {
   const { language } = useLanguage();
   const isTg = language === "tg";
+  const { toggleCompare, isInCompare } = useCompare();
+  const isCompared = isInCompare(item.id) || isInCompare(item.slug || "");
   const [revealed, setRevealed] = useState(false);
   const href = `/classifieds/${item.slug}`;
 
@@ -100,7 +104,40 @@ export function ClassifiedCard({ item, formatPrice, onPromote }: Props) {
               {propertyTypeDisplay}
             </Badge>
           </div>
-          <div className="absolute top-3 right-3 z-10">
+          <div className="absolute top-3 right-3 z-10 flex items-center gap-1.5">
+            <button
+              type="button"
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                toggleCompare(classifiedToCompareProperty(item));
+              }}
+              title={
+                isCompared
+                  ? isTg
+                    ? "Аз муқоиса тоза кардан"
+                    : "Удалить из сравнения"
+                  : isTg
+                  ? "Ба муқоиса илова кардан"
+                  : "Добавить в сравнение"
+              }
+              aria-label={
+                isCompared
+                  ? isTg
+                    ? "Аз муқоиса тоза кардан"
+                    : "Удалить из сравнения"
+                  : isTg
+                  ? "Ба муқоиса илова кардан"
+                  : "Добавить в сравнение"
+              }
+              className={`h-7 w-7 rounded-lg flex items-center justify-center backdrop-blur-md transition-all shadow-xs cursor-pointer ${
+                isCompared
+                  ? "bg-blue-600 text-white ring-2 ring-blue-300"
+                  : "bg-white/90 text-slate-700 hover:bg-white hover:text-blue-600"
+              }`}
+            >
+              <ArrowLeftRight className="h-3.5 w-3.5" />
+            </button>
             <PropertyMetricsBadge idOrSlug={item.slug || item.id} />
           </div>
 

@@ -32,12 +32,15 @@ import {
   Users,
   Check,
   MapPin,
+  ArrowLeftRight,
 } from "lucide-react";
+import { useCompare } from "@/context/compare-context";
 
 
 export function Header() {
   const { currency, setCurrency } = useCurrency();
   const { t, tDual } = useLanguage();
+  const { compareCount } = useCompare();
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const [authModalTab, setAuthModalTab] = useState<"login" | "register">("login");
 
@@ -114,6 +117,18 @@ export function Header() {
               {tDual("Карта", "Харита")}
             </Link>
             <Link
+              href="/compare"
+              className="text-foreground/80 hover:text-emerald-600 transition-colors flex items-center gap-1.5"
+            >
+              <ArrowLeftRight className="h-4 w-4 text-emerald-600" />
+              <span>{tDual("Сравнение", "Муқоиса")}</span>
+              {compareCount > 0 && (
+                <span className="bg-emerald-100 text-emerald-800 text-[10px] font-bold px-1.5 py-0.5 rounded-full">
+                  {compareCount}
+                </span>
+              )}
+            </Link>
+            <Link
               href="/developers"
               className="text-foreground/80 hover:text-emerald-600 transition-colors flex items-center gap-1.5"
             >
@@ -155,6 +170,21 @@ export function Header() {
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
+
+            {/* Compare Link / Icon */}
+            <Link
+              href="/compare"
+              className="relative p-2 rounded-xl border border-slate-200 bg-white/90 hover:bg-white text-slate-700 hover:text-emerald-700 hover:border-emerald-500 shadow-xs transition-all flex items-center justify-center cursor-pointer"
+              title={tDual("Сравнение объектов", "Муқоисаи амвол")}
+              aria-label={tDual("Сравнение объектов", "Муқоисаи амвол")}
+            >
+              <ArrowLeftRight className="h-4 w-4" />
+              {compareCount > 0 && (
+                <span className="absolute -top-1.5 -right-1.5 bg-emerald-600 text-white font-bold text-[10px] min-w-[18px] h-[18px] rounded-full flex items-center justify-center px-1 shadow-sm">
+                  {compareCount}
+                </span>
+              )}
+            </Link>
 
             {/* Post Ad Button */}
             <Link href={session ? "/classifieds/new" : "#"}>

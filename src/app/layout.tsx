@@ -3,6 +3,8 @@ import "./globals.css";
 import { Header } from "@/components/layout/header";
 import { CurrencyProvider } from "@/context/currency-context";
 import { LanguageProvider } from "@/context/language-context";
+import { CompareProvider } from "@/context/compare-context";
+import { FloatingCompareBar } from "@/components/modules/compare/floating-compare-bar";
 import { PwaInstallPrompt } from "@/components/modules/pwa-install-prompt";
 
 export const viewport: Viewport = {
@@ -51,9 +53,12 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col bg-background text-foreground font-sans">
         <LanguageProvider>
           <CurrencyProvider>
-            <Header />
-            <main className="flex-1">{children}</main>
-            <PwaInstallPrompt />
+            <CompareProvider>
+              <Header />
+              <main className="flex-1">{children}</main>
+              <FloatingCompareBar />
+              <PwaInstallPrompt />
+            </CompareProvider>
           </CurrencyProvider>
         </LanguageProvider>
       </body>
