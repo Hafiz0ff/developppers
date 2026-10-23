@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import { LeadSubmissionPayload } from "@/types/crm-booking";
-import { DEFAULT_CRM_SETTINGS } from "@/lib/crm-booking-store";
+import { verifyAndResolveLeadDealBundle } from "@/lib/crm-booking-store";
 import { db } from "@/db";
 import { crmLeads } from "@/db/schema";
 import { notifyAgentAboutNewLead, notifyTelegramBookingRequest } from "@/lib/telegram";
 
-// Memory storage fallback
+// Memory storage fallback (persists all submitted leads even if CRM or scenario is later disabled)
 const inMemoryBookingLeads: LeadSubmissionPayload[] = [];
 
 export async function POST(req: NextRequest) {
@@ -14,24 +14,14 @@ export async function POST(req: NextRequest) {
 
     const {
       type,
-      developerId,
-      projectId,
-      projectName,
       phone,
       contactMode,
       scheduledDate,
       scheduledTime,
-      unitNumber,
-      unitPriceTjs,
-      parkingNumber,
-      parkingPriceTjs,
-      storageNumber,
-      storagePriceTjs,
-      totalPriceTjs,
       consentPersonalData,
     } = payload;
 
-    // 1. Basic validation
+    // 1. Basic validation (Sections 10.5, 11.5, 14)
     if (!type || (type !== "booking" && type !== "callback")) {
       return NextResponse.json(
         { success: false, error: "Invalid lead type. Expected 'booking' or 'callback'." },
@@ -39,9 +29,10 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    if (!phone || phone.trim().length < 7) {
+    const cleanDigits = (phone || "").replace(/\D/g, "");
+    if (!phone || cleanDigits.length < 9) {
       return NextResponse.json(
-        { success: false, error: "Valid phone number is required." },
+        { success: false, error: "Пожалуйста, введите корректный номер телефона." },
         { status: 400 }
       );
     }
@@ -50,82 +41,113 @@ export async function POST(req: NextRequest) {
       return NextResponse.json(
         {
           success: false,
-          error: "Consent to personal data processing is required (consentPersonalData: true).",
+          error: "Необходимо согласие на обработку персональных данных.",
+          code: "CONSENT_REQUIRED",
         },
         { status: 400 }
       );
     }
 
-    // 2. Server Gatekeeping (Zero Client Trust)
-    // Check if CRM and scenario are active for this developer
-    const devId = developerId || "dev-1";
-    const devSettings = DEFAULT_CRM_SETTINGS[devId];
-
-    // If developer settings explicitly show CRM disabled in production check
-    if (devSettings && !devSettings.crmConnected) {
+    if (contactMode === "scheduled" && (!scheduledDate || !scheduledTime)) {
       return NextResponse.json(
         {
           success: false,
-          error: "CRM_NOT_ACTIVE: Developer CRM is not connected.",
-          code: "CRM_NOT_ACTIVE",
+          error: "Пожалуйста, выберите день и время для звонка.",
+          code: "SCHEDULE_REQUIRED",
         },
-        { status: 403 }
+        { status: 400 }
       );
     }
 
-    if (devSettings && !devSettings.bookingScenarioEnabled) {
+    // 2. Server Gatekeeping & Zero Client Trust Verification (Sections 2.3, 6.2, 12, 14)
+    const verification = verifyAndResolveLeadDealBundle(payload);
+    if (!verification.valid || !verification.resolved) {
       return NextResponse.json(
         {
           success: false,
-          error: "FEATURE_DISABLED: Booking and call request scenario is turned off.",
-          code: "FEATURE_DISABLED",
+          error: verification.error || "Проверка данных заявки не пройдена.",
+          code: verification.code || "VALIDATION_ERROR",
         },
-        { status: 403 }
+        { status: verification.status || 400 }
       );
     }
 
-    // 3. Assemble complete sanitized record
-    const leadId = `lead-bk-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`;
+    const resolved = verification.resolved;
+
+    // 3. Anti-duplicate protection (Section 10.5, 11.5, 12.3: prevent duplicate leads within 10s)
+    const nowMs = Date.now();
+    const recentDuplicate = inMemoryBookingLeads.find((existing) => {
+      const existingMs = new Date(existing.createdAt).getTime();
+      return (
+        nowMs - existingMs < 10_000 &&
+        existing.phone.replace(/\D/g, "") === cleanDigits &&
+        existing.type === type &&
+        existing.projectId === resolved.projectId &&
+        existing.unitId === resolved.unitId &&
+        existing.parkingId === resolved.parkingId &&
+        existing.storageId === resolved.storageId
+      );
+    });
+
+    if (recentDuplicate) {
+      return NextResponse.json({
+        success: true,
+        leadId: recentDuplicate.leadId,
+        deduplicated: true,
+        message: "Заявка уже принята в обработку.",
+        lead: recentDuplicate,
+      });
+    }
+
+    // 4. Assemble complete sanitized record with authoritative server prices
+    const leadId = `lead-bk-${nowMs}-${Math.random().toString(36).substring(2, 7)}`;
     const fullLead: LeadSubmissionPayload = {
       leadId,
       type,
-      developerId: devId,
-      projectId: projectId || "unknown-project",
-      projectName: projectName || "Жилой комплекс",
+      developerId: resolved.developerId,
+      projectId: resolved.projectId,
+      projectName: resolved.projectName,
       phone: phone.trim(),
       contactMode: contactMode || "instant_15min",
       scheduledDate: contactMode === "scheduled" ? scheduledDate : undefined,
       scheduledTime: contactMode === "scheduled" ? scheduledTime : undefined,
-      unitId: payload.unitId,
-      unitNumber,
-      unitPriceTjs,
-      unitArea: payload.unitArea,
-      parkingId: payload.parkingId,
-      parkingNumber,
-      parkingPriceTjs,
-      storageId: payload.storageId,
-      storageNumber,
-      storagePriceTjs,
-      totalPriceTjs: totalPriceTjs || (unitPriceTjs || 0) + (parkingPriceTjs || 0) + (storagePriceTjs || 0),
+      unitId: resolved.unitId,
+      unitNumber: resolved.unitNumber,
+      unitPriceTjs: resolved.unitPriceTjs,
+      unitArea: resolved.unitArea,
+      parkingId: resolved.parkingId,
+      parkingNumber: resolved.parkingNumber,
+      parkingPriceTjs: resolved.parkingPriceTjs,
+      storageId: resolved.storageId,
+      storageNumber: resolved.storageNumber,
+      storagePriceTjs: resolved.storagePriceTjs,
+      totalPriceTjs: resolved.totalPriceTjs,
       currency: payload.currency || "TJS",
       consentPersonalData: true,
       status: "new",
-      createdAt: new Date().toISOString(),
+      createdAt: new Date(nowMs).toISOString(),
     };
 
+    // Save in memory queue (Section 12.3: reliable server storage without changing unit status)
     inMemoryBookingLeads.unshift(fullLead);
 
-    // 4. Try saving to Database if connected
+    // 5. Try saving to Database if connected
     try {
       const summaryNotes = [
         type === "booking" ? "🔥 ЗАЯВКА НА БРОНИРОВАНИЕ" : "📞 ЗАКАЗ ОБРАТНОГО ЗВОНКА",
         `ЖК: ${fullLead.projectName}`,
-        fullLead.unitNumber ? `Квартира: № ${fullLead.unitNumber} (${fullLead.unitArea || "?"} м²)` : null,
-        fullLead.parkingNumber ? `Паркинг: № ${fullLead.parkingNumber}` : null,
-        fullLead.storageNumber ? `Кладовая: № ${fullLead.storageNumber}` : null,
-        `Итоговая стоимость: ${fullLead.totalPriceTjs.toLocaleString("ru-RU")} сомони`,
+        fullLead.unitNumber
+          ? `Квартира: № ${fullLead.unitNumber} (${fullLead.unitArea || "?"} м²) — ${fullLead.unitPriceTjs?.toLocaleString("ru-RU")} сом.`
+          : null,
+        fullLead.parkingNumber
+          ? `Машино-место: № ${fullLead.parkingNumber} — ${fullLead.parkingPriceTjs?.toLocaleString("ru-RU")} сом.`
+          : null,
+        fullLead.storageNumber
+          ? `Кладовая: № ${fullLead.storageNumber} — ${fullLead.storagePriceTjs?.toLocaleString("ru-RU")} сом.`
+          : null,
+        `Общая стоимость: ${fullLead.totalPriceTjs.toLocaleString("ru-RU")} сомони`,
         contactMode === "instant_15min"
-          ? "Время связи: в течение 15 минут"
+          ? "Время связи: В течение 15 минут"
           : `Время связи: ${fullLead.scheduledDate || "Сегодня"} в ${fullLead.scheduledTime || "удобное время"}`,
       ]
         .filter(Boolean)
@@ -134,20 +156,20 @@ export async function POST(req: NextRequest) {
       await db.insert(crmLeads).values({
         id: fullLead.leadId,
         agentId: fullLead.developerId,
-        clientName: type === "booking" ? "Покупатель (Бронь)" : "Клиент (Звонок)",
+        clientName: type === "booking" ? "Покупатель (Бронирование)" : "Клиент (Обратный звонок)",
         clientPhone: fullLead.phone,
         status: "new",
-        budget: Math.round(fullLead.totalPriceTjs / 10.9), // TJS -> USD approximate
+        budget: Math.round(fullLead.totalPriceTjs / 10.9),
         commission: Math.round((fullLead.totalPriceTjs / 10.9) * 0.02),
         commissionPercent: 2,
         source: type === "booking" ? "booking_scenario" : "callback_scenario",
         notes: summaryNotes,
       } as any);
     } catch {
-      // In-memory fallback is already recorded
+      // In-memory queue already recorded the lead
     }
 
-    // 5. Send Telegram notification (push to sales team)
+    // 6. Send Telegram notification (push to sales team)
     try {
       const timingText =
         contactMode === "instant_15min"
@@ -156,7 +178,7 @@ export async function POST(req: NextRequest) {
 
       const objectsText = [
         fullLead.unitNumber ? `Квартира №${fullLead.unitNumber}` : "",
-        fullLead.parkingNumber ? `Паркинг №${fullLead.parkingNumber}` : "",
+        fullLead.parkingNumber ? `Машино-место №${fullLead.parkingNumber}` : "",
         fullLead.storageNumber ? `Кладовая №${fullLead.storageNumber}` : "",
       ]
         .filter(Boolean)
@@ -168,7 +190,7 @@ export async function POST(req: NextRequest) {
         classifiedTitle: `${fullLead.projectName} [${objectsText || "Консультация"}]`,
         budget: Math.round(fullLead.totalPriceTjs / 10.9),
         commission: Math.round((fullLead.totalPriceTjs / 10.9) * 0.02),
-        source: type === "booking" ? "Сценарий бронирования" : "Обратный звонок",
+        source: type === "booking" ? "Бронирование" : "Обратный звонок",
         notes: `${timingText}. Сумма: ${fullLead.totalPriceTjs.toLocaleString("ru-RU")} сомони.`,
         crmUrl: "https://sogd-realty.vercel.app/developer-admin",
       }).catch((err) => console.error("[Telegram Push Error]:", err));
@@ -185,7 +207,7 @@ export async function POST(req: NextRequest) {
           clientPhone: fullLead.phone || "",
           clientName: "Покупатель новостройки",
           contactMode: fullLead.contactMode,
-          crmUrl: "https://maskani.tj/developer-admin",
+          crmUrl: "https://sogd-realty.vercel.app/developer-admin",
         }).catch(() => {});
       }
     } catch {
@@ -201,7 +223,7 @@ export async function POST(req: NextRequest) {
   } catch (error) {
     console.error("Lead submission error:", error);
     return NextResponse.json(
-      { success: false, error: "Internal server error submitting lead" },
+      { success: false, error: "Временная ошибка при отправке заявки. Пожалуйста, повторите попытку." },
       { status: 500 }
     );
   }

@@ -43,6 +43,7 @@ interface ProjectVisualShowcaseProps {
     whatsapp: string;
   };
   onSelectUnitMode?: () => void;
+  onSelectUnitForDeal?: (unit: UnitData) => void;
 }
 
 export function ProjectVisualShowcase({
@@ -54,6 +55,7 @@ export function ProjectVisualShowcase({
   units = [],
   developerContact,
   onSelectUnitMode,
+  onSelectUnitForDeal,
 }: ProjectVisualShowcaseProps) {
   const { tDual } = useLanguage();
 
@@ -189,6 +191,7 @@ export function ProjectVisualShowcase({
               units={units}
               projectName={projectName}
               developerContact={developerContact}
+              onSelectUnit={onSelectUnitForDeal}
             />
           </div>
         )}

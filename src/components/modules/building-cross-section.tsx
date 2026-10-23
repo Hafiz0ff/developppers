@@ -102,7 +102,7 @@ export function BuildingCrossSection({
 
   const handleUnitClick = (unit: UnitData) => {
     setActiveUnit(unit);
-    if (onSelectUnit) {
+    if (onSelectUnit && unit.status === "available") {
       onSelectUnit(unit);
     }
   };
@@ -381,6 +381,25 @@ export function BuildingCrossSection({
               <div className="space-y-2 pt-1">
                 {activeUnit.status === "available" ? (
                   <>
+                    {onSelectUnit && (
+                      <Button
+                        type="button"
+                        onClick={() => {
+                          onSelectUnit(activeUnit);
+                          setActiveUnit(null);
+                        }}
+                        className="w-full h-11 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-md gap-2 cursor-pointer"
+                      >
+                        <CheckCircle2 className="h-4 w-4" />
+                        <span>
+                          {tDual(
+                            "Выбрать квартиру в комплект",
+                            "Интихоби хонадон ба маҷмӯъ"
+                          )}
+                        </span>
+                      </Button>
+                    )}
+
                     <a
                       href={`https://wa.me/${developerContact.whatsapp.replace(/\D/g, "")}?text=${encodeURIComponent(
                         language === "tg"
@@ -389,7 +408,7 @@ export function BuildingCrossSection({
                       )}`}
                       target="_blank"
                       rel="noreferrer"
-                      className="w-full inline-flex items-center justify-center gap-2 h-11 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs shadow-xs transition-colors"
+                      className="w-full inline-flex items-center justify-center gap-2 h-10 px-4 rounded-xl border border-emerald-500/30 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-50 font-semibold text-xs transition-colors"
                     >
                       <MessageCircle className="h-4 w-4" />
                       {tDual("Забронировать в WhatsApp", "Брон кардан дар WhatsApp")}

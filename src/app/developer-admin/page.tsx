@@ -12,6 +12,9 @@ import {
   INITIAL_PROJECTS,
   generateUnitsForAnyProject,
 } from "@/lib/data/mock-db";
+import { DeveloperCrmBookingSettings } from "@/components/modules/developer-admin/developer-crm-booking-settings";
+import { getLocalBookingLeads, formatSeparatedNumber } from "@/lib/crm-booking-store";
+import { LeadSubmissionPayload } from "@/types/crm-booking";
 import {
   Building2,
   FolderKanban,
@@ -26,6 +29,8 @@ import {
   MessageCircle,
   MapPin,
   Sparkles,
+  Bookmark,
+  PhoneCall,
 } from "lucide-react";
 
 export default function DeveloperAdminDashboard() {
@@ -33,6 +38,34 @@ export default function DeveloperAdminDashboard() {
   const { language, tDual } = useLanguage();
 
   const developer = INITIAL_DEVELOPERS[0]; // «Qayroqum Avenue» Development
+  const [liveBookingLeads, setLiveBookingLeads] = React.useState<LeadSubmissionPayload[]>([]);
+
+  React.useEffect(() => {
+    const loadLeads = async () => {
+      const local = getLocalBookingLeads(developer.id);
+      try {
+        const res = await fetch(`/api/crm/lead-booking?developerId=${developer.id}`);
+        const data = await res.json();
+        if (data.success && Array.isArray(data.leads)) {
+          const merged = [...data.leads];
+          for (const l of local) {
+            if (!merged.some((m) => m.leadId === l.leadId)) {
+              merged.push(l);
+            }
+          }
+          setLiveBookingLeads(merged);
+          return;
+        }
+      } catch {
+        // ignore
+      }
+      setLiveBookingLeads(local);
+    };
+
+    loadLeads();
+    window.addEventListener("maskani-booking-leads-changed", loadLeads);
+    return () => window.removeEventListener("maskani-booking-leads-changed", loadLeads);
+  }, [developer.id]);
   const developerProjects = INITIAL_PROJECTS.filter(
     (p) => p.developerId === developer.id
   );
@@ -167,6 +200,9 @@ export default function DeveloperAdminDashboard() {
           </CardContent>
         </Card>
       </div>
+
+      {/* CRM BOOKING & CALLBACK SCENARIO SETTINGS (Section 3 of ТЗ) */}
+      <DeveloperCrmBookingSettings developerId={developer.id} />
 
       {/* QUICK ACTIONS & ACTIVE COMPLEXES */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -313,6 +349,92 @@ export default function DeveloperAdminDashboard() {
 
           <Card className="p-4 space-y-3">
             <div className="space-y-3">
+              {/* Live CRM Leads from Booking & Callback Scenario (Section 12 of ТЗ) */}
+              {liveBookingLeads.map((lead) => {
+                const isBookingLead = lead.type === "booking";
+                return (
+                  <div
+                    key={lead.leadId}
+                    className="p-3 rounded-lg bg-emerald-500/5 border border-emerald-500/30 text-xs space-y-1.5"
+                  >
+                    <div className="flex items-center justify-between gap-2">
+                      <Badge
+                        className={`text-[10px] px-2 py-0.5 font-bold ${
+                          isBookingLead
+                            ? "bg-emerald-600 text-white"
+                            : "bg-slate-900 dark:bg-blue-600 text-white"
+                        }`}
+                      >
+                        {isBookingLead ? (
+                          <span className="inline-flex items-center gap-1">
+                            <Bookmark className="h-2.5 w-2.5" />
+                            {tDual("Бронирование", "Бандкунӣ")}
+                          </span>
+                        ) : (
+                          <span className="inline-flex items-center gap-1">
+                            <PhoneCall className="h-2.5 w-2.5" />
+                            {tDual("Обратный звонок", "Занги бозгашт")}
+                          </span>
+                        )}
+                      </Badge>
+                      <span className="text-[10px] text-muted-foreground">
+                        {lead.contactMode === "instant_15min"
+                          ? tDual("Связаться: 15 мин", "Тамос: 15 дақ")
+                          : `${lead.scheduledDate || ""} ${lead.scheduledTime || ""}`}
+                      </span>
+                    </div>
+
+                    <div className="font-bold text-foreground">
+                      {lead.phone} • {lead.projectName}
+                    </div>
+
+                    {(lead.unitNumber || lead.parkingNumber || lead.storageNumber) && (
+                      <div className="text-muted-foreground text-[11px] space-y-0.5">
+                        {lead.unitNumber && (
+                          <div>
+                            • {tDual("Квартира", "Хонадон")} № {lead.unitNumber}
+                            {lead.unitPriceTjs
+                              ? ` — ${formatSeparatedNumber(lead.unitPriceTjs)} сомони`
+                              : ""}
+                          </div>
+                        )}
+                        {lead.parkingNumber && (
+                          <div>
+                            • {tDual("Машино-место", "Ҷойи мошин")} № {lead.parkingNumber}
+                            {lead.parkingPriceTjs
+                              ? ` — ${formatSeparatedNumber(lead.parkingPriceTjs)} сомони`
+                              : ""}
+                          </div>
+                        )}
+                        {lead.storageNumber && (
+                          <div>
+                            • {tDual("Кладовая", "Анборхона")} № {lead.storageNumber}
+                            {lead.storagePriceTjs
+                              ? ` — ${formatSeparatedNumber(lead.storagePriceTjs)} сомони`
+                              : ""}
+                          </div>
+                        )}
+                        {lead.totalPriceTjs > 0 && (
+                          <div className="font-bold text-emerald-700 dark:text-emerald-300 pt-0.5">
+                            {tDual("Итого:", "Ҷамъ:")} {formatSeparatedNumber(lead.totalPriceTjs)} сомони
+                          </div>
+                        )}
+                      </div>
+                    )}
+
+                    <div className="pt-1 flex items-center gap-2">
+                      <a
+                        href={`tel:${lead.phone}`}
+                        className="inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-600 hover:underline"
+                      >
+                        <Phone className="h-3 w-3" />
+                        {tDual("Позвонить клиенту", "Занг задан")}
+                      </a>
+                    </div>
+                  </div>
+                );
+              })}
+
               <div className="p-3 rounded-lg bg-muted/40 border text-xs space-y-1.5">
                 <div className="flex items-center justify-between">
                   <span className="font-bold text-foreground">

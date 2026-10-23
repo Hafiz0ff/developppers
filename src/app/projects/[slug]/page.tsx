@@ -122,19 +122,50 @@ export default function PublicProjectPage() {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [drawerType, setDrawerType] = useState<"booking" | "callback">("booking");
 
+  // Section 13: Do not carry selected items across different projects
+  React.useEffect(() => {
+    setDealBundle({
+      unit: null,
+      parking: null,
+      storage: null,
+    });
+  }, [project.id]);
+
   const handleSelectUnitForDeal = (u: UnitData) => {
-    setDealBundle((prev) => ({
-      ...prev,
-      unit: {
-        id: u.id,
-        number: u.unitNumber,
-        roomsCount: u.roomsCount,
-        floor: u.floor,
-        totalArea: u.totalArea,
-        priceTjs: u.priceTjs,
-        priceUsd: u.priceUsd,
-      },
-    }));
+    if (u.status !== "available" || u.priceTjs <= 0 || u.totalArea <= 0) return;
+
+    setDealBundle((prev) => {
+      // Section 6.4: Verify compatibility and current availability of additional objects when apartment changes
+      const validParking =
+        prev.parking &&
+        (project.parkingSpots || []).some(
+          (s) => s.id === prev.parking?.id && s.status === "available"
+        )
+          ? prev.parking
+          : null;
+
+      const validStorage =
+        prev.storage &&
+        (project.storageUnits || []).some(
+          (st) => st.id === prev.storage?.id && st.status === "available"
+        )
+          ? prev.storage
+          : null;
+
+      return {
+        unit: {
+          id: u.id,
+          number: u.unitNumber,
+          roomsCount: u.roomsCount,
+          floor: u.floor,
+          totalArea: u.totalArea,
+          priceTjs: u.priceTjs,
+          priceUsd: u.priceUsd,
+        },
+        parking: validParking,
+        storage: validStorage,
+      };
+    });
   };
 
   const handleAddParkingToDeal = (spot: ParkingSpot) => {
@@ -368,6 +399,7 @@ export default function PublicProjectPage() {
           onSelectUnitMode={() => {
             document.getElementById("chessboard-section")?.scrollIntoView({ behavior: "smooth" });
           }}
+          onSelectUnitForDeal={handleSelectUnitForDeal}
         />
       </div>
 
@@ -689,29 +721,31 @@ export default function PublicProjectPage() {
             </Card>
 
             {/* Installment Badge Card */}
-            <div className="p-4 rounded-2xl bg-muted/40 border space-y-2 text-xs">
-              <div className="font-bold text-foreground flex items-center gap-1.5">
-                <Percent className="h-4 w-4 text-emerald-600" />
-                {tDual("Беспроцентная рассрочка", "Пардохти қисм-қисми бефоиз")}
+            {project.installmentMonths > 0 && (
+              <div className="p-4 rounded-2xl bg-muted/40 border space-y-2 text-xs">
+                <div className="font-bold text-foreground flex items-center gap-1.5">
+                  <Percent className="h-4 w-4 text-emerald-600" />
+                  {tDual("Беспроцентная рассрочка", "Пардохти қисм-қисми бефоиз")}
+                </div>
+                <p className="text-muted-foreground text-[11px] leading-relaxed">
+                  {language === "tg" ? (
+                    <>
+                      Сохтмончӣ пардохти қисм-қисми бефоизро то{" "}
+                      <strong>{project.installmentMonths} моҳ</strong> бе иштироки бонкҳо пешниҳод мекунад. Пешпардохт — аз{" "}
+                      <strong>{project.installmentDownPaymentPercent}%</strong>.
+                    </>
+                  ) : (
+                    <>
+                      Застройщик предоставляет рассрочку на срок до{" "}
+                      <strong>{project.installmentMonths} месяцев</strong> без участия банков. Первоначальный взнос — от{" "}
+                      <strong>{project.installmentDownPaymentPercent}%</strong>.
+                    </>
+                  )}
+                </p>
               </div>
-              <p className="text-muted-foreground text-[11px] leading-relaxed">
-                {language === "tg" ? (
-                  <>
-                    Сохтмончӣ пардохти қисм-қисми бефоизро то{" "}
-                    <strong>{project.installmentMonths} моҳ</strong> бе иштироки бонкҳо пешниҳод мекунад. Пешпардохт — аз{" "}
-                    <strong>{project.installmentDownPaymentPercent}%</strong>.
-                  </>
-                ) : (
-                  <>
-                    Застройщик предоставляет рассрочку на срок до{" "}
-                    <strong>{project.installmentMonths} месяцев</strong> без участия банков. Первоначальный взнос — от{" "}
-                    <strong>{project.installmentDownPaymentPercent}%</strong>.
-                  </>
-                )}
-              </p>
-            </div>
+            )}
 
-            {/* DEAL BUILDER (Cart & Bundle calculation - Priority 2 under Installment) */}
+            {/* DEAL BUILDER (Cart & Bundle calculation - Priority 2 under Installment, or directly under Developer Info if no installment) */}
             <ProjectDealBuilderBlock
               bundle={dealBundle}
               onRemoveParking={handleRemoveParking}
@@ -721,8 +755,16 @@ export default function PublicProjectPage() {
               onScrollToChessboard={() => {
                 document.getElementById("chessboard-section")?.scrollIntoView({ behavior: "smooth" });
               }}
-              hasParkingConfigured={Boolean(project.parkingSpots && project.parkingSpots.length > 0)}
-              hasStorageConfigured={Boolean(project.storageUnits && project.storageUnits.length > 0)}
+              hasParkingConfigured={Boolean(
+                project.parkingConfig?.isEnabled !== false &&
+                  project.parkingSpots &&
+                  project.parkingSpots.some((s) => s.status === "available")
+              )}
+              hasStorageConfigured={Boolean(
+                project.storageConfig?.isEnabled !== false &&
+                  project.storageUnits &&
+                  project.storageUnits.some((u) => u.status === "available")
+              )}
             />
           </div>
         </div>

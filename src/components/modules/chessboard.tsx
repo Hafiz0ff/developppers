@@ -373,7 +373,12 @@ export function Chessboard({
                               <button
                                 key={unit.id}
                                 type="button"
-                                onClick={() => setSelectedUnit(unit)}
+                                onClick={() => {
+                                  setSelectedUnit(unit);
+                                  if (onSelectUnitForDeal && unit.status === "available") {
+                                    onSelectUnitForDeal(unit);
+                                  }
+                                }}
                                 className={`h-14 p-1 rounded-lg border text-left flex flex-col justify-between transition-all cursor-pointer shadow-2xs ${style}`}
                               >
                                 <div className="flex items-center justify-between w-full">
@@ -435,7 +440,12 @@ export function Chessboard({
                   <TableRow
                     key={unit.id}
                     className="cursor-pointer hover:bg-muted/40 transition-colors"
-                    onClick={() => setSelectedUnit(unit)}
+                    onClick={() => {
+                      setSelectedUnit(unit);
+                      if (onSelectUnitForDeal && unit.status === "available") {
+                        onSelectUnitForDeal(unit);
+                      }
+                    }}
                   >
                     <TableCell className="font-bold text-foreground">
                       {unit.unitNumber}

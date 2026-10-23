@@ -1,17 +1,38 @@
-# Project Memory & Context
+# MEMORY.md — Журнал архитектурных решений (ADR) и контекстная память проекта
 
-## Project Goals
-Building a combined Real Estate Marketplace for Sughd Province (Khujand) merging primary developer showcases with a C2C secondary market classifieds section.
+Этот файл хранит ключевые архитектурные и продуктовые решения, принятые в ходе разработки экосистемы **Maskani (`sogd-realty`)**.
 
-## Key Decisions Made
-- **Tech Stack**: Next.js App Router + TypeScript + Tailwind + Drizzle + Postgres.
-- **Region First**: Focus exclusively on Sughd initially (Khujand, B. Gafurov, Buston, Isfara, Istaravshan, Konibodom) to build market dominance before expanding to Dushanbe.
-- **AI Executors**: Antigravity (Gemini 3.8 Flash), Claude, and Codex handling core implementation code.
-- **Auth System**: Better Auth with Drizzle PostgreSQL adapter and role-based access (`SUPER_ADMIN`, `DEVELOPER_ADMIN`, `CITIZEN`).
-- **Dual Currency**: Real-time TJS (сомони) and USD calculation with automatic formatting across all cards, tables, and chessboards.
-- **Unit Chessboard Architecture**: Two distinct viewing modes (Visual Grid by Floor $\times$ Section and Parameter Filter Table), color-coded statuses (`available` emerald, `reserved` amber, `sold` slate), buyer WhatsApp lead generator, and developer backoffice instant status switching.
+---
 
-## Current State
-- **Phase 1 (Foundation & Database Setup)**: Completed.
-- **Phase 2 (Developer Backoffice & Chessboard)**: Completed. Includes `/developer-admin`, profile management, project creation/editing, interactive chessboard, `/developers/[slug]`, and `/projects/[slug]`. Production build passes cleanly with 0 TypeScript errors.
-- **Phase 3 (Secondary Market / Classifieds)**: Next up.
+## ADR-001: Выделение единого доменного слоя `src/lib/` и отказ от логики в UI
+- **Контекст**: Платформа включает сложные финансовые и алгоритмические расчёты (аннуитетная ипотека, беспроцентная рассрочка в двух валютах `TJS/USD`, рекламный аукцион `eCPM`, идемпотентная синхронизация с ERP, сборка комплексной сделки).
+- **Решение**: Вся бизнес-логика вынесена в чистые модули `src/lib/*.ts` без привязки к React-компонентам и покрыта 176 автоматическими тестами (`npx tsx --test 'src/**/*.test.ts'`).
+
+## ADR-002: Принцип Zero Client Trust при бронировании и платежах
+- **Контекст**: В сценарии «Заявки на бронирование и звонки» покупатель формирует комплексную сделку (`Квартира + Машино-место + Кладовая`) на клиенте. Доверять ценам или статусам, переданным из браузера, небезопаснo.
+- **Решение**:
+  1. Серверный метод `verifyAndResolveLeadDealBundle` (`src/lib/crm-booking-store.ts`) принимает только идентификаторы лотов (`unitId`, `parkingId`, `storageId`) и `projectId`.
+  2. Сервер самостоятельно проверяет принадлежность проекта застройщику (`DEVELOPER_MISMATCH`), активность CRM (`CRM_NOT_ACTIVE`), включённый тумблер сценария (`FEATURE_DISABLED`) и статус `"available"` каждого лота.
+  3. Итоговая стоимость сделки пересчитывается строго по серверному прайс-листу в `TJS`.
+  4. Статус квартиры, паркинга и кладовой на витрине **не меняется** на `"booked"` в момент отправки заявки (`unitStatusUnchanged: true`), чтобы исключить злонамеренную блокировку шахматки конкурентами или ботами до верификации менеджером в CRM.
+
+## ADR-003: Автоматическая зависимость тумблера сценария бронирования от статуса CRM
+- **Контекст**: Согласно ТЗ «Заявки на бронирование и звонки», сценарий на карточках ЖК может работать только при активной интеграции с CRM застройщика.
+- **Решение**: В `updateServerCrmSettings` (`src/lib/crm-booking-store.ts`) заложено жёсткое правило: если `crmConnected` переводится в `false`, поле `bookingScenarioEnabled` автоматически принудительно сбрасывается в `false`, а блоки конструктора сделки и кнопки бронирования скрываются с карточек ЖК.
+
+## ADR-004: Локализация под финансовый и строительный рынок Таджикистана
+- **Контекст**: Стандартные зарубежные шаблоны недвижимости не учитывают специфику рынка РТ (расчёты в сомони `TJS`, популярность беспроцентной рассрочки от застройщика до конца строительства, национальные платёжные системы, формат телефонов `+992`).
+- **Решение**:
+  - Базовая валюта хранения и биллинга — `TJS` (`смн`) с мгновенным пересчётом в `USD` по курсу НБТ.
+  - В платёжный шлюз (`src/lib/payment-gateway.ts`) встроена нативная поддержка **Корти Милли**, **DC Next (Dushanbe City)**, **Alif Salom** и **Эсхата Онлайн**.
+  - В конструктор сделки на карточке ЖК приоритет №2 отдан блоку **«Беспроцентная рассрочка»**, за которым следует **«Стоимость выбранной квартиры»**, **«С паркингом и кладовой покупка выгоднее»** и **«Общая стоимость»**.
+
+## ADR-005: Полнота тестового покрытия (`176 Unit & Integration Tests`)
+- **Контекст**: Для безопасного непрерывного деплоя в Vercel все критические бизнес-модули должны проверяться автоматически.
+- **Решение**: Созданы тестовые наборы:
+  - `src/lib/crm-booking.test.ts` — проверка всех 15 разделов ТЗ бронирования и звонков (настройки CRM, Zero Client Trust, конструктора сделки, чекбокса ПДн, расписания звонков и антидубля);
+  - `src/lib/erp-engine.test.ts` — синхронизация шахматки из ERP;
+  - `src/lib/payment-vas.test.ts` — платежи `Корти Милли / DC / Alif / Эсхата` и VAS-услуги;
+  - `src/lib/compare-store.test.ts` — сравнение ЖК и вторичных квартир;
+  - `src/lib/ad-engine.test.ts` и `src/lib/super-admin-analytics.test.ts` — рекламный аукцион и аналитика Суперадмина;
+  - `src/lib/mortgage.test.ts` — ипотечные и рассрочные расчёты.

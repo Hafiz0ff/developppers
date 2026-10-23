@@ -1,177 +1,115 @@
-# Maskani.tj (Sogd Realty) — System Architecture & Dependency Map
+# Архитектура платформы Maskani (`sogd-realty`)
 
-> **Core Principle**: In this repository, no file exists in isolation. Every component, handler, or model belongs to a strict architectural dependency chain spanning from the database schema up to the user-facing views.
+## 1. Обзор системы
+
+**Maskani (`sogd-realty`)** — модульный монолит на базе **Next.js 16.2 (`App Router`)** и **React 19.2**, реализующий двустороннюю PropTech-экосистему для рынка недвижимости Таджикистана:
+- **B2C-контур (Покупатели и Арендаторы)**: витрина новостроек с синхронизированной картой 2ГИС, интерактивный разрез корпуса («План секции») и шахматка квартир, конструктор комплексной сделки (`Квартира + Паркинг + Кладовая`), онлайн-заявка на бронирование и обратный звонок в CRM застройщика, доска частных объявлений (`/classifieds`), таблица сравнения объектов (`/compare`) и ипотечный калькулятор (`/calculator`).
+- **B2B-контур (Застройщики, Рекламодатели, Частные продавцы)**: кабинет застройщика (`/developer-admin`) с управлением сценарием бронирования и прямым шлюзом синхронизации со строительной ERP (`/api/erp/sync`), кабинет рекламодателя (`/advertiser`) с аукционом `CPC/CPM`, платные VAS-услуги продвижения объявлений (`/api/classifieds/vas`) и национальный платёжный шлюз (`Корти Милли`, `DC Next`, `Alif Salom`, `Эсхата Онлайн`).
+- **B2G/Admin-контур (Суперадмин платформы)**: сквозная аналитика монетизации, воронки лидов, модерация контента и управление ролями (`/super-admin`).
 
 ---
 
-## 1. High-Level System Architecture
+## 2. Четырёхслойная архитектура и правило зависимостей
 
 ```mermaid
-graph TD
-    subgraph Data Layer
-        DB[(PostgreSQL / Supabase)]
-        SCHEMAS[Drizzle Schemas & Enums\nsrc/db/schema/*]
-        DB --> SCHEMAS
+flowchart TD
+    subgraph L1["Слой 1: Маршрутизация и контроллеры (src/app/)"]
+        Pages["RSC & Client Pages (/projects, /developer-admin, /compare, /super-admin)"]
+        API["Route Handlers (/api/crm/lead-booking, /api/erp/sync, /api/payments/checkout, /api/ads/*)"]
     end
 
-    subgraph Business Logic & DAL
-        DAL[Data Stores & Domain Libs\nsrc/lib/*]
-        VAL[Zod Validators & Schemas\nsrc/lib/classifieds/schema.ts]
-        SERVICES[Telegram / Geocoder / Audit\nsrc/lib/telegram.ts, geo-utils.ts]
-        SCHEMAS --> DAL
-        SCHEMAS --> VAL
+    subgraph L2["Слой 2: Доменные модули (src/components/modules/)"]
+        ModProjects["projects/ (Deal Builder, Lead Drawer, Chessboards, Cross-Section)"]
+        ModDevAdmin["developer-admin/ (CRM Settings, Toggle & Help Popover)"]
+        ModPayments["payments/ & classifieds/ (National Checkout, VAS Upsell)"]
+        ModAdsMap["ads/, map/, catalog/, calculator/"]
     end
 
-    subgraph API Surface
-        API_CRM[CRM & Lead Booking API\nsrc/app/api/crm/*]
-        API_CLASS[Classifieds API & OTP\nsrc/app/api/classifieds/*]
-        API_ERP[ERP & Feed API\nsrc/app/api/erp, v1/*]
-        DAL --> API_CRM
-        DAL --> API_CLASS
-        DAL --> API_ERP
-        SERVICES --> API_CRM
+    subgraph L3["Слой 3: Базовый UI-кит (src/components/ui/ & layout/)"]
+        UIKit["Button, Badge, Card, Input, Header, Footer, CompareFloatingBar"]
     end
 
-    subgraph Client State & Hooks
-        CTX_LANG[LanguageContext\ntDual ru/tg]
-        CTX_CURR[CurrencyContext\nformatPrice TJS/USD]
-        HOOK_METRICS[useEntityMetrics\nViews deduplication & Favorites]
-        HOOK_PROJ[useProjectAnalytics\n30-day metrics]
+    subgraph L4["Слой 4: Доменное ядро и сторы (src/lib/)"]
+        CoreLib["crm-booking-store, erp-engine, payment-gateway, classifieds-vas, compare-store, ad-engine, mock-data"]
     end
 
-    subgraph Presentation & UI
-        COMP_PROJ[Project Modules\nParking, Storage, Docs, Booking]
-        COMP_CLASS[Classifieds Modules\nGallery, Sticky Sidebar, Filters]
-        COMP_ADMIN[Developer Admin Modules\nCRM Settings, Doc Manager]
-        COMP_MAP[Interactive Leaflet Map\nClustering & Routing]
-    end
-
-    subgraph App Router Pages
-        PAGE_HOME["/ (Homepage)"]
-        PAGE_PROJ["/projects/[slug]"]
-        PAGE_CLASS["/classifieds/[slug]"]
-        PAGE_MAP["/map"]
-        PAGE_ADMIN["/developer-admin/*"]
-        PAGE_ERP["/erp"]
-    end
-
-    API_CRM --> HOOK_METRICS
-    API_CLASS --> HOOK_METRICS
-    HOOK_METRICS --> COMP_PROJ
-    HOOK_METRICS --> COMP_CLASS
-    CTX_LANG --> COMP_PROJ
-    CTX_LANG --> COMP_CLASS
-    CTX_CURR --> COMP_PROJ
-    CTX_CURR --> COMP_CLASS
-
-    COMP_PROJ --> PAGE_PROJ
-    COMP_CLASS --> PAGE_CLASS
-    COMP_ADMIN --> PAGE_ADMIN
-    COMP_MAP --> PAGE_MAP
+    Pages --> ModProjects
+    Pages --> ModDevAdmin
+    Pages --> ModPayments
+    Pages --> ModAdsMap
+    API --> CoreLib
+    ModProjects --> UIKit
+    ModDevAdmin --> UIKit
+    ModPayments --> UIKit
+    ModAdsMap --> UIKit
+    ModProjects --> CoreLib
+    ModDevAdmin --> CoreLib
+    ModPayments --> CoreLib
+    ModAdsMap --> CoreLib
+    UIKit --> CoreLib
 ```
 
----
-
-## 2. Architectural Dependency Chains by Domain
-
-### A. New Building Property Flow (`/projects/[slug]`)
-1. **Database**: `src/db/schema/projects.ts` + `units.ts` + `developers.ts`
-2. **Domain Logic**: `src/lib/pricing/new-building-price.ts` + `parking-storage.ts` + `documents.ts` + `crm-booking-store.ts`
-3. **API Layer**: `POST /api/crm/lead-booking` + `POST /api/crm/leads`
-4. **Hooks/Context**: `useProjectAnalytics` + `useLanguage` (`tDual`) + `useCurrency` (`formatPrice`)
-5. **UI Modules**:
-   - `ProjectEngagementHeaderPill` (unified views + favorites indicator)
-   - `NewBuildingPriceBlock` (total price & price per meter)
-   - `ProjectVisualShowcase` (6D navigator)
-   - `ProjectParkingSection` (bottom-aligned 3 photos + selector button under photo 3)
-   - `ProjectStorageSection` (bottom-aligned photos + 4 advantage cards + selector button under photo 3)
-   - `ProjectDocumentsSection` (75% «Открыть PDF» and 25% «Скачать» buttons)
-   - `LeadRequestDrawer` (booking / callback drawer)
-6. **Page View**: `src/app/projects/[slug]/page.tsx`
+**Инвариант зависимостей**: верхние слои могут импортировать только нижние (`L1` $\rightarrow$ `L2` $\rightarrow$ `L3` $\rightarrow$ `L4`). Прямой импорт из `src/app/*` в `src/components/*` или `src/lib/*` запрещён.
 
 ---
 
-### B. Secondary Market Property Flow (`/classifieds/[slug]`)
-1. **Database**: `src/db/schema/classifieds.ts` + `favorites.ts` + `analytics.ts`
-2. **Domain Logic**: `src/lib/classifieds/format-utils.ts` + `filters.ts` + `geo-utils.ts`
-3. **API Layer**: `GET /api/classifieds/[id]` + `POST /api/crm/leads`
-4. **Hooks/Context**: `useEntityMetrics` (24h view deduplication + synchronized favorites)
-5. **UI Modules**:
-   - Header with deal badges + publication date & views line (`Публикация 15.окт, 11:54 • 👁 36 просмотров`)
-   - Left Column (`lg:col-span-2`): Photo gallery (main photo + square thumbnails) + Specs + Infrastructure + Description + Map + Safety notice
-   - Right Column (`lg:col-span-1 lg:sticky lg:top-20 self-start`):
-     1. «Дата публикации и просмотры» card
-     2. «Стоимость объекта» card (price, price/m², action buttons)
-     3. «Собственник» card (phone reveal, WhatsApp)
-     4. «Задать вопрос продавцу» card (quick inquiry form)
-6. **Page View**: `src/app/classifieds/[slug]/page.tsx`
+## 3. Архитектура ключевых подсистем
 
----
+### 3.1. Контур «Заявки на бронирование и звонки» (`CRM Booking & Deal Builder`)
 
-### C. Construction ERP & Developer CRM Flow (`/erp`, `/developer-admin`)
-1. **Database**: `src/db/schema/crm.ts` (`crm_leads`, `crm_collections`) + `audit_logs.ts`
-2. **Domain Logic**: `src/lib/crm-booking-store.ts` + `crm-collections-store.ts` + `telegram.ts` + `audit-logger.ts`
-3. **API Layer**: `POST /api/crm/lead-booking`, `GET/POST /api/developer/crm-settings`, `GET /api/erp`
-4. **UI Modules**: `developer-crm-booking-settings.tsx`, `project-documents-manager.tsx`, `project-parking-storage-manager.tsx`
-5. **Page Views**: `src/app/developer-admin/*`, `src/app/erp/route.ts`, `src/app/p/[share_code]/page.tsx`
+Реализует сквозной сценарий от настройки в кабинете застройщика до отправки верифицированной комплексной сделки в CRM:
 
----
+```mermaid
+sequenceDiagram
+    participant Dev as Застройщик (/developer-admin)
+    participant SettingsAPI as /api/developer/crm-settings
+    participant Buyer as Покупатель (/projects/[slug])
+    participant DealBuilder as ProjectDealBuilderBlock
+    participant BookingAPI as /api/crm/lead-booking
+    participant Store as crm-booking-store.ts
 
-## 3. Dependency Tracing Tooling
-
-To inspect upstream dependencies, downstream consumers, and associated tests for any file:
-
-```bash
-npm run arch:trace <file_or_keyword>
+    Dev->>SettingsAPI: PATCH { crmConnected: true, bookingScenarioEnabled: true }
+    SettingsAPI->>Store: updateServerCrmSettings()
+    Buyer->>DealBuilder: Выбирает квартиру (План секции / Шахматка) + Машино-место + Кладовую
+    DealBuilder->>Buyer: Пересчитывает блок «Общая стоимость» (Итого TJS / USD)
+    Buyer->>DealBuilder: Открывает оверлей «Забронировать» / «Звонок», вводит телефон, отмечает чекбокс ПДн
+    DealBuilder->>BookingAPI: POST /api/crm/lead-booking (unitId, parkingId, storageId, consentPersonalData)
+    BookingAPI->>Store: verifyAndResolveLeadDealBundle() (Zero Client Trust)
+    Store-->>BookingAPI: Подтверждает принадлежность ЖК, статус available и серверные цены в TJS
+    BookingAPI-->>DealBuilder: 201 Created (leadId, dealSummary, unitStatusUnchanged: true)
 ```
 
-Example:
-```bash
-npm run arch:trace parking
-```
-Returns:
-- Direct imports (upstream)
-- Files importing this module (downstream)
-- Architectural tier
-- Associated test files
+- **Автоматическая защита состояния CRM**: при вызове `updateServerCrmSettings(developerId, { crmConnected: false })` сервер принудительно выставляет `bookingScenarioEnabled = false`.
+- **Zero Client Trust (`verifyAndResolveLeadDealBundle`)**:
+  - Проверяет существование ЖК и совпадение `project.developerId === payload.developerId` (`DEVELOPER_MISMATCH`).
+  - Проверяет активность CRM (`CRM_NOT_ACTIVE`) и включённый тумблер сценария (`FEATURE_DISABLED`).
+  - Проверяет, что выбранные `unitId`, `parkingId` и `storageId` принадлежат данному ЖК и имеют статус `"available"`.
+  - Игнорирует любые цены, переданные клиентом, и формирует `dealItems` и `totalPriceTjs` исключительно из серверного реестра.
+  - Оставляет статусы квартиры, паркинга и кладовой `"available"` (`unitStatusUnchanged: true`) до подтверждения брони менеджером в CRM.
+
+### 3.2. Шлюз синхронизации со строительной ERP (`/api/erp/sync`, `src/lib/erp-engine.ts`)
+- Принимает вебхуки и пакетные выгрузки из систем `1С:Предприятие`, `Profitbase`, `MacroCRM` и таблиц Excel/CSV.
+- Обеспечивает идемпотентность по ключу синхронизации, валидирует площади и цены за $\text{м}^2$, автоматически пересчитывает `totalPriceTjs` и записывает детальный журнал изменений (`Audit Log`: сколько лотов обновлено, добавлено, изменило статус или цену).
+
+### 3.3. Национальный платёжный шлюз и VAS-монетизация (`src/lib/payment-gateway.ts`, `src/lib/classifieds-vas.ts`)
+- Поддерживает 4 платёжных провайдера Таджикистана: **Корти Милли**, **DC Next (Dushanbe City)**, **Alif Salom**, **Эсхата Онлайн**.
+- Используется для оплаты:
+  1. **VAS-услуг частных объявлений** (`/classifieds`): «Поднять в ТОП на 7 дней» (`10 смн`), «Выделение цветом» (`8 смн`), «Срочная продажа 🔥» (`12 смн`), «Турбо-продажа 3-в-1» (`24 смн`).
+  2. **Рекламных бюджетов** в кабинете рекламодателя (`/advertiser`).
+- Включает генерацию платёжной сессии, QR-кода и серверную проверку сумм.
+
+### 3.4. Модуль сравнения объектов (`src/lib/compare-store.ts`, `/compare`)
+- Позволяет добавлять к сравнению как новостройки (`project`), так и вторичные квартиры (`classified`) с сохранением в `localStorage` и реактивной синхронизацией через `CustomEvent`.
+- Вычисляет лучшие показатели в строке (минимальная цена, минимальная цена за $\text{м}^2$, максимальная площадь, минимальный срок сдачи) и поддерживает фильтрацию `onlyDifferences`.
+
+### 3.5. Рекламный движок и Аналитика Суперадмина (`src/lib/ad-engine.ts`, `src/lib/super-admin-analytics.ts`)
+- **Ad Engine**: ранжирует кампании по формуле гибридного `eCPM`, применяет таргетинг по городам и типам страниц, ограничивает частоту показов (`Frequency Capping`) и защищает от скликивания (`Fraud Guard`).
+- **Super Admin Overview**: агрегирует выручку по 3 потокам монетизации (подписки застройщиков, рекламная сеть, VAS-продвижение объявлений) и строит сквозную воронку конверсии.
 
 ---
 
-## 4. User Roles, Access & Open API Architecture
+## 4. Безопасность и надёжность
 
-### User Roles
-1. **SUPER_ADMIN**: Full platform access, moderates classifieds, approves developers, audits system logs.
-2. **DEVELOPER_ADMIN**: Backoffice access to their company's projects, units, chessboards, parking, storage, and booking settings (`/developer-admin/*`).
-3. **REALTOR / BROKER**: Access to built-in CRM analytics (`/profile/crm`, `/profile/analytics`), lead statistics, collections creator (`/p/[share_code]`), and API keys.
-4. **CITIZEN / BUYER**: Can post secondary market ads, manage favorites, view chessboards, and submit booking/inquiry requests.
-
-### External REST Endpoints (`/api/v1/external/`)
-- `GET /api/v1/external/analytics`:
-  - Auth: `Authorization: Bearer <API_KEY>` or `X-API-Key: <API_KEY>`
-  - Output: Aggregated summary, channel breakdown (% phone vs WhatsApp vs chat), daily breakdown, per-listing conversion metrics.
-- `POST /api/v1/external/feed/import`:
-  - Batch import / synchronization of property listings from external CRMs (AmoCRM, Bitrix24, 1C, custom feeds) directly into Sogd Realty.
-
----
-
-## 5. Verification Protocol
-
-Before committing any change:
-1. **Dependency Analysis**: Verify that modifying an upstream file does not break contracts in downstream consumers.
-2. **Unit Tests**:
-   ```bash
-   npm test
-   ```
-3. **Production Next.js Build**:
-   ```bash
-   npm run build
-   ```
-
----
-
-## 6. Vibe Coding Integration (`roboco-io/awesome-vibecoding`)
-
-The project embeds the open-source Vibe Coding catalog and playbook:
-- **Directory**: [`docs/awesome-vibecoding/`](file:///Users/hafizov/Developers/sogd-realty/docs/awesome-vibecoding/README.md)
-- **Skill**: [`.agents/skills/vibe-coding/SKILL.md`](file:///Users/hafizov/Developers/sogd-realty/.agents/skills/vibe-coding/SKILL.md)
-- **Methodology**: Follows the Vibe Development Lifecycle (VDLC) to pair rapid, intuitive AI-driven prototyping with rigorous, test-guarded architectural verification.
+- **Валидация на границе API**: все `POST`/`PATCH` маршруты валидируют входные структуры, телефонные номера РТ (`+992`), обязательность согласия с политикой ПДн (`/privacy`) и идемпотентные интервалы (защита от повторной отправки заявки в течение 10 секунд).
+- **Изоляция ролей (`src/lib/auth-store.ts`)**: разделение прав доступа для ролей `super_admin`, `developer`, `advertiser`, `buyer`.
+- **Покрытие тестами**: 176 модульных и интеграционных тестов проверяют граничные случаи во всех доменных модулях `src/lib/*.test.ts`.

@@ -5,8 +5,12 @@ import {
   formatSeparatedNumber,
   generateTimeSlots,
   getDeveloperCrmSettings,
+  getServerCrmSettings,
+  updateServerCrmSettings,
+  verifyAndResolveLeadDealBundle,
 } from "./crm-booking-store";
 import { SelectedDealBundle } from "@/types/crm-booking";
+import { INITIAL_PROJECTS, generateUnitsForAnyProject } from "@/lib/data/mock-db";
 
 test("CRM Booking DoD-01..03: Developer CRM Settings & State Transitions", () => {
   // dev-1 has CRM connected and scenario enabled by default
@@ -27,6 +31,28 @@ test("CRM Booking DoD-01..03: Developer CRM Settings & State Transitions", () =>
   assert.equal(settingsUnknown.bookingScenarioEnabled, false);
   assert.equal(settingsUnknown.workHoursStart, "09:00");
   assert.equal(settingsUnknown.workHoursEnd, "22:00");
+
+  // Disconnecting CRM automatically disables bookingScenarioEnabled (Section 2.3 & 3.5)
+  const disconnected = updateServerCrmSettings("dev-test-state", {
+    crmConnected: false,
+    bookingScenarioEnabled: true,
+  });
+  assert.equal(disconnected.crmConnected, false);
+  assert.equal(disconnected.bookingScenarioEnabled, false);
+
+  const reconnectedOff = updateServerCrmSettings("dev-test-state", {
+    crmConnected: true,
+    bookingScenarioEnabled: false,
+  });
+  assert.equal(reconnectedOff.crmConnected, true);
+  assert.equal(reconnectedOff.bookingScenarioEnabled, false);
+
+  const enabled = updateServerCrmSettings("dev-test-state", {
+    bookingScenarioEnabled: true,
+  });
+  assert.equal(enabled.crmConnected, true);
+  assert.equal(enabled.bookingScenarioEnabled, true);
+  assert.equal(getServerCrmSettings("dev-test-state").bookingScenarioEnabled, true);
 });
 
 test("CRM Booking DoD-07 & DoD-10: Deal Builder (Cart) Calculations & Independence", () => {
@@ -134,4 +160,72 @@ test("CRM Booking DoD-11 & DoD-12: Time Slots Generation (09:00 - 22:00)", () =>
     customSlots.map((s) => s.value),
     ["10:00", "10:30", "11:00", "11:30", "12:00"]
   );
+});
+
+test("CRM Booking DoD-14..16: Server Gatekeeping & Zero Client Trust Verification", () => {
+  // 1. Reject when CRM is disconnected (dev-2)
+  const resCrmOff = verifyAndResolveLeadDealBundle({
+    developerId: "dev-2",
+    projectId: "unknown-proj",
+  });
+  assert.equal(resCrmOff.valid, false);
+  assert.equal(resCrmOff.code, "CRM_NOT_ACTIVE");
+  assert.equal(resCrmOff.status, 403);
+
+  // 2. Reject when CRM is connected but scenario is disabled (dev-3)
+  const resScenarioOff = verifyAndResolveLeadDealBundle({
+    developerId: "dev-3",
+    projectId: "unknown-proj",
+  });
+  assert.equal(resScenarioOff.valid, false);
+  assert.equal(resScenarioOff.code, "FEATURE_DISABLED");
+  assert.equal(resScenarioOff.status, 403);
+
+  // 3. Reject cross-developer spoofing (Section 14)
+  const firstProject = INITIAL_PROJECTS[0];
+  const resSpoof = verifyAndResolveLeadDealBundle({
+    developerId: "dev-999-spoofed",
+    projectId: firstProject.id,
+  });
+  assert.equal(resSpoof.valid, false);
+  assert.equal(resSpoof.code, "DEVELOPER_MISMATCH");
+  assert.equal(resSpoof.status, 403);
+
+  // 4. Authoritative server price resolution (ignores tampered client prices) & preserves unit status
+  updateServerCrmSettings(firstProject.developerId, {
+    crmConnected: true,
+    bookingScenarioEnabled: true,
+  });
+  const serverUnits = generateUnitsForAnyProject(firstProject);
+  const availableUnit = serverUnits.find((u) => u.status === "available")!;
+  const availableParking = (firstProject.parkingSpots || []).find((s) => s.status === "available");
+  const availableStorage = (firstProject.storageUnits || []).find((st) => st.status === "available");
+
+  const resValid = verifyAndResolveLeadDealBundle({
+    developerId: firstProject.developerId,
+    projectId: firstProject.id,
+    unitId: availableUnit.id,
+    unitPriceTjs: 1, // Tampered client price!
+    parkingId: availableParking?.id,
+    parkingPriceTjs: 1, // Tampered client price!
+    storageId: availableStorage?.id,
+    storagePriceTjs: 1, // Tampered client price!
+  });
+
+  assert.equal(resValid.valid, true);
+  assert.equal(resValid.resolved?.unitPriceTjs, availableUnit.priceTjs);
+  if (availableParking) {
+    assert.equal(resValid.resolved?.parkingPriceTjs, availableParking.priceTjs);
+  }
+  if (availableStorage) {
+    assert.equal(resValid.resolved?.storagePriceTjs, availableStorage.priceTjs);
+  }
+  const expectedTotal =
+    availableUnit.priceTjs +
+    (availableParking?.priceTjs || 0) +
+    (availableStorage?.priceTjs || 0);
+  assert.equal(resValid.resolved?.totalPriceTjs, expectedTotal);
+
+  // Ensure unit status remains "available" (DoD-16: creating a lead does not reserve/sell the unit automatically)
+  assert.equal(availableUnit.status, "available");
 });

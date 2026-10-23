@@ -277,18 +277,20 @@ export function StorageChessboardModal({
 
           {/* Details & Booking Sidebar */}
           <div className="lg:col-span-4 p-5 sm:p-6 border-t lg:border-t-0 lg:border-l border-border bg-muted/15 flex flex-col justify-between space-y-4 overflow-y-auto">
-            {activeUnit ? (
-              <div className="space-y-4">
-                <div className="space-y-1">
-                  <div className="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-600">
-                    <Sparkles className="h-3.5 w-3.5" />
-                    <span>{tDual("Выбранная кладовая", "Анборхонаи интихобшуда")}</span>
-                  </div>
-                  <h3 className="text-2xl font-black text-foreground">
-                    {activeUnit.number} ({activeUnit.level})
-                  </h3>
+            <div className="space-y-4">
+              <div className="space-y-1">
+                <div className="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-600">
+                  <Sparkles className="h-3.5 w-3.5" />
+                  <span>{tDual("Характеристики и стоимость", "Мушаххасот ва арзиш")}</span>
                 </div>
+                <h3 className="text-xl font-black text-foreground">
+                  {activeUnit
+                    ? `${activeUnit.number} (${activeUnit.level})`
+                    : tDual("Кладовая не выбрана", "Анборхона интихоб нашудааст")}
+                </h3>
+              </div>
 
+              {activeUnit ? (
                 <div className="p-4 rounded-2xl bg-card border border-border space-y-2.5 text-xs">
                   <div className="flex justify-between items-center py-1 border-b border-border/50">
                     <span className="text-muted-foreground">{tDual("Площадь помещения:", "Масоҳати бино:")}</span>
@@ -316,58 +318,72 @@ export function StorageChessboardModal({
                     </span>
                   </div>
                 </div>
+              ) : (
+                <div className="p-6 rounded-2xl bg-card border border-dashed border-border text-center text-muted-foreground space-y-2">
+                  <div className="p-2.5 rounded-full bg-muted w-fit mx-auto text-muted-foreground">
+                    <Archive className="h-5 w-5" />
+                  </div>
+                  <p className="text-xs leading-relaxed">
+                    {tDual(
+                      "Выберите доступную кладовую на схеме слева, чтобы просмотреть характеристики и добавить её в комплект.",
+                      "Барои дидани мушаххасот ва илова намудан ба маҷмӯъ анборхонаи дастрасро интихоб кунед."
+                    )}
+                  </p>
+                </div>
+              )}
 
-                {/* Booking Action Buttons */}
-                <div className="space-y-2 pt-2">
-                  {onAddToDeal && activeUnit.status === "available" && (
-                    <Button
-                      type="button"
-                      onClick={() => {
-                        onAddToDeal(activeUnit);
-                        onClose();
-                      }}
-                      className="w-full h-11 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-md transition-all gap-2 cursor-pointer"
+              {/* Section 8: Button «Добавить» under «Характеристики и стоимость» */}
+              <div className="space-y-2 pt-1">
+                {onAddToDeal && (
+                  <Button
+                    type="button"
+                    disabled={!activeUnit || activeUnit.status !== "available"}
+                    onClick={() => {
+                      if (!activeUnit) return;
+                      const latest = units.find((u) => u.id === activeUnit.id);
+                      if (!latest || latest.status !== "available") {
+                        alert(
+                          tDual(
+                            "Выбранная кладовая стала недоступна. Пожалуйста, выберите другую свободную кладовую.",
+                            "Анборхонаи интихобшуда дастрас нест. Лутфан анборхонаи дигари озодро интихоб кунед."
+                          )
+                        );
+                        setActiveUnit(null);
+                        return;
+                      }
+                      onAddToDeal(latest);
+                      onClose();
+                    }}
+                    className="w-full h-11 rounded-xl bg-emerald-600 hover:bg-emerald-700 disabled:opacity-50 text-white font-bold text-xs shadow-md transition-all gap-2 cursor-pointer"
+                  >
+                    <Plus className="h-4 w-4" />
+                    <span>{tDual("Добавить", "Илова кардан")}</span>
+                  </Button>
+                )}
+
+                {activeUnit && (
+                  <>
+                    <a
+                      href={buildWhatsappBookingUrl(activeUnit)}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="w-full inline-flex items-center justify-center gap-2 h-10 px-4 rounded-xl border border-emerald-500/30 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-50 font-semibold text-xs transition-colors cursor-pointer"
                     >
-                      <Plus className="h-4 w-4" />
-                      <span>{tDual("Добавить к заявке", "Илова ба дархост")}</span>
-                    </Button>
-                  )}
+                      <MessageCircle className="h-4 w-4" />
+                      <span>{tDual("Забронировать в WhatsApp", "Банд кардан дар WhatsApp")}</span>
+                    </a>
 
-                  <a
-                    href={buildWhatsappBookingUrl(activeUnit)}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="w-full inline-flex items-center justify-center gap-2 h-10 px-4 rounded-xl border border-emerald-500/30 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-50 font-semibold text-xs transition-colors cursor-pointer"
-                  >
-                    <MessageCircle className="h-4 w-4" />
-                    <span>{tDual("Забронировать в WhatsApp", "Банд кардан дар WhatsApp")}</span>
-                  </a>
-
-                  <a
-                    href={`tel:${developerContact.phone}`}
-                    className="w-full inline-flex items-center justify-center gap-2 h-10 px-4 rounded-xl border border-border hover:bg-muted font-semibold text-xs transition-colors"
-                  >
-                    <Phone className="h-3.5 w-3.5" />
-                    <span>{developerContact.phone}</span>
-                  </a>
-                </div>
+                    <a
+                      href={`tel:${developerContact.phone}`}
+                      className="w-full inline-flex items-center justify-center gap-2 h-10 px-4 rounded-xl border border-border hover:bg-muted font-semibold text-xs transition-colors"
+                    >
+                      <Phone className="h-3.5 w-3.5" />
+                      <span>{developerContact.phone}</span>
+                    </a>
+                  </>
+                )}
               </div>
-            ) : (
-              <div className="p-8 text-center text-muted-foreground space-y-3 my-auto">
-                <div className="p-3 rounded-full bg-muted w-fit mx-auto text-muted-foreground">
-                  <Archive className="h-6 w-6" />
-                </div>
-                <div className="font-bold text-sm text-foreground">
-                  {tDual("Кладовая не выбрана", "Анборхона интихоб нашудааст")}
-                </div>
-                <p className="text-xs leading-relaxed">
-                  {tDual(
-                    "Нажмите на любую свободную зелёную кладовую в шахматке для просмотра параметров и бронирования.",
-                    "Барои дидани тафсилот ва банд намудан ягон анборхонаи сабзи дастрасро дар ҷадвал зер кунед."
-                  )}
-                </p>
-              </div>
-            )}
+            </div>
           </div>
         </div>
       </div>

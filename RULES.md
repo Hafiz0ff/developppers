@@ -1,30 +1,49 @@
-# Project Coding Rules & Standards
+# Инженерные правила и стандарты качества (RULES.md)
 
-## Stack & Tech
-- Framework: Next.js 14+ / 16 (App Router, Server Components by default)
-- Language: TypeScript (Strict mode enabled, NO `any`)
-- Database: PostgreSQL + Drizzle ORM
-- Styling: Tailwind CSS + Shadcn UI
-- Form Handling: React Hook Form + Zod validation
+Настоящий документ закрепляет обязательные правила разработки, безопасности и поддержки кода в репозитории **Maskani (`sogd-realty`)**.
 
-## Naming Conventions
-- Components: PascalCase (`DeveloperCard.tsx`, `PropertyFilter.tsx`)
-- DB Tables/Columns: snake_case (`developers`, `project_units`, `created_at`)
-- Utilities & Hooks: camelCase (`useFilter.ts`, `formatPrice.ts`)
-- Routes: kebab-case (`app/(public)/developers/[slug]/page.tsx`)
+---
 
-## Architecture Principles
-1. Multi-Tenancy: Every Developer/Builder is scoped by `developer_id` or `slug`.
-2. Public vs Private: Classifieds and Developers share UI components, but have separated backend access roles.
-3. Performance: All images MUST use `next/image` with WebP/AVIF formats.
+## 1. Архитектура и организация кода
 
-## WebGL & Shader Optimization Standards
-1. **Strict Client Boundary**: All Canvas/WebGL components must be isolated with `'use client'` and safe for Next.js SSR.
-2. **Battery & Mobile Performance**:
-   - Must pause render loops (`cancelAnimationFrame`) when scrolled out of viewport using `IntersectionObserver`.
-   - Device pixel ratio clamped to `1.5` max to prevent mobile GPU overheating.
-   - Request `powerPreference: "low-power"` in WebGL context configuration.
-3. **Graceful Fallback & Accessibility**:
-   - Respect `prefers-reduced-motion` media queries by freezing animations.
-   - Seamless Tailwind CSS gradient fallback for devices without WebGL or in battery saver mode.
+1. **Однонаправленный граф зависимостей**:
+   - `src/app` $\rightarrow$ `src/components/modules` $\rightarrow$ `src/components/ui` $\rightarrow$ `src/lib`.
+   - Запрещены циклические зависимости и импорты из верхних слоёв в нижние.
+2. **Чистота слоя `src/lib/`**:
+   - Все расчёты (цены, рассрочка, ипотека, проверка доступности лотов, VAS-тарифы, рекламный скоринг) должны быть реализованы как чистые, тестируемые функции в `src/lib/`.
+3. **Строгая типизация TypeScript**:
+   - Режим `strict: true` обязателен.
+   - Запрещено использование `any`, `@ts-ignore` и `@ts-expect-error`. Все входные параметры API и доменные структуры описываются явными интерфейсами.
 
+---
+
+## 2. Безопасность и валидация данных (Zero Client Trust)
+
+1. **Сервер — единственный источник истины по ценам и статусам**:
+   - В API бронирования (`POST /api/crm/lead-booking`), оплаты (`POST /api/payments/checkout`) и VAS (`POST /api/classifieds/vas`) клиентские суммы игнорируются или сверяются с серверным каталогом в сомони (`TJS`).
+2. **Защита шахматки от несанкционированной блокировки**:
+   - Отправка клиентской заявки на бронирование **не должна** автоматически переводить статус квартиры, паркинга или кладовой в `booked` или `sold`. Изменение статуса выполняется только через подтверждённую транзакцию в CRM застройщика или ERP-синхронизацию (`/api/erp/sync`).
+3. **Защита персональных данных**:
+   - Любая лид-форма обязана содержать неотмеченный по умолчанию (`false`) чекбокс согласия с политикой обработки персональных данных (`/privacy`). Сервер отклоняет запросы без `consentPersonalData: true` со статусом `400`.
+4. **Защита от дублирования и спама**:
+   - Серверные обработчики лидов контролируют окно дедупликации (10 секунд для одного номера телефона и набора лотов) и валидируют формат телефона (`+992`).
+
+---
+
+## 3. UI/UX и адаптивность
+
+1. **Соответствие ТЗ и копирайтингу**:
+   - Все заголовки блоков, тексты подсказок, состояния тумблеров и подписи кнопок должны в точности соответствовать утверждённым спецификациям (`docs/specs/SPEC_BOOKING_CALL_REQUESTS_CRM.md` и `DESIGN.md`).
+2. **Кроссплатформенное поведение**:
+   - Интерактивные подсказки (например, иконка `?` слева от тумблера сценария бронирования) должны работать как по наведению (`hover`) на десктопе, так и по клику (модальное окно) на мобильных устройствах.
+   - Боковые панели (`LeadRequestDrawer`) открываются слева (`slide-in-from-left`) на десктопе и адаптируются под мобильные экраны с защитой от потери введённых данных при закрытии.
+
+---
+
+## 4. Тестирование и гигиена репозитория
+
+1. **Обязательные проверки перед коммитом**:
+   - Все тесты должны проходить: `npx tsx --test 'src/**/*.test.ts'` (176+ тестов).
+   - Сборка должна завершаться без ошибок: `npm run build`.
+2. **Синхронизация документации**:
+   - Любое изменение публичных маршрутов, API или продуктовой логики сопровождается обновлением `README.md`, `ARCHITECTURE.md`, `TASKS.md` и AI-манифестов (`AGENTS.md`, `CLAUDE.md`, `CODEX.md`, `GEMINI.md`).

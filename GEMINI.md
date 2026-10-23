@@ -1,32 +1,33 @@
-# Codebase Architecture & Dependency Chain Rules for Maskani.tj (Sogd Realty)
+# GEMINI.md — Контекст и инструкции для Gemini / Antigravity (Maskani / Sogd Realty)
 
-You are an expert full-stack engineer and software architect working on **Maskani.tj / Sogd Realty**.
-Follow these mandatory architecture rules at all times:
+## 1. Обзор проекта
+**Maskani (`sogd-realty`)** — цифровая экосистема недвижимости Таджикистана (фокус на Согдийскую область: Худжанд, Бустон, Гулистон, Истаравшан и масштабирование на Душанбе).
+- **Стек**: Next.js 16.2 (`App Router`), React 19.2, TypeScript 5 (`strict: true`), Tailwind CSS v4, `@2gis/mapgl`, `pdfkit`, `lucide-react`.
+- **Язык интерфейса**: Русский.
+- **Валюты**: Таджикский сомони (`TJS` / `смн`) как базовая валюта расчётов и биллинга + переключение в `USD` (`$`) по курсу НБТ.
 
-## 1. Complete Dependency Chain Rule (Never Edit in Isolation)
-When any user request mentions or touches a file, component, endpoint, or feature:
-- **Do not treat any file as isolated.**
-- Always examine the full architectural flow:
-  `Database Schema (src/db/schema) ➔ Domain Logic & Stores (src/lib) ➔ API Routes (src/app/api) ➔ Context/Hooks (src/context, src/hooks) ➔ UI Modules (src/components) ➔ Page Views (src/app)`
-- Trace **Upstream Dependencies** (what this file relies on) and **Downstream Consumers** (what pages or components will be impacted).
-- Use the built-in dependency tracer:
-  ```bash
-  npm run arch:trace <keyword_or_filename>
-  ```
-- Refer to the system map in [`ARCHITECTURE.md`](file:///Users/hafizov/Developers/sogd-realty/ARCHITECTURE.md) and the `.agents/skills/codebase-architecture/` skill.
+---
 
-## 2. Cross-Cutting Contracts
-- **Bilingual Localization (`ru` & `tg`)**: Always use `tDual(ruText, tgText)` from `useLanguage()`. Never render unlocalized user-facing strings.
-- **Dual Currency (`TJS` & `USD`)**: Always support both currencies. Use `formatPrice(priceTjs, priceUsd)` from `useCurrency()`.
-- **Geographic Precision**: Follow Sughd regions, districts, and coordinates defined in `src/lib/constants/locations.ts`.
-- **Responsive Layout Integrity**: Ensure desktop sticky elements (e.g. `lg:sticky lg:top-20 self-start`) and mobile breakpoints behave cleanly without overflow.
+## 2. Обязательные документы для чтения
+Перед выполнением задач ознакомься с корневыми манифестами:
+- [`AGENTS.md`](./AGENTS.md) — общие правила работы агентов и инварианты.
+- [`ARCHITECTURE.md`](./ARCHITECTURE.md) — архитектура слоёв, API и потоков данных.
+- [`DESIGN.md`](./DESIGN.md) — визуальный язык «Digital Cleanliness + Tajik Modernity».
+- [`RULES.md`](./RULES.md) — правила кодирования, тестирования и безопасности.
+- [`TASKS.md`](./TASKS.md) и [`MEMORY.md`](./MEMORY.md) — статус задач и журнал архитектурных решений (ADR).
+- [`docs/specs/SPEC_BOOKING_CALL_REQUESTS_CRM.md`](./docs/specs/SPEC_BOOKING_CALL_REQUESTS_CRM.md) — полное ТЗ (15 разделов) сценария заявок на бронирование и звонки.
 
-## 3. Verification Protocol
-After making any code changes:
-- Run the test suite: `npm test`
-- Run the production build: `npm run build`
-- Ensure zero TypeScript or linting regressions.
+---
 
-## 4. Vibe Coding Methodology (roboco-io/awesome-vibecoding)
-- Follow the **Vibe Development Lifecycle (VDLC)**: Intent & Spec ➔ Architectural Dependency Trace ➔ Staged Atomic Edits ➔ Verification Gates (`npm test` & `npm run build`) ➔ Git Checkpoint.
-- Reference curated tools, workflows and guides in [`docs/awesome-vibecoding/`](file:///Users/hafizov/Developers/sogd-realty/docs/awesome-vibecoding/README.md) and skill [`.agents/skills/vibe-coding/SKILL.md`](file:///Users/hafizov/Developers/sogd-realty/.agents/skills/vibe-coding/SKILL.md).
+## 3. Архитектурные правила
+1. **Слоистая структура (`app` $\rightarrow$ `components/modules` $\rightarrow$ `components/ui` $\rightarrow$ `lib`)**:
+   - Вся бизнес-логика (расчёт ипотеки, сборка комплексной сделки, проверка CRM-настроек, платёжный шлюз, рекламный аукцион, сравнение объектов, импорт из ERP) изолирована в `src/lib/`.
+2. **Принцип Zero Client Trust**:
+   - Серверные маршруты (`/api/crm/lead-booking`, `/api/payments/checkout`, `/api/classifieds/vas`, `/api/erp/sync`) не доверяют клиентским суммам и пересчитывают цены по серверному справочнику в `TJS`.
+3. **Тестирование и сборка**:
+   - Перед завершением задачи обязательно выполни:
+     ```bash
+     npx tsx --test 'src/**/*.test.ts'
+     npm run build
+     ```
+   - Все **176 unit-тестов** должны проходить без ошибок.
