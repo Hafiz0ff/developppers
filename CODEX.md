@@ -7,7 +7,7 @@
 ## 1. Среда выполнения и проверка сборки
 
 - **Корень проекта**: `/Users/hafizov/Developers/sogd-realty`
-- **Фреймворк**: Next.js 16.2 (`App Router`), React 19.2, TypeScript 5 (`strict: true`), Tailwind CSS v4.
+- **Фреймворк**: Next.js 16.4 (`App Router`), React 19.2, TypeScript 5 (`strict: true`), Tailwind CSS v4.
 - **Команда тестирования** (обязательна перед завершением любой задачи):
   ```bash
   npx tsx --test 'src/**/*.test.ts'
@@ -23,6 +23,7 @@
 
 | Модуль | Серверная логика / Стор (`src/lib/`) | API Endpoint (`src/app/api/`) | UI-компоненты (`src/components/modules/`) |
 | :--- | :--- | :--- | :--- |
+| **URL-архитектура и SEO (ТЗ v1.7)** | `seo/taxonomy-store.ts`, `seo/url-resolver.ts`, `seo/url-alias-store.ts`, `seo/batch-seo-processor.ts`, `seo/sitemap-generator.ts` | `/api/super-admin/categories`, `/api/super-admin/seo/dry-run` | `app/super-admin/categories/page.tsx`, `middleware.ts`, `app/robots.ts`, `app/sitemap.ts` |
 | **CRM-бронирование и звонки** | `crm-booking-store.ts` | `/api/crm/lead-booking`, `/api/developer/crm-settings` | `projects/project-deal-builder-block.tsx`, `projects/lead-request-drawer.tsx`, `developer-admin/developer-crm-booking-settings.tsx` |
 | **Шахматки ЖК, паркинга и кладовых** | `mock-data.ts` | `/api/projects`, `/api/pdf/unit/[id]` | `projects/chessboard.tsx`, `projects/building-cross-section.tsx`, `projects/parking-chessboard-modal.tsx`, `projects/storage-chessboard-modal.tsx` |
 | **Интеграция со строительной ERP** | `erp-engine.ts` | `/api/erp/sync` | `app/developer-admin/page.tsx` |
@@ -34,13 +35,14 @@
 
 ## 3. Строгие контракты и правила безопасности
 
-1. **Zero Client Trust в `/api/crm/lead-booking`**:
-   - Всегда вызывай `verifyAndResolveLeadDealBundle` из `src/lib/crm-booking-store.ts`.
-   - Проверяй: принадлежность проекта застройщику (`DEVELOPER_MISMATCH`), подключение CRM (`CRM_NOT_ACTIVE`), активность сценария (`FEATURE_DISABLED`), статус `"available"` для каждого выбранного лота (`unitId`, `parkingId`, `storageId`) и пересчитывай стоимость на сервере в `TJS`.
-   - Никогда не меняй статус лота на `"booked"` или `"sold"` в момент отправки клиентской заявки.
-2. **UI-инварианты сценария бронирования**:
-   - Иконка `(?)` располагается **слева** от тумблера в `DeveloperCrmBookingSettings` и поддерживает как `hover`-поповер на десктопе, так и модальное окно при клике / на мобильных.
-   - Оверлей `LeadRequestDrawer` выезжает **слева** (`left-0 slide-in-from-left`), содержит радиокнопки «В течение 15 минут» (по умолчанию) и «Выбрать время», а также квадратный чекбокс согласия с ПДн (`/privacy`), который по умолчанию **не отмечен** (`false`).
+1. **SEO-инварианты (ТЗ v1.7)**:
+   - RU-версия **строго без префикса** (`/`). TG — `/tg/`, EN — `/en/`.
+   - При смене категории или slug старый URL регистрируется в реестре алиасов и перенаправляется на актуальный канонический URL одним серверным 301.
+   - Цепочки редиректов автоматически ликвидируются (`A -> C`). Циклические редиректы запрещены.
+   - Партнёры заполняют только бизнес-данные. Ручные SEO-поля в кабинетах запрещены.
+   - Пакетные аудиты запускать в режиме DRY RUN. Не создавать фиктивные записи в БД для нагрузочных тестов.
+2. **Zero Client Trust в `/api/crm/lead-booking`**:
+   - Всегда вызывай `verifyAndResolveLeadDealBundle`. Пересчитывай стоимость на сервере в `TJS`. Не меняй статус лотов на `"booked"` автоматически.
 3. **Типобезопасность**:
    - Использование `any` и `@ts-ignore` запрещено. Все DTO и доменные модели типизированы в `src/lib/*`.
 4. **Синхронизация документации**:

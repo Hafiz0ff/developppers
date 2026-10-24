@@ -7,6 +7,8 @@ import { classifiedInputSchema } from "@/lib/classifieds/schema";
 import { mapClassifiedToCard, type ClassifiedCard } from "@/lib/classifieds/map-card";
 import { getClassifiedsActor } from "@/lib/classifieds/session";
 import { CATALOG_PROPERTIES, getPropertyById } from "@/lib/catalog-data";
+import { resolveListingUrl } from "@/lib/seo/url-resolver";
+import { recordUrlAlias } from "@/lib/seo/url-alias-store";
 
 export async function GET(
   _req: NextRequest,
@@ -92,6 +94,20 @@ export async function PATCH(
     }
 
     const input = parsed.data;
+    const oldUrl = resolveListingUrl(
+      {
+        id: row.id,
+        title: row.title,
+        dealType: row.dealType,
+        propertyType: row.propertyType,
+        city: row.city,
+        district: row.district,
+        priceTjs: Number(row.priceTjs),
+        priceUsd: Number(row.priceUsd),
+      },
+      "ru"
+    );
+
     await db
       .update(classifieds)
       .set({
@@ -118,6 +134,32 @@ export async function PATCH(
       .where(eq(classifieds.id, id));
 
     const updated = await db.select().from(classifieds).where(eq(classifieds.id, id)).limit(1);
+
+    if (updated[0]) {
+      const newUrl = resolveListingUrl(
+        {
+          id: updated[0].id,
+          title: updated[0].title,
+          dealType: updated[0].dealType,
+          propertyType: updated[0].propertyType,
+          city: updated[0].city,
+          district: updated[0].district,
+          priceTjs: Number(updated[0].priceTjs),
+          priceUsd: Number(updated[0].priceUsd),
+        },
+        "ru"
+      );
+
+      if (oldUrl && newUrl && oldUrl !== newUrl) {
+        recordUrlAlias({
+          oldPath: oldUrl,
+          targetPath: newUrl,
+          entityId: id,
+          entityType: "listing",
+          reason: "Category or location changed via PATCH",
+        });
+      }
+    }
     return NextResponse.json({
       success: true,
       classified: updated[0] ? mapClassifiedToCard(updated[0]) : null,

@@ -15,6 +15,7 @@ import {
   ArrowLeft,
   ExternalLink,
   Sparkles,
+  Globe,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
@@ -43,6 +44,12 @@ export default function SuperAdminLayout({
       href: "/super-admin/payments",
       icon: CreditCard,
       badge: "Корти Милли, DC",
+    },
+    {
+      title: "Таксономия и SEO",
+      href: "/super-admin/categories",
+      icon: Globe,
+      badge: "v1.7",
     },
     {
       title: "Кабинет рекламодателя",
