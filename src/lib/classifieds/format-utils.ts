@@ -1,7 +1,9 @@
+import type { Language } from "@/lib/i18n/translations";
+
 /**
  * Date formatting utilities for real estate listings
  * Implements strict format matching specification 4.4:
- * «Публикация 15.окт, 11:54» (RU) / «Нашр 15.окт, 11:54» (TG)
+ * «Публикация 15.окт, 11:54» (RU) / «Нашр 15.окт, 11:54» (TG) / «Published 15.Oct, 11:54» (EN)
  */
 
 const MONTHS_SHORT_RU = [
@@ -34,9 +36,24 @@ const MONTHS_SHORT_TG = [
   "дек",
 ];
 
+const MONTHS_SHORT_EN = [
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
+  "May",
+  "Jun",
+  "Jul",
+  "Aug",
+  "Sep",
+  "Oct",
+  "Nov",
+  "Dec",
+];
+
 export function formatPublicationDate(
   dateInput?: Date | string | number | null,
-  lang: "ru" | "tg" = "ru",
+  lang: Language = "ru",
   seedFallbackId?: string
 ): string {
   let date: Date;
@@ -52,11 +69,16 @@ export function formatPublicationDate(
 
   const day = date.getDate();
   const monthIdx = date.getMonth();
-  const monthName = lang === "tg" ? MONTHS_SHORT_TG[monthIdx] : MONTHS_SHORT_RU[monthIdx];
+  const monthName =
+    lang === "tg"
+      ? MONTHS_SHORT_TG[monthIdx]
+      : lang === "en"
+      ? MONTHS_SHORT_EN[monthIdx]
+      : MONTHS_SHORT_RU[monthIdx];
   const hours = String(date.getHours()).padStart(2, "0");
   const minutes = String(date.getMinutes()).padStart(2, "0");
 
-  const prefix = lang === "tg" ? "Нашр" : "Публикация";
+  const prefix = lang === "tg" ? "Нашр" : lang === "en" ? "Published" : "Публикация";
 
   return `${prefix} ${day}.${monthName}, ${hours}:${minutes}`;
 }
@@ -93,7 +115,7 @@ function getFallbackDateForId(id?: string): Date {
 export function formatPricePerSquareMeter(
   totalPriceTjs: number,
   areaSqm: number,
-  lang: "ru" | "tg" = "ru"
+  lang: Language = "ru"
 ): string {
   if (!areaSqm || areaSqm <= 0 || !totalPriceTjs || totalPriceTjs <= 0) {
     return "";
@@ -105,6 +127,9 @@ export function formatPricePerSquareMeter(
 
   if (lang === "tg") {
     return `Нарх барои метр: ${formattedNumber} сомонӣ/м²`;
+  }
+  if (lang === "en") {
+    return `Price per sq.m: ${formattedNumber} TJS/sq.m`;
   }
   return `Цена за метр: ${formattedNumber} сомони/м²`;
 }

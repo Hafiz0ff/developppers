@@ -4,7 +4,7 @@
 [![React 19](https://img.shields.io/badge/React-19.2-61DAFB?logo=react)](https://react.dev/)
 [![TypeScript 5](https://img.shields.io/badge/TypeScript-5.x-3178C6?logo=typescript)](https://www.typescriptlang.org/)
 [![Tailwind CSS 4](https://img.shields.io/badge/Tailwind_CSS-v4-38B2AC?logo=tailwind-css)](https://tailwindcss.com/)
-[![Unit Tests](https://img.shields.io/badge/Unit_Tests-187_Passed-10B981)](#тестирование)
+[![Unit Tests](https://img.shields.io/badge/Unit_Tests-192_Passed-10B981)](#тестирование)
 [![License: Private](https://img.shields.io/badge/License-Proprietary-emerald)](#)
 
 > **Maskani (Sogd Realty)** — цифровая PropTech-платформа нового поколения для рынка первичной и вторичной недвижимости Согдийской области и всего Таджикистана (Худжанд, Душанбе, Бустон, Истаравшан, Гулистон и др.). Платформа объединяет каталог верифицированных новостроек с интерактивными шахматками, конструктор комплексной сделки (квартира + паркинг + кладовая), сквозное CRM-бронирование, вторичный рынок без посредников, платёжные шлюзы Таджикистана (`Корти Милли`, `DC / Dushanbe City`, `Alif Salom`, `Эсхата Онлайн`), модуль сравнения объектов, рекламный аукцион, управляемую URL-архитектуру и автоматизацию SEO с кабинетом Super Admin.

@@ -10,7 +10,7 @@
 # Запуск dev-сервера (Next.js 16 + Turbopack)
 npm run dev
 
-# Запуск всех 187 unit- и интеграционных тестов
+# Запуск всех 192 unit- и интеграционных тестов
 npx tsx --test 'src/**/*.test.ts'
 
 # Production-сборка и проверка TypeScript
@@ -26,8 +26,8 @@ npm run lint
 
 - **Стек**: Next.js 16.4 (`App Router`), React 19.2, TypeScript 5 (`strict: true`), Tailwind CSS v4, Edge Middleware, `@2gis/mapgl`, `pdfkit`.
 - **Слоистая структура**:
-  - `src/app/` — страницы и серверные Route Handlers (`/api/*`).
-  - `src/middleware.ts` — серверные 301-редиректы URL-алиасов.
+  - `src/app/` — страницы, динамические SEO-хабы (`[city]`, `[city]/[...slug]`) и серверные Route Handlers (`/api/*`).
+  - `next.config.ts` — серверные rewrites для `/tg` и `/en`, 301-редиректы запрещённого `/ru/`.
   - `src/components/modules/` — доменные модули (`projects`, `developer-admin`, `classifieds`, `payments`, `ads`, `map`, `catalog`, `calculator`).
   - `src/components/ui/` — переиспользуемые UI-примитивы (`Button`, `Badge`, `Card`, `Input`).
   - `src/lib/` — чистая доменная логика, SEO-движок (`src/lib/seo/`), валидаторы, интеграционные движки и `*.test.ts`.

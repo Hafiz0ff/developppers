@@ -23,7 +23,7 @@
 
 | Модуль | Серверная логика / Стор (`src/lib/`) | API Endpoint (`src/app/api/`) | UI-компоненты (`src/components/modules/`) |
 | :--- | :--- | :--- | :--- |
-| **URL-архитектура и SEO (ТЗ v1.7)** | `seo/taxonomy-store.ts`, `seo/url-resolver.ts`, `seo/url-alias-store.ts`, `seo/batch-seo-processor.ts`, `seo/sitemap-generator.ts` | `/api/super-admin/categories`, `/api/super-admin/seo/dry-run` | `app/super-admin/categories/page.tsx`, `middleware.ts`, `app/robots.ts`, `app/sitemap.ts` |
+| **URL-архитектура, мультиязычность и SEO (ТЗ v1.7)** | `seo/taxonomy-store.ts`, `seo/url-resolver.ts`, `seo/url-alias-store.ts`, `seo/batch-seo-processor.ts`, `seo/sitemap-generator.ts` | `/api/super-admin/categories`, `/api/super-admin/seo/dry-run` | `app/super-admin/categories/page.tsx`, `next.config.ts`, `app/[city]/page.tsx`, `app/[city]/[...slug]/page.tsx`, `app/robots.ts`, `app/sitemap.ts` |
 | **CRM-бронирование и звонки** | `crm-booking-store.ts` | `/api/crm/lead-booking`, `/api/developer/crm-settings` | `projects/project-deal-builder-block.tsx`, `projects/lead-request-drawer.tsx`, `developer-admin/developer-crm-booking-settings.tsx` |
 | **Шахматки ЖК, паркинга и кладовых** | `mock-data.ts` | `/api/projects`, `/api/pdf/unit/[id]` | `projects/chessboard.tsx`, `projects/building-cross-section.tsx`, `projects/parking-chessboard-modal.tsx`, `projects/storage-chessboard-modal.tsx` |
 | **Интеграция со строительной ERP** | `erp-engine.ts` | `/api/erp/sync` | `app/developer-admin/page.tsx` |

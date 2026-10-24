@@ -27,6 +27,8 @@ import {
   Compass,
 } from "lucide-react";
 
+import { Language } from "@/lib/i18n/translations";
+
 export interface InteractiveMapProps {
   properties: MapPropertyItem[];
   selectedPropertyId?: string | null;
@@ -34,7 +36,7 @@ export interface InteractiveMapProps {
   onSelectProperty?: (property: MapPropertyItem) => void;
   activePresetId?: string;
   currency?: "TJS" | "USD";
-  language?: "ru" | "tg";
+  language?: Language;
   className?: string;
   showControls?: boolean;
   onBoundsChange?: (bounds: BoundingBox, visibleItems: MapPropertyItem[]) => void;

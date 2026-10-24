@@ -262,6 +262,8 @@ export function getAllMapProperties(): MapPropertyItem[] {
   return items;
 }
 
+import type { Language } from "@/lib/i18n/translations";
+
 /**
  * Formats short price for compact map pin badges
  */
@@ -269,7 +271,7 @@ export function formatPriceShort(
   priceUsd: number,
   priceTjs: number,
   currency: "USD" | "TJS",
-  language: "ru" | "tg" = "ru"
+  language: Language = "ru"
 ): string {
   if (currency === "USD") {
     if (priceUsd >= 1000000) {
@@ -281,10 +283,18 @@ export function formatPriceShort(
   // TJS formatting
   if (priceTjs >= 1000000) {
     const mln = (priceTjs / 1000000).toFixed(1);
-    return language === "tg" ? `${mln} млн сомонӣ` : `${mln} млн TJS`;
+    return language === "tg"
+      ? `${mln} млн сомонӣ`
+      : language === "en"
+      ? `${mln}M TJS`
+      : `${mln} млн TJS`;
   }
   const th = Math.round(priceTjs / 1000);
-  return language === "tg" ? `${th} ҳ. сомонӣ` : `${th} тыс. TJS`;
+  return language === "tg"
+    ? `${th} ҳ. сомонӣ`
+    : language === "en"
+    ? `${th}k TJS`
+    : `${th} тыс. TJS`;
 }
 
 export interface MapCluster {

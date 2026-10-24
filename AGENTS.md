@@ -30,7 +30,7 @@
 
 | Домен | Основные файлы |
 | :--- | :--- |
-| **URL-архитектура и автоматизация SEO (ТЗ v1.7)** | `src/lib/seo/taxonomy-store.ts`, `src/lib/seo/url-resolver.ts`, `src/lib/seo/url-alias-store.ts`, `src/lib/seo/batch-seo-processor.ts`, `src/lib/seo/sitemap-generator.ts`, `src/middleware.ts`, `src/app/super-admin/categories/page.tsx`, `src/app/robots.ts`, `src/app/sitemap.ts` |
+| **URL-архитектура, мультиязычные роуты и автоматизация SEO (ТЗ v1.7)** | `src/lib/seo/taxonomy-store.ts`, `src/lib/seo/url-resolver.ts`, `src/lib/seo/url-alias-store.ts`, `src/lib/seo/batch-seo-processor.ts`, `src/lib/seo/sitemap-generator.ts`, `next.config.ts`, `src/app/[city]/page.tsx`, `src/app/[city]/[...slug]/page.tsx`, `src/app/super-admin/categories/page.tsx`, `src/app/robots.ts`, `src/app/sitemap.ts` |
 | **Сценарий бронирования и звонков (CRM Deal Builder)** | `src/lib/crm-booking-store.ts`, `src/app/api/crm/lead-booking/route.ts`, `src/components/modules/projects/project-deal-builder-block.tsx`, `src/components/modules/projects/lead-request-drawer.tsx`, `src/components/modules/developer-admin/developer-crm-booking-settings.tsx` |
 | **Шахматки квартир, паркинга и кладовых** | `src/components/modules/projects/chessboard.tsx`, `src/components/modules/projects/parking-chessboard-modal.tsx`, `src/components/modules/projects/storage-chessboard-modal.tsx` |
 | **Интеграция со строительной ERP** | `src/lib/erp-engine.ts`, `src/app/api/erp/sync/route.ts`, `src/app/developer-admin/page.tsx` |

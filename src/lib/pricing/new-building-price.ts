@@ -10,6 +10,8 @@
  * 4. Unified across all residential complex / new development cards.
  */
 
+import type { Language } from "@/lib/i18n/translations";
+
 export interface PricePerMeterParams {
   pricePerMeterTjs?: number | string | null;
   pricePerMeterUsd?: number | string | null;
@@ -17,7 +19,7 @@ export interface PricePerMeterParams {
   totalPriceUsd?: number | string | null;
   areaSqm?: number | string | null;
   currency?: "TJS" | "USD";
-  language?: "ru" | "tg";
+  language?: Language;
 }
 
 /**
@@ -26,7 +28,7 @@ export interface PricePerMeterParams {
  */
 export function formatNewBuildingPricePerMeter(params: PricePerMeterParams): string | null {
   const currency = params.currency === "USD" ? "USD" : "TJS";
-  const language = params.language === "tg" ? "tg" : "ru";
+  const language: Language = params.language || "ru";
 
   let numericPrice: number | null = null;
 
@@ -95,12 +97,18 @@ export function formatNewBuildingPricePerMeter(params: PricePerMeterParams): str
     return `${formattedDigits} сомонӣ/м²`;
   }
 
+  if (language === "en") {
+    return `${formattedDigits} TJS/sq.m`;
+  }
+
   return `${formattedDigits} сомони/м²`;
 }
 
 /**
  * Returns localized label for price per meter.
  */
-export function getPricePerMeterLabel(language?: "ru" | "tg"): string {
-  return language === "tg" ? "Нарх барои метр" : "Цена за метр";
+export function getPricePerMeterLabel(language?: Language): string {
+  if (language === "tg") return "Нарх барои метр";
+  if (language === "en") return "Price per sq.m";
+  return "Цена за метр";
 }
