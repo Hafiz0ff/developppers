@@ -382,18 +382,6 @@ export default function ClassifiedDetailPage() {
                 </Badge>
               )}
             </div>
-
-            {/* Publication Date & Views Line at Badge Level */}
-            <div className="text-xs text-slate-500 flex items-center gap-2 sm:gap-3 ml-auto shrink-0">
-              <span className="font-medium text-slate-600">
-                {formatPublicationDate(item.createdAt, language, item.id || item.slug)}
-              </span>
-              <span className="text-slate-300">•</span>
-              <span className="flex items-center gap-1 font-semibold text-slate-700">
-                <Eye className="h-3.5 w-3.5 text-slate-400" />
-                <span>{stats.viewsCount} {tDual("просмотров", "боздид")}</span>
-              </span>
-            </div>
           </div>
 
           <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight leading-tight">
