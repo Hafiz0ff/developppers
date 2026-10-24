@@ -49,7 +49,6 @@ import { useEntityMetrics } from "@/hooks/use-entity-metrics";
 import { formatPublicationDate, formatPricePerSquareMeter } from "@/lib/classifieds/format-utils";
 import { useCompare } from "@/context/compare-context";
 import { classifiedToCompareProperty } from "@/lib/compare/compare-store";
-import { resolveListingSeo } from "@/lib/seo/url-resolver";
 
 export default function ClassifiedDetailPage() {
   const params = useParams();
@@ -292,88 +291,23 @@ export default function ClassifiedDetailPage() {
       : `Здравствуйте! Пишу по поводу вашего объявления на Maskani.tj: «${item.title}» за $${item.priceUsd?.toLocaleString()}. Объявление еще актуально?`
   );
 
-  const seoData = useMemo(() => {
-    if (!item) return null;
-    return resolveListingSeo(
-      {
-        id: item.id,
-        slug: item.slug,
-        title: item.title,
-        titleTg: item.titleTg,
-        dealType: item.dealType,
-        propertyType: item.propertyType,
-        city: item.city,
-        cityTg: item.cityTg,
-        district: item.district,
-        districtTg: item.districtTg,
-        priceTjs: item.priceTjs,
-        priceUsd: item.priceUsd,
-        area: item.area,
-        rooms: item.rooms,
-        address: `${item.city}, ${item.district || ""}`,
-        image: item.image,
-        photos: item.images,
-        status: item.status,
-      },
-      isTg ? "tg" : "ru"
-    );
-  }, [item, isTg]);
-
   return (
     <div className="min-h-screen bg-[#F8FAFC] pb-24">
-      {/* Schema.org Structured Data */}
-      {seoData && (
-        <>
-          <script
-            type="application/ld+json"
-            dangerouslySetInnerHTML={{
-              __html: JSON.stringify(seoData.realEstateJsonLd),
-            }}
-          />
-          <script
-            type="application/ld+json"
-            dangerouslySetInnerHTML={{
-              __html: JSON.stringify(seoData.breadcrumbJsonLd),
-            }}
-          />
-        </>
-      )}
-
       {/* 1. TOP BREADCRUMBS & ACTIONS */}
       <div className="bg-white border-b border-slate-200/80 sticky top-0 z-20 backdrop-blur-md bg-white/95">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex items-center justify-between gap-4">
-          <div className="flex items-center gap-1.5 text-xs text-slate-500 truncate">
-            {seoData ? (
-              seoData.breadcrumbs.map((crumb, idx) => (
-                <React.Fragment key={idx}>
-                  {idx > 0 && <span className="text-slate-300">/</span>}
-                  {crumb.url && idx < seoData.breadcrumbs.length - 1 ? (
-                    <Link
-                      href={crumb.url.replace(/^https?:\/\/[^/]+/, "") || "/"}
-                      className="hover:text-emerald-700 font-medium shrink-0"
-                    >
-                      {crumb.name}
-                    </Link>
-                  ) : (
-                    <span className="truncate text-slate-800 font-semibold">{crumb.name}</span>
-                  )}
-                </React.Fragment>
-              ))
-            ) : (
-              <>
-                <Link
-                  href="/classifieds"
-                  className="hover:text-emerald-700 flex items-center gap-1 font-medium shrink-0"
-                >
-                  <ArrowLeft className="h-3.5 w-3.5" />
-                  {tDual("Вторичный рынок", "Бозори дуюмдараҷа")}
-                </Link>
-                <span className="text-slate-300">/</span>
-                <span className="truncate text-slate-800 font-semibold">
-                  {item.city}, {item.district}
-                </span>
-              </>
-            )}
+          <div className="flex items-center gap-2 text-xs text-slate-500 truncate">
+            <Link
+              href="/classifieds"
+              className="hover:text-emerald-700 flex items-center gap-1 font-medium shrink-0"
+            >
+              <ArrowLeft className="h-3.5 w-3.5" />
+              {tDual("Вторичный рынок", "Бозори дуюмдараҷа")}
+            </Link>
+            <span className="text-slate-300">/</span>
+            <span className="truncate text-slate-800 font-semibold">
+              {item.city}, {item.district}
+            </span>
           </div>
 
           <div className="flex items-center gap-2 shrink-0">
