@@ -825,18 +825,18 @@ export default function HomePage() {
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                     />
 
-                    <div className="absolute top-3.5 left-3.5 flex flex-wrap gap-2">
-                      <span className="glass-badge-emerald font-bold text-xs px-2.5 py-1 rounded-lg shadow-sm">
+                    <div className="absolute top-3.5 left-3.5 flex flex-wrap gap-2 z-10">
+                      <span className="inline-flex items-center px-2.5 py-1 rounded-xl bg-emerald-500/30 hover:bg-emerald-500/40 backdrop-blur-xl border border-emerald-400/50 text-white font-bold text-xs shadow-[0_4px_16px_rgba(16,185,129,0.30),inset_0_1px_1.5px_rgba(255,255,255,0.45)] drop-shadow-[0_1px_2px_rgba(0,0,0,0.7)] select-none transition-all">
                         {projStatus}
                       </span>
-                      <span className="glass-badge-light font-bold text-xs px-2.5 py-1 rounded-lg shadow-xs">
+                      <span className="inline-flex items-center px-2.5 py-1 rounded-xl bg-black/25 hover:bg-black/35 backdrop-blur-xl border border-white/25 text-white font-bold text-xs shadow-[0_4px_16px_rgba(0,0,0,0.25),inset_0_1px_1.5px_rgba(255,255,255,0.35)] drop-shadow-[0_1px_2px_rgba(0,0,0,0.7)] select-none transition-all">
                         {projClass}
                       </span>
                     </div>
 
-                    <div className="absolute bottom-3.5 left-3.5 glass-badge-light text-slate-900 font-bold text-xs px-3 py-1.5 rounded-xl shadow-sm flex items-center gap-1.5">
-                      <Percent className="h-3.5 w-3.5 text-emerald-600 shrink-0" />
-                      <span className="text-slate-900 font-bold">{projInstallment} {projDownPayment ? `(${projDownPayment})` : ""}</span>
+                    <div className="absolute bottom-3.5 left-3.5 z-10 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-black/25 hover:bg-black/35 backdrop-blur-xl border border-white/25 text-white font-bold text-xs shadow-[0_4px_16px_rgba(0,0,0,0.25),inset_0_1px_1.5px_rgba(255,255,255,0.35)] drop-shadow-[0_1px_2px_rgba(0,0,0,0.7)] select-none transition-all">
+                      <Percent className="h-3.5 w-3.5 text-emerald-400 drop-shadow-[0_0_6px_rgba(52,211,153,0.9)] shrink-0" />
+                      <span className="text-white font-bold drop-shadow-[0_1px_2px_rgba(0,0,0,0.7)]">{projInstallment} {projDownPayment ? `(${projDownPayment})` : ""}</span>
                     </div>
 
                     <div className="absolute bottom-3.5 right-3.5 z-10">
@@ -845,11 +845,11 @@ export default function HomePage() {
 
                     <Link
                       href={developer ? `/developers/${developer.slug}` : "#"}
-                      className="absolute top-3.5 right-3.5 glass-badge-light px-3 py-1.5 rounded-xl text-xs font-bold text-slate-900 shadow-sm flex items-center gap-2 hover:scale-105 transition-all"
+                      className="absolute top-3.5 right-3.5 z-10 inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-black/25 hover:bg-black/35 backdrop-blur-xl border border-white/25 text-xs font-bold text-white shadow-[0_4px_16px_rgba(0,0,0,0.25),inset_0_1px_1.5px_rgba(255,255,255,0.35)] drop-shadow-[0_1px_2px_rgba(0,0,0,0.7)] transition-all hover:scale-105 select-none"
                     >
                       <DeveloperAvatar name={projDevName} size="sm" className="h-5 w-5 text-[9px]" />
-                      <span className="truncate max-w-[130px]">{projDevName}</span>
-                      <CheckCircle2 className="h-3.5 w-3.5 text-emerald-600 shrink-0" />
+                      <span className="truncate max-w-[130px] drop-shadow-[0_1px_2px_rgba(0,0,0,0.7)]">{projDevName}</span>
+                      <CheckCircle2 className="h-3.5 w-3.5 text-emerald-400 drop-shadow-[0_0_6px_rgba(52,211,153,0.9)] shrink-0" />
                     </Link>
                   </div>
 

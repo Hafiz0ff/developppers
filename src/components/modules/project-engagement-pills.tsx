@@ -94,7 +94,7 @@ export function ProjectCatalogCardBadge({ slug }: { slug: string }) {
         e.preventDefault();
         e.stopPropagation();
       }}
-      className="inline-flex items-center gap-2 bg-slate-900/60 backdrop-blur-md px-2.5 py-1 rounded-lg text-white text-[11px] font-medium shadow-xs"
+      className="inline-flex items-center gap-2 bg-black/25 hover:bg-black/35 backdrop-blur-xl border border-white/25 px-2.5 py-1.5 rounded-xl text-white text-xs font-semibold shadow-[0_4px_16px_rgba(0,0,0,0.25),inset_0_1px_1.5px_rgba(255,255,255,0.35)] drop-shadow-[0_1px_2px_rgba(0,0,0,0.7)] select-none transition-all"
     >
       <button
         type="button"
@@ -106,18 +106,18 @@ export function ProjectCatalogCardBadge({ slug }: { slug: string }) {
             : tDual("Добавить в избранное", "Ба баргузидаҳо илова кардан")
         }
       >
-        <Heart className={`h-3.5 w-3.5 ${isFavorite ? "fill-rose-500 text-rose-500" : ""}`} />
-        <span>{stats.favoritesCount}</span>
+        <Heart className={`h-3.5 w-3.5 transition-colors ${isFavorite ? "fill-rose-500 text-rose-400 drop-shadow-[0_0_8px_rgba(244,63,94,0.9)]" : "text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.7)]"}`} />
+        <span className="drop-shadow-[0_1px_2px_rgba(0,0,0,0.7)]">{stats.favoritesCount}</span>
       </button>
 
-      <span className="opacity-40">•</span>
+      <span className="text-white/40">•</span>
 
       <div
-        className="inline-flex items-center gap-1 opacity-90"
+        className="inline-flex items-center gap-1"
         title={tDual("Уникальных просмотров", "Шумораи боздидҳои беназир")}
       >
-        <Eye className="h-3.5 w-3.5" />
-        <span>{stats.viewsCount}</span>
+        <Eye className="h-3.5 w-3.5 text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.7)]" />
+        <span className="drop-shadow-[0_1px_2px_rgba(0,0,0,0.7)]">{stats.viewsCount}</span>
       </div>
     </div>
   );
