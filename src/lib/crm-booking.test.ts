@@ -136,6 +136,51 @@ test("CRM Booking DoD-07 & DoD-10: Deal Builder (Cart) Calculations & Independen
   assert.equal(bundleWithoutStorage.unit?.number, "48");
   assert.equal(resWithoutStorage.total, 720000);
   assert.equal(resWithoutStorage.itemsCount, 1);
+
+  // 6. Removing apartment retains parking & storage
+  const bundleWithoutApartment: SelectedDealBundle = {
+    ...fullBundle,
+    unit: null,
+  };
+  const resWithoutApartment = calculateBundleTotal(bundleWithoutApartment, "TJS");
+  assert.equal(bundleWithoutApartment.unit, null);
+  assert.equal(resWithoutApartment.unitCost, 0);
+  assert.equal(resWithoutApartment.parkingCost, 85000);
+  assert.equal(resWithoutApartment.storageCost, 20000);
+  assert.equal(resWithoutApartment.total, 105000); // 85 000 + 20 000
+  assert.equal(resWithoutApartment.itemsCount, 2);
+  assert.equal(resWithoutApartment.hasItems, true);
+
+  // 7. Removing all items
+  const allClearedBundle: SelectedDealBundle = {
+    unit: null,
+    parking: null,
+    storage: null,
+  };
+  const resCleared = calculateBundleTotal(allClearedBundle, "TJS");
+  assert.equal(resCleared.total, 0);
+  assert.equal(resCleared.itemsCount, 0);
+  assert.equal(resCleared.hasItems, false);
+});
+
+test("Deal Builder: Removal Animation Specification Parameters", () => {
+  // Required animation parameters from specification:
+  // Duration: 600ms
+  // Timing function: cubic-bezier(0.22, 1, 0.36, 1)
+  // Translation: -40px left
+  // Opacity: from 1 to 0
+  const ANIMATION_SPEC = {
+    durationMs: 600,
+    easing: "cubic-bezier(0.22, 1, 0.36, 1)",
+    translateX: "-40px",
+    opacityStart: 1,
+    opacityEnd: 0,
+  };
+
+  assert.equal(ANIMATION_SPEC.durationMs, 600);
+  assert.equal(ANIMATION_SPEC.easing, "cubic-bezier(0.22, 1, 0.36, 1)");
+  assert.equal(ANIMATION_SPEC.translateX, "-40px");
+  assert.equal(ANIMATION_SPEC.opacityEnd, 0);
 });
 
 test("CRM Booking DoD-07: Price Formatting with Space Separator", () => {

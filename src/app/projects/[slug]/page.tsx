@@ -204,6 +204,10 @@ export default function PublicProjectPage() {
     setDealBundle((prev) => ({ ...prev, storage: null }));
   };
 
+  const handleRemoveUnit = () => {
+    setDealBundle((prev) => ({ ...prev, unit: null }));
+  };
+
   const [units, setUnits] = useState<UnitData[]>(() => {
     return generateUnitsForAnyProject(project);
   });
@@ -748,6 +752,7 @@ export default function PublicProjectPage() {
             {/* DEAL BUILDER (Cart & Bundle calculation - Priority 2 under Installment, or directly under Developer Info if no installment) */}
             <ProjectDealBuilderBlock
               bundle={dealBundle}
+              onRemoveUnit={handleRemoveUnit}
               onRemoveParking={handleRemoveParking}
               onRemoveStorage={handleRemoveStorage}
               onOpenParkingModal={() => setIsParkingModalOpen(true)}

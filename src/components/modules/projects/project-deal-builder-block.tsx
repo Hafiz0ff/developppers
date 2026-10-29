@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { SelectedDealBundle } from "@/types/crm-booking";
 import { calculateBundleTotal, formatSeparatedNumber } from "@/lib/crm-booking-store";
 import { useLanguage } from "@/context/language-context";
@@ -22,6 +22,7 @@ import {
 
 interface ProjectDealBuilderBlockProps {
   bundle: SelectedDealBundle;
+  onRemoveUnit?: () => void;
   onRemoveParking: () => void;
   onRemoveStorage: () => void;
   onOpenParkingModal: () => void;
@@ -31,8 +32,92 @@ interface ProjectDealBuilderBlockProps {
   hasStorageConfigured: boolean;
 }
 
+interface DealItemRowProps {
+  itemKey: string;
+  icon: React.ReactNode;
+  title: string;
+  priceTjs: number;
+  priceUsd: number;
+  isUsd: boolean;
+  isRemoving: boolean;
+  onRemove?: () => void;
+  removeTitle: string;
+  tDual: (ru: string, tg: string, en?: string) => string;
+}
+
+function DealItemRow({
+  icon,
+  title,
+  priceTjs,
+  priceUsd,
+  isUsd,
+  isRemoving,
+  onRemove,
+  removeTitle,
+  tDual,
+}: DealItemRowProps) {
+  const formattedPrice = isUsd
+    ? `${formatSeparatedNumber(priceUsd)} $`
+    : `${formatSeparatedNumber(priceTjs)} ${tDual("сомони", "сомонӣ", "TJS")}`;
+
+  return (
+    <div
+      className={`deal-builder-item-wrapper ${isRemoving ? "is-removing" : ""}`}
+      style={{
+        display: "grid",
+        gridTemplateRows: isRemoving ? "0fr" : "1fr",
+        marginBottom: isRemoving ? 0 : "0.5rem",
+        transitionProperty: "grid-template-rows, margin-bottom, opacity",
+        transitionDuration: "600ms",
+        transitionTimingFunction: "cubic-bezier(0.22, 1, 0.36, 1)",
+      }}
+    >
+      <div className="deal-builder-item-inner overflow-hidden min-h-0">
+        <div
+          className="deal-builder-item-row flex items-center justify-between gap-3 py-1.5 px-2.5 rounded-xl bg-muted/40 border border-border/40 hover:bg-muted/60 transition-colors"
+          style={{
+            transform: isRemoving ? "translateX(-40px)" : "translateX(0)",
+            opacity: isRemoving ? 0 : 1,
+            transitionProperty: "transform, opacity",
+            transitionDuration: "600ms",
+            transitionTimingFunction: "cubic-bezier(0.22, 1, 0.36, 1)",
+            pointerEvents: isRemoving ? "none" : "auto",
+          }}
+        >
+          {/* Товар выровнен по левому краю */}
+          <div className="flex items-center gap-2 min-w-0 flex-1 text-left">
+            {icon}
+            <span className="text-foreground truncate font-medium">
+              {title}
+            </span>
+          </div>
+
+          {/* Валюта выровнена по правому краю + иконка Х после кода валют */}
+          <div className="flex items-center gap-2 shrink-0">
+            <span className="font-semibold text-foreground tabular-nums text-right">
+              {formattedPrice}
+            </span>
+            {onRemove && (
+              <button
+                type="button"
+                onClick={onRemove}
+                className="p-1 rounded-md text-muted-foreground hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/30 transition-colors cursor-pointer shrink-0"
+                title={removeTitle}
+                aria-label={removeTitle}
+              >
+                <X className="h-3.5 w-3.5" />
+              </button>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export function ProjectDealBuilderBlock({
   bundle,
+  onRemoveUnit,
   onRemoveParking,
   onRemoveStorage,
   onOpenParkingModal,
@@ -46,6 +131,34 @@ export function ProjectDealBuilderBlock({
 
   const isUsd = currency === "USD";
   const { total, itemsCount, hasItems } = calculateBundleTotal(bundle, currency);
+
+  // Состояние активных анимированных удалений (slide-out-left 600ms cubic-bezier(0.22, 1, 0.36, 1))
+  const [removingKeys, setRemovingKeys] = useState<Set<string>>(new Set());
+  const timersRef = useRef<Map<string, NodeJS.Timeout>>(new Map());
+
+  useEffect(() => {
+    return () => {
+      timersRef.current.forEach((timer) => clearTimeout(timer));
+      timersRef.current.clear();
+    };
+  }, []);
+
+  const handleRemoveItem = (key: string, onRemoveCallback: () => void) => {
+    if (removingKeys.has(key)) return;
+    setRemovingKeys((prev) => new Set(prev).add(key));
+
+    const timer = setTimeout(() => {
+      onRemoveCallback();
+      setRemovingKeys((prev) => {
+        const next = new Set(prev);
+        next.delete(key);
+        return next;
+      });
+      timersRef.current.delete(key);
+    }, 600);
+
+    timersRef.current.set(key, timer);
+  };
 
   // Section 5.2: Dynamic title for additional objects block
   const getAddonsTitle = () => {
@@ -82,8 +195,8 @@ export function ProjectDealBuilderBlock({
 
   const formatItemPrice = (priceTjs: number, priceUsd: number) => {
     return isUsd
-      ? `$${formatSeparatedNumber(priceUsd)}`
-      : `${formatSeparatedNumber(priceTjs)} ${tDual("сомони", "сомонӣ")}`;
+      ? `${formatSeparatedNumber(priceUsd)} $`
+      : `${formatSeparatedNumber(priceTjs)} ${tDual("сомони", "сомонӣ", "TJS")}`;
   };
 
   return (
@@ -228,22 +341,23 @@ export function ProjectDealBuilderBlock({
         </div>
 
         {hasItems ? (
-          <div className="space-y-2 text-xs">
+          <div className="text-xs">
             {/* Apartment item */}
             {unit ? (
-              <div className="flex items-center justify-between gap-2 py-1">
-                <div className="flex items-center gap-1.5 truncate">
-                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 shrink-0" />
-                  <span className="text-foreground truncate">
-                    {tDual("Квартира", "Хонадон")} № {unit.number}
-                  </span>
-                </div>
-                <span className="font-semibold text-foreground shrink-0 tabular-nums">
-                  — {formatItemPrice(unit.priceTjs, unit.priceUsd)}
-                </span>
-              </div>
+              <DealItemRow
+                itemKey="unit"
+                icon={<Home className="h-3.5 w-3.5 text-emerald-600 shrink-0" />}
+                title={`${tDual("Квартира", "Хонадон")} № ${unit.number} · ${unit.roomsCount}${tDual("-комн.", "-ҳуҷр.")} (${unit.totalArea} м²)`}
+                priceTjs={unit.priceTjs}
+                priceUsd={unit.priceUsd}
+                isUsd={isUsd}
+                isRemoving={removingKeys.has("unit")}
+                onRemove={onRemoveUnit ? () => handleRemoveItem("unit", onRemoveUnit) : undefined}
+                removeTitle={tDual("Удалить квартиру", "Нест кардани хонадон")}
+                tDual={tDual}
+              />
             ) : (
-              <div className="text-[11px] text-amber-700 dark:text-amber-300 bg-amber-500/10 px-2.5 py-1.5 rounded-lg">
+              <div className="text-[11px] text-amber-700 dark:text-amber-300 bg-amber-500/10 px-2.5 py-1.5 rounded-lg mb-2">
                 {tDual(
                   "Квартира ещё не выбрана. Выберите квартиру на шахматке для полного расчёта.",
                   "Хонадон ҳанӯз интихоб нашудааст. Хонадонро дар ҷадвал интихоб кунед."
@@ -253,54 +367,34 @@ export function ProjectDealBuilderBlock({
 
             {/* Parking item */}
             {parking && (
-              <div className="flex items-center justify-between gap-2 py-1 bg-muted/30 px-2 rounded-lg">
-                <div className="flex items-center gap-1.5 truncate">
-                  <Car className="h-3.5 w-3.5 text-emerald-600 shrink-0" />
-                  <span className="text-foreground truncate">
-                    {tDual("Машино-место", "Ҷойи мошин")} № {parking.number}
-                  </span>
-                </div>
-                <div className="flex items-center gap-1.5 shrink-0">
-                  <span className="font-semibold text-foreground tabular-nums">
-                    — {formatItemPrice(parking.priceTjs, parking.priceUsd)}
-                  </span>
-                  <button
-                    type="button"
-                    onClick={onRemoveParking}
-                    className="p-0.5 text-muted-foreground hover:text-rose-600 transition-colors cursor-pointer rounded"
-                    title={tDual("Удалить машино-место", "Нест кардани ҷойи мошин")}
-                    aria-label={tDual("Удалить машино-место", "Нест кардани ҷойи мошин")}
-                  >
-                    <X className="h-3.5 w-3.5" />
-                  </button>
-                </div>
-              </div>
+              <DealItemRow
+                itemKey="parking"
+                icon={<Car className="h-3.5 w-3.5 text-emerald-600 shrink-0" />}
+                title={`${tDual("Машино-место", "Ҷойи мошин")} № ${parking.number} (${parking.level})`}
+                priceTjs={parking.priceTjs}
+                priceUsd={parking.priceUsd}
+                isUsd={isUsd}
+                isRemoving={removingKeys.has("parking")}
+                onRemove={() => handleRemoveItem("parking", onRemoveParking)}
+                removeTitle={tDual("Удалить машино-место", "Нест кардани ҷойи мошин")}
+                tDual={tDual}
+              />
             )}
 
             {/* Storage item */}
             {storage && (
-              <div className="flex items-center justify-between gap-2 py-1 bg-muted/30 px-2 rounded-lg">
-                <div className="flex items-center gap-1.5 truncate">
-                  <Warehouse className="h-3.5 w-3.5 text-emerald-600 shrink-0" />
-                  <span className="text-foreground truncate">
-                    {tDual("Кладовая", "Анборхона")} № {storage.number}
-                  </span>
-                </div>
-                <div className="flex items-center gap-1.5 shrink-0">
-                  <span className="font-semibold text-foreground tabular-nums">
-                    — {formatItemPrice(storage.priceTjs, storage.priceUsd)}
-                  </span>
-                  <button
-                    type="button"
-                    onClick={onRemoveStorage}
-                    className="p-0.5 text-muted-foreground hover:text-rose-600 transition-colors cursor-pointer rounded"
-                    title={tDual("Удалить кладовую", "Нест кардани анборхона")}
-                    aria-label={tDual("Удалить кладовую", "Нест кардани анборхона")}
-                  >
-                    <X className="h-3.5 w-3.5" />
-                  </button>
-                </div>
-              </div>
+              <DealItemRow
+                itemKey="storage"
+                icon={<Warehouse className="h-3.5 w-3.5 text-emerald-600 shrink-0" />}
+                title={`${tDual("Кладовая", "Анборхона")} № ${storage.number} (${storage.area} м²)`}
+                priceTjs={storage.priceTjs}
+                priceUsd={storage.priceUsd}
+                isUsd={isUsd}
+                isRemoving={removingKeys.has("storage")}
+                onRemove={() => handleRemoveItem("storage", onRemoveStorage)}
+                removeTitle={tDual("Удалить кладовую", "Нест кардани анборхона")}
+                tDual={tDual}
+              />
             )}
 
             {/* Total line */}
@@ -310,13 +404,13 @@ export function ProjectDealBuilderBlock({
               </span>
               <span className="text-lg sm:text-xl font-black text-emerald-600 tabular-nums">
                 {isUsd
-                  ? `$${formatSeparatedNumber(total)}`
-                  : `${formatSeparatedNumber(total)} ${tDual("сомони", "сомонӣ")}`}
+                  ? `${formatSeparatedNumber(total)} $`
+                  : `${formatSeparatedNumber(total)} ${tDual("сомони", "сомонӣ", "TJS")}`}
               </span>
             </div>
           </div>
         ) : (
-          <div className="py-2 text-xs text-muted-foreground leading-relaxed">
+          <div className="py-2 text-xs text-muted-foreground leading-relaxed animate-in fade-in duration-300">
             {tDual(
               "Выберите квартиру на плане секции или в интерактивной шахматке, чтобы увидеть состав комплекта и общую стоимость.",
               "Хонадонро дар нақшаи бахш ё ҷадвали интерактивӣ интихоб кунед, то таркиби маҷмӯъ ва арзиши умумиро бинед."
