@@ -203,7 +203,7 @@ export function Header() {
 
             {/* Currency Selector */}
             <DropdownMenu>
-              <DropdownMenuTrigger className="flex items-center gap-1 px-2 sm:px-2.5 py-1.5 rounded-xl border border-white/15 bg-white/[0.05] hover:bg-white/10 active:bg-white/15 backdrop-blur-xl text-white text-xs font-bold shadow-[inset_0_1px_1px_rgba(255,255,255,0.3)] drop-shadow-[0_1px_2px_rgba(0,0,0,0.7)] transition-all outline-hidden cursor-pointer shrink-0">
+              <DropdownMenuTrigger className="flex h-8 box-border items-center gap-1 px-2 sm:px-2.5 rounded-xl border border-white/15 bg-white/[0.05] hover:bg-white/10 active:bg-white/15 backdrop-blur-xl text-white text-xs font-bold shadow-[inset_0_1px_1px_rgba(255,255,255,0.3)] drop-shadow-[0_1px_2px_rgba(0,0,0,0.7)] transition-all outline-hidden cursor-pointer shrink-0">
                 <span>{currency}</span>
                 <ChevronDown className="h-3 w-3 text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.7)]" />
               </DropdownMenuTrigger>
@@ -237,13 +237,13 @@ export function Header() {
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="shrink-0">
               <Link
                 href="/compare"
-                className="relative p-1.5 sm:p-2 rounded-xl border border-white/15 bg-white/[0.05] hover:bg-white/10 active:bg-white/15 backdrop-blur-xl text-white shadow-[inset_0_1px_1px_rgba(255,255,255,0.3)] drop-shadow-[0_1px_2px_rgba(0,0,0,0.7)] transition-all flex items-center justify-center cursor-pointer"
+                className="relative flex h-8 w-8 box-border items-center justify-center rounded-xl border border-white/15 bg-white/[0.05] hover:bg-white/10 active:bg-white/15 backdrop-blur-xl text-white shadow-[inset_0_1px_1px_rgba(255,255,255,0.3)] drop-shadow-[0_1px_2px_rgba(0,0,0,0.7)] transition-all cursor-pointer"
                 title={t.nav.compare}
                 aria-label={t.nav.compare}
               >
-                <ArrowLeftRight className="h-4 w-4 text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.7)]" />
+                <ArrowLeftRight className="h-3.5 w-3.5 text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.7)]" />
                 {compareCount > 0 && (
-                  <span className="absolute -top-1.5 -right-1.5 bg-emerald-500 text-white font-bold text-[10px] min-w-[18px] h-[18px] rounded-full flex items-center justify-center px-1 shadow-[0_0_8px_rgba(16,185,129,0.8)]">
+                  <span className="absolute -top-1 -right-1 bg-emerald-500 text-white font-bold text-[9px] min-w-[16px] h-[16px] rounded-full flex items-center justify-center px-0.5 shadow-[0_0_8px_rgba(16,185,129,0.8)]">
                     {compareCount}
                   </span>
                 )}
@@ -261,7 +261,7 @@ export function Header() {
                       handleOpenAuth("login");
                     }
                   }}
-                  className="hidden sm:inline-flex items-center justify-center px-2 xl:px-2.5 py-1.5 rounded-xl border border-white/20 bg-white/[0.06] hover:bg-white/15 active:bg-white/20 text-white font-bold backdrop-blur-xl text-xs cursor-pointer shadow-[inset_0_1px_1px_rgba(255,255,255,0.35)] drop-shadow-[0_1px_2px_rgba(0,0,0,0.7)] transition-all select-none whitespace-nowrap"
+                  className="hidden sm:inline-flex h-8 box-border items-center justify-center px-2 xl:px-2.5 rounded-xl border border-white/20 bg-white/[0.06] hover:bg-white/15 active:bg-white/20 text-white font-bold backdrop-blur-xl text-xs cursor-pointer shadow-[inset_0_1px_1px_rgba(255,255,255,0.35)] drop-shadow-[0_1px_2px_rgba(0,0,0,0.7)] transition-all select-none whitespace-nowrap"
                 >
                   <span>{t.nav.postAd}</span>
                 </button>
@@ -270,11 +270,11 @@ export function Header() {
 
             {/* Auth Button or User Profile */}
             {isPending ? (
-              <div className="h-9 w-20 rounded-xl bg-white/20 animate-pulse backdrop-blur-md shrink-0" />
+              <div className="h-8 w-20 rounded-xl bg-white/20 animate-pulse backdrop-blur-md shrink-0" />
             ) : session?.user ? (
               <DropdownMenu>
-                <DropdownMenuTrigger className="flex items-center gap-2 outline-hidden px-2 py-1.5 rounded-xl border border-white/25 bg-white/12 hover:bg-white/20 backdrop-blur-xl text-white transition-colors cursor-pointer shadow-[inset_0_1px_1px_rgba(255,255,255,0.3)] shrink-0">
-                  <Avatar className="h-7 w-7 border border-white/30">
+                <DropdownMenuTrigger className="flex h-8 box-border items-center gap-2 outline-hidden px-2 rounded-xl border border-white/25 bg-white/12 hover:bg-white/20 backdrop-blur-xl text-white transition-colors cursor-pointer shadow-[inset_0_1px_1px_rgba(255,255,255,0.3)] shrink-0">
+                  <Avatar className="h-6 w-6 border border-white/30">
                     <AvatarImage src={session.user.image || undefined} />
                     <AvatarFallback className="bg-emerald-600 text-white font-bold text-xs">
                       {session.user.name?.slice(0, 2).toUpperCase() || "УЗ"}
@@ -367,7 +367,7 @@ export function Header() {
                 whileHover={{ scale: 1.04 }}
                 whileTap={{ scale: 0.96 }}
                 onClick={() => handleOpenAuth("login")}
-                className="flex items-center gap-1.5 px-2 xl:px-2.5 py-1.5 rounded-xl bg-emerald-500/25 hover:bg-emerald-500/40 active:bg-emerald-500/50 backdrop-blur-xl border border-emerald-400/50 text-white font-bold text-xs shadow-[0_8px_24px_rgba(16,185,129,0.30),inset_0_1px_1.5px_rgba(255,255,255,0.45)] transition-all cursor-pointer drop-shadow-[0_1px_2px_rgba(0,0,0,0.7)] shrink-0 whitespace-nowrap"
+                className="flex h-8 box-border items-center gap-1.5 px-2 xl:px-2.5 rounded-xl bg-emerald-500/25 hover:bg-emerald-500/40 active:bg-emerald-500/50 backdrop-blur-xl border border-emerald-400/50 text-white font-bold text-xs shadow-[0_8px_24px_rgba(16,185,129,0.30),inset_0_1px_1.5px_rgba(255,255,255,0.45)] transition-all cursor-pointer drop-shadow-[0_1px_2px_rgba(0,0,0,0.7)] shrink-0 whitespace-nowrap"
               >
                 <LogIn className="h-3.5 w-3.5 text-emerald-300 drop-shadow-[0_0_8px_rgba(52,211,153,0.9)]" />
                 <span>{t.nav.login}</span>
