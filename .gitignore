@@ -42,6 +42,10 @@ yarn-error.log*
 # local brainstorm companion
 .superpowers/
 
+# graphify generated knowledge graph artifacts
+/graphify-out/
+
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts

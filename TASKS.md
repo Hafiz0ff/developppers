@@ -1,6 +1,6 @@
 # TASKS.md — Дорожная карта и статус разработки (Maskani / Sogd Realty)
 
-Актуальный статус реализации модулей платформы по состоянию на релиз ТЗ v1.7 и мультиязычных роутов (`192/192` автотеста пройдено, Next.js production build успешен).
+Актуальный статус реализации модулей платформы по состоянию на релиз ТЗ v1.7, мультиязычных роутов и интеграции Graphify (`193/193` автотеста пройдено, Next.js production build успешен).
 
 ---
 
@@ -49,6 +49,17 @@
   - [x] Управление allowlist индексируемых категорий (`indexable: true/false`).
   - [x] Кнопка запуска безопасного пакетного аудита **DRY RUN** с отчётом и экспортом JSON.
 - [x] Пакетный процессор масштабируемости (`src/lib/seo/batch-seo-processor.ts`) с бенчмарком 10 000+ записей без фиктивных строк в рабочей БД.
+
+---
+
+## 🟢 Фаза 4: Инженерия агентов и Graphify Knowledge Graph (Выполнено 100%)
+- [x] Интеграция навыка **Graphify / Agent Skills** (`github.com/topics/codex-skills`):
+  - [x] Установлен CLI-инструмент `graphify` (v0.9.97);
+  - [x] Развёрнут навык в `.agents/skills/graphify/` и `.codex/skills/graphify/`;
+  - [x] Настроен PreToolUse-хук в `.codex/hooks.json`;
+  - [x] Добавлены npm-скрипты `npm run graphify:update` и `npm run graphify:html` в `package.json`;
+  - [x] Построен локальный граф проекта (3975 узлов, 12188 связей) в `graphify-out/`;
+  - [x] Артефакты сборки `graphify-out/` добавлены в `.gitignore`.
 - [x] Динамический `robots.txt` (`src/app/robots.ts`) и карты сайта (`src/app/sitemap.ts`, `src/app/sitemap-index.xml/route.ts`).
 - [x] Полный тестовый набор (`src/lib/seo/seo-engine.test.ts`, AC-01 .. AC-35) — 11 тестов пройдено.
 
