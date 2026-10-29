@@ -110,30 +110,30 @@ export function Header() {
   return (
     <>
       <header className={`sticky top-0 z-50 w-full pt-2.5 sm:pt-3 pb-2 px-3 sm:px-6 pointer-events-none transition-all duration-300 ${isHome ? "-mb-20 sm:-mb-22" : ""}`}>
-        <div className={`max-w-7xl mx-auto h-16 px-3.5 sm:px-5 flex items-center justify-between gap-2 sm:gap-4 rounded-2xl pointer-events-auto relative transition-all duration-300 ${
+        <div className={`max-w-7xl mx-auto h-16 px-3 sm:px-4 lg:px-5 flex items-center justify-between gap-1.5 sm:gap-3 rounded-2xl pointer-events-auto relative transition-all duration-300 ${
           isScrolled || !isHome
             ? "bg-slate-950/80 backdrop-blur-2xl border border-white/20 shadow-[0_20px_50px_rgba(0,0,0,0.5),inset_0_1px_1.5px_rgba(255,255,255,0.25)]"
-            : "bg-white/[0.12] backdrop-blur-2xl border border-white/25 shadow-[0_20px_50px_rgba(0,0,0,0.35),inset_0_1px_1.5px_rgba(255,255,255,0.4)]"
+            : "bg-white/[0.10] backdrop-blur-2xl border border-white/25 shadow-[0_20px_50px_rgba(0,0,0,0.35),inset_0_1px_1.5px_rgba(255,255,255,0.35)]"
         }`}>
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2.5 shrink-0 group">
-            <div className="h-10 w-10 rounded-xl bg-gradient-to-tr from-emerald-600 via-teal-500 to-emerald-400 flex items-center justify-center text-white shadow-md shadow-emerald-500/25 group-hover:scale-105 transition-transform duration-300">
+          <Link href="/" className="flex items-center gap-2 sm:gap-2.5 shrink-0 group">
+            <div className="h-9 w-9 sm:h-10 sm:w-10 rounded-xl bg-gradient-to-tr from-emerald-600 via-teal-500 to-emerald-400 flex items-center justify-center text-white shadow-md shadow-emerald-500/25 group-hover:scale-105 transition-transform duration-300">
               <Building2 className="h-5 w-5" />
             </div>
             <div className="flex flex-col">
-              <span className="font-extrabold tracking-tight text-lg leading-tight text-white flex items-center gap-0.5 drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]">
+              <span className="font-extrabold tracking-tight text-base sm:text-lg leading-tight text-white flex items-center gap-0.5 drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]">
                 MASKANI<span className="text-emerald-400 text-xs font-bold">.TJ</span>
               </span>
-              <span className="text-[10px] text-white/85 uppercase tracking-widest font-semibold drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]">
+              <span className="text-[10px] text-white/85 uppercase tracking-wider font-semibold drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)] hidden sm:block">
                 {tDual("Недвижимость Таджикистана", "Амволи ғайриманқули Тоҷикистон")}
               </span>
             </div>
           </Link>
 
-          {/* Navigation Links with Video-Style Dynamic Underline & Forward Scale */}
+          {/* Navigation Links with Video-Style Dynamic Underline & Forward Scale (Tightened by ~2 pts) */}
           <nav
             onMouseLeave={() => setHoveredNav(null)}
-            className="hidden lg:flex items-center gap-0.5 p-1 rounded-2xl bg-white/[0.08] border border-white/20 text-xs font-semibold backdrop-blur-md"
+            className="hidden lg:flex items-center gap-0 p-1 rounded-2xl bg-white/[0.07] border border-white/20 text-xs font-semibold backdrop-blur-md shrink"
           >
             {navItems.map((item) => {
               const isHovered = hoveredNav === item.href;
@@ -144,12 +144,12 @@ export function Header() {
                   key={item.href}
                   href={item.href}
                   onMouseEnter={() => setHoveredNav(item.href)}
-                  className="relative px-3.5 py-2 flex items-center select-none group"
+                  className="relative px-2 xl:px-2.5 py-1.5 flex items-center select-none group whitespace-nowrap"
                 >
                   <motion.div
-                    whileHover={{ scale: 1.06, y: -1 }}
+                    whileHover={{ scale: 1.05, y: -1 }}
                     transition={{ type: "spring", stiffness: 450, damping: 25 }}
-                    className={`relative z-10 flex items-center gap-1.5 transition-colors duration-200 ${
+                    className={`relative z-10 flex items-center gap-1 transition-colors duration-200 ${
                       isActive
                         ? "text-emerald-300 font-bold drop-shadow-[0_0_8px_rgba(52,211,153,0.8)]"
                         : "text-white font-semibold drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)] group-hover:text-white"
@@ -186,7 +186,7 @@ export function Header() {
                     <motion.div
                       layoutId="header-nav-underline"
                       transition={{ type: "spring", stiffness: 450, damping: 32 }}
-                      className="absolute bottom-0.5 left-3 right-3 h-[2.5px] rounded-full bg-gradient-to-r from-emerald-400 via-teal-300 to-emerald-400 shadow-[0_0_10px_rgba(52,211,153,0.9)] z-20"
+                      className="absolute bottom-0.5 left-2 right-2 h-[2.5px] rounded-full bg-gradient-to-r from-emerald-400 via-teal-300 to-emerald-400 shadow-[0_0_10px_rgba(52,211,153,0.9)] z-20"
                     />
                   )}
                 </Link>
@@ -195,13 +195,13 @@ export function Header() {
           </nav>
 
           {/* Right Controls: Language, Currency, Add Button, Auth */}
-          <div className="flex items-center gap-1.5 sm:gap-2">
+          <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
             {/* Language Selector */}
             <LanguageSwitcher />
 
             {/* Currency Selector */}
             <DropdownMenu>
-              <DropdownMenuTrigger className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-white/25 bg-white/12 hover:bg-white/20 active:bg-white/25 backdrop-blur-xl text-white text-xs font-bold shadow-[inset_0_1px_1px_rgba(255,255,255,0.3)] drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)] transition-all outline-hidden cursor-pointer">
+              <DropdownMenuTrigger className="flex items-center gap-1 px-2.5 py-1.5 rounded-xl border border-white/25 bg-white/12 hover:bg-white/20 active:bg-white/25 backdrop-blur-xl text-white text-xs font-bold shadow-[inset_0_1px_1px_rgba(255,255,255,0.3)] drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)] transition-all outline-hidden cursor-pointer shrink-0">
                 <span>{currency}</span>
                 <ChevronDown className="h-3 w-3 text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]" />
               </DropdownMenuTrigger>
@@ -228,7 +228,7 @@ export function Header() {
             </DropdownMenu>
 
             {/* Compare Link / Icon */}
-            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="shrink-0">
               <Link
                 href="/compare"
                 className="relative p-2 rounded-xl border border-white/25 bg-white/12 hover:bg-white/20 active:bg-white/25 backdrop-blur-xl text-white shadow-[inset_0_1px_1px_rgba(255,255,255,0.3)] drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)] transition-all flex items-center justify-center cursor-pointer"
@@ -244,8 +244,8 @@ export function Header() {
               </Link>
             </motion.div>
 
-            {/* Post Ad Button */}
-            <motion.div whileHover={{ scale: 1.03, y: -1 }} whileTap={{ scale: 0.97 }}>
+            {/* Post Ad Button (Removed + icon to fit seamlessly in single line) */}
+            <motion.div whileHover={{ scale: 1.03, y: -1 }} whileTap={{ scale: 0.97 }} className="shrink-0">
               <Link href={session ? "/classifieds/new" : "#"}>
                 <button
                   type="button"
@@ -255,9 +255,8 @@ export function Header() {
                       handleOpenAuth("login");
                     }
                   }}
-                  className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-white/30 bg-white/15 hover:bg-white/25 active:bg-white/30 text-white font-bold backdrop-blur-xl text-xs cursor-pointer shadow-[inset_0_1px_1px_rgba(255,255,255,0.35)] drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)] transition-all select-none"
+                  className="hidden sm:inline-flex items-center justify-center px-3 py-1.5 rounded-xl border border-white/30 bg-white/15 hover:bg-white/25 active:bg-white/30 text-white font-bold backdrop-blur-xl text-xs cursor-pointer shadow-[inset_0_1px_1px_rgba(255,255,255,0.35)] drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)] transition-all select-none whitespace-nowrap"
                 >
-                  <PlusCircle className="h-3.5 w-3.5 text-emerald-300 drop-shadow-[0_0_6px_rgba(52,211,153,0.8)]" />
                   <span>{t.nav.postAd}</span>
                 </button>
               </Link>
@@ -265,10 +264,10 @@ export function Header() {
 
             {/* Auth Button or User Profile */}
             {isPending ? (
-              <div className="h-9 w-20 rounded-xl bg-white/20 animate-pulse backdrop-blur-md" />
+              <div className="h-9 w-20 rounded-xl bg-white/20 animate-pulse backdrop-blur-md shrink-0" />
             ) : session?.user ? (
               <DropdownMenu>
-                <DropdownMenuTrigger className="flex items-center gap-2 outline-hidden px-2 py-1.5 rounded-xl border border-white/25 bg-white/12 hover:bg-white/20 backdrop-blur-xl text-white transition-colors cursor-pointer shadow-[inset_0_1px_1px_rgba(255,255,255,0.3)]">
+                <DropdownMenuTrigger className="flex items-center gap-2 outline-hidden px-2 py-1.5 rounded-xl border border-white/25 bg-white/12 hover:bg-white/20 backdrop-blur-xl text-white transition-colors cursor-pointer shadow-[inset_0_1px_1px_rgba(255,255,255,0.3)] shrink-0">
                   <Avatar className="h-7 w-7 border border-white/30">
                     <AvatarImage src={session.user.image || undefined} />
                     <AvatarFallback className="bg-emerald-600 text-white font-bold text-xs">
@@ -362,7 +361,7 @@ export function Header() {
                 whileHover={{ scale: 1.04 }}
                 whileTap={{ scale: 0.96 }}
                 onClick={() => handleOpenAuth("login")}
-                className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-emerald-500/35 hover:bg-emerald-500/50 active:bg-emerald-500/60 backdrop-blur-xl border border-emerald-400/60 text-white font-bold text-xs shadow-[0_8px_24px_rgba(16,185,129,0.35),inset_0_1px_1.5px_rgba(255,255,255,0.5)] transition-all cursor-pointer drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]"
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-500/35 hover:bg-emerald-500/50 active:bg-emerald-500/60 backdrop-blur-xl border border-emerald-400/60 text-white font-bold text-xs shadow-[0_8px_24px_rgba(16,185,129,0.35),inset_0_1px_1.5px_rgba(255,255,255,0.5)] transition-all cursor-pointer drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)] shrink-0 whitespace-nowrap"
               >
                 <LogIn className="h-3.5 w-3.5 text-emerald-300 drop-shadow-[0_0_8px_rgba(52,211,153,0.9)]" />
                 <span>{t.nav.login}</span>
