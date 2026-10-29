@@ -112,8 +112,8 @@ export function Header() {
       <header className={`sticky top-0 z-50 w-full pt-2.5 sm:pt-3 pb-2 px-3 sm:px-6 pointer-events-none transition-all duration-300 ${isHome ? "-mb-20 sm:-mb-22" : ""}`}>
         <div className={`max-w-7xl mx-auto h-16 px-3 sm:px-4 lg:px-5 flex items-center justify-between gap-1.5 sm:gap-3 rounded-2xl pointer-events-auto relative transition-all duration-300 ${
           isScrolled
-            ? "bg-black/55 backdrop-blur-3xl border border-white/20 shadow-[0_20px_50px_rgba(0,0,0,0.35),inset_0_1px_1.5px_rgba(255,255,255,0.25)]"
-            : "bg-black/25 sm:bg-white/[0.08] backdrop-blur-2xl border border-white/25 shadow-[0_20px_50px_rgba(0,0,0,0.25),inset_0_1px_1.5px_rgba(255,255,255,0.3)]"
+            ? "bg-white/80 dark:bg-slate-900/80 backdrop-blur-2xl border border-white/60 dark:border-white/15 shadow-[0_12px_36px_rgba(0,0,0,0.08),inset_0_1px_1.5px_rgba(255,255,255,0.9)]"
+            : "bg-white/[0.06] backdrop-blur-2xl border border-white/25 shadow-[0_20px_50px_rgba(0,0,0,0.25),inset_0_1px_1.5px_rgba(255,255,255,0.4)]"
         }`}>
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2 sm:gap-2.5 shrink-0 group">
@@ -121,19 +121,27 @@ export function Header() {
               <Building2 className="h-5 w-5" />
             </div>
             <div className="flex flex-col">
-              <span className="font-extrabold tracking-tight text-base sm:text-lg leading-tight text-white flex items-center gap-0.5 drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]">
-                MASKANI<span className="text-emerald-400 text-xs font-bold">.TJ</span>
+              <span className={`font-extrabold tracking-tight text-base sm:text-lg leading-tight flex items-center gap-0.5 transition-colors ${
+                isScrolled ? "text-slate-900 dark:text-white" : "text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]"
+              }`}>
+                MASKANI<span className="text-emerald-500 text-xs font-bold">.TJ</span>
               </span>
-              <span className="text-[10px] text-white/85 uppercase tracking-wider font-semibold drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)] hidden sm:block">
+              <span className={`text-[10px] uppercase tracking-wider font-semibold hidden sm:block transition-colors ${
+                isScrolled ? "text-slate-500 dark:text-slate-400" : "text-white/85 drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]"
+              }`}>
                 {tDual("Недвижимость Таджикистана", "Амволи ғайриманқули Тоҷикистон")}
               </span>
             </div>
           </Link>
 
-          {/* Navigation Links with Video-Style Dynamic Underline & Forward Scale (Tightened by ~2 pts) */}
+          {/* Navigation Links with Dynamic Underline & Forward Scale */}
           <nav
             onMouseLeave={() => setHoveredNav(null)}
-            className="hidden lg:flex items-center gap-0 p-1 rounded-2xl bg-white/[0.07] border border-white/20 text-xs font-semibold backdrop-blur-md shrink"
+            className={`hidden lg:flex items-center gap-0 p-1 rounded-2xl border text-xs font-semibold backdrop-blur-md shrink transition-colors ${
+              isScrolled
+                ? "bg-slate-100/80 dark:bg-white/[0.06] border-slate-200/80 dark:border-white/15"
+                : "bg-white/[0.07] border-white/20"
+            }`}
           >
             {navItems.map((item) => {
               const isHovered = hoveredNav === item.href;
@@ -151,7 +159,11 @@ export function Header() {
                     transition={{ type: "spring", stiffness: 450, damping: 25 }}
                     className={`relative z-10 flex items-center gap-1 transition-colors duration-200 ${
                       isActive
-                        ? "text-emerald-300 font-bold drop-shadow-[0_0_8px_rgba(52,211,153,0.8)]"
+                        ? isScrolled
+                          ? "text-emerald-600 dark:text-emerald-400 font-bold"
+                          : "text-emerald-300 font-bold drop-shadow-[0_0_8px_rgba(52,211,153,0.8)]"
+                        : isScrolled
+                        ? "text-slate-700 dark:text-slate-200 font-semibold group-hover:text-slate-900 dark:group-hover:text-white"
                         : "text-white font-semibold drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)] group-hover:text-white"
                     }`}
                   >
@@ -159,7 +171,11 @@ export function Header() {
                       <Icon
                         className={`h-3.5 w-3.5 transition-colors ${
                           isActive
-                            ? "text-emerald-300 drop-shadow-[0_0_8px_rgba(52,211,153,0.8)]"
+                            ? isScrolled
+                              ? "text-emerald-600 dark:text-emerald-400"
+                              : "text-emerald-300 drop-shadow-[0_0_8px_rgba(52,211,153,0.8)]"
+                            : isScrolled
+                            ? "text-slate-600 dark:text-slate-300 group-hover:text-emerald-600"
                             : "text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)] group-hover:text-emerald-300"
                         }`}
                       />
@@ -177,7 +193,11 @@ export function Header() {
                     <motion.div
                       layoutId="header-nav-hover-bg"
                       transition={{ type: "spring", stiffness: 450, damping: 32 }}
-                      className="absolute inset-0 rounded-xl bg-white/15 backdrop-blur-md shadow-xs border border-white/25 -z-0"
+                      className={`absolute inset-0 rounded-xl backdrop-blur-md shadow-xs border -z-0 ${
+                        isScrolled
+                          ? "bg-white/80 dark:bg-white/15 border-slate-200/60 dark:border-white/25"
+                          : "bg-white/15 border-white/25"
+                      }`}
                     />
                   )}
 
@@ -197,13 +217,17 @@ export function Header() {
           {/* Right Controls: Language, Currency, Add Button, Auth */}
           <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
             {/* Language Selector */}
-            <LanguageSwitcher />
+            <LanguageSwitcher isScrolled={isScrolled} />
 
             {/* Currency Selector */}
             <DropdownMenu>
-              <DropdownMenuTrigger className="flex items-center gap-1 px-2.5 py-1.5 rounded-xl border border-white/25 bg-white/12 hover:bg-white/20 active:bg-white/25 backdrop-blur-xl text-white text-xs font-bold shadow-[inset_0_1px_1px_rgba(255,255,255,0.3)] drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)] transition-all outline-hidden cursor-pointer shrink-0">
+              <DropdownMenuTrigger className={`flex items-center gap-1 px-2.5 py-1.5 rounded-xl border backdrop-blur-xl text-xs font-bold transition-all outline-hidden cursor-pointer shrink-0 ${
+                isScrolled
+                  ? "text-slate-700 bg-slate-100/80 hover:bg-slate-200/80 active:bg-slate-200 border-slate-200/80 shadow-xs"
+                  : "text-white border-white/25 bg-white/12 hover:bg-white/20 active:bg-white/25 shadow-[inset_0_1px_1px_rgba(255,255,255,0.3)] drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]"
+              }`}>
                 <span>{currency}</span>
-                <ChevronDown className="h-3 w-3 text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]" />
+                <ChevronDown className={`h-3 w-3 ${isScrolled ? "text-slate-600" : "text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]"}`} />
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-40 p-1.5 rounded-2xl bg-slate-900/85 backdrop-blur-3xl shadow-[0_20px_50px_rgba(0,0,0,0.5),inset_0_1px_1.5px_rgba(255,255,255,0.25)] border border-white/20 z-50 text-white">
                 <DropdownMenuItem
@@ -235,11 +259,15 @@ export function Header() {
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="shrink-0">
               <Link
                 href="/compare"
-                className="relative p-2 rounded-xl border border-white/25 bg-white/12 hover:bg-white/20 active:bg-white/25 backdrop-blur-xl text-white shadow-[inset_0_1px_1px_rgba(255,255,255,0.3)] drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)] transition-all flex items-center justify-center cursor-pointer"
+                className={`relative p-2 rounded-xl border backdrop-blur-xl transition-all flex items-center justify-center cursor-pointer ${
+                  isScrolled
+                    ? "text-slate-700 bg-slate-100/80 hover:bg-slate-200/80 active:bg-slate-200 border-slate-200/80 shadow-xs"
+                    : "text-white border-white/25 bg-white/12 hover:bg-white/20 active:bg-white/25 shadow-[inset_0_1px_1px_rgba(255,255,255,0.3)] drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]"
+                }`}
                 title={tDual("Сравнение объектов", "Муқоисаи амвол")}
                 aria-label={tDual("Сравнение объектов", "Муқоисаи амвол")}
               >
-                <ArrowLeftRight className="h-4 w-4 text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]" />
+                <ArrowLeftRight className={`h-4 w-4 ${isScrolled ? "text-slate-700" : "text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]"}`} />
                 {compareCount > 0 && (
                   <span className="absolute -top-1.5 -right-1.5 bg-emerald-500 text-white font-bold text-[10px] min-w-[18px] h-[18px] rounded-full flex items-center justify-center px-1 shadow-[0_0_8px_rgba(16,185,129,0.8)]">
                     {compareCount}
@@ -248,7 +276,7 @@ export function Header() {
               </Link>
             </motion.div>
 
-            {/* Post Ad Button (Removed + icon to fit seamlessly in single line) */}
+            {/* Post Ad Button */}
             <motion.div whileHover={{ scale: 1.03, y: -1 }} whileTap={{ scale: 0.97 }} className="shrink-0">
               <Link href={session ? "/classifieds/new" : "#"}>
                 <button
@@ -259,7 +287,11 @@ export function Header() {
                       handleOpenAuth("login");
                     }
                   }}
-                  className="hidden sm:inline-flex items-center justify-center px-3 py-1.5 rounded-xl border border-white/30 bg-white/15 hover:bg-white/25 active:bg-white/30 text-white font-bold backdrop-blur-xl text-xs cursor-pointer shadow-[inset_0_1px_1px_rgba(255,255,255,0.35)] drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)] transition-all select-none whitespace-nowrap"
+                  className={`hidden sm:inline-flex items-center justify-center px-3 py-1.5 rounded-xl border font-bold backdrop-blur-xl text-xs cursor-pointer transition-all select-none whitespace-nowrap ${
+                    isScrolled
+                      ? "text-slate-800 bg-slate-100/90 hover:bg-slate-200/90 active:bg-slate-200 border-slate-200 shadow-xs"
+                      : "text-white border-white/30 bg-white/15 hover:bg-white/25 active:bg-white/30 shadow-[inset_0_1px_1px_rgba(255,255,255,0.35)] drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]"
+                  }`}
                 >
                   <span>{t.nav.postAd}</span>
                 </button>
@@ -271,7 +303,11 @@ export function Header() {
               <div className="h-9 w-20 rounded-xl bg-white/20 animate-pulse backdrop-blur-md shrink-0" />
             ) : session?.user ? (
               <DropdownMenu>
-                <DropdownMenuTrigger className="flex items-center gap-2 outline-hidden px-2 py-1.5 rounded-xl border border-white/25 bg-white/12 hover:bg-white/20 backdrop-blur-xl text-white transition-colors cursor-pointer shadow-[inset_0_1px_1px_rgba(255,255,255,0.3)] shrink-0">
+                <DropdownMenuTrigger className={`flex items-center gap-2 outline-hidden px-2 py-1.5 rounded-xl border backdrop-blur-xl transition-colors cursor-pointer shrink-0 ${
+                  isScrolled
+                    ? "text-slate-700 bg-slate-100/80 hover:bg-slate-200/80 border-slate-200/80 shadow-xs"
+                    : "text-white border-white/25 bg-white/12 hover:bg-white/20 shadow-[inset_0_1px_1px_rgba(255,255,255,0.3)]"
+                }`}>
                   <Avatar className="h-7 w-7 border border-white/30">
                     <AvatarImage src={session.user.image || undefined} />
                     <AvatarFallback className="bg-emerald-600 text-white font-bold text-xs">
@@ -279,14 +315,18 @@ export function Header() {
                     </AvatarFallback>
                   </Avatar>
                   <div className="hidden lg:flex flex-col text-left text-xs">
-                    <span className="font-semibold leading-tight line-clamp-1 max-w-[120px] text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]">
+                    <span className={`font-semibold leading-tight line-clamp-1 max-w-[120px] ${
+                      isScrolled ? "text-slate-800 dark:text-white" : "text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]"
+                    }`}>
                       {session.user.name}
                     </span>
-                    <span className="text-[10px] text-white/80 drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]">
+                    <span className={`text-[10px] ${
+                      isScrolled ? "text-slate-500 dark:text-slate-400" : "text-white/80 drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]"
+                    }`}>
                       {roleInfo.label}
                     </span>
                   </div>
-                  <ChevronDown className="h-3.5 w-3.5 text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]" />
+                  <ChevronDown className={`h-3.5 w-3.5 ${isScrolled ? "text-slate-600" : "text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]"}`} />
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="w-56 p-1.5 rounded-2xl bg-slate-900/85 backdrop-blur-3xl shadow-[0_20px_50px_rgba(0,0,0,0.5),inset_0_1px_1.5px_rgba(255,255,255,0.25)] border border-white/20 z-50 text-white">
                   <DropdownMenuLabel>
@@ -365,9 +405,9 @@ export function Header() {
                 whileHover={{ scale: 1.04 }}
                 whileTap={{ scale: 0.96 }}
                 onClick={() => handleOpenAuth("login")}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-500/35 hover:bg-emerald-500/50 active:bg-emerald-500/60 backdrop-blur-xl border border-emerald-400/60 text-white font-bold text-xs shadow-[0_8px_24px_rgba(16,185,129,0.35),inset_0_1px_1.5px_rgba(255,255,255,0.5)] transition-all cursor-pointer drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)] shrink-0 whitespace-nowrap"
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-500 hover:bg-emerald-600 active:bg-emerald-700 text-white font-bold text-xs shadow-md shadow-emerald-500/25 transition-all cursor-pointer shrink-0 whitespace-nowrap"
               >
-                <LogIn className="h-3.5 w-3.5 text-emerald-300 drop-shadow-[0_0_8px_rgba(52,211,153,0.9)]" />
+                <LogIn className="h-3.5 w-3.5 text-white" />
                 <span>{t.nav.login}</span>
               </motion.button>
             )}

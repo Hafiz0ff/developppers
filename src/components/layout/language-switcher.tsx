@@ -12,9 +12,10 @@ import {
 
 interface LanguageSwitcherProps {
   className?: string;
+  isScrolled?: boolean;
 }
 
-export function LanguageSwitcher({ className = "" }: LanguageSwitcherProps) {
+export function LanguageSwitcher({ className = "", isScrolled = false }: LanguageSwitcherProps) {
   const { language, setLanguage } = useLanguage();
 
   const getFlag = (lang: string) => {
@@ -33,7 +34,11 @@ export function LanguageSwitcher({ className = "" }: LanguageSwitcherProps) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger
-        className={`flex items-center gap-1 px-2.5 py-1.5 rounded-xl border border-white/25 bg-white/12 hover:bg-white/20 active:bg-white/25 backdrop-blur-xl text-white text-xs font-bold shadow-[inset_0_1px_1px_rgba(255,255,255,0.3)] drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)] transition-all outline-hidden cursor-pointer shrink-0 ${className}`}
+        className={`flex items-center gap-1 px-2.5 py-1.5 rounded-xl border backdrop-blur-xl text-xs font-bold transition-all outline-hidden cursor-pointer shrink-0 ${
+          isScrolled
+            ? "text-slate-700 bg-slate-100/80 hover:bg-slate-200/80 active:bg-slate-200 border-slate-200/80 shadow-xs"
+            : "text-white border-white/25 bg-white/12 hover:bg-white/20 active:bg-white/25 shadow-[inset_0_1px_1px_rgba(255,255,255,0.3)] drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]"
+        } ${className}`}
         aria-label={
           language === "ru"
             ? "Русский язык"
@@ -43,7 +48,7 @@ export function LanguageSwitcher({ className = "" }: LanguageSwitcherProps) {
         }
       >
         <span className="text-base leading-none select-none">{getFlag(language)}</span>
-        <ChevronDown className="h-3 w-3 text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]" />
+        <ChevronDown className={`h-3 w-3 ${isScrolled ? "text-slate-600" : "text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]"}`} />
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-40 p-1.5 rounded-2xl bg-slate-900/85 backdrop-blur-3xl shadow-[0_20px_50px_rgba(0,0,0,0.5),inset_0_1px_1.5px_rgba(255,255,255,0.25)] border border-white/20 z-50 text-white">
         <DropdownMenuItem

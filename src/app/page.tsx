@@ -398,9 +398,9 @@ export default function HomePage() {
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 pb-8 sm:pb-10">
 
-          {/* 2. APPLE-STYLE LIQUID GLASS SEARCH CARD (Enhanced Transparency + Crisp Glowing Edges) */}
+          {/* 2. APPLE-STYLE LIQUID GLASS SEARCH CARD (Luminous Transparent Glass: 6% Opacity + Crisp Glowing Edges) */}
           <div className="relative mx-auto w-full max-w-5xl">
-            <div className="bg-neutral-950/35 backdrop-blur-3xl border border-white/25 rounded-3xl p-5 sm:p-6 shadow-[0_20px_50px_rgba(0,0,0,0.35),inset_0_1px_1.5px_rgba(255,255,255,0.3)]">
+            <div className="bg-white/[0.06] backdrop-blur-2xl border border-white/30 rounded-3xl p-5 sm:p-6 shadow-[0_20px_50px_rgba(0,0,0,0.25),inset_0_1px_1.5px_rgba(255,255,255,0.4)]">
               {/* Segment Tabs (Apple Liquid Glass Style with Dynamic Word-Length Underline & Forward Scale) */}
               <div
                 onMouseLeave={() => setHoveredSearchTab(null)}
