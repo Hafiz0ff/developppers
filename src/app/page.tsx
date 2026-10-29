@@ -3,6 +3,7 @@
 import React, { useState, useMemo } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { motion } from "motion/react";
 import { useCurrency } from "@/context/currency-context";
 import { useLanguage } from "@/context/language-context";
 import { SOGD_CITIES } from "@/lib/constants/locations";
@@ -699,9 +700,11 @@ export default function HomePage() {
                 : Math.max(24, proj.floorsCount * proj.sectionsCount * 2);
 
               return (
-                <Card
+                <motion.div
                   key={proj.id}
-                  className="bg-white rounded-xl border border-slate-200/80 hover:border-emerald-300 hover:shadow-xl transition-all duration-300 overflow-hidden group"
+                  whileHover={{ y: -6 }}
+                  transition={{ type: "spring", stiffness: 350, damping: 25 }}
+                  className="glass-card rounded-2xl overflow-hidden group transition-all duration-300 hover:shadow-[0_22px_45px_-12px_rgba(16,185,129,0.18)] flex flex-col"
                 >
                   <div className="relative h-64 sm:h-72 w-full overflow-hidden bg-slate-100">
                     <img
@@ -711,17 +714,17 @@ export default function HomePage() {
                     />
 
                     <div className="absolute top-3.5 left-3.5 flex flex-wrap gap-2">
-                      <Badge className="bg-emerald-600 text-white font-medium text-xs shadow-sm">
+                      <span className="glass-pill bg-emerald-600/90 text-white font-semibold text-xs px-2.5 py-1 rounded-lg shadow-sm border-emerald-400/30">
                         {projStatus}
-                      </Badge>
-                      <Badge variant="secondary" className="backdrop-blur-md bg-white/90 text-slate-800 font-medium text-xs shadow-xs">
+                      </span>
+                      <span className="glass-pill text-slate-800 dark:text-slate-100 font-semibold text-xs px-2.5 py-1 rounded-lg shadow-xs">
                         {projClass}
-                      </Badge>
+                      </span>
                     </div>
 
-                    <div className="absolute bottom-3.5 left-3.5 bg-white/95 backdrop-blur-md text-emerald-700 font-semibold text-xs px-3 py-1.5 rounded-lg shadow-sm flex items-center gap-1.5 border border-slate-200/50">
+                    <div className="absolute bottom-3.5 left-3.5 glass-pill text-emerald-800 dark:text-emerald-300 font-semibold text-xs px-3 py-1.5 rounded-xl shadow-sm flex items-center gap-1.5">
                       <Percent className="h-3.5 w-3.5 text-emerald-600" />
-                      {projInstallment} {projDownPayment ? `(${projDownPayment})` : ""}
+                      <span>{projInstallment} {projDownPayment ? `(${projDownPayment})` : ""}</span>
                     </div>
 
                     <div className="absolute bottom-3.5 right-3.5 z-10">
@@ -730,7 +733,7 @@ export default function HomePage() {
 
                     <Link
                       href={developer ? `/developers/${developer.slug}` : "#"}
-                      className="absolute top-3.5 right-3.5 bg-white/95 backdrop-blur-md px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-900 shadow-sm flex items-center gap-2 border border-slate-200/50 hover:bg-white transition-colors"
+                      className="absolute top-3.5 right-3.5 glass-pill px-3 py-1.5 rounded-xl text-xs font-semibold text-slate-900 dark:text-slate-100 shadow-sm flex items-center gap-2 hover:bg-white transition-colors"
                     >
                       <DeveloperAvatar name={projDevName} size="sm" className="h-5 w-5 text-[9px]" />
                       <span className="truncate max-w-[130px]">{projDevName}</span>
@@ -738,57 +741,63 @@ export default function HomePage() {
                     </Link>
                   </div>
 
-                  <CardContent className="p-5 sm:p-6 space-y-4">
-                    <div>
-                      <Link href={`/projects/${proj.slug}`}>
-                        <h3 className="text-xl font-bold text-slate-900 group-hover:text-emerald-600 transition-colors line-clamp-1">
-                          {projName}
-                        </h3>
-                      </Link>
-                      <p className="text-xs text-slate-500 flex items-center gap-1 mt-1 font-medium">
-                        <MapPin className="h-3.5 w-3.5 text-emerald-600 shrink-0" />
-                        <span className="truncate">{projCity}, {projDistrict} • {proj.floorsCount} {tDual("этажей", "ошёна")}</span>
-                      </p>
+                  <CardContent className="p-5 sm:p-6 space-y-4 flex-1 flex flex-col justify-between">
+                    <div className="space-y-3">
+                      <div>
+                        <Link href={`/projects/${proj.slug}`}>
+                          <h3 className="text-xl font-bold text-slate-900 group-hover:text-emerald-600 transition-colors line-clamp-1">
+                            {projName}
+                          </h3>
+                        </Link>
+                        <p className="text-xs text-slate-500 flex items-center gap-1 mt-1 font-medium">
+                          <MapPin className="h-3.5 w-3.5 text-emerald-600 shrink-0" />
+                          <span className="truncate">{projCity}, {projDistrict} • {proj.floorsCount} {tDual("этажей", "ошёна")}</span>
+                        </p>
+                      </div>
+
+                      <div className="flex flex-wrap gap-1.5">
+                        {projTags.map((tag) => (
+                          <span
+                            key={tag}
+                            className="text-[11px] font-medium px-2.5 py-1 rounded-lg glass-pill text-slate-600 dark:text-slate-300"
+                          >
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+
+                      <NewBuildingPriceBlock
+                        minTotalPriceTjs={proj.minTotalPriceTjs}
+                        minTotalPriceUsd={proj.minTotalPriceUsd}
+                        minPricePerMeterTjs={proj.minPricePerMeterTjs}
+                        minPricePerMeterUsd={proj.minPricePerMeterUsd}
+                        variant="card"
+                      />
                     </div>
 
-                    <div className="flex flex-wrap gap-1.5">
-                      {projTags.map((tag) => (
-                        <span
-                          key={tag}
-                          className="text-[11px] font-medium px-2.5 py-1 rounded-md bg-slate-100 text-slate-600"
-                        >
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-
-                    <NewBuildingPriceBlock
-                      minTotalPriceTjs={proj.minTotalPriceTjs}
-                      minTotalPriceUsd={proj.minTotalPriceUsd}
-                      minPricePerMeterTjs={proj.minPricePerMeterTjs}
-                      minPricePerMeterUsd={proj.minPricePerMeterUsd}
-                      variant="card"
-                    />
-
-                    <div className="pt-1 flex items-center gap-3">
+                    <div className="pt-2 flex items-center gap-3">
                       <Link href={`/projects/${proj.slug}`} className="flex-1">
-                        <Button className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-medium text-xs h-10 px-4 rounded-xl shadow-xs cursor-pointer">
-                          {tDual(`Смотреть ${availableUnitsCount} квартир`, `Дидани ${availableUnitsCount} хонадон`)}
-                        </Button>
+                        <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+                          <Button className="w-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-semibold text-xs h-10 px-4 rounded-xl shadow-md shadow-emerald-600/20 cursor-pointer">
+                            {tDual(`Смотреть ${availableUnitsCount} квартир`, `Дидани ${availableUnitsCount} хонадон`)}
+                          </Button>
+                        </motion.div>
                       </Link>
                       <a
                         href={`https://wa.me/${devWhatsapp}`}
                         target="_blank"
                         rel="noreferrer"
                       >
-                        <Button variant="outline" size="sm" className="text-xs font-semibold h-10 px-3.5 rounded-xl gap-1.5 border-slate-200 cursor-pointer">
-                          <MessageCircle className="h-4 w-4 text-emerald-600" />
-                          {tDual("Отдел продаж", "Шӯъбаи фурӯш")}
-                        </Button>
+                        <motion.div whileHover={{ scale: 1.04, y: -1 }} whileTap={{ scale: 0.96 }}>
+                          <Button variant="outline" size="sm" className="text-xs font-semibold h-10 px-3.5 rounded-xl gap-1.5 glass-pill border-slate-200/80 hover:border-emerald-500/50 hover:text-emerald-700 cursor-pointer">
+                            <MessageCircle className="h-4 w-4 text-emerald-600" />
+                            {tDual("Отдел продаж", "Шӯъбаи фурӯш")}
+                          </Button>
+                        </motion.div>
                       </a>
                     </div>
                   </CardContent>
-                </Card>
+                </motion.div>
               );
             })}
           </div>

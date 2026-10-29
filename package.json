@@ -29,6 +29,7 @@
     "drizzle-orm": "^0.45.4",
     "leaflet": "^1.9.4",
     "lucide-react": "^1.56.0",
+    "motion": "^14.7.1",
     "next": "16.4.3",
     "postgres": "^3.4.9",
     "react": "19.3.0",

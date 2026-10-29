@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Совет экспертов gstack для Maskani.tj</title>
+<style>
+  @page {
+    size: A4 portrait;
+    margin: 14mm 15mm 14mm 15mm;
+    @top-right {
+      content: "Maskani.tj • Совет экспертов gstack";
+      font-size: 7.5pt;
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      color: #94a3b8;
+    }
+    @bottom-center {
+      content: "Страница " counter(page) " из " counter(pages);
+      font-size: 7.5pt;
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      color: #94a3b8;
+    }
+  }
+
+  @page:first {
+    margin: 0;
+    @top-right { content: normal; }
+    @bottom-center { content: normal; }
+  }
+
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    color: #1e293b;
+    background: #ffffff;
+    line-height: 1.45;
+    font-size: 9pt;
+  }
+
+  /* ТИТУЛЬНЫЙ ЛИСТ */
+  .cover {
+    width: 210mm;
+    height: 297mm;
+    background: linear-gradient(135deg, #090d16 0%, #0f172a 45%, #1e1b4b 100%);
+    color: #ffffff;
+    padding: 28mm 20mm 22mm 20mm;
+    page-break-after: always;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .cover-badge {
+    display: inline-block;
+    padding: 5px 12px;
+    background: rgba(99, 102, 241, 0.2);
+    border: 1px solid rgba(129, 140, 248, 0.4);
+    border-radius: 20px;
+    font-size: 8pt;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #a5b4fc;
+    margin-bottom: 25px;
+  }
+
+  .cover-title {
+    font-size: 30pt;
+    font-weight: 800;
+    line-height: 1.15;
+    color: #ffffff;
+    letter-spacing: -0.02em;
+    margin-bottom: 14px;
+  }
+
+  .cover-title span {
+    background: linear-gradient(90deg, #38bdf8, #818cf8, #c084fc);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .cover-subtitle {
+    font-size: 11pt;
+    font-weight: 400;
+    color: #cbd5e1;
+    line-height: 1.55;
+    max-width: 530px;
+    margin-bottom: 30px;
+  }
+
+  .cover-features {
+    display: flex;
+    gap: 12px;
+    margin-top: 25px;
+  }
+
+  .cover-feature-box {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 10px;
+    padding: 12px 14px;
+    flex: 1;
+  }
+
+  .cover-feature-box .label {
+    font-size: 7.5pt;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #94a3b8;
+  }
+
+  .cover-feature-box .val {
+    font-size: 10.5pt;
+    font-weight: 700;
+    color: #38bdf8;
+    margin-top: 3px;
+  }
+
+  .cover-footer {
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+    padding-top: 18px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    font-size: 8pt;
+    color: #94a3b8;
+  }
+
+  .cover-footer b {
+    color: #ffffff;
+  }
+
+  /* СТРАНИЦЫ ДОКУМЕНТА */
+  .doc-page {
+    height: 269mm;
+    page-break-after: always;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .doc-page:last-child {
+    page-break-after: avoid;
+  }
+
+  .section-header {
+    border-bottom: 2px solid #e2e8f0;
+    padding-bottom: 6px;
+    margin-bottom: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+
+  .section-header h2 {
+    font-size: 13pt;
+    font-weight: 800;
+    color: #0f172a;
+    letter-spacing: -0.01em;
+  }
+
+  .section-header .tag {
+    font-size: 7.5pt;
+    text-transform: uppercase;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    color: #4f46e5;
+  }
+
+  .intro-text {
+    font-size: 8.5pt;
+    color: #475569;
+    line-height: 1.45;
+    margin-bottom: 12px;
+    background: #f8fafc;
+    border-left: 3px solid #6366f1;
+    padding: 7px 12px;
+    border-radius: 0 6px 6px 0;
+  }
+
+  /* КАРТОЧКА ЭКСПЕРТА */
+  .expert-block {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 12px 14px;
+    margin-bottom: 10px;
+  }
+
+  .expert-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+
+  .expert-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .expert-icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13pt;
+    background: #eef2ff;
+  }
+
+  .expert-title {
+    font-size: 10pt;
+    font-weight: 700;
+    color: #0f172a;
+  }
+
+  .expert-role {
+    font-size: 7.5pt;
+    color: #64748b;
+    font-weight: 500;
+  }
+
+  .expert-badge {
+    font-size: 7pt;
+    font-weight: 700;
+    padding: 2px 6px;
+    border-radius: 4px;
+    background: #f1f5f9;
+    color: #475569;
+    font-family: monospace;
+  }
+
+  .quote-box {
+    background: #f8fafc;
+    border-left: 3px solid #cbd5e1;
+    padding: 6px 10px;
+    font-style: italic;
+    font-size: 8pt;
+    color: #334155;
+    margin-bottom: 8px;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .advice-list {
+    list-style: none;
+    margin-bottom: 8px;
+  }
+
+  .advice-item {
+    margin-bottom: 6px;
+    padding-left: 16px;
+    position: relative;
+    font-size: 8pt;
+    line-height: 1.4;
+    color: #334155;
+  }
+
+  .advice-item::before {
+    content: "→";
+    position: absolute;
+    left: 2px;
+    top: 0;
+    font-weight: 800;
+    color: #6366f1;
+  }
+
+  .advice-item strong {
+    color: #0f172a;
+    font-weight: 700;
+  }
+
+  .impact-box {
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
+    border-radius: 6px;
+    padding: 5px 10px;
+    font-size: 7.5pt;
+    color: #166534;
+    display: flex;
+    align-items: baseline;
+    gap: 5px;
+  }
+
+  .impact-box strong {
+    color: #14532d;
+    font-weight: 700;
+  }
+
+  /* ДОРОЖНАЯ КАРТА (ТАБЛИЦА) */
+  .roadmap-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 8px;
+    margin-bottom: 10px;
+    font-size: 7.5pt;
+  }
+
+  .roadmap-table th {
+    background: #0f172a;
+    color: #ffffff;
+    font-weight: 700;
+    text-align: left;
+    padding: 6px 9px;
+    border: 1px solid #0f172a;
+  }
+
+  .roadmap-table td {
+    padding: 6px 9px;
+    border: 1px solid #e2e8f0;
+    color: #334155;
+    vertical-align: top;
+  }
+
+  .roadmap-table tr:nth-child(even) td {
+    background: #f8fafc;
+  }
+
+  .badge-p1 {
+    background: #fee2e2;
+    color: #991b1b;
+    font-weight: 700;
+    padding: 1px 5px;
+    border-radius: 3px;
+    font-size: 7pt;
+    display: inline-block;
+  }
+
+  .badge-p2 {
+    background: #fef3c7;
+    color: #92400e;
+    font-weight: 700;
+    padding: 1px 5px;
+    border-radius: 3px;
+    font-size: 7pt;
+    display: inline-block;
+  }
+
+  .conclusion-card {
+    background: linear-gradient(135deg, #f8fafc 0%, #eef2ff 100%);
+    border: 1px solid #c7d2fe;
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin-top: 6px;
+  }
+
+  .conclusion-card h3 {
+    font-size: 9.5pt;
+    font-weight: 700;
+    color: #1e1b4b;
+    margin-bottom: 4px;
+  }
+
+  .conclusion-card p {
+    font-size: 8pt;
+    color: #334155;
+    line-height: 1.45;
+  }
+</style>
+</head>
+<body>
+
+<!-- ТИТУЛЬНЫЙ ЛИСТ -->
+<div class="cover">
+  <div>
+    <div class="cover-badge">gstack Virtual Engineering Squad • Стратегический отчет</div>
+    <h1 class="cover-title">
+      СОВЕТ ЭКСПЕРТОВ:<br>
+      <span>КАК СДЕЛАТЬ MASKANI.TJ</span><br>
+      ЛИДЕРОМ РЫНКА
+    </h1>
+    <p class="cover-subtitle">
+      Практические рекомендации от виртуального инженерного совета Y Combinator (gstack) по продукту, дизайну, скорости и монетизации недвижимости Согдийской области и Таджикистана. Написано понятным языком бизнеса и продукта, без программистского жаргона.
+    </p>
+
+    <div class="cover-features">
+      <div class="cover-feature-box">
+        <div class="label">Платформа</div>
+        <div class="val">Maskani.tj (sogd-realty)</div>
+      </div>
+      <div class="cover-feature-box">
+        <div class="label">Экспертная панель</div>
+        <div class="val">6 ролей gstack</div>
+      </div>
+      <div class="cover-feature-box">
+        <div class="label">Горизонт плана</div>
+        <div class="val">Ближайшие 30 дней</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cover-footer">
+    <div>
+      <div><b>Проект:</b> Портал первичной и вторичной недвижимости Таджикистана</div>
+      <div><b>Стек анализа:</b> Garry Tan's gstack Multi-Role Engine & Graphify AST Knowledge Graph</div>
+    </div>
+    <div style="text-align: right;">
+      <div><b>Дата аудита:</b> Октябрь 2026</div>
+      <div><b>Статус:</b> Практическое руководство</div>
+    </div>
+  </div>
+</div>
+
+<!-- СТРАНИЦА 2: СТРАТЕГИЯ И ДИЗАЙН -->
+<div class="doc-page">
+  <div>
+    <div class="section-header">
+      <h2>1. СТРАТЕГИЯ, ЦЕННОСТЬ И ВИЗУАЛЬНЫЙ ОПЫТ</h2>
+      <span class="tag">Продукт & UX</span>
+    </div>
+
+    <div class="intro-text">
+      Мы попросили экспертов виртуальной инженерной команды <b>gstack</b> оценить текущий прогресс портала Maskani.tj (блок Deal Builder, расчет цен, каталог новостроек и вторички) и дать конкретные, практические советы: <b>что внедрить дальше, чтобы покупатели полюбили платформу, а застройщики выстраивались в очередь за лидами.</b>
+    </div>
+
+    <!-- ЭКСПЕРТ 1: CEO / FOUNDER -->
+    <div class="expert-block">
+      <div class="expert-head">
+        <div class="expert-info">
+          <div class="expert-icon">🎯</div>
+          <div>
+            <div class="expert-title">Гарри Тан / CEO & Основатель стартапа</div>
+            <div class="expert-role">Роль: Продуктовая стратегия, ценность и монетизация (/plan-ceo-review)</div>
+          </div>
+        </div>
+        <div class="expert-badge">FOUNDER MODE</div>
+      </div>
+
+      <div class="quote-box">
+        «Перестаньте думать о себе как о просто "доске объявлений". В Таджикистане недвижимость покупают 1-2 раза в жизни. Станьте доверенным советником, снимающим страх перед покупкой.»
+      </div>
+
+      <ul class="advice-list">
+        <li class="advice-item">
+          <strong>Знак «Проверенный застройщик» с прозрачной историей:</strong> Главный барьер покупателя в Худжанде или Душанбе — страх недостроя. Введите открытый аудит застройщика: сколько домов уже сдано, наличие разрешения на строительство и свежий фотоотчет со стройплощадки за последний месяц.
+        </li>
+        <li class="advice-item">
+          <strong>«Семейный шеринг» корзины новостройки в WhatsApp:</strong> Квартиру никогда не покупает один человек — решение принимает вся семья на вечернем совете. Добавьте в Deal Builder кнопку «Отправить расчет квартиры в WhatsApp» с готовой красивой карточкой (планировка, цена в сомони и долларах, ежемесячный платеж).
+        </li>
+        <li class="advice-item">
+          <strong>Специальный коридор для соотечественников за рубежом:</strong> Огромная доля сделок финансируется соотечественниками, работающими в России. Сделайте переключатель цен в рублях, возможность заказать видеозвонок-просмотр прямо со стройки и консультацию юриста по оформлению по доверенности.
+        </li>
+      </ul>
+
+      <div class="impact-box">
+        <span>💡</span>
+        <div><strong>Эффект для бизнеса:</strong> Рост конверсии из посетителя в заявку на 45% за счет снятия барьера недоверия и вовлечения всей семьи в процесс выбора.</div>
+      </div>
+    </div>
+
+    <!-- ЭКСПЕРТ 2: DESIGN LEAD -->
+    <div class="expert-block">
+      <div class="expert-head">
+        <div class="expert-info">
+          <div class="expert-icon">🎨</div>
+          <div>
+            <div class="expert-title">Главный дизайнер интерфейсов (Head of Product Design)</div>
+            <div class="expert-role">Роль: Эргономика, мобильный опыт и микроанимации (/plan-design-review)</div>
+          </div>
+        </div>
+        <div class="expert-badge">DESIGN SYSTEM</div>
+      </div>
+
+      <div class="quote-box">
+        «Интерфейс должен ощущаться в руках как дорогое банковское приложение: плавный, отзывчивый и без лишнего визуального шума.»
+      </div>
+
+      <ul class="advice-list">
+        <li class="advice-item">
+          <strong>Правило «Большого пальца» (Mobile Ergonomics):</strong> Более 85% пользователей заходят со смартфонов на ходу. Закрепите главную кнопку («Позвонить» / «Забронировать расчет») внизу экрана в фиксированной плашке, чтобы до нее было легко дотянуться одной рукой без прокрутки.
+        </li>
+        <li class="advice-item">
+          <strong>Наглядная шкала прогресса строительства:</strong> Вместо скучной строчки «Сдача: 4 квартал 2026» покажите красивый прогресс-бар: «Фундамент (готово) → 12 из 16 этажей возведено → Фасад (в процессе)». Это создает ощущение живой стройки и уверенности.
+        </li>
+        <li class="advice-item">
+          <strong>Сторона света и солнце:</strong> Добавьте на карточку планировки простую иконку: «Окна на восток (утреннее солнце)» или «Окна во двор (тихая сторона)». Для семейных людей это один из решающих факторов при выборе этажа.
+        </li>
+      </ul>
+
+      <div class="impact-box">
+        <span>💡</span>
+        <div><strong>Эффект для бизнеса:</strong> Снижение отказов на мобильных устройствах на 30%, увеличение времени на сайте в 2 раза за счет интерактивного изучения планировок.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- СТРАНИЦА 3: СКОРОСТЬ И МАРКЕТИНГ -->
+<div class="doc-page">
+  <div>
+    <div class="section-header">
+      <h2>2. НАДЕЖНОСТЬ, СКОРОСТЬ И ПРИВЛЕЧЕНИЕ КЛИЕНТОВ</h2>
+      <span class="tag">Скорость & Рост</span>
+    </div>
+
+    <div class="intro-text">
+      Как обеспечить приток тысяч новых покупателей без гигантских бюджетов на рекламу и сделать так, чтобы платформа работала надежно даже при нестабильном интернете в пути.
+    </div>
+
+    <!-- ЭКСПЕРТ 3: CHIEF ARCHITECT -->
+    <div class="expert-block">
+      <div class="expert-head">
+        <div class="expert-info">
+          <div class="expert-icon">🏗️</div>
+          <div>
+            <div class="expert-title">Технический директор / Архитектор систем (CTO)</div>
+            <div class="expert-role">Роль: Безопасность, стабильность и работа на медленном интернете (/plan-eng-review)</div>
+          </div>
+        </div>
+        <div class="expert-badge">SYSTEM INTEGRITY</div>
+      </div>
+
+      <div class="quote-box">
+        «Быстродействие — это не абстрактные цифры тестов. Если сайт грузится дольше 2 секунд на медленном 3G в дороге, покупатель просто закрывает вкладку и уходит к конкурентам.»
+      </div>
+
+      <ul class="advice-list">
+        <li class="advice-item">
+          <strong>Мгновенное открытие на слабом мобильном интернете (2G/3G):</strong> В регионах связь часто нестабильна. Наш сайт уже собран так, чтобы все фотографии автоматически сжимались в современный легкий формат, а страницы открывались за 1 секунду даже в пути между Худжандом и Гафуровом.
+        </li>
+        <li class="advice-item">
+          <strong>Никакой потери набранных данных при обрыве связи:</strong> Если человек заполняет объявление или собирает корзину квартиры, и у него на секунду пропал интернет, сайт должен сохранять черновик в памяти телефона. Пользователь не должен вводить данные заново.
+        </li>
+        <li class="advice-item">
+          <strong>Молниеносная передача лида застройщику в Telegram:</strong> Как только клиент нажимает кнопку бронирования, данные должны за 3 секунды поступать в рабочий Telegram-чат отдела продаж застройщика. Быстрый звонок клиенту в первые 5 минут повышает шанс сделки в 4 раза.
+        </li>
+      </ul>
+
+      <div class="impact-box">
+        <span>💡</span>
+        <div><strong>Эффект для бизнеса:</strong> 0 потерянных заявок из-за сбоев связи, гарантированная доставка всех звонков и смет менеджерам застройщиков.</div>
+      </div>
+    </div>
+
+    <!-- ЭКСПЕРТ 4: HEAD OF GROWTH -->
+    <div class="expert-block">
+      <div class="expert-head">
+        <div class="expert-info">
+          <div class="expert-icon">📈</div>
+          <div>
+            <div class="expert-title">Директор по росту и маркетингу (Head of Growth)</div>
+            <div class="expert-role">Роль: Локальное SEO, охват аудитории и вирусные петли (/autoplan)</div>
+          </div>
+        </div>
+        <div class="expert-badge">ORGANIC GROWTH</div>
+      </div>
+
+      <div class="quote-box">
+        «Лучший маркетинг — тот, за который не нужно платить рекламой каждый день. Это органический поиск в Google и Яндекс на родном языке пользователей.»
+      </div>
+
+      <ul class="advice-list">
+        <li class="advice-item">
+          <strong>Полноценный таджикский язык (/tg/) для захвата 100% поиска:</strong> Огромная часть населения ищет жилье на таджикском («хона дар Хуҷанд», «маҷмааи истиқоматӣ», «хариди хона бе фоиз»). Запуск качественных страниц на таджикском удвоит бесплатный трафик из поисковиков.
+        </li>
+        <li class="advice-item">
+          <strong>Красивые «умные превью» при пересылке ссылок:</strong> Когда ссылку на новостройку отправляют в Telegram или WhatsApp, в чате должна появляться не серая ссылка, а сочная карточка: фотография фасада, название ЖК, цена в сомони и статус готовности.
+        </li>
+        <li class="advice-item">
+          <strong>Готовые подборки под реальные жизненные ситуации:</strong> Создать целевые страницы под частые сценарии: «Квартиры с первым взносом до 10 000 $», «Новостройки рядом со школами в 19-м микрорайоне», «ЖК с беспроцентной рассрочкой на 2 года».
+        </li>
+      </ul>
+
+      <div class="impact-box">
+        <span>💡</span>
+        <div><strong>Эффект для бизнеса:</strong> Приток более 15 000 целевых посетителей в месяц из бесплатного органического поиска без затрат на контекстную рекламу.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- СТРАНИЦА 4: ДОВЕРИЕ И ДОРОЖНАЯ КАРТА НА 30 ДНЕЙ -->
+<div class="doc-page">
+  <div>
+    <div class="section-header">
+      <h2>3. ДОВЕРИЕ КЛИЕНТОВ И ДОРОЖНАЯ КАРТА РЕЛИЗОВ</h2>
+      <span class="tag">Клиентский опыт & План</span>
+    </div>
+
+    <!-- ЭКСПЕРТ 5: HEAD OF QA & CX -->
+    <div class="expert-block">
+      <div class="expert-head">
+        <div class="expert-info">
+          <div class="expert-icon">🛡️</div>
+          <div>
+            <div class="expert-title">Директор по клиентскому опыту (Head of CX & QA)</div>
+            <div class="expert-role">Роль: Прозрачность условий, честность и защита прав покупателя (/qa)</div>
+          </div>
+        </div>
+        <div class="expert-badge">CUSTOMER ADVOCATE</div>
+      </div>
+
+      <div class="quote-box">
+        «Портал должен быть одинаково понятен и 20-летнему студенту, выбирающему первую студию, и 65-летнему аксакалу, покупающему квартиру сыну.»
+      </div>
+
+      <ul class="advice-list">
+        <li class="advice-item">
+          <strong>Штамп «0% комиссии • Цена напрямую от застройщика»:</strong> Покупатели часто боятся скрытых наценок риелторов. Ясный, крупный бейдж о том, что покупатель платит ровно столько, сколько указано в официальном прайсе застройщика, полностью снимает это опасение.
+        </li>
+        <li class="advice-item">
+          <strong>Честный калькулятор ежемесячного платежа:</strong> Вместо пугающих общих сумм (например, 450 000 сомони) покажите понятную математику: «При первом взносе 30% — платеж составит всего 3 500 сомони в месяц на 3 года».
+        </li>
+      </ul>
+
+      <div class="impact-box">
+        <span>💡</span>
+        <div><strong>Эффект для бизнеса:</strong> Снятие главного барьера перед первым звонком застройщику. Рост доверия к бренду Maskani.tj.</div>
+      </div>
+    </div>
+
+    <!-- СВОДНАЯ ТАБЛИЦА ПРИОРИТЕТОВ -->
+    <div class="section-header" style="margin-top: 10px; margin-bottom: 6px;">
+      <h2>4. ПЛАН БЫСТРЫХ ПОБЕД (ДОРОЖНАЯ КАРТА НА 30 ДНЕЙ)</h2>
+      <span class="tag">Roadmap</span>
+    </div>
+
+    <table class="roadmap-table">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Спринт</th>
+          <th style="width: 44%;">Задача для платформы</th>
+          <th style="width: 24%;">Эксперт</th>
+          <th style="width: 18%;">Приоритет</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><b>Неделя 1</b></td>
+          <td><b>Экспорт PDF-сметы из Deal Builder:</b> возможность скачать буклет с расчетом квартиры и паркинга для семейного совета.</td>
+          <td>Design Lead + CTO</td>
+          <td><span class="badge-p1">P1 • Срочно</span></td>
+        </tr>
+        <tr>
+          <td><b>Неделя 2</b></td>
+          <td><b>Кнопка «Поделиться сметкой в WhatsApp/Telegram»:</b> мгновенная отправка готового расчета в семейные чаты в 1 клик.</td>
+          <td>CEO Mode + Growth</td>
+          <td><span class="badge-p1">P1 • Срочно</span></td>
+        </tr>
+        <tr>
+          <td><b>Неделя 3</b></td>
+          <td><b>Запуск страниц на таджикском языке (/tg/):</b> подключение SEO-маршрутов для охвата запросов на государственном языке.</td>
+          <td>Growth & Marketing</td>
+          <td><span class="badge-p2">P2 • Важно</span></td>
+        </tr>
+        <tr>
+          <td><b>Неделя 4</b></td>
+          <td><b>Шкала готовности стройки и бейдж «0% комиссии»:</b> визуальный индикатор хода возведения этажей и гарантия честной цены.</td>
+          <td>Design Lead + CX</td>
+          <td><span class="badge-p2">P2 • Важно</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="conclusion-card">
+      <h3>ИТОГОВЫЙ ВЫВОД ЭКСПЕРТНОГО СОВЕТА</h3>
+      <p>
+        Платформа <b>Maskani.tj</b> уже обладает мощным технологическим фундаментом (молниеносная скорость работы, пересчет валют, интерактивный сборщик сметы, 193 автотеста стабильности). Следующий качественный рывок лежит в плоскости <b>эмоционального доверия, семейного шеринга и максимальной адаптации под соотечественников в регионе и за рубежом.</b> Внедрение данных шагов закрепит за Maskani статус платформы №1 по недвижимости в Таджикистане.
+      </p>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

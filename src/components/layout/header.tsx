@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
+import { motion } from "motion/react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -43,6 +44,7 @@ export function Header() {
   const { compareCount } = useCompare();
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const [authModalTab, setAuthModalTab] = useState<"login" | "register">("login");
+  const [hoveredNav, setHoveredNav] = useState<string | null>(null);
 
   const { data: session, isPending } = useSession();
 
@@ -68,88 +70,87 @@ export function Header() {
   const userRole = (session?.user as any)?.role || "user";
   const roleInfo = roleLabels[userRole] || roleLabels.user;
 
+  const navItems = [
+    { href: "/#new-buildings", icon: Building2, label: t.nav.newBuildings },
+    { href: "/#classifieds", icon: Home, label: t.nav.resale },
+    { href: "/#houses", icon: null, label: t.nav.houses },
+    { href: "/map", icon: MapPin, label: tDual("Карта", "Харита"), highlight: true },
+    {
+      href: "/compare",
+      icon: ArrowLeftRight,
+      label: tDual("Сравнение", "Муқоиса"),
+      badge: compareCount > 0 ? compareCount : null,
+    },
+    { href: "/developers", icon: Briefcase, label: t.nav.developers },
+  ];
+
   return (
     <>
-      <header className="sticky top-0 z-50 w-full bg-background/95 backdrop-blur-md supports-backdrop-filter:bg-background/80">
-        <div className="container mx-auto px-4 h-16 flex items-center justify-between gap-4">
+      <header className="sticky top-0 z-50 w-full pt-2 sm:pt-3 pb-1 px-3 sm:px-6 pointer-events-none transition-all duration-300">
+        <div className="max-w-7xl mx-auto h-16 px-3.5 sm:px-5 flex items-center justify-between gap-2 sm:gap-4 glass-island rounded-2xl pointer-events-auto relative shadow-[0_16px_38px_-10px_rgba(15,23,42,0.08)]">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2.5">
-            <div className="h-10 w-10 rounded-xl bg-gradient-to-tr from-emerald-600 to-teal-500 flex items-center justify-center text-white shadow-md shadow-emerald-500/20">
+          <Link href="/" className="flex items-center gap-2.5 shrink-0 group">
+            <div className="h-10 w-10 rounded-xl bg-gradient-to-tr from-emerald-600 via-teal-500 to-emerald-400 flex items-center justify-center text-white shadow-md shadow-emerald-500/25 group-hover:scale-105 transition-transform duration-300">
               <Building2 className="h-5 w-5" />
             </div>
             <div className="flex flex-col">
-              <span className="font-bold tracking-tight text-lg leading-tight text-emerald-950 flex items-center gap-0.5">
-                MASKANI
+              <span className="font-extrabold tracking-tight text-lg leading-tight text-emerald-950 dark:text-emerald-100 flex items-center gap-0.5">
+                MASKANI<span className="text-emerald-500 text-xs">.TJ</span>
               </span>
-              <span className="text-[10px] text-muted-foreground uppercase tracking-widest font-medium">
+              <span className="text-[10px] text-muted-foreground uppercase tracking-widest font-semibold">
                 {tDual("Недвижимость Таджикистана", "Амволи ғайриманқули Тоҷикистон")}
               </span>
             </div>
           </Link>
 
-          {/* Navigation Links */}
-          <nav className="hidden md:flex items-center gap-6 text-sm font-medium">
-            <Link
-              href="/#new-buildings"
-              className="text-foreground/80 hover:text-emerald-600 transition-colors flex items-center gap-1.5"
-            >
-              <Building2 className="h-4 w-4 text-emerald-600" />
-              {t.nav.newBuildings}
-            </Link>
-            <Link
-              href="/#classifieds"
-              className="text-foreground/80 hover:text-emerald-600 transition-colors flex items-center gap-1.5"
-            >
-              <Home className="h-4 w-4 text-emerald-600" />
-              {t.nav.resale}
-            </Link>
-            <Link
-              href="/#houses"
-              className="text-foreground/80 hover:text-emerald-600 transition-colors"
-            >
-              {t.nav.houses}
-            </Link>
-            <Link
-              href="/map"
-              className="text-foreground/80 hover:text-emerald-600 transition-colors flex items-center gap-1.5 font-semibold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-lg border border-emerald-200/60"
-            >
-              <MapPin className="h-4 w-4 text-emerald-600" />
-              {tDual("Карта", "Харита")}
-            </Link>
-            <Link
-              href="/compare"
-              className="text-foreground/80 hover:text-emerald-600 transition-colors flex items-center gap-1.5"
-            >
-              <ArrowLeftRight className="h-4 w-4 text-emerald-600" />
-              <span>{tDual("Сравнение", "Муқоиса")}</span>
-              {compareCount > 0 && (
-                <span className="bg-emerald-100 text-emerald-800 text-[10px] font-bold px-1.5 py-0.5 rounded-full">
-                  {compareCount}
-                </span>
-              )}
-            </Link>
-            <Link
-              href="/developers"
-              className="text-foreground/80 hover:text-emerald-600 transition-colors flex items-center gap-1.5"
-            >
-              <Briefcase className="h-4 w-4 text-emerald-600" />
-              {t.nav.developers}
-            </Link>
+          {/* Navigation Links with Floating Motion Pill */}
+          <nav className="hidden lg:flex items-center gap-1 p-1 rounded-xl bg-slate-900/[0.03] dark:bg-white/[0.04] border border-black/[0.04] dark:border-white/[0.06] text-xs font-semibold">
+            {navItems.map((item) => {
+              const isHovered = hoveredNav === item.href;
+              const Icon = item.icon;
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  onMouseEnter={() => setHoveredNav(item.href)}
+                  onMouseLeave={() => setHoveredNav(null)}
+                  className={`relative px-3 py-1.5 rounded-lg transition-colors flex items-center gap-1.5 select-none ${
+                    item.highlight
+                      ? "text-emerald-700 dark:text-emerald-400 font-bold"
+                      : "text-slate-700 dark:text-slate-200 hover:text-emerald-700 dark:hover:text-emerald-400"
+                  }`}
+                >
+                  {isHovered && (
+                    <motion.div
+                      layoutId="header-nav-pill"
+                      transition={{ type: "spring", stiffness: 450, damping: 32 }}
+                      className="absolute inset-0 rounded-lg bg-white/90 dark:bg-slate-800/90 shadow-xs border border-slate-200/60 dark:border-white/10 -z-10"
+                    />
+                  )}
+                  {Icon && <Icon className="h-3.5 w-3.5 text-emerald-600 shrink-0" />}
+                  <span>{item.label}</span>
+                  {item.badge && (
+                    <span className="bg-emerald-600 text-white text-[10px] font-bold px-1.5 py-0.2 rounded-full tabular-nums shadow-xs">
+                      {item.badge}
+                    </span>
+                  )}
+                </Link>
+              );
+            })}
           </nav>
 
-
           {/* Right Controls: Language, Currency, Add Button, Auth */}
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5 sm:gap-2">
             {/* Language Selector */}
             <LanguageSwitcher />
 
             {/* Currency Selector */}
             <DropdownMenu>
-              <DropdownMenuTrigger className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-slate-200 bg-white/90 hover:bg-white text-slate-800 text-xs font-bold shadow-xs hover:border-emerald-500 hover:text-emerald-700 transition-all outline-hidden cursor-pointer">
+              <DropdownMenuTrigger className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl glass-pill hover:border-emerald-500/50 hover:text-emerald-700 text-slate-800 dark:text-slate-100 text-xs font-bold transition-all outline-hidden cursor-pointer">
                 <span>{currency}</span>
                 <ChevronDown className="h-3 w-3 text-slate-400" />
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-40 p-1.5 rounded-xl bg-white shadow-xl border border-slate-200/80 z-50">
+              <DropdownMenuContent align="end" className="w-40 p-1.5 rounded-xl bg-white/95 backdrop-blur-xl shadow-xl border border-slate-200/80 z-50">
                 <DropdownMenuItem
                   onClick={() => setCurrency("TJS")}
                   className={`cursor-pointer text-xs flex items-center justify-between px-3 py-2 rounded-lg font-semibold transition-colors ${
@@ -172,37 +173,41 @@ export function Header() {
             </DropdownMenu>
 
             {/* Compare Link / Icon */}
-            <Link
-              href="/compare"
-              className="relative p-2 rounded-xl border border-slate-200 bg-white/90 hover:bg-white text-slate-700 hover:text-emerald-700 hover:border-emerald-500 shadow-xs transition-all flex items-center justify-center cursor-pointer"
-              title={tDual("Сравнение объектов", "Муқоисаи амвол")}
-              aria-label={tDual("Сравнение объектов", "Муқоисаи амвол")}
-            >
-              <ArrowLeftRight className="h-4 w-4" />
-              {compareCount > 0 && (
-                <span className="absolute -top-1.5 -right-1.5 bg-emerald-600 text-white font-bold text-[10px] min-w-[18px] h-[18px] rounded-full flex items-center justify-center px-1 shadow-sm">
-                  {compareCount}
-                </span>
-              )}
-            </Link>
+            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+              <Link
+                href="/compare"
+                className="relative p-2 rounded-xl glass-pill text-slate-700 dark:text-slate-200 hover:text-emerald-700 hover:border-emerald-500 transition-all flex items-center justify-center cursor-pointer"
+                title={tDual("Сравнение объектов", "Муқоисаи амвол")}
+                aria-label={tDual("Сравнение объектов", "Муқоисаи амвол")}
+              >
+                <ArrowLeftRight className="h-4 w-4" />
+                {compareCount > 0 && (
+                  <span className="absolute -top-1.5 -right-1.5 bg-emerald-600 text-white font-bold text-[10px] min-w-[18px] h-[18px] rounded-full flex items-center justify-center px-1 shadow-sm">
+                    {compareCount}
+                  </span>
+                )}
+              </Link>
+            </motion.div>
 
             {/* Post Ad Button */}
-            <Link href={session ? "/classifieds/new" : "#"}>
-              <Button
-                size="sm"
-                variant="outline"
-                onClick={(e) => {
-                  if (!session) {
-                    e.preventDefault();
-                    handleOpenAuth("login");
-                  }
-                }}
-                className="hidden sm:flex border-emerald-600/30 text-emerald-700 dark:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-emerald-950/30 gap-1.5 text-xs font-medium cursor-pointer"
-              >
-                <PlusCircle className="h-3.5 w-3.5 text-emerald-600" />
-                {t.nav.postAd}
-              </Button>
-            </Link>
+            <motion.div whileHover={{ scale: 1.03, y: -1 }} whileTap={{ scale: 0.97 }}>
+              <Link href={session ? "/classifieds/new" : "#"}>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={(e) => {
+                    if (!session) {
+                      e.preventDefault();
+                      handleOpenAuth("login");
+                    }
+                  }}
+                  className="hidden sm:flex rounded-xl glass-pill border-emerald-600/30 text-emerald-700 dark:text-emerald-400 hover:bg-emerald-500/10 gap-1.5 text-xs font-semibold cursor-pointer shadow-xs"
+                >
+                  <PlusCircle className="h-3.5 w-3.5 text-emerald-600" />
+                  {t.nav.postAd}
+                </Button>
+              </Link>
+            </motion.div>
 
             {/* Auth Button or User Profile */}
             {isPending ? (
@@ -299,34 +304,37 @@ export function Header() {
                 </DropdownMenuContent>
               </DropdownMenu>
             ) : (
-              <Button
-                size="sm"
+              <motion.button
+                whileHover={{ scale: 1.04 }}
+                whileTap={{ scale: 0.96 }}
                 onClick={() => handleOpenAuth("login")}
-                className="bg-emerald-600 hover:bg-emerald-700 text-white font-medium text-xs px-3 shadow-xs"
+                className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold text-xs shadow-md shadow-emerald-600/25 transition-all cursor-pointer"
               >
-                <LogIn className="mr-1.5 h-3.5 w-3.5" />
-                {t.nav.login}
-              </Button>
+                <LogIn className="h-3.5 w-3.5" />
+                <span>{t.nav.login}</span>
+              </motion.button>
             )}
           </div>
         </div>
 
-        {/* Compact Marquee Border Divider */}
-        <div className="w-full overflow-hidden bg-emerald-50/60 backdrop-blur-xs border-y border-emerald-100/80 py-1">
-          <div className="flex whitespace-nowrap animate-marquee">
-            {[0, 1].map((i) => (
-              <span
-                key={i}
-                className="inline-flex items-center gap-6 px-6 text-[11px] font-semibold tracking-widest uppercase text-emerald-900/75 select-none"
-              >
-                <span><span className="text-emerald-600 mr-2">✦</span>{t.marquee.portalTitle}</span>
-                <span><span className="text-emerald-600 mr-2">✦</span>{t.marquee.directDev}</span>
-                <span><span className="text-emerald-600 mr-2">✦</span>{t.marquee.chessboards}</span>
-                <span><span className="text-emerald-600 mr-2">✦</span>{t.marquee.resaleHomes}</span>
-                <span><span className="text-emerald-600 mr-2">✦</span>{t.marquee.dualCurrency}</span>
-                <span><span className="text-emerald-600 mr-2">✦</span>{t.marquee.b2bCrm}</span>
-              </span>
-            ))}
+        {/* Sleek Glassy Marquee Ticker */}
+        <div className="max-w-7xl mx-auto mt-1.5 px-2 pointer-events-auto overflow-hidden">
+          <div className="py-1 px-3 rounded-full bg-emerald-950/[0.03] dark:bg-white/[0.04] backdrop-blur-md border border-emerald-900/[0.06] dark:border-white/[0.08] overflow-hidden">
+            <div className="flex whitespace-nowrap animate-marquee">
+              {[0, 1].map((i) => (
+                <span
+                  key={i}
+                  className="inline-flex items-center gap-6 px-6 text-[11px] font-semibold tracking-widest uppercase text-emerald-900/75 dark:text-emerald-300 select-none"
+                >
+                  <span><span className="text-emerald-600 mr-2">✦</span>{t.marquee.portalTitle}</span>
+                  <span><span className="text-emerald-600 mr-2">✦</span>{t.marquee.directDev}</span>
+                  <span><span className="text-emerald-600 mr-2">✦</span>{t.marquee.chessboards}</span>
+                  <span><span className="text-emerald-600 mr-2">✦</span>{t.marquee.resaleHomes}</span>
+                  <span><span className="text-emerald-600 mr-2">✦</span>{t.marquee.dualCurrency}</span>
+                  <span><span className="text-emerald-600 mr-2">✦</span>{t.marquee.b2bCrm}</span>
+                </span>
+              ))}
+            </div>
           </div>
         </div>
       </header>
