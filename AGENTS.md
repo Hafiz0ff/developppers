@@ -79,3 +79,11 @@ Rules:
 - Read graphify-out/GRAPH_REPORT.md only for broad architecture review or when query/path/explain do not surface enough context.
 - After modifying code, run `graphify update .` to keep the graph current (AST-only, no API cost).
 - A committed graphify-out/graph.json is rewritten whole on every build, so a large diff to it in a pull request is expected. Do not flag it as churn or suggest skipping the graph rebuild or its hooks.
+
+## gstack
+
+This project is enabled with Garry Tan's **gstack** multi-role virtual engineering team skills suite (`github.com/garrytan/gstack`):
+- **Core skills**: `/office-hours`, `/spec`, `/plan-ceo-review`, `/plan-eng-review`, `/plan-design-review`, `/autoplan`, `/review`, `/qa`, `/ship`, `/investigate`.
+- **Local router skill**: `.agents/skills/gstack/SKILL.md` and `.codex/skills/gstack/`.
+- **Global skills**: installed across `~/.codex/skills/` and `~/.gemini/antigravity-cli/skills/`.
+
