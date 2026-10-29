@@ -50,6 +50,9 @@ export interface Translations {
     adminPanel: string;
     selectLanguage: string;
     selectCurrency: string;
+    map: string;
+    compare: string;
+    subtitle: string;
   };
   // Marquee banner
   marquee: {
@@ -81,6 +84,14 @@ export interface Translations {
     rooms2: string;
     rooms3: string;
     rooms4Plus: string;
+    quickFilters: string;
+    showOnMap: string;
+    searchProjects: string;
+    searchProperties: string;
+    tabNew: string;
+    tabResale: string;
+    tabHouses: string;
+    tabRent: string;
   };
   // Real estate concepts
   realty: {
@@ -197,6 +208,9 @@ export const translations: Record<Language, Translations> = {
       adminPanel: "Панель администратора",
       selectLanguage: "Выберите язык",
       selectCurrency: "Выберите валюту",
+      map: "Карта",
+      compare: "Сравнение",
+      subtitle: "Недвижимость Таджикистана",
     },
     marquee: {
       portalTitle: "MASKANI.TJ — ЕДИНЫЙ ЖИЛИЩНЫЙ ПОРТАЛ ТАДЖИКИСТАНА",
@@ -226,6 +240,14 @@ export const translations: Record<Language, Translations> = {
       rooms2: "2-комнатная",
       rooms3: "3-комнатная",
       rooms4Plus: "4+ комнат",
+      quickFilters: "Быстрый выбор:",
+      showOnMap: "Показать на карте",
+      searchProjects: "Найти {count} ЖК",
+      searchProperties: "Найти объекты",
+      tabNew: "Новостройки (ЖК)",
+      tabResale: "Купить вторичку",
+      tabHouses: "Дома и Ҳавлӣ",
+      tabRent: "Аренда & Коммерция",
     },
     realty: {
       complex: "Жилой комплекс",
@@ -319,11 +341,11 @@ export const translations: Record<Language, Translations> = {
     },
     nav: {
       home: "Саҳифаи асосӣ",
-      newBuildings: "Биноҳои навсохт",
+      newBuildings: "Биноҳои нав",
       resale: "Хонаҳои пешина",
       houses: "Ҳавлиҳо",
       commercial: "Биноҳои тиҷоратӣ",
-      developers: "Ширкатҳои сохтмонӣ",
+      developers: "Сохтмончиён",
       postAd: "Эълон гузоштан",
       favorites: "Баргузидаҳо",
       login: "Воридшавӣ",
@@ -337,6 +359,9 @@ export const translations: Record<Language, Translations> = {
       adminPanel: "Панели мудир",
       selectLanguage: "Забонро интихоб кунед",
       selectCurrency: "Асъорро интихоб кунед",
+      map: "Харита",
+      compare: "Муқоиса",
+      subtitle: "Амволи ғайриманқули Тоҷикистон",
     },
     marquee: {
       portalTitle: "MASKANI.TJ — ПОРТАЛИ ЯГОНАИ АМВОЛИ ҒАЙРИМАНҚУЛИ ТОҶИКИСТОН",
@@ -366,6 +391,14 @@ export const translations: Record<Language, Translations> = {
       rooms2: "2-ҳуҷрагӣ",
       rooms3: "3-ҳуҷрагӣ",
       rooms4Plus: "4+ ҳуҷрагӣ",
+      quickFilters: "Интихоби фаврӣ:",
+      showOnMap: "Дар харита дидан",
+      searchProjects: "Ҷустуҷӯи {count} МИ",
+      searchProperties: "Ҷустуҷӯи амвол",
+      tabNew: "Биноҳои навсохт (Маҷмааҳо)",
+      tabResale: "Хонаҳои пешина (Вторичка)",
+      tabHouses: "Ҳавлиҳо ва бӯстонсароҳо",
+      tabRent: "Иҷора ва тиҷорат",
     },
     realty: {
       complex: "Маҷмааи истиқоматӣ",
@@ -477,6 +510,9 @@ export const translations: Record<Language, Translations> = {
       adminPanel: "Admin Panel",
       selectLanguage: "Select language",
       selectCurrency: "Select currency",
+      map: "Map",
+      compare: "Compare",
+      subtitle: "Tajikistan Real Estate",
     },
     marquee: {
       portalTitle: "MASKANI.TJ — TAJIKISTAN'S PREMIER REAL ESTATE PLATFORM",
@@ -506,6 +542,14 @@ export const translations: Record<Language, Translations> = {
       rooms2: "2-room",
       rooms3: "3-room",
       rooms4Plus: "4+ rooms",
+      quickFilters: "Quick filters:",
+      showOnMap: "Show on map",
+      searchProjects: "Search {count} Projects",
+      searchProperties: "Search Properties",
+      tabNew: "New Buildings",
+      tabResale: "Secondary Market",
+      tabHouses: "Houses & Villas",
+      tabRent: "Rent & Commercial",
     },
     realty: {
       complex: "Residential Complex",

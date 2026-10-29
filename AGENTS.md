@@ -66,6 +66,12 @@ npx tsx --test 'src/**/*.test.ts'
 npm run build
 ```
 
+## UI & Multilingual Quality Standard (RU / TG / EN)
+- **Mandatory 3-Language Validation**: Whenever modifying any UI element (Header, Hero, Search Block, Catalog, Cards, Tabs, Filters, Buttons, Dropdowns, Modals, Footer), ALWAYS verify that it renders correctly in all 3 languages: Russian (`ru`), Tajik (`tg`), and English (`en`).
+- **No Russian Fallback in EN**: English interface must contain zero untranslated Russian words. Pass explicit `en` values or use `t.nav.*` / `t.catalog.*`.
+- **Zero Layout Overflow in TG**: Tajik strings are longer. Ensure navigation and action buttons (`Воридшавӣ / Войти / Sign In`, `Эълон гузоштан / Подать объявление`) never push elements off-screen or cause horizontal container clipping on 1024px–1440px viewports.
+
+
 ## graphify
 
 This project has a knowledge graph at graphify-out/ with god nodes, community structure, and cross-file relationships.

@@ -407,10 +407,10 @@ export default function HomePage() {
                 className="flex items-center gap-1 sm:gap-2 overflow-x-auto overflow-y-hidden [scrollbar-width:none] [&::-webkit-scrollbar]:hidden pb-1 mb-5 border-b border-white/20 select-none"
               >
                 {[
-                  { id: "new", label: tDual("Новостройки (ЖК)", "Биноҳои навсохт (Маҷмааҳо)"), icon: Building2 },
-                  { id: "resale", label: tDual("Купить вторичку", "Хонаҳои пешина (Вторичка)"), icon: Home },
-                  { id: "houses", label: tDual("Дома и Ҳавлӣ", "Ҳавлиҳо ва бӯстонсароҳо"), icon: Trees },
-                  { id: "rent", label: tDual("Аренда & Коммерция", "Иҷора ва амволи тиҷоратӣ"), icon: Store },
+                  { id: "new", label: t.catalog.tabNew, icon: Building2 },
+                  { id: "resale", label: t.catalog.tabResale, icon: Home },
+                  { id: "houses", label: t.catalog.tabHouses, icon: Trees },
+                  { id: "rent", label: t.catalog.tabRent, icon: Store },
                 ].map((tab) => {
                   const Icon = tab.icon;
                   const isSelected = activeTab === tab.id;
@@ -474,10 +474,10 @@ export default function HomePage() {
                     <DropdownMenuTrigger className="flex h-[38px] w-full items-center justify-between gap-1.5 rounded-2xl border border-white/25 bg-white/12 hover:bg-white/20 active:bg-white/25 backdrop-blur-xl px-4 text-white text-xs font-semibold shadow-[inset_0_1px_1px_rgba(255,255,255,0.3)] transition-all cursor-pointer outline-hidden select-none box-border">
                       <span className="truncate drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]">
                         {selectedCity === "all"
-                          ? tDual("Все города", "Ҳамаи шаҳрҳо")
+                          ? t.catalog.allCities
                           : (() => {
                               const c = SOGD_CITIES.find((item) => item.value === selectedCity);
-                              return language === "tg" ? c?.nameTj : c?.nameRu || "Худжанд";
+                              return language === "tg" ? c?.nameTj : language === "en" ? (c?.nameEn || c?.nameRu) : c?.nameRu || "Худжанд";
                             })()}
                       </span>
                       <ChevronDown className="h-3.5 w-3.5 text-white shrink-0 drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]" />
@@ -495,7 +495,7 @@ export default function HomePage() {
                             : "text-white/90 hover:text-white hover:bg-white/15 focus:text-white focus:bg-white/15 font-semibold"
                         }`}
                       >
-                        <span className="drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]">{tDual("Все города", "Ҳамаи шаҳрҳо")}</span>
+                        <span className="drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]">{t.catalog.allCities}</span>
                         {selectedCity === "all" && <Check className="h-3.5 w-3.5 text-emerald-300 drop-shadow-[0_0_6px_rgba(52,211,153,0.9)]" />}
                       </DropdownMenuItem>
                       {SOGD_CITIES.map((c) => {
@@ -510,7 +510,9 @@ export default function HomePage() {
                                 : "text-white/90 hover:text-white hover:bg-white/15 focus:text-white focus:bg-white/15 font-semibold"
                             }`}
                           >
-                            <span className="drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]">{language === "tg" ? c.nameTj : c.nameRu}</span>
+                            <span className="drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]">
+                              {language === "tg" ? c.nameTj : language === "en" ? (c.nameEn || c.nameRu) : c.nameRu}
+                            </span>
                             {isCitySelected && <Check className="h-3.5 w-3.5 text-emerald-300 drop-shadow-[0_0_6px_rgba(52,211,153,0.9)]" />}
                           </DropdownMenuItem>
                         );
@@ -576,14 +578,9 @@ export default function HomePage() {
                   >
                     <Search className="h-3.5 w-3.5 text-emerald-300 drop-shadow-[0_0_8px_rgba(52,211,153,0.9)]" />
                     <span className="drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]">
-                      {tDual(
-                        activeTab === "new"
-                          ? `Найти ${filteredProjects.length} ЖК`
-                          : "Найти объекты",
-                        activeTab === "new"
-                          ? `Ҷустуҷӯи ${filteredProjects.length} МИ`
-                          : "Ҷустуҷӯи амвол"
-                      )}
+                      {activeTab === "new"
+                        ? t.catalog.searchProjects.replace("{count}", String(filteredProjects.length))
+                        : t.catalog.searchProperties}
                     </span>
                   </motion.button>
                 </div>
@@ -594,15 +591,15 @@ export default function HomePage() {
                 {/* Frosted Glass Badge for "Быстрый выбор" (Reduced by 1 step) */}
                 <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-white/15 backdrop-blur-xl border border-white/25 text-white text-[10px] font-bold tracking-wider uppercase shadow-[inset_0_1px_1px_rgba(255,255,255,0.35)] drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)] select-none">
                   <Sparkles className="h-3 w-3 text-emerald-300 animate-pulse" />
-                  <span>{tDual("Быстрый выбор:", "Интихоби фаврӣ:")}</span>
+                  <span>{t.catalog.quickFilters}</span>
                 </div>
 
                 {[
-                  { id: "installment_0", ru: "Рассрочка 0%", tg: "Пардохти қисм-қисм 0%" },
-                  { id: "sirdaryo_view", ru: "Вид на Сырдарью / Море", tg: "Манзара ба Сирдарё / Баҳр" },
-                  { id: "district_18_19", ru: "18 и 19 мкр", tg: "микрорайонҳои 18 ва 19" },
-                  { id: "with_parking", ru: "С паркингом", tg: "Бо таваққуфгоҳ" },
-                  { id: "ready", ru: "Сданные ЖК", tg: "Биноҳои супоридашуда" },
+                  { id: "installment_0", ru: "Рассрочка 0%", tg: "Пардохти қисм-қисм 0%", en: "0% Installment" },
+                  { id: "sirdaryo_view", ru: "Вид на Сырдарью / Море", tg: "Манзара ба Сирдарё / Баҳр", en: "Syr Darya / Sea view" },
+                  { id: "district_18_19", ru: "18 и 19 мкр", tg: "микрорайонҳои 18 ва 19", en: "18th & 19th Districts" },
+                  { id: "with_parking", ru: "С паркингом", tg: "Бо таваққуфгоҳ", en: "With parking" },
+                  { id: "ready", ru: "Сданные ЖК", tg: "Биноҳои супоридашуда", en: "Completed complexes" },
                 ].map((chip) => {
                   const isActive = activeQuickChip === chip.id;
                   return (
@@ -623,7 +620,9 @@ export default function HomePage() {
                           : "border-white/25 bg-white/12 hover:bg-white/20 active:bg-white/25 text-white font-medium shadow-[inset_0_1px_1px_rgba(255,255,255,0.25)]"
                       }`}
                     >
-                      <span className="relative z-10 text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]">{tDual(chip.ru, chip.tg)}</span>
+                      <span className="relative z-10 text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]">
+                        {language === "en" ? chip.en : language === "tg" ? chip.tg : chip.ru}
+                      </span>
 
                       {/* Apple-Style Dynamic Glowing Underline for Active Quick Filter Chip */}
                       {isActive && (
@@ -647,7 +646,7 @@ export default function HomePage() {
                     className="inline-flex items-center gap-1 px-2.5 py-1 rounded-xl bg-red-500/20 hover:bg-red-500/35 border border-red-400/40 text-white text-[10px] font-bold backdrop-blur-xl transition-all cursor-pointer select-none shadow-[inset_0_1px_1px_rgba(255,255,255,0.25)] drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]"
                   >
                     <X className="h-2.5 w-2.5 text-white" />
-                    <span>{isTg ? "Тоза кардан" : "Сбросить"}</span>
+                    <span>{language === "en" ? "Reset" : isTg ? "Тоза кардан" : "Сбросить"}</span>
                   </motion.button>
                 )}
 
@@ -663,7 +662,7 @@ export default function HomePage() {
                     className="inline-flex items-center gap-1.5 rounded-xl border border-white/30 bg-white/15 hover:bg-white/25 active:bg-white/30 text-white font-bold px-2.5 py-1 text-[11px] transition-all shadow-[inset_0_1px_1px_rgba(255,255,255,0.35)] backdrop-blur-xl hover:border-emerald-400/60 hover:shadow-[0_0_16px_rgba(16,185,129,0.35)] select-none drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]"
                   >
                     <MapPin className="h-3 w-3 text-emerald-300 drop-shadow-[0_0_6px_rgba(52,211,153,0.8)]" />
-                    <span>{tDual("Показать на карте", "Дар харита дидан")}</span>
+                    <span>{t.catalog.showOnMap}</span>
                   </Link>
                 </motion.div>
               </div>
@@ -697,18 +696,20 @@ export default function HomePage() {
           <div>
             <div className="inline-flex items-center gap-1.5 text-xs uppercase font-bold tracking-wider text-emerald-600 mb-1">
               <Sparkles className="h-3.5 w-3.5" />
-              {tDual("Каталог новостроек Согда", "Феҳристи биноҳои навсохти Суғд")}
+              {tDual("Каталог новостроек Согда", "Феҳристи биноҳои навсохти Суғд", "Sughd New Buildings Catalog")}
             </div>
             <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">
               {tDual(
                 "Премиальные ЖК и застройщики Худжанда",
-                "Маҷмааҳои истиқоматии дараҷаи олӣ ва сохтмончиёни Суғд"
+                "Маҷмааҳои истиқоматии дараҷаи олӣ ва сохтмончиёни Суғд",
+                "Premium Complexes & Developers of Khujand"
               )}
             </h2>
             <p className="text-xs sm:text-sm text-slate-500 mt-0.5">
               {tDual(
                 "Жилые комплексы с официальной документацией, беспроцентной рассрочкой и поэтажной шахматкой",
-                "Маҷмааҳои истиқоматӣ бо ҳуҷҷатҳои расмӣ, пардохти қисм-қисми бефоиз ва ҷадвали шоҳмотии ошёнаҳо"
+                "Маҷмааҳои истиқоматӣ бо ҳуҷҷатҳои расмӣ, пардохти қисм-қисми бефоиз ва ҷадвали шоҳмотии ошёнаҳо",
+                "Residential complexes with official documentation, 0% installments, and floor plans"
               )}
             </p>
           </div>
@@ -718,8 +719,8 @@ export default function HomePage() {
             className="text-sm font-semibold text-emerald-600 hover:text-emerald-700 flex items-center gap-1 shrink-0 cursor-pointer"
           >
             {showAllProjects
-              ? tDual("Показать первые 6", "Нишон додани 6-тои аввал")
-              : tDual(`Все ${filteredProjects.length} комплексов`, `Ҳамаи ${filteredProjects.length} маҷмаа`)}
+              ? tDual("Показать первые 6", "Нишон додани 6-тои аввал", "Show first 6")
+              : tDual(`Все ${filteredProjects.length} комплексов`, `Ҳамаи ${filteredProjects.length} маҷмаа`, `All ${filteredProjects.length} complexes`)}
             <ChevronRight className={`h-4 w-4 transition-transform ${showAllProjects ? "rotate-90" : ""}`} />
           </button>
         </div>

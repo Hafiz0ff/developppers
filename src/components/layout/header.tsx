@@ -42,7 +42,7 @@ import { useCompare } from "@/context/compare-context";
 export function Header() {
   const pathname = usePathname();
   const { currency, setCurrency } = useCurrency();
-  const { t, tDual } = useLanguage();
+  const { t, tDual, language } = useLanguage();
   const { compareCount } = useCompare();
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const [authModalTab, setAuthModalTab] = useState<"login" | "register">("login");
@@ -66,16 +66,22 @@ export function Header() {
   };
 
   const roleLabels: Record<string, { label: string; color: string }> = {
-    admin: { label: tDual("Администратор", "Мудир"), color: "bg-red-500/10 text-red-600 border-red-200" },
+    admin: {
+      label: language === "en" ? "Administrator" : language === "tg" ? "Мудир" : "Администратор",
+      color: "bg-red-500/10 text-red-600 border-red-200",
+    },
     developer: {
-      label: tDual("Застройщик", "Ширкати сохтмонӣ"),
+      label: language === "en" ? "Developer" : language === "tg" ? "Ширкати сохтмонӣ" : "Застройщик",
       color: "bg-blue-500/10 text-blue-600 border-blue-200",
     },
     realtor: {
-      label: tDual("Риелтор", "Маклер"),
+      label: language === "en" ? "Realtor" : language === "tg" ? "Маклер" : "Риелтор",
       color: "bg-emerald-500/10 text-emerald-600 border-emerald-200",
     },
-    user: { label: tDual("Пользователь", "Корбар"), color: "bg-muted text-muted-foreground" },
+    user: {
+      label: language === "en" ? "User" : language === "tg" ? "Корбар" : "Пользователь",
+      color: "bg-muted text-muted-foreground",
+    },
   };
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -86,11 +92,11 @@ export function Header() {
     { href: "/#new-buildings", icon: Building2, label: t.nav.newBuildings },
     { href: "/#classifieds", icon: Home, label: t.nav.resale },
     { href: "/#houses", icon: null, label: t.nav.houses },
-    { href: "/map", icon: MapPin, label: tDual("Карта", "Харита") },
+    { href: "/map", icon: MapPin, label: t.nav.map },
     {
       href: "/compare",
       icon: ArrowLeftRight,
-      label: tDual("Сравнение", "Муқоиса"),
+      label: t.nav.compare,
       badge: compareCount > 0 ? compareCount : null,
     },
     { href: "/developers", icon: Briefcase, label: t.nav.developers },
@@ -120,8 +126,8 @@ export function Header() {
               <span className="font-extrabold tracking-tight text-base sm:text-lg leading-tight text-white flex items-center gap-0.5 drop-shadow-[0_1px_2px_rgba(0,0,0,0.7)]">
                 MASKANI<span className="text-emerald-400 text-xs font-bold">.TJ</span>
               </span>
-              <span className="text-[10px] text-white/90 uppercase tracking-wider font-semibold drop-shadow-[0_1px_2px_rgba(0,0,0,0.7)] hidden sm:block">
-                {tDual("Недвижимость Таджикистана", "Амволи ғайриманқули Тоҷикистон")}
+              <span className="text-[10px] text-white/90 uppercase tracking-wider font-semibold drop-shadow-[0_1px_2px_rgba(0,0,0,0.7)] hidden 2xl:block">
+                {t.nav.subtitle}
               </span>
             </div>
           </Link>
@@ -129,7 +135,7 @@ export function Header() {
           {/* Navigation Links with Dynamic Underline & Forward Scale */}
           <nav
             onMouseLeave={() => setHoveredNav(null)}
-            className="hidden lg:flex items-center gap-0 p-1 rounded-2xl bg-white/[0.07] border border-white/20 text-xs font-semibold backdrop-blur-md shrink"
+            className="hidden lg:flex items-center gap-0 p-1 rounded-2xl bg-white/[0.07] border border-white/20 text-xs font-semibold backdrop-blur-md shrink-0"
           >
             {navItems.map((item) => {
               const isHovered = hoveredNav === item.href;
@@ -140,7 +146,7 @@ export function Header() {
                   key={item.href}
                   href={item.href}
                   onMouseEnter={() => setHoveredNav(item.href)}
-                  className="relative px-2 xl:px-2.5 py-1.5 flex items-center select-none group whitespace-nowrap"
+                  className="relative px-1 xl:px-1.5 2xl:px-2 py-1 flex items-center select-none group whitespace-nowrap text-[11px] xl:text-xs"
                 >
                   <motion.div
                     whileHover={{ scale: 1.05, y: -1 }}
@@ -191,13 +197,13 @@ export function Header() {
           </nav>
 
           {/* Right Controls: Language, Currency, Add Button, Auth */}
-          <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
+          <div className="flex items-center gap-1 sm:gap-1.5 shrink-0">
             {/* Language Selector */}
             <LanguageSwitcher />
 
             {/* Currency Selector */}
             <DropdownMenu>
-              <DropdownMenuTrigger className="flex items-center gap-1 px-2.5 py-1.5 rounded-xl border border-white/25 bg-white/12 hover:bg-white/20 active:bg-white/25 backdrop-blur-xl text-white text-xs font-bold shadow-[inset_0_1px_1px_rgba(255,255,255,0.3)] drop-shadow-[0_1px_2px_rgba(0,0,0,0.7)] transition-all outline-hidden cursor-pointer shrink-0">
+              <DropdownMenuTrigger className="flex items-center gap-1 px-2 sm:px-2.5 py-1.5 rounded-xl border border-white/25 bg-white/12 hover:bg-white/20 active:bg-white/25 backdrop-blur-xl text-white text-xs font-bold shadow-[inset_0_1px_1px_rgba(255,255,255,0.3)] drop-shadow-[0_1px_2px_rgba(0,0,0,0.7)] transition-all outline-hidden cursor-pointer shrink-0">
                 <span>{currency}</span>
                 <ChevronDown className="h-3 w-3 text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.7)]" />
               </DropdownMenuTrigger>
@@ -231,9 +237,9 @@ export function Header() {
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="shrink-0">
               <Link
                 href="/compare"
-                className="relative p-2 rounded-xl border border-white/25 bg-white/12 hover:bg-white/20 active:bg-white/25 backdrop-blur-xl text-white shadow-[inset_0_1px_1px_rgba(255,255,255,0.3)] drop-shadow-[0_1px_2px_rgba(0,0,0,0.7)] transition-all flex items-center justify-center cursor-pointer"
-                title={tDual("Сравнение объектов", "Муқоисаи амвол")}
-                aria-label={tDual("Сравнение объектов", "Муқоисаи амвол")}
+                className="relative p-1.5 sm:p-2 rounded-xl border border-white/25 bg-white/12 hover:bg-white/20 active:bg-white/25 backdrop-blur-xl text-white shadow-[inset_0_1px_1px_rgba(255,255,255,0.3)] drop-shadow-[0_1px_2px_rgba(0,0,0,0.7)] transition-all flex items-center justify-center cursor-pointer"
+                title={t.nav.compare}
+                aria-label={t.nav.compare}
               >
                 <ArrowLeftRight className="h-4 w-4 text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.7)]" />
                 {compareCount > 0 && (
@@ -255,7 +261,7 @@ export function Header() {
                       handleOpenAuth("login");
                     }
                   }}
-                  className="hidden sm:inline-flex items-center justify-center px-3 py-1.5 rounded-xl border border-white/30 bg-white/15 hover:bg-white/25 active:bg-white/30 text-white font-bold backdrop-blur-xl text-xs cursor-pointer shadow-[inset_0_1px_1px_rgba(255,255,255,0.35)] drop-shadow-[0_1px_2px_rgba(0,0,0,0.7)] transition-all select-none whitespace-nowrap"
+                  className="hidden sm:inline-flex items-center justify-center px-2 xl:px-2.5 py-1.5 rounded-xl border border-white/30 bg-white/15 hover:bg-white/25 active:bg-white/30 text-white font-bold backdrop-blur-xl text-xs cursor-pointer shadow-[inset_0_1px_1px_rgba(255,255,255,0.35)] drop-shadow-[0_1px_2px_rgba(0,0,0,0.7)] transition-all select-none whitespace-nowrap"
                 >
                   <span>{t.nav.postAd}</span>
                 </button>
@@ -361,7 +367,7 @@ export function Header() {
                 whileHover={{ scale: 1.04 }}
                 whileTap={{ scale: 0.96 }}
                 onClick={() => handleOpenAuth("login")}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-500/35 hover:bg-emerald-500/50 active:bg-emerald-500/60 backdrop-blur-xl border border-emerald-400/60 text-white font-bold text-xs shadow-[0_8px_24px_rgba(16,185,129,0.35),inset_0_1px_1.5px_rgba(255,255,255,0.5)] transition-all cursor-pointer drop-shadow-[0_1px_2px_rgba(0,0,0,0.7)] shrink-0 whitespace-nowrap"
+                className="flex items-center gap-1.5 px-2 xl:px-2.5 py-1.5 rounded-xl bg-emerald-500/35 hover:bg-emerald-500/50 active:bg-emerald-500/60 backdrop-blur-xl border border-emerald-400/60 text-white font-bold text-xs shadow-[0_8px_24px_rgba(16,185,129,0.35),inset_0_1px_1.5px_rgba(255,255,255,0.5)] transition-all cursor-pointer drop-shadow-[0_1px_2px_rgba(0,0,0,0.7)] shrink-0 whitespace-nowrap"
               >
                 <LogIn className="h-3.5 w-3.5 text-emerald-300 drop-shadow-[0_0_8px_rgba(52,211,153,0.9)]" />
                 <span>{t.nav.login}</span>
