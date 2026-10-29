@@ -33,6 +33,7 @@ import { ParkingSpot, StorageUnit } from "@/types/parking-storage";
 import { getDeveloperCrmSettings } from "@/lib/crm-booking-store";
 import { ProjectDealBuilderBlock } from "@/components/modules/projects/project-deal-builder-block";
 import { LeadRequestDrawer } from "@/components/modules/projects/lead-request-drawer";
+import { motion } from "motion/react";
 
 import {
   Building2,
@@ -56,9 +57,35 @@ import {
   ExternalLink,
   PhoneCall,
   Bookmark,
+  Car,
+  Trees,
+  ArrowUpDown,
+  Maximize2,
+  SunMedium,
+  VolumeX,
+  Store,
+  Zap,
+  Waves,
+  GraduationCap,
 } from "lucide-react";
 import { useLanguage } from "@/context/language-context";
 import { generateYandexMapsRouteUrl, generateGoogleMapsUrl } from "@/lib/geo-utils";
+
+function getAmenityIcon(name: string) {
+  const lower = name.toLowerCase();
+  if (lower.includes("парк") || lower.includes("гараж") || lower.includes("авто")) return Car;
+  if (lower.includes("детск") || lower.includes("площадк") || lower.includes("боғ") || lower.includes("кӯдак")) return Trees;
+  if (lower.includes("охран") || lower.includes("видео") || lower.includes("чип") || lower.includes("шлагбаум") || lower.includes("амният")) return ShieldCheck;
+  if (lower.includes("лифт")) return ArrowUpDown;
+  if (lower.includes("окн") || lower.includes("панорам") || lower.includes("тиреза")) return Maximize2;
+  if (lower.includes("террас") || lower.includes("пентхаус") || lower.includes("балкон")) return SunMedium;
+  if (lower.includes("шум") || lower.includes("изоляц")) return VolumeX;
+  if (lower.includes("магаз") || lower.includes("коммерч") || lower.includes("марказ") || lower.includes("мағоза")) return Store;
+  if (lower.includes("солнеч") || lower.includes("панел") || lower.includes("генератор") || lower.includes("барқ")) return Zap;
+  if (lower.includes("сырдарь") || lower.includes("река") || lower.includes("море") || lower.includes("дарё") || lower.includes("баҳр")) return Waves;
+  if (lower.includes("школ") || lower.includes("сад") || lower.includes("мактаб")) return GraduationCap;
+  return Sparkles;
+}
 
 export default function PublicProjectPage() {
   const params = useParams();
@@ -337,14 +364,14 @@ export default function PublicProjectPage() {
         <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-4">
           <div className="space-y-2">
             <div className="flex flex-wrap items-center gap-2">
-              <Badge className="bg-emerald-600 text-white font-semibold text-xs">
+              <span className="glass-badge-emerald font-bold text-xs px-3 py-1 rounded-lg shadow-sm">
                 {project.status === "under_construction"
                   ? tDual("Строится", "Дар ҳоли сохтмон")
                   : project.status === "ready"
                   ? tDual("Сдан", "Ба истифода дода шудааст")
                   : tDual("Проектирование", "Лоиҳакашӣ")}
-              </Badge>
-              <Badge variant="secondary" className="font-semibold text-xs">
+              </span>
+              <span className="glass-badge-light font-bold text-xs px-3 py-1 rounded-lg shadow-xs">
                 {project.buildingClass === "business"
                   ? tDual("Бизнес-класс", "Синфи тиҷоратӣ (Бизнес)")
                   : project.buildingClass === "comfort"
@@ -352,7 +379,7 @@ export default function PublicProjectPage() {
                   : project.buildingClass === "premium"
                   ? tDual("Премиум", "Синфи аъло (Премиум)")
                   : project.buildingClass}
-              </Badge>
+              </span>
               <span className="text-xs text-muted-foreground">•</span>
               <Link
                 href={`/developers/${developer.slug}`}
@@ -512,21 +539,34 @@ export default function PublicProjectPage() {
               </div>
             )}
 
-            {/* Amenities Pills */}
+            {/* Amenities Section in Liquid Glass Style */}
             <div className="space-y-3">
-              <h3 className="text-base font-bold text-foreground">
-                {tDual("Удобства и инфраструктура", "Имкониятҳо ва инфрасохтор")}
-              </h3>
-              <div className="flex flex-wrap gap-2">
-                {displayAmenities.map((am) => (
-                  <div
-                    key={am}
-                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 border border-emerald-500/20 text-xs font-semibold"
-                  >
-                    <CheckCircle2 className="h-3.5 w-3.5 text-emerald-600" />
-                    {am}
-                  </div>
-                ))}
+              <div className="flex items-center gap-2">
+                <Sparkles className="h-4 w-4 text-emerald-600" />
+                <h3 className="text-base font-bold text-foreground">
+                  {tDual("Удобства и инфраструктура", "Имкониятҳо ва инфрасохтор")}
+                </h3>
+              </div>
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2.5">
+                {displayAmenities.map((am) => {
+                  const IconComponent = getAmenityIcon(am);
+                  return (
+                    <motion.div
+                      key={am}
+                      whileHover={{ scale: 1.04, y: -2 }}
+                      whileTap={{ scale: 0.98 }}
+                      transition={{ type: "spring", stiffness: 400, damping: 25 }}
+                      className="glass-amenity-card px-3.5 py-2.5 rounded-xl flex items-center gap-2.5 select-none cursor-default group"
+                    >
+                      <div className="h-7 w-7 rounded-lg bg-emerald-500/10 dark:bg-emerald-500/20 border border-emerald-500/20 flex items-center justify-center text-emerald-600 dark:text-emerald-400 group-hover:bg-emerald-600 group-hover:text-white transition-colors shrink-0 shadow-2xs">
+                        <IconComponent className="h-3.5 w-3.5" />
+                      </div>
+                      <span className="text-xs font-semibold text-slate-800 dark:text-slate-100 group-hover:text-emerald-700 dark:group-hover:text-emerald-300 transition-colors line-clamp-2 leading-tight">
+                        {am}
+                      </span>
+                    </motion.div>
+                  );
+                })}
               </div>
             </div>
 

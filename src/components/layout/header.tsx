@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { motion } from "motion/react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -39,6 +40,7 @@ import { useCompare } from "@/context/compare-context";
 
 
 export function Header() {
+  const pathname = usePathname();
   const { currency, setCurrency } = useCurrency();
   const { t, tDual } = useLanguage();
   const { compareCount } = useCompare();
@@ -74,7 +76,7 @@ export function Header() {
     { href: "/#new-buildings", icon: Building2, label: t.nav.newBuildings },
     { href: "/#classifieds", icon: Home, label: t.nav.resale },
     { href: "/#houses", icon: null, label: t.nav.houses },
-    { href: "/map", icon: MapPin, label: tDual("Карта", "Харита"), highlight: true },
+    { href: "/map", icon: MapPin, label: tDual("Карта", "Харита") },
     {
       href: "/compare",
       icon: ArrowLeftRight,
@@ -84,10 +86,19 @@ export function Header() {
     { href: "/developers", icon: Briefcase, label: t.nav.developers },
   ];
 
+  // Active section or hovered item determination for dynamic underline
+  const activeHref = hoveredNav ?? (
+    pathname === "/map" ? "/map" :
+    pathname === "/compare" ? "/compare" :
+    pathname?.startsWith("/developers") ? "/developers" :
+    pathname === "/" ? "/#new-buildings" :
+    null
+  );
+
   return (
     <>
-      <header className="sticky top-0 z-50 w-full pt-2 sm:pt-3 pb-1 px-3 sm:px-6 pointer-events-none transition-all duration-300">
-        <div className="max-w-7xl mx-auto h-16 px-3.5 sm:px-5 flex items-center justify-between gap-2 sm:gap-4 glass-island rounded-2xl pointer-events-auto relative shadow-[0_16px_38px_-10px_rgba(15,23,42,0.08)]">
+      <header className="sticky top-0 z-50 w-full pt-2.5 sm:pt-3 pb-2 px-3 sm:px-6 pointer-events-none transition-all duration-300">
+        <div className="max-w-7xl mx-auto h-16 px-3.5 sm:px-5 flex items-center justify-between gap-2 sm:gap-4 glass-island rounded-2xl pointer-events-auto relative shadow-[0_16px_36px_-10px_rgba(15,23,42,0.1),0_3px_10px_-2px_rgba(15,23,42,0.04)]">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2.5 shrink-0 group">
             <div className="h-10 w-10 rounded-xl bg-gradient-to-tr from-emerald-600 via-teal-500 to-emerald-400 flex items-center justify-center text-white shadow-md shadow-emerald-500/25 group-hover:scale-105 transition-transform duration-300">
@@ -103,36 +114,64 @@ export function Header() {
             </div>
           </Link>
 
-          {/* Navigation Links with Floating Motion Pill */}
-          <nav className="hidden lg:flex items-center gap-1 p-1 rounded-xl bg-slate-900/[0.03] dark:bg-white/[0.04] border border-black/[0.04] dark:border-white/[0.06] text-xs font-semibold">
+          {/* Navigation Links with Video-Style Dynamic Underline & Forward Scale */}
+          <nav
+            onMouseLeave={() => setHoveredNav(null)}
+            className="hidden lg:flex items-center gap-0.5 p-1 rounded-2xl bg-slate-900/[0.04] dark:bg-white/[0.04] border border-slate-200/80 dark:border-white/10 text-xs font-semibold backdrop-blur-md"
+          >
             {navItems.map((item) => {
               const isHovered = hoveredNav === item.href;
+              const isActive = activeHref === item.href;
               const Icon = item.icon;
               return (
                 <Link
                   key={item.href}
                   href={item.href}
                   onMouseEnter={() => setHoveredNav(item.href)}
-                  onMouseLeave={() => setHoveredNav(null)}
-                  className={`relative px-3 py-1.5 rounded-lg transition-colors flex items-center gap-1.5 select-none ${
-                    item.highlight
-                      ? "text-emerald-700 dark:text-emerald-400 font-bold"
-                      : "text-slate-700 dark:text-slate-200 hover:text-emerald-700 dark:hover:text-emerald-400"
-                  }`}
+                  className="relative px-3.5 py-2 flex items-center select-none group"
                 >
+                  <motion.div
+                    whileHover={{ scale: 1.06, y: -1 }}
+                    transition={{ type: "spring", stiffness: 450, damping: 25 }}
+                    className={`relative z-10 flex items-center gap-1.5 transition-colors duration-200 ${
+                      isActive
+                        ? "text-emerald-950 dark:text-emerald-300 font-bold"
+                        : "text-slate-600 dark:text-slate-300 group-hover:text-slate-950 dark:group-hover:text-white font-medium"
+                    }`}
+                  >
+                    {Icon && (
+                      <Icon
+                        className={`h-3.5 w-3.5 transition-colors ${
+                          isActive
+                            ? "text-emerald-600 dark:text-emerald-400"
+                            : "text-slate-400 group-hover:text-emerald-600"
+                        }`}
+                      />
+                    )}
+                    <span>{item.label}</span>
+                    {item.badge && (
+                      <span className="bg-emerald-600 text-white text-[10px] font-bold px-1.5 py-0.2 rounded-full tabular-nums shadow-xs">
+                        {item.badge}
+                      </span>
+                    )}
+                  </motion.div>
+
+                  {/* Soft Frosted Glass Hover Backing */}
                   {isHovered && (
                     <motion.div
-                      layoutId="header-nav-pill"
+                      layoutId="header-nav-hover-bg"
                       transition={{ type: "spring", stiffness: 450, damping: 32 }}
-                      className="absolute inset-0 rounded-lg bg-white/90 dark:bg-slate-800/90 shadow-xs border border-slate-200/60 dark:border-white/10 -z-10"
+                      className="absolute inset-0 rounded-xl bg-white/85 dark:bg-slate-800/85 shadow-xs border border-slate-200/70 dark:border-white/10 -z-0"
                     />
                   )}
-                  {Icon && <Icon className="h-3.5 w-3.5 text-emerald-600 shrink-0" />}
-                  <span>{item.label}</span>
-                  {item.badge && (
-                    <span className="bg-emerald-600 text-white text-[10px] font-bold px-1.5 py-0.2 rounded-full tabular-nums shadow-xs">
-                      {item.badge}
-                    </span>
+
+                  {/* Dynamic Underline adapting to the exact length of the word */}
+                  {isActive && (
+                    <motion.div
+                      layoutId="header-nav-underline"
+                      transition={{ type: "spring", stiffness: 450, damping: 32 }}
+                      className="absolute bottom-0.5 left-3 right-3 h-[2.5px] rounded-full bg-gradient-to-r from-emerald-500 via-teal-400 to-emerald-600 shadow-[0_2px_8px_rgba(16,185,129,0.55)] z-20"
+                    />
                   )}
                 </Link>
               );
@@ -316,28 +355,26 @@ export function Header() {
             )}
           </div>
         </div>
-
-        {/* Sleek Glassy Marquee Ticker */}
-        <div className="max-w-7xl mx-auto mt-1.5 px-2 pointer-events-auto overflow-hidden">
-          <div className="py-1 px-3 rounded-full bg-emerald-950/[0.03] dark:bg-white/[0.04] backdrop-blur-md border border-emerald-900/[0.06] dark:border-white/[0.08] overflow-hidden">
-            <div className="flex whitespace-nowrap animate-marquee">
-              {[0, 1].map((i) => (
-                <span
-                  key={i}
-                  className="inline-flex items-center gap-6 px-6 text-[11px] font-semibold tracking-widest uppercase text-emerald-900/75 dark:text-emerald-300 select-none"
-                >
-                  <span><span className="text-emerald-600 mr-2">✦</span>{t.marquee.portalTitle}</span>
-                  <span><span className="text-emerald-600 mr-2">✦</span>{t.marquee.directDev}</span>
-                  <span><span className="text-emerald-600 mr-2">✦</span>{t.marquee.chessboards}</span>
-                  <span><span className="text-emerald-600 mr-2">✦</span>{t.marquee.resaleHomes}</span>
-                  <span><span className="text-emerald-600 mr-2">✦</span>{t.marquee.dualCurrency}</span>
-                  <span><span className="text-emerald-600 mr-2">✦</span>{t.marquee.b2bCrm}</span>
-                </span>
-              ))}
-            </div>
-          </div>
-        </div>
       </header>
+
+      {/* Full-width continuous Marquee Ticker (NOT sticky with header, edge-to-edge from screen left to right) */}
+      <div className="w-full overflow-hidden bg-gradient-to-r from-emerald-50/90 via-white/80 to-emerald-50/90 dark:from-slate-900/90 dark:via-slate-800/80 dark:to-slate-900/90 backdrop-blur-md border-y border-emerald-200/50 dark:border-white/10 py-1.5 shadow-[0_1px_3px_rgba(0,0,0,0.02)] select-none">
+        <div className="flex whitespace-nowrap animate-marquee">
+          {[0, 1].map((i) => (
+            <span
+              key={i}
+              className="inline-flex items-center gap-6 px-6 text-[11px] font-semibold tracking-widest uppercase text-emerald-950/80 dark:text-emerald-300"
+            >
+              <span><span className="text-emerald-600 mr-2">✦</span>{t.marquee.portalTitle}</span>
+              <span><span className="text-emerald-600 mr-2">✦</span>{t.marquee.directDev}</span>
+              <span><span className="text-emerald-600 mr-2">✦</span>{t.marquee.chessboards}</span>
+              <span><span className="text-emerald-600 mr-2">✦</span>{t.marquee.resaleHomes}</span>
+              <span><span className="text-emerald-600 mr-2">✦</span>{t.marquee.dualCurrency}</span>
+              <span><span className="text-emerald-600 mr-2">✦</span>{t.marquee.b2bCrm}</span>
+            </span>
+          ))}
+        </div>
+      </div>
 
       <AuthModal
         isOpen={authModalOpen}

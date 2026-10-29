@@ -714,17 +714,17 @@ export default function HomePage() {
                     />
 
                     <div className="absolute top-3.5 left-3.5 flex flex-wrap gap-2">
-                      <span className="glass-pill bg-emerald-600/90 text-white font-semibold text-xs px-2.5 py-1 rounded-lg shadow-sm border-emerald-400/30">
+                      <span className="glass-badge-emerald font-bold text-xs px-2.5 py-1 rounded-lg shadow-sm">
                         {projStatus}
                       </span>
-                      <span className="glass-pill text-slate-800 dark:text-slate-100 font-semibold text-xs px-2.5 py-1 rounded-lg shadow-xs">
+                      <span className="glass-badge-light font-bold text-xs px-2.5 py-1 rounded-lg shadow-xs">
                         {projClass}
                       </span>
                     </div>
 
-                    <div className="absolute bottom-3.5 left-3.5 glass-pill text-emerald-800 dark:text-emerald-300 font-semibold text-xs px-3 py-1.5 rounded-xl shadow-sm flex items-center gap-1.5">
-                      <Percent className="h-3.5 w-3.5 text-emerald-600" />
-                      <span>{projInstallment} {projDownPayment ? `(${projDownPayment})` : ""}</span>
+                    <div className="absolute bottom-3.5 left-3.5 glass-badge-light text-slate-900 font-bold text-xs px-3 py-1.5 rounded-xl shadow-sm flex items-center gap-1.5">
+                      <Percent className="h-3.5 w-3.5 text-emerald-600 shrink-0" />
+                      <span className="text-slate-900 font-bold">{projInstallment} {projDownPayment ? `(${projDownPayment})` : ""}</span>
                     </div>
 
                     <div className="absolute bottom-3.5 right-3.5 z-10">
@@ -733,7 +733,7 @@ export default function HomePage() {
 
                     <Link
                       href={developer ? `/developers/${developer.slug}` : "#"}
-                      className="absolute top-3.5 right-3.5 glass-pill px-3 py-1.5 rounded-xl text-xs font-semibold text-slate-900 dark:text-slate-100 shadow-sm flex items-center gap-2 hover:bg-white transition-colors"
+                      className="absolute top-3.5 right-3.5 glass-badge-light px-3 py-1.5 rounded-xl text-xs font-bold text-slate-900 shadow-sm flex items-center gap-2 hover:scale-105 transition-all"
                     >
                       <DeveloperAvatar name={projDevName} size="sm" className="h-5 w-5 text-[9px]" />
                       <span className="truncate max-w-[130px]">{projDevName}</span>
@@ -757,12 +757,14 @@ export default function HomePage() {
 
                       <div className="flex flex-wrap gap-1.5">
                         {projTags.map((tag) => (
-                          <span
+                          <motion.span
                             key={tag}
-                            className="text-[11px] font-medium px-2.5 py-1 rounded-lg glass-pill text-slate-600 dark:text-slate-300"
+                            whileHover={{ scale: 1.05, y: -1 }}
+                            transition={{ type: "spring", stiffness: 450, damping: 25 }}
+                            className="text-[11px] font-semibold px-2.5 py-1 rounded-lg glass-amenity-card text-slate-700 dark:text-slate-200 select-none cursor-default"
                           >
                             {tag}
-                          </span>
+                          </motion.span>
                         ))}
                       </div>
 
