@@ -116,7 +116,7 @@ export function Header() {
   return (
     <>
       <header className={`sticky top-0 z-50 w-full pt-2.5 sm:pt-3 pb-2 px-3 sm:px-6 pointer-events-none transition-all duration-300 ${isHome ? "-mb-20 sm:-mb-22" : ""}`}>
-        <div className="max-w-7xl mx-auto h-16 px-3 sm:px-4 lg:px-5 flex items-center justify-between gap-1.5 sm:gap-3 rounded-2xl pointer-events-auto relative transition-all duration-300 bg-white/[0.05] backdrop-blur-2xl backdrop-saturate-150 border border-white/25 shadow-[0_20px_50px_rgba(0,0,0,0.25),inset_0_1px_1.5px_rgba(255,255,255,0.4)]">
+        <div className="max-w-7xl mx-auto h-16 px-3 sm:px-4 lg:px-5 flex items-center justify-between gap-1.5 sm:gap-3 rounded-2xl pointer-events-auto relative transition-all duration-300 bg-white/[0.025] backdrop-blur-2xl backdrop-saturate-150 border border-white/20 shadow-[0_20px_50px_rgba(0,0,0,0.20),inset_0_1px_1.5px_rgba(255,255,255,0.35)]">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2 sm:gap-2.5 shrink-0 group">
             <div className="h-9 w-9 sm:h-10 sm:w-10 rounded-xl bg-gradient-to-tr from-emerald-600 via-teal-500 to-emerald-400 flex items-center justify-center text-white shadow-md shadow-emerald-500/25 group-hover:scale-105 transition-transform duration-300">
@@ -135,7 +135,7 @@ export function Header() {
           {/* Navigation Links with Dynamic Underline & Forward Scale */}
           <nav
             onMouseLeave={() => setHoveredNav(null)}
-            className="hidden lg:flex items-center gap-0 p-1 rounded-2xl bg-white/[0.07] border border-white/20 text-xs font-semibold backdrop-blur-md shrink-0"
+            className="hidden lg:flex items-center gap-0 p-1 rounded-2xl bg-white/[0.025] border border-white/15 text-xs font-semibold backdrop-blur-md shrink-0"
           >
             {navItems.map((item) => {
               const isHovered = hoveredNav === item.href;
@@ -203,16 +203,16 @@ export function Header() {
 
             {/* Currency Selector */}
             <DropdownMenu>
-              <DropdownMenuTrigger className="flex items-center gap-1 px-2 sm:px-2.5 py-1.5 rounded-xl border border-white/25 bg-white/12 hover:bg-white/20 active:bg-white/25 backdrop-blur-xl text-white text-xs font-bold shadow-[inset_0_1px_1px_rgba(255,255,255,0.3)] drop-shadow-[0_1px_2px_rgba(0,0,0,0.7)] transition-all outline-hidden cursor-pointer shrink-0">
+              <DropdownMenuTrigger className="flex items-center gap-1 px-2 sm:px-2.5 py-1.5 rounded-xl border border-white/15 bg-white/[0.05] hover:bg-white/10 active:bg-white/15 backdrop-blur-xl text-white text-xs font-bold shadow-[inset_0_1px_1px_rgba(255,255,255,0.3)] drop-shadow-[0_1px_2px_rgba(0,0,0,0.7)] transition-all outline-hidden cursor-pointer shrink-0">
                 <span>{currency}</span>
                 <ChevronDown className="h-3 w-3 text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.7)]" />
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-40 p-1.5 rounded-2xl bg-white/[0.07] backdrop-blur-3xl backdrop-saturate-150 shadow-[0_20px_50px_rgba(0,0,0,0.25),inset_0_1px_1.5px_rgba(255,255,255,0.4)] border border-white/30 z-50 text-white ring-0">
+              <DropdownMenuContent align="end" className="w-40 p-1.5 rounded-2xl bg-white/[0.04] backdrop-blur-3xl backdrop-saturate-150 shadow-[0_20px_50px_rgba(0,0,0,0.25),inset_0_1px_1.5px_rgba(255,255,255,0.4)] border border-white/20 z-50 text-white ring-0">
                 <DropdownMenuItem
                   onClick={() => setCurrency("TJS")}
                   className={`cursor-pointer text-xs flex items-center justify-between px-3 py-2 rounded-xl font-semibold transition-all ${
                     currency === "TJS"
-                      ? "text-white bg-emerald-500/35 border border-emerald-400/60 font-bold shadow-[0_0_12px_rgba(16,185,129,0.35),inset_0_1px_1px_rgba(255,255,255,0.3)]"
+                      ? "text-white bg-emerald-500/25 border border-emerald-400/50 font-bold shadow-[0_0_12px_rgba(16,185,129,0.35),inset_0_1px_1px_rgba(255,255,255,0.3)]"
                       : "text-white/90 hover:text-white hover:bg-white/15 focus:text-white focus:bg-white/15"
                   }`}
                 >
@@ -223,7 +223,7 @@ export function Header() {
                   onClick={() => setCurrency("USD")}
                   className={`cursor-pointer text-xs flex items-center justify-between px-3 py-2 rounded-xl font-semibold transition-all mt-1 ${
                     currency === "USD"
-                      ? "text-white bg-emerald-500/35 border border-emerald-400/60 font-bold shadow-[0_0_12px_rgba(16,185,129,0.35),inset_0_1px_1px_rgba(255,255,255,0.3)]"
+                      ? "text-white bg-emerald-500/25 border border-emerald-400/50 font-bold shadow-[0_0_12px_rgba(16,185,129,0.35),inset_0_1px_1px_rgba(255,255,255,0.3)]"
                       : "text-white/90 hover:text-white hover:bg-white/15 focus:text-white focus:bg-white/15"
                   }`}
                 >
@@ -237,7 +237,7 @@ export function Header() {
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="shrink-0">
               <Link
                 href="/compare"
-                className="relative p-1.5 sm:p-2 rounded-xl border border-white/25 bg-white/12 hover:bg-white/20 active:bg-white/25 backdrop-blur-xl text-white shadow-[inset_0_1px_1px_rgba(255,255,255,0.3)] drop-shadow-[0_1px_2px_rgba(0,0,0,0.7)] transition-all flex items-center justify-center cursor-pointer"
+                className="relative p-1.5 sm:p-2 rounded-xl border border-white/15 bg-white/[0.05] hover:bg-white/10 active:bg-white/15 backdrop-blur-xl text-white shadow-[inset_0_1px_1px_rgba(255,255,255,0.3)] drop-shadow-[0_1px_2px_rgba(0,0,0,0.7)] transition-all flex items-center justify-center cursor-pointer"
                 title={t.nav.compare}
                 aria-label={t.nav.compare}
               >
@@ -261,7 +261,7 @@ export function Header() {
                       handleOpenAuth("login");
                     }
                   }}
-                  className="hidden sm:inline-flex items-center justify-center px-2 xl:px-2.5 py-1.5 rounded-xl border border-white/30 bg-white/15 hover:bg-white/25 active:bg-white/30 text-white font-bold backdrop-blur-xl text-xs cursor-pointer shadow-[inset_0_1px_1px_rgba(255,255,255,0.35)] drop-shadow-[0_1px_2px_rgba(0,0,0,0.7)] transition-all select-none whitespace-nowrap"
+                  className="hidden sm:inline-flex items-center justify-center px-2 xl:px-2.5 py-1.5 rounded-xl border border-white/20 bg-white/[0.06] hover:bg-white/15 active:bg-white/20 text-white font-bold backdrop-blur-xl text-xs cursor-pointer shadow-[inset_0_1px_1px_rgba(255,255,255,0.35)] drop-shadow-[0_1px_2px_rgba(0,0,0,0.7)] transition-all select-none whitespace-nowrap"
                 >
                   <span>{t.nav.postAd}</span>
                 </button>
@@ -367,7 +367,7 @@ export function Header() {
                 whileHover={{ scale: 1.04 }}
                 whileTap={{ scale: 0.96 }}
                 onClick={() => handleOpenAuth("login")}
-                className="flex items-center gap-1.5 px-2 xl:px-2.5 py-1.5 rounded-xl bg-emerald-500/35 hover:bg-emerald-500/50 active:bg-emerald-500/60 backdrop-blur-xl border border-emerald-400/60 text-white font-bold text-xs shadow-[0_8px_24px_rgba(16,185,129,0.35),inset_0_1px_1.5px_rgba(255,255,255,0.5)] transition-all cursor-pointer drop-shadow-[0_1px_2px_rgba(0,0,0,0.7)] shrink-0 whitespace-nowrap"
+                className="flex items-center gap-1.5 px-2 xl:px-2.5 py-1.5 rounded-xl bg-emerald-500/25 hover:bg-emerald-500/40 active:bg-emerald-500/50 backdrop-blur-xl border border-emerald-400/50 text-white font-bold text-xs shadow-[0_8px_24px_rgba(16,185,129,0.30),inset_0_1px_1.5px_rgba(255,255,255,0.45)] transition-all cursor-pointer drop-shadow-[0_1px_2px_rgba(0,0,0,0.7)] shrink-0 whitespace-nowrap"
               >
                 <LogIn className="h-3.5 w-3.5 text-emerald-300 drop-shadow-[0_0_8px_rgba(52,211,153,0.9)]" />
                 <span>{t.nav.login}</span>

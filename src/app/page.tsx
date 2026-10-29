@@ -398,9 +398,9 @@ export default function HomePage() {
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 pb-8 sm:pb-10">
 
-          {/* 2. APPLE-STYLE LIQUID GLASS SEARCH CARD (Luminous Transparent Glass: 5% Opacity + Crisp Glowing Edges) */}
+          {/* 2. APPLE-STYLE LIQUID GLASS SEARCH CARD (Luminous Transparent Glass: 2.5% Opacity + Crisp Glowing Edges) */}
           <div className="relative mx-auto w-full max-w-5xl">
-            <div className="bg-white/[0.05] backdrop-blur-2xl backdrop-saturate-150 border border-white/30 rounded-3xl p-5 sm:p-6 shadow-[0_20px_50px_rgba(0,0,0,0.25),inset_0_1px_1.5px_rgba(255,255,255,0.4)]">
+            <div className="bg-white/[0.025] backdrop-blur-2xl backdrop-saturate-150 border border-white/20 rounded-3xl p-5 sm:p-6 shadow-[0_20px_50px_rgba(0,0,0,0.20),inset_0_1px_1.5px_rgba(255,255,255,0.35)]">
               {/* Segment Tabs (Apple Liquid Glass Style with Dynamic Word-Length Underline & Forward Scale) */}
               <div
                 onMouseLeave={() => setHoveredSearchTab(null)}
@@ -471,7 +471,7 @@ export default function HomePage() {
                     {t.catalog.city}
                   </label>
                   <DropdownMenu>
-                    <DropdownMenuTrigger className="flex h-[38px] w-full items-center justify-between gap-1.5 rounded-2xl border border-white/25 bg-white/12 hover:bg-white/20 active:bg-white/25 backdrop-blur-xl px-4 text-white text-xs font-semibold shadow-[inset_0_1px_1px_rgba(255,255,255,0.3)] transition-all cursor-pointer outline-hidden select-none box-border">
+                    <DropdownMenuTrigger className="flex h-[38px] w-full items-center justify-between gap-1.5 rounded-2xl border border-white/15 bg-white/[0.05] hover:bg-white/10 active:bg-white/15 backdrop-blur-xl px-4 text-white text-xs font-semibold shadow-[inset_0_1px_1px_rgba(255,255,255,0.3)] transition-all cursor-pointer outline-hidden select-none box-border">
                       <span className="truncate drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]">
                         {selectedCity === "all"
                           ? t.catalog.allCities
@@ -485,13 +485,13 @@ export default function HomePage() {
                     <DropdownMenuContent
                       align="start"
                       sideOffset={6}
-                      className="w-64 max-h-80 overflow-y-auto p-1.5 rounded-2xl bg-white/[0.07] backdrop-blur-3xl backdrop-saturate-150 shadow-[0_20px_50px_rgba(0,0,0,0.25),inset_0_1px_1.5px_rgba(255,255,255,0.4)] border border-white/30 z-50 text-white ring-0 [scrollbar-width:thin] [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-thumb]:bg-white/20 [&::-webkit-scrollbar-thumb]:rounded-full"
+                      className="w-64 max-h-80 overflow-y-auto p-1.5 rounded-2xl bg-white/[0.04] backdrop-blur-3xl backdrop-saturate-150 shadow-[0_20px_50px_rgba(0,0,0,0.25),inset_0_1px_1.5px_rgba(255,255,255,0.4)] border border-white/20 z-50 text-white ring-0 [scrollbar-width:thin] [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-thumb]:bg-white/20 [&::-webkit-scrollbar-thumb]:rounded-full"
                     >
                       <DropdownMenuItem
                         onClick={() => setSelectedCity("all")}
                         className={`cursor-pointer text-xs flex items-center justify-between px-3 py-2 rounded-xl transition-all ${
                           selectedCity === "all"
-                            ? "text-white bg-emerald-500/35 border border-emerald-400/60 font-bold shadow-[0_0_12px_rgba(16,185,129,0.35),inset_0_1px_1px_rgba(255,255,255,0.3)]"
+                            ? "text-white bg-emerald-500/25 border border-emerald-400/50 font-bold shadow-[0_0_12px_rgba(16,185,129,0.35),inset_0_1px_1px_rgba(255,255,255,0.3)]"
                             : "text-white/90 hover:text-white hover:bg-white/15 focus:text-white focus:bg-white/15 font-semibold"
                         }`}
                       >
@@ -506,7 +506,7 @@ export default function HomePage() {
                             onClick={() => setSelectedCity(c.value)}
                             className={`cursor-pointer text-xs flex items-center justify-between px-3 py-2 rounded-xl transition-all mt-0.5 ${
                               isCitySelected
-                                ? "text-white bg-emerald-500/35 border border-emerald-400/60 font-bold shadow-[0_0_12px_rgba(16,185,129,0.35),inset_0_1px_1px_rgba(255,255,255,0.3)]"
+                                ? "text-white bg-emerald-500/25 border border-emerald-400/50 font-bold shadow-[0_0_12px_rgba(16,185,129,0.35),inset_0_1px_1px_rgba(255,255,255,0.3)]"
                                 : "text-white/90 hover:text-white hover:bg-white/15 focus:text-white focus:bg-white/15 font-semibold"
                             }`}
                           >
@@ -526,7 +526,7 @@ export default function HomePage() {
                   <label className="h-5 flex items-center text-xs font-bold text-white mb-2 tracking-wide select-none drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]">
                     {t.catalog.roomsCount}
                   </label>
-                  <div className="flex h-[38px] w-full box-border min-w-0 items-center gap-1 rounded-2xl border border-white/25 bg-white/12 backdrop-blur-xl p-1 shadow-[inset_0_1px_1px_rgba(255,255,255,0.3)]">
+                  <div className="flex h-[38px] w-full box-border min-w-0 items-center gap-1 rounded-2xl border border-white/15 bg-white/[0.05] backdrop-blur-xl p-1 shadow-[inset_0_1px_1px_rgba(255,255,255,0.3)]">
                     {roomOptions.map((opt) => (
                       <button
                         key={opt.id}
@@ -535,7 +535,7 @@ export default function HomePage() {
                         className={`h-full flex-1 rounded-xl px-2 text-xs transition-all cursor-pointer select-none ${
                           selectedRooms === opt.id
                             ? "bg-emerald-500/80 text-white shadow-[0_0_14px_rgba(16,185,129,0.55),inset_0_1px_1px_rgba(255,255,255,0.4)] border border-emerald-300/60 font-bold backdrop-blur-md drop-shadow-[0_1px_2px_rgba(0,0,0,0.5)]"
-                            : "text-white hover:bg-white/15 font-semibold drop-shadow-[0_1px_2px_rgba(0,0,0,0.5)]"
+                            : "text-white hover:bg-white/10 font-semibold drop-shadow-[0_1px_2px_rgba(0,0,0,0.5)]"
                         }`}
                       >
                         {opt.label}
@@ -554,13 +554,13 @@ export default function HomePage() {
                       placeholder={t.common.from}
                       value={priceFrom}
                       onChange={(e) => setPriceFrom(e.target.value)}
-                      className="h-[38px] flex-1 min-w-0 box-border rounded-2xl border border-white/25 bg-white/12 hover:bg-white/20 focus:bg-white/25 backdrop-blur-xl px-3 text-sm font-semibold text-white placeholder:text-white/60 shadow-[inset_0_1px_1px_rgba(255,255,255,0.3)] outline-none focus:border-emerald-400/80 transition-all text-center drop-shadow-[0_1px_2px_rgba(0,0,0,0.5)]"
+                      className="h-[38px] flex-1 min-w-0 box-border rounded-2xl border border-white/15 bg-white/[0.05] hover:bg-white/10 focus:bg-white/15 backdrop-blur-xl px-3 text-sm font-semibold text-white placeholder:text-white/60 shadow-[inset_0_1px_1px_rgba(255,255,255,0.3)] outline-none focus:border-emerald-400/80 transition-all text-center drop-shadow-[0_1px_2px_rgba(0,0,0,0.5)]"
                     />
                     <Input
                       placeholder={t.common.to}
                       value={priceTo}
                       onChange={(e) => setPriceTo(e.target.value)}
-                      className="h-[38px] flex-1 min-w-0 box-border rounded-2xl border border-white/25 bg-white/12 hover:bg-white/20 focus:bg-white/25 backdrop-blur-xl px-3 text-sm font-semibold text-white placeholder:text-white/60 shadow-[inset_0_1px_1px_rgba(255,255,255,0.3)] outline-none focus:border-emerald-400/80 transition-all text-center drop-shadow-[0_1px_2px_rgba(0,0,0,0.5)]"
+                      className="h-[38px] flex-1 min-w-0 box-border rounded-2xl border border-white/15 bg-white/[0.05] hover:bg-white/10 focus:bg-white/15 backdrop-blur-xl px-3 text-sm font-semibold text-white placeholder:text-white/60 shadow-[inset_0_1px_1px_rgba(255,255,255,0.3)] outline-none focus:border-emerald-400/80 transition-all text-center drop-shadow-[0_1px_2px_rgba(0,0,0,0.5)]"
                     />
                   </div>
                 </div>
@@ -574,7 +574,7 @@ export default function HomePage() {
                     transition={{ type: "spring", stiffness: 400, damping: 25 }}
                     type="button"
                     onClick={handleSearchSubmit}
-                    className="flex h-[38px] w-full box-border items-center justify-center gap-2 rounded-2xl bg-emerald-500/35 hover:bg-emerald-500/50 active:bg-emerald-500/60 backdrop-blur-xl border border-emerald-400/60 text-white font-bold text-xs shadow-[0_8px_24px_rgba(16,185,129,0.35),inset_0_1px_1.5px_rgba(255,255,255,0.5)] transition-all cursor-pointer select-none drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]"
+                    className="flex h-[38px] w-full box-border items-center justify-center gap-2 rounded-2xl bg-emerald-500/25 hover:bg-emerald-500/40 active:bg-emerald-500/50 backdrop-blur-xl border border-emerald-400/50 text-white font-bold text-xs shadow-[0_8px_24px_rgba(16,185,129,0.30),inset_0_1px_1.5px_rgba(255,255,255,0.45)] transition-all cursor-pointer select-none drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]"
                   >
                     <Search className="h-3.5 w-3.5 text-emerald-300 drop-shadow-[0_0_8px_rgba(52,211,153,0.9)]" />
                     <span className="drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]">
@@ -589,7 +589,7 @@ export default function HomePage() {
               {/* Quick Filter Chips - iOS 18 Control Center Liquid Glass (Compact -1pt) */}
               <div className="mt-4 pt-3 border-t border-white/20 flex flex-wrap items-center gap-2 text-xs">
                 {/* Frosted Glass Badge for "Быстрый выбор" (Reduced by 1 step) */}
-                <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-white/15 backdrop-blur-xl border border-white/25 text-white text-[10px] font-bold tracking-wider uppercase shadow-[inset_0_1px_1px_rgba(255,255,255,0.35)] drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)] select-none">
+                <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-white/[0.06] backdrop-blur-xl border border-white/20 text-white text-[10px] font-bold tracking-wider uppercase shadow-[inset_0_1px_1px_rgba(255,255,255,0.35)] drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)] select-none">
                   <Sparkles className="h-3 w-3 text-emerald-300 animate-pulse" />
                   <span>{t.catalog.quickFilters}</span>
                 </div>
@@ -616,8 +616,8 @@ export default function HomePage() {
                       }}
                       className={`relative inline-flex items-center rounded-xl border px-2.5 py-1 text-[11px] transition-all cursor-pointer select-none backdrop-blur-xl ${
                         isActive
-                          ? "bg-emerald-500/35 border-emerald-400/70 text-white font-bold shadow-[0_0_14px_rgba(16,185,129,0.45),inset_0_1px_1.5px_rgba(255,255,255,0.4)]"
-                          : "border-white/25 bg-white/12 hover:bg-white/20 active:bg-white/25 text-white font-medium shadow-[inset_0_1px_1px_rgba(255,255,255,0.25)]"
+                          ? "bg-emerald-500/25 border-emerald-400/60 text-white font-bold shadow-[0_0_14px_rgba(16,185,129,0.45),inset_0_1px_1.5px_rgba(255,255,255,0.4)]"
+                          : "border-white/15 bg-white/[0.05] hover:bg-white/10 active:bg-white/15 text-white font-medium shadow-[inset_0_1px_1px_rgba(255,255,255,0.25)]"
                       }`}
                     >
                       <span className="relative z-10 text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]">
@@ -643,7 +643,7 @@ export default function HomePage() {
                     whileTap={{ scale: 0.95 }}
                     type="button"
                     onClick={() => setActiveQuickChip(null)}
-                    className="inline-flex items-center gap-1 px-2.5 py-1 rounded-xl bg-red-500/20 hover:bg-red-500/35 border border-red-400/40 text-white text-[10px] font-bold backdrop-blur-xl transition-all cursor-pointer select-none shadow-[inset_0_1px_1px_rgba(255,255,255,0.25)] drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]"
+                    className="inline-flex items-center gap-1 px-2.5 py-1 rounded-xl bg-red-500/15 hover:bg-red-500/25 border border-red-400/30 text-white text-[10px] font-bold backdrop-blur-xl transition-all cursor-pointer select-none shadow-[inset_0_1px_1px_rgba(255,255,255,0.25)] drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]"
                   >
                     <X className="h-2.5 w-2.5 text-white" />
                     <span>{language === "en" ? "Reset" : isTg ? "Тоза кардан" : "Сбросить"}</span>
@@ -659,7 +659,7 @@ export default function HomePage() {
                 >
                   <Link
                     href="/map"
-                    className="inline-flex items-center gap-1.5 rounded-xl border border-white/30 bg-white/15 hover:bg-white/25 active:bg-white/30 text-white font-bold px-2.5 py-1 text-[11px] transition-all shadow-[inset_0_1px_1px_rgba(255,255,255,0.35)] backdrop-blur-xl hover:border-emerald-400/60 hover:shadow-[0_0_16px_rgba(16,185,129,0.35)] select-none drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]"
+                    className="inline-flex items-center gap-1.5 rounded-xl border border-white/20 bg-white/[0.06] hover:bg-white/15 active:bg-white/20 text-white font-bold px-2.5 py-1 text-[11px] transition-all shadow-[inset_0_1px_1px_rgba(255,255,255,0.35)] backdrop-blur-xl hover:border-emerald-400/60 hover:shadow-[0_0_16px_rgba(16,185,129,0.35)] select-none drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]"
                   >
                     <MapPin className="h-3 w-3 text-emerald-300 drop-shadow-[0_0_6px_rgba(52,211,153,0.8)]" />
                     <span>{t.catalog.showOnMap}</span>
@@ -671,7 +671,7 @@ export default function HomePage() {
         </div>
 
         {/* 2. FULL-WIDTH CONTINUOUS MARQUEE TICKER (At bottom boundary of Khujand Panorama) */}
-        <div className="w-full overflow-hidden bg-black/35 backdrop-blur-md border-t border-white/15 py-2 select-none relative z-10 shadow-[0_-2px_12px_rgba(0,0,0,0.2)]">
+        <div className="w-full overflow-hidden bg-black/25 backdrop-blur-md border-t border-white/15 py-2 select-none relative z-10 shadow-[0_-2px_12px_rgba(0,0,0,0.2)]">
           <div className="flex whitespace-nowrap animate-marquee">
             {[0, 1].map((i) => (
               <span
