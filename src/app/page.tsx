@@ -398,9 +398,9 @@ export default function HomePage() {
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
 
-          {/* 2. APPLE-STYLE LIQUID GLASS SEARCH CARD (iOS 18 Control Center Glass: 22% Opacity + Crisp Glowing Edges) */}
+          {/* 2. APPLE-STYLE LIQUID GLASS SEARCH CARD (iOS 18 Control Center Glass: 12% Opacity + Crisp Glowing Edges) */}
           <div className="relative mx-auto w-full max-w-5xl">
-            <div className="bg-white/[0.22] backdrop-blur-2xl border border-white/35 rounded-3xl p-5 sm:p-6 shadow-[0_20px_50px_rgba(0,0,0,0.35),inset_0_1px_1.5px_rgba(255,255,255,0.4)]">
+            <div className="bg-white/[0.12] backdrop-blur-2xl border border-white/30 rounded-3xl p-5 sm:p-6 shadow-[0_20px_50px_rgba(0,0,0,0.35),inset_0_1px_1.5px_rgba(255,255,255,0.4)]">
               {/* Segment Tabs (Apple Liquid Glass Style with Dynamic Word-Length Underline & Forward Scale) */}
               <div
                 onMouseLeave={() => setHoveredSearchTab(null)}
@@ -429,20 +429,16 @@ export default function HomePage() {
                       <motion.div
                         whileHover={{ scale: 1.05, y: -1 }}
                         transition={{ type: "spring", stiffness: 450, damping: 25 }}
-                        className={`relative z-10 flex items-center gap-2 text-sm font-semibold whitespace-nowrap transition-colors duration-200 ${
-                          isHighlighted
-                            ? "text-white drop-shadow-[0_1px_3px_rgba(0,0,0,0.6)]"
-                            : "text-white/75 group-hover:text-white"
-                        }`}
+                        className="relative z-10 flex items-center gap-2 text-sm font-semibold whitespace-nowrap text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]"
                       >
                         <Icon
                           className={`h-4 w-4 transition-colors ${
                             isHighlighted
-                              ? "text-emerald-300 drop-shadow-[0_0_6px_rgba(52,211,153,0.8)]"
-                              : "text-white/60 group-hover:text-white"
+                              ? "text-emerald-300 drop-shadow-[0_0_8px_rgba(52,211,153,0.9)]"
+                              : "text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]"
                           }`}
                         />
-                        <span>{tab.label}</span>
+                        <span className="drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]">{tab.label}</span>
                       </motion.div>
 
                       {/* Soft Glass Hover Backing */}
@@ -467,11 +463,11 @@ export default function HomePage() {
                 })}
               </div>
 
-              {/* Filter Inputs Grid - iOS 18 Control Center Liquid Glass Style */}
-              <div className="grid grid-cols-1 items-end gap-3.5 sm:grid-cols-2 lg:grid-cols-[minmax(180px,1fr)_minmax(220px,1.2fr)_minmax(200px,1.1fr)_minmax(200px,1.15fr)]">
+              {/* Filter Inputs Grid - Perfectly Aligned Line & Height (iOS 18 Control Center Style) */}
+              <div className="grid grid-cols-1 items-start gap-3 sm:grid-cols-2 lg:grid-cols-[minmax(180px,1fr)_minmax(220px,1.2fr)_minmax(200px,1.1fr)_minmax(190px,1.1fr)]">
                 {/* 1. City / Region */}
-                <div className="min-w-0">
-                  <label className="text-xs font-semibold text-white/95 mb-1.5 block drop-shadow-xs">
+                <div className="flex flex-col min-w-0">
+                  <label className="h-5 flex items-center text-xs font-bold text-white mb-2 tracking-wide select-none drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]">
                     {t.catalog.city}
                   </label>
                   <Select
@@ -480,7 +476,7 @@ export default function HomePage() {
                       if (val) setSelectedCity(val);
                     }}
                   >
-                    <SelectTrigger className="w-full h-11 rounded-2xl bg-white/12 hover:bg-white/20 active:bg-white/25 backdrop-blur-xl border border-white/25 text-white text-sm font-semibold px-4 shadow-[inset_0_1px_1px_rgba(255,255,255,0.3)] transition-all cursor-pointer outline-hidden [&_svg]:text-white/85 [&_[data-slot=select-value]]:text-white">
+                    <SelectTrigger className="w-full h-11 box-border rounded-2xl bg-white/12 hover:bg-white/20 active:bg-white/25 backdrop-blur-xl border border-white/25 text-white text-sm font-semibold px-4 shadow-[inset_0_1px_1px_rgba(255,255,255,0.3)] transition-all cursor-pointer outline-hidden [&_svg]:text-white [&_[data-slot=select-value]]:text-white [&_[data-slot=select-value]]:drop-shadow-[0_1px_2px_rgba(0,0,0,0.5)]">
                       <SelectValue placeholder={tDual("Все города Согда", "Ҳамаи шаҳрҳои Суғд")}>
                         {(() => {
                           if (selectedCity === "all") return tDual("Все города Согда", "Ҳамаи шаҳрҳои Суғд");
@@ -490,11 +486,11 @@ export default function HomePage() {
                       </SelectValue>
                     </SelectTrigger>
                     <SelectContent className="rounded-2xl bg-slate-900/95 backdrop-blur-2xl border border-white/20 text-white shadow-2xl p-1.5 z-50">
-                      <SelectItem value="all" className="rounded-xl cursor-pointer text-white/90 focus:bg-white/20 focus:text-white font-medium text-xs px-3 py-2.5">
+                      <SelectItem value="all" className="rounded-xl cursor-pointer text-white focus:bg-white/20 focus:text-white font-medium text-xs px-3 py-2.5">
                         {tDual("Все города Согда", "Ҳамаи шаҳрҳои Суғд")}
                       </SelectItem>
                       {SOGD_CITIES.map((c) => (
-                        <SelectItem key={c.value} value={c.value} className="rounded-xl cursor-pointer text-white/90 focus:bg-white/20 focus:text-white font-medium text-xs px-3 py-2.5">
+                        <SelectItem key={c.value} value={c.value} className="rounded-xl cursor-pointer text-white focus:bg-white/20 focus:text-white font-medium text-xs px-3 py-2.5">
                           {language === "tg" ? c.nameTj : c.nameRu}
                         </SelectItem>
                       ))}
@@ -503,20 +499,20 @@ export default function HomePage() {
                 </div>
 
                 {/* 2. Room Buttons */}
-                <div className="min-w-0">
-                  <label className="text-xs font-semibold text-white/95 mb-1.5 block drop-shadow-xs">
+                <div className="flex flex-col min-w-0">
+                  <label className="h-5 flex items-center text-xs font-bold text-white mb-2 tracking-wide select-none drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]">
                     {t.catalog.roomsCount}
                   </label>
-                  <div className="flex h-11 min-w-0 items-center gap-1 rounded-2xl border border-white/25 bg-white/12 backdrop-blur-xl p-1 shadow-[inset_0_1px_1px_rgba(255,255,255,0.3)]">
+                  <div className="flex h-11 w-full box-border min-w-0 items-center gap-1 rounded-2xl border border-white/25 bg-white/12 backdrop-blur-xl p-1 shadow-[inset_0_1px_1px_rgba(255,255,255,0.3)]">
                     {roomOptions.map((opt) => (
                       <button
                         key={opt.id}
                         type="button"
                         onClick={() => setSelectedRooms(opt.id)}
-                        className={`h-full flex-1 rounded-xl px-2.5 text-xs transition-all cursor-pointer select-none ${
+                        className={`h-full flex-1 rounded-xl px-2 text-xs transition-all cursor-pointer select-none ${
                           selectedRooms === opt.id
-                            ? "bg-emerald-500/80 text-white shadow-[0_0_14px_rgba(16,185,129,0.55),inset_0_1px_1px_rgba(255,255,255,0.4)] border border-emerald-300/60 font-bold backdrop-blur-md"
-                            : "text-white/80 hover:text-white hover:bg-white/15 font-semibold"
+                            ? "bg-emerald-500/80 text-white shadow-[0_0_14px_rgba(16,185,129,0.55),inset_0_1px_1px_rgba(255,255,255,0.4)] border border-emerald-300/60 font-bold backdrop-blur-md drop-shadow-[0_1px_2px_rgba(0,0,0,0.5)]"
+                            : "text-white hover:bg-white/15 font-semibold drop-shadow-[0_1px_2px_rgba(0,0,0,0.5)]"
                         }`}
                       >
                         {opt.label}
@@ -526,38 +522,39 @@ export default function HomePage() {
                 </div>
 
                 {/* 3. Price Range From - To */}
-                <div className="min-w-0">
-                  <label className="text-xs font-semibold text-white/95 mb-1.5 block drop-shadow-xs">
+                <div className="flex flex-col min-w-0">
+                  <label className="h-5 flex items-center text-xs font-bold text-white mb-2 tracking-wide select-none drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]">
                     {t.catalog.priceRange}
                   </label>
-                  <div className="flex h-11 items-center gap-2">
+                  <div className="flex h-11 w-full box-border items-center gap-2">
                     <Input
                       placeholder={t.common.from}
                       value={priceFrom}
                       onChange={(e) => setPriceFrom(e.target.value)}
-                      className="h-11 w-24 rounded-2xl border border-white/25 bg-white/12 hover:bg-white/20 focus:bg-white/25 backdrop-blur-xl px-3.5 text-sm font-semibold text-white placeholder:text-white/50 shadow-[inset_0_1px_1px_rgba(255,255,255,0.3)] outline-none focus:border-emerald-400/80 transition-all"
+                      className="h-11 flex-1 min-w-0 box-border rounded-2xl border border-white/25 bg-white/12 hover:bg-white/20 focus:bg-white/25 backdrop-blur-xl px-3 text-sm font-semibold text-white placeholder:text-white/60 shadow-[inset_0_1px_1px_rgba(255,255,255,0.3)] outline-none focus:border-emerald-400/80 transition-all text-center drop-shadow-[0_1px_2px_rgba(0,0,0,0.5)]"
                     />
                     <Input
                       placeholder={t.common.to}
                       value={priceTo}
                       onChange={(e) => setPriceTo(e.target.value)}
-                      className="h-11 w-24 rounded-2xl border border-white/25 bg-white/12 hover:bg-white/20 focus:bg-white/25 backdrop-blur-xl px-3.5 text-sm font-semibold text-white placeholder:text-white/50 shadow-[inset_0_1px_1px_rgba(255,255,255,0.3)] outline-none focus:border-emerald-400/80 transition-all"
+                      className="h-11 flex-1 min-w-0 box-border rounded-2xl border border-white/25 bg-white/12 hover:bg-white/20 focus:bg-white/25 backdrop-blur-xl px-3 text-sm font-semibold text-white placeholder:text-white/60 shadow-[inset_0_1px_1px_rgba(255,255,255,0.3)] outline-none focus:border-emerald-400/80 transition-all text-center drop-shadow-[0_1px_2px_rgba(0,0,0,0.5)]"
                     />
                   </div>
                 </div>
 
                 {/* 4. Action Button - Frosted Emerald Glass */}
-                <div className="min-w-0">
+                <div className="flex flex-col min-w-0">
+                  <div className="h-5 mb-2 select-none pointer-events-none hidden sm:block" aria-hidden="true" />
                   <motion.button
                     whileHover={{ scale: 1.03, y: -1 }}
                     whileTap={{ scale: 0.97 }}
                     transition={{ type: "spring", stiffness: 400, damping: 25 }}
                     type="button"
                     onClick={handleSearchSubmit}
-                    className="flex h-11 w-full items-center justify-center gap-2 rounded-2xl bg-emerald-500/35 hover:bg-emerald-500/50 active:bg-emerald-500/60 backdrop-blur-xl border border-emerald-400/60 text-white font-bold text-sm shadow-[0_8px_24px_rgba(16,185,129,0.35),inset_0_1px_1.5px_rgba(255,255,255,0.5)] transition-all cursor-pointer select-none drop-shadow-xs"
+                    className="flex h-11 w-full box-border items-center justify-center gap-2 rounded-2xl bg-emerald-500/35 hover:bg-emerald-500/50 active:bg-emerald-500/60 backdrop-blur-xl border border-emerald-400/60 text-white font-bold text-sm shadow-[0_8px_24px_rgba(16,185,129,0.35),inset_0_1px_1.5px_rgba(255,255,255,0.5)] transition-all cursor-pointer select-none drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]"
                   >
                     <Search className="h-4 w-4 text-emerald-300 drop-shadow-[0_0_8px_rgba(52,211,153,0.9)]" />
-                    <span>
+                    <span className="drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]">
                       {tDual(
                         activeTab === "new"
                           ? `Найти ${filteredProjects.length} ЖК`
@@ -571,11 +568,11 @@ export default function HomePage() {
                 </div>
               </div>
 
-              {/* Quick Filter Chips - iOS 18 Control Center Liquid Glass */}
-              <div className="mt-4 pt-3.5 border-t border-white/20 flex flex-wrap items-center gap-2 text-xs">
-                {/* Frosted Glass Badge for "Быстрый выбор" */}
-                <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/15 backdrop-blur-xl border border-white/25 text-white text-[11px] font-bold tracking-wider uppercase shadow-[inset_0_1px_1px_rgba(255,255,255,0.35)] drop-shadow-xs select-none">
-                  <Sparkles className="h-3.5 w-3.5 text-emerald-300 animate-pulse" />
+              {/* Quick Filter Chips - iOS 18 Control Center Liquid Glass (Compact -1pt) */}
+              <div className="mt-4 pt-3 border-t border-white/20 flex flex-wrap items-center gap-2 text-xs">
+                {/* Frosted Glass Badge for "Быстрый выбор" (Reduced by 1 step) */}
+                <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-white/15 backdrop-blur-xl border border-white/25 text-white text-[10px] font-bold tracking-wider uppercase shadow-[inset_0_1px_1px_rgba(255,255,255,0.35)] drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)] select-none">
+                  <Sparkles className="h-3 w-3 text-emerald-300 animate-pulse" />
                   <span>{tDual("Быстрый выбор:", "Интихоби фаврӣ:")}</span>
                 </div>
 
@@ -599,20 +596,20 @@ export default function HomePage() {
                         const el = document.getElementById("new-buildings");
                         if (el) el.scrollIntoView({ behavior: "smooth" });
                       }}
-                      className={`relative inline-flex items-center rounded-xl border px-3.5 py-1.5 text-xs transition-all cursor-pointer select-none backdrop-blur-xl ${
+                      className={`relative inline-flex items-center rounded-xl border px-2.5 py-1 text-[11px] transition-all cursor-pointer select-none backdrop-blur-xl ${
                         isActive
-                          ? "bg-emerald-500/35 border-emerald-400/70 text-white font-bold shadow-[0_0_16px_rgba(16,185,129,0.45),inset_0_1px_1.5px_rgba(255,255,255,0.4)]"
-                          : "border-white/25 bg-white/12 hover:bg-white/22 active:bg-white/25 text-white/90 hover:text-white font-semibold shadow-[inset_0_1px_1px_rgba(255,255,255,0.25)]"
+                          ? "bg-emerald-500/35 border-emerald-400/70 text-white font-bold shadow-[0_0_14px_rgba(16,185,129,0.45),inset_0_1px_1.5px_rgba(255,255,255,0.4)]"
+                          : "border-white/25 bg-white/12 hover:bg-white/20 active:bg-white/25 text-white font-medium shadow-[inset_0_1px_1px_rgba(255,255,255,0.25)]"
                       }`}
                     >
-                      <span className="relative z-10 drop-shadow-xs">{tDual(chip.ru, chip.tg)}</span>
+                      <span className="relative z-10 text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]">{tDual(chip.ru, chip.tg)}</span>
 
                       {/* Apple-Style Dynamic Glowing Underline for Active Quick Filter Chip */}
                       {isActive && (
                         <motion.div
                           layoutId="quick-chip-underline"
                           transition={{ type: "spring", stiffness: 450, damping: 30 }}
-                          className="absolute -bottom-1 left-2.5 right-2.5 h-[2.5px] rounded-full bg-gradient-to-r from-emerald-300 via-teal-200 to-emerald-300 shadow-[0_0_10px_rgba(52,211,153,1)] z-20"
+                          className="absolute -bottom-0.5 left-2 right-2 h-[2px] rounded-full bg-gradient-to-r from-emerald-300 via-teal-200 to-emerald-300 shadow-[0_0_8px_rgba(52,211,153,1)] z-20"
                         />
                       )}
                     </motion.button>
@@ -626,14 +623,14 @@ export default function HomePage() {
                     whileTap={{ scale: 0.95 }}
                     type="button"
                     onClick={() => setActiveQuickChip(null)}
-                    className="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl bg-red-500/20 hover:bg-red-500/35 border border-red-400/40 text-red-200 hover:text-white text-[11px] font-bold backdrop-blur-xl transition-all cursor-pointer select-none shadow-[inset_0_1px_1px_rgba(255,255,255,0.25)]"
+                    className="inline-flex items-center gap-1 px-2.5 py-1 rounded-xl bg-red-500/20 hover:bg-red-500/35 border border-red-400/40 text-white text-[10px] font-bold backdrop-blur-xl transition-all cursor-pointer select-none shadow-[inset_0_1px_1px_rgba(255,255,255,0.25)] drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]"
                   >
-                    <X className="h-3 w-3" />
+                    <X className="h-2.5 w-2.5 text-white" />
                     <span>{isTg ? "Тоза кардан" : "Сбросить"}</span>
                   </motion.button>
                 )}
 
-                {/* Map Link - iOS Control Center Frosted Glass Pill (Clean single button) */}
+                {/* Map Link - iOS Control Center Frosted Glass Pill (Reduced by 1 step & renamed to "Показать на карте") */}
                 <motion.div
                   whileHover={{ scale: 1.04, y: -1 }}
                   whileTap={{ scale: 0.96 }}
@@ -642,10 +639,10 @@ export default function HomePage() {
                 >
                   <Link
                     href="/map"
-                    className="inline-flex items-center gap-1.5 rounded-2xl border border-white/30 bg-white/15 hover:bg-white/25 active:bg-white/30 text-white font-bold px-3.5 py-1.5 text-xs transition-all shadow-[inset_0_1px_1px_rgba(255,255,255,0.35)] backdrop-blur-xl hover:border-emerald-400/60 hover:shadow-[0_0_16px_rgba(16,185,129,0.35)] select-none drop-shadow-xs"
+                    className="inline-flex items-center gap-1.5 rounded-xl border border-white/30 bg-white/15 hover:bg-white/25 active:bg-white/30 text-white font-bold px-2.5 py-1 text-[11px] transition-all shadow-[inset_0_1px_1px_rgba(255,255,255,0.35)] backdrop-blur-xl hover:border-emerald-400/60 hover:shadow-[0_0_16px_rgba(16,185,129,0.35)] select-none drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]"
                   >
-                    <MapPin className="h-3.5 w-3.5 text-emerald-300 drop-shadow-[0_0_6px_rgba(52,211,153,0.8)]" />
-                    <span>{tDual("Показать на карте Согда", "Дар харитаи Суғд дидан")}</span>
+                    <MapPin className="h-3 w-3 text-emerald-300 drop-shadow-[0_0_6px_rgba(52,211,153,0.8)]" />
+                    <span>{tDual("Показать на карте", "Дар харита дидан")}</span>
                   </Link>
                 </motion.div>
               </div>
