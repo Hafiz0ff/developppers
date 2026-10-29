@@ -382,8 +382,8 @@ export default function HomePage() {
 
   return (
     <div className="flex flex-col gap-6 sm:gap-8 pb-24 bg-[#F8FAFC]">
-      {/* 1. COMPACT HERO SECTION WITH PANORAMIC BACKGROUND */}
-      <section className="relative pt-6 pb-8 md:pt-8 md:pb-10 border-b border-slate-200/80 bg-slate-900 overflow-hidden">
+      {/* 1. PANORAMIC HERO SECTION STARTING FROM TOP OF SCREEN (Covering Header, Marquee, Search Card) */}
+      <section className="relative pt-24 sm:pt-28 pb-8 md:pb-12 border-b border-white/20 bg-slate-900 overflow-hidden">
         {/* Background Layer: Panoramic Landscape with Soft Contrast Overlay */}
         <div className="absolute inset-0 z-0 h-full w-full pointer-events-none overflow-hidden">
           <img
@@ -392,8 +392,27 @@ export default function HomePage() {
             className="w-full h-full object-cover object-center"
           />
           {/* Subtle contrast overlay preserving natural warmth and mountain visibility */}
-          <div className="absolute inset-0 bg-black/20" />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-black/20" />
+          <div className="absolute inset-0 bg-black/25" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/15 to-black/35" />
+        </div>
+
+        {/* 2. FULL-WIDTH CONTINUOUS MARQUEE TICKER (Edge-to-Edge over Khujand Photo) */}
+        <div className="w-full overflow-hidden bg-black/20 sm:bg-white/[0.08] backdrop-blur-md border-y border-white/15 py-1.5 mb-6 sm:mb-8 select-none relative z-10 shadow-[0_2px_12px_rgba(0,0,0,0.15)]">
+          <div className="flex whitespace-nowrap animate-marquee">
+            {[0, 1].map((i) => (
+              <span
+                key={i}
+                className="inline-flex items-center gap-6 px-6 text-[11px] font-semibold tracking-widest uppercase text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]"
+              >
+                <span><span className="text-emerald-400 drop-shadow-[0_0_6px_rgba(52,211,153,0.9)] mr-2">✦</span>{t.marquee.portalTitle}</span>
+                <span><span className="text-emerald-400 drop-shadow-[0_0_6px_rgba(52,211,153,0.9)] mr-2">✦</span>{t.marquee.directDev}</span>
+                <span><span className="text-emerald-400 drop-shadow-[0_0_6px_rgba(52,211,153,0.9)] mr-2">✦</span>{t.marquee.chessboards}</span>
+                <span><span className="text-emerald-400 drop-shadow-[0_0_6px_rgba(52,211,153,0.9)] mr-2">✦</span>{t.marquee.resaleHomes}</span>
+                <span><span className="text-emerald-400 drop-shadow-[0_0_6px_rgba(52,211,153,0.9)] mr-2">✦</span>{t.marquee.dualCurrency}</span>
+                <span><span className="text-emerald-400 drop-shadow-[0_0_6px_rgba(52,211,153,0.9)] mr-2">✦</span>{t.marquee.b2bCrm}</span>
+              </span>
+            ))}
+          </div>
         </div>
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">

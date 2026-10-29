@@ -33,7 +33,7 @@ export function LanguageSwitcher({ className = "" }: LanguageSwitcherProps) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger
-        className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl border border-slate-200 bg-white/90 hover:bg-white text-slate-800 text-xs font-bold shadow-xs hover:border-emerald-500 transition-all outline-hidden cursor-pointer ${className}`}
+        className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-white/25 bg-white/12 hover:bg-white/20 active:bg-white/25 backdrop-blur-xl text-white text-xs font-bold shadow-[inset_0_1px_1px_rgba(255,255,255,0.3)] drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)] transition-all outline-hidden cursor-pointer ${className}`}
         aria-label={
           language === "ru"
             ? "Русский язык"
@@ -43,9 +43,9 @@ export function LanguageSwitcher({ className = "" }: LanguageSwitcherProps) {
         }
       >
         <span className="text-base leading-none select-none">{getFlag(language)}</span>
-        <ChevronDown className="h-3 w-3 text-slate-400" />
+        <ChevronDown className="h-3 w-3 text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]" />
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-40 p-1.5 rounded-xl bg-white shadow-xl border border-slate-200/80 z-50">
+      <DropdownMenuContent align="end" className="w-40 p-1.5 rounded-2xl bg-white/95 dark:bg-slate-900/95 backdrop-blur-2xl shadow-2xl border border-slate-200/80 dark:border-white/15 z-50">
         <DropdownMenuItem
           onClick={() => setLanguage("ru")}
           className={`cursor-pointer text-xs flex items-center justify-between px-3 py-2 rounded-lg font-semibold transition-colors ${

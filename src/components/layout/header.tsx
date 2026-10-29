@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion } from "motion/react";
@@ -47,6 +47,16 @@ export function Header() {
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const [authModalTab, setAuthModalTab] = useState<"login" | "register">("login");
   const [hoveredNav, setHoveredNav] = useState<string | null>(null);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 24);
+    };
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const { data: session, isPending } = useSession();
 
@@ -95,20 +105,26 @@ export function Header() {
     null
   );
 
+  const isHome = pathname === "/";
+
   return (
     <>
-      <header className="sticky top-0 z-50 w-full pt-2.5 sm:pt-3 pb-2 px-3 sm:px-6 pointer-events-none transition-all duration-300">
-        <div className="max-w-7xl mx-auto h-16 px-3.5 sm:px-5 flex items-center justify-between gap-2 sm:gap-4 glass-island rounded-2xl pointer-events-auto relative shadow-[0_16px_36px_-10px_rgba(15,23,42,0.1),0_3px_10px_-2px_rgba(15,23,42,0.04)]">
+      <header className={`sticky top-0 z-50 w-full pt-2.5 sm:pt-3 pb-2 px-3 sm:px-6 pointer-events-none transition-all duration-300 ${isHome ? "-mb-20 sm:-mb-22" : ""}`}>
+        <div className={`max-w-7xl mx-auto h-16 px-3.5 sm:px-5 flex items-center justify-between gap-2 sm:gap-4 rounded-2xl pointer-events-auto relative transition-all duration-300 ${
+          isScrolled || !isHome
+            ? "bg-slate-950/80 backdrop-blur-2xl border border-white/20 shadow-[0_20px_50px_rgba(0,0,0,0.5),inset_0_1px_1.5px_rgba(255,255,255,0.25)]"
+            : "bg-white/[0.12] backdrop-blur-2xl border border-white/25 shadow-[0_20px_50px_rgba(0,0,0,0.35),inset_0_1px_1.5px_rgba(255,255,255,0.4)]"
+        }`}>
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2.5 shrink-0 group">
             <div className="h-10 w-10 rounded-xl bg-gradient-to-tr from-emerald-600 via-teal-500 to-emerald-400 flex items-center justify-center text-white shadow-md shadow-emerald-500/25 group-hover:scale-105 transition-transform duration-300">
               <Building2 className="h-5 w-5" />
             </div>
             <div className="flex flex-col">
-              <span className="font-extrabold tracking-tight text-lg leading-tight text-emerald-950 dark:text-emerald-100 flex items-center gap-0.5">
-                MASKANI<span className="text-emerald-500 text-xs">.TJ</span>
+              <span className="font-extrabold tracking-tight text-lg leading-tight text-white flex items-center gap-0.5 drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]">
+                MASKANI<span className="text-emerald-400 text-xs font-bold">.TJ</span>
               </span>
-              <span className="text-[10px] text-muted-foreground uppercase tracking-widest font-semibold">
+              <span className="text-[10px] text-white/85 uppercase tracking-widest font-semibold drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]">
                 {tDual("Недвижимость Таджикистана", "Амволи ғайриманқули Тоҷикистон")}
               </span>
             </div>
@@ -117,7 +133,7 @@ export function Header() {
           {/* Navigation Links with Video-Style Dynamic Underline & Forward Scale */}
           <nav
             onMouseLeave={() => setHoveredNav(null)}
-            className="hidden lg:flex items-center gap-0.5 p-1 rounded-2xl bg-slate-900/[0.04] dark:bg-white/[0.04] border border-slate-200/80 dark:border-white/10 text-xs font-semibold backdrop-blur-md"
+            className="hidden lg:flex items-center gap-0.5 p-1 rounded-2xl bg-white/[0.08] border border-white/20 text-xs font-semibold backdrop-blur-md"
           >
             {navItems.map((item) => {
               const isHovered = hoveredNav === item.href;
@@ -135,22 +151,22 @@ export function Header() {
                     transition={{ type: "spring", stiffness: 450, damping: 25 }}
                     className={`relative z-10 flex items-center gap-1.5 transition-colors duration-200 ${
                       isActive
-                        ? "text-emerald-950 dark:text-emerald-300 font-bold"
-                        : "text-slate-600 dark:text-slate-300 group-hover:text-slate-950 dark:group-hover:text-white font-medium"
+                        ? "text-emerald-300 font-bold drop-shadow-[0_0_8px_rgba(52,211,153,0.8)]"
+                        : "text-white font-semibold drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)] group-hover:text-white"
                     }`}
                   >
                     {Icon && (
                       <Icon
                         className={`h-3.5 w-3.5 transition-colors ${
                           isActive
-                            ? "text-emerald-600 dark:text-emerald-400"
-                            : "text-slate-400 group-hover:text-emerald-600"
+                            ? "text-emerald-300 drop-shadow-[0_0_8px_rgba(52,211,153,0.8)]"
+                            : "text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)] group-hover:text-emerald-300"
                         }`}
                       />
                     )}
                     <span>{item.label}</span>
                     {item.badge && (
-                      <span className="bg-emerald-600 text-white text-[10px] font-bold px-1.5 py-0.2 rounded-full tabular-nums shadow-xs">
+                      <span className="bg-emerald-500 text-white text-[10px] font-bold px-1.5 py-0.2 rounded-full tabular-nums shadow-xs">
                         {item.badge}
                       </span>
                     )}
@@ -161,7 +177,7 @@ export function Header() {
                     <motion.div
                       layoutId="header-nav-hover-bg"
                       transition={{ type: "spring", stiffness: 450, damping: 32 }}
-                      className="absolute inset-0 rounded-xl bg-white/85 dark:bg-slate-800/85 shadow-xs border border-slate-200/70 dark:border-white/10 -z-0"
+                      className="absolute inset-0 rounded-xl bg-white/15 backdrop-blur-md shadow-xs border border-white/25 -z-0"
                     />
                   )}
 
@@ -170,7 +186,7 @@ export function Header() {
                     <motion.div
                       layoutId="header-nav-underline"
                       transition={{ type: "spring", stiffness: 450, damping: 32 }}
-                      className="absolute bottom-0.5 left-3 right-3 h-[2.5px] rounded-full bg-gradient-to-r from-emerald-500 via-teal-400 to-emerald-600 shadow-[0_2px_8px_rgba(16,185,129,0.55)] z-20"
+                      className="absolute bottom-0.5 left-3 right-3 h-[2.5px] rounded-full bg-gradient-to-r from-emerald-400 via-teal-300 to-emerald-400 shadow-[0_0_10px_rgba(52,211,153,0.9)] z-20"
                     />
                   )}
                 </Link>
@@ -185,15 +201,15 @@ export function Header() {
 
             {/* Currency Selector */}
             <DropdownMenu>
-              <DropdownMenuTrigger className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl glass-pill hover:border-emerald-500/50 hover:text-emerald-700 text-slate-800 dark:text-slate-100 text-xs font-bold transition-all outline-hidden cursor-pointer">
+              <DropdownMenuTrigger className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-white/25 bg-white/12 hover:bg-white/20 active:bg-white/25 backdrop-blur-xl text-white text-xs font-bold shadow-[inset_0_1px_1px_rgba(255,255,255,0.3)] drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)] transition-all outline-hidden cursor-pointer">
                 <span>{currency}</span>
-                <ChevronDown className="h-3 w-3 text-slate-400" />
+                <ChevronDown className="h-3 w-3 text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]" />
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-40 p-1.5 rounded-xl bg-white/95 backdrop-blur-xl shadow-xl border border-slate-200/80 z-50">
+              <DropdownMenuContent align="end" className="w-40 p-1.5 rounded-2xl bg-white/95 dark:bg-slate-900/95 backdrop-blur-2xl shadow-2xl border border-slate-200/80 dark:border-white/15 z-50">
                 <DropdownMenuItem
                   onClick={() => setCurrency("TJS")}
-                  className={`cursor-pointer text-xs flex items-center justify-between px-3 py-2 rounded-lg font-semibold transition-colors ${
-                    currency === "TJS" ? "text-emerald-700 bg-emerald-50/80 border border-emerald-200/60" : "text-slate-700 hover:bg-slate-100"
+                  className={`cursor-pointer text-xs flex items-center justify-between px-3 py-2 rounded-xl font-semibold transition-colors ${
+                    currency === "TJS" ? "text-emerald-700 bg-emerald-50/80 border border-emerald-200/60 font-bold shadow-xs" : "text-slate-700 hover:bg-slate-100"
                   }`}
                 >
                   <span>TJS (Сомонӣ)</span>
@@ -201,8 +217,8 @@ export function Header() {
                 </DropdownMenuItem>
                 <DropdownMenuItem
                   onClick={() => setCurrency("USD")}
-                  className={`cursor-pointer text-xs flex items-center justify-between px-3 py-2 rounded-lg font-semibold transition-colors mt-1 ${
-                    currency === "USD" ? "text-emerald-700 bg-emerald-50/80 border border-emerald-200/60" : "text-slate-700 hover:bg-slate-100"
+                  className={`cursor-pointer text-xs flex items-center justify-between px-3 py-2 rounded-xl font-semibold transition-colors mt-1 ${
+                    currency === "USD" ? "text-emerald-700 bg-emerald-50/80 border border-emerald-200/60 font-bold shadow-xs" : "text-slate-700 hover:bg-slate-100"
                   }`}
                 >
                   <span>USD (Доллар $)</span>
@@ -215,13 +231,13 @@ export function Header() {
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
               <Link
                 href="/compare"
-                className="relative p-2 rounded-xl glass-pill text-slate-700 dark:text-slate-200 hover:text-emerald-700 hover:border-emerald-500 transition-all flex items-center justify-center cursor-pointer"
+                className="relative p-2 rounded-xl border border-white/25 bg-white/12 hover:bg-white/20 active:bg-white/25 backdrop-blur-xl text-white shadow-[inset_0_1px_1px_rgba(255,255,255,0.3)] drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)] transition-all flex items-center justify-center cursor-pointer"
                 title={tDual("Сравнение объектов", "Муқоисаи амвол")}
                 aria-label={tDual("Сравнение объектов", "Муқоисаи амвол")}
               >
-                <ArrowLeftRight className="h-4 w-4" />
+                <ArrowLeftRight className="h-4 w-4 text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]" />
                 {compareCount > 0 && (
-                  <span className="absolute -top-1.5 -right-1.5 bg-emerald-600 text-white font-bold text-[10px] min-w-[18px] h-[18px] rounded-full flex items-center justify-center px-1 shadow-sm">
+                  <span className="absolute -top-1.5 -right-1.5 bg-emerald-500 text-white font-bold text-[10px] min-w-[18px] h-[18px] rounded-full flex items-center justify-center px-1 shadow-[0_0_8px_rgba(16,185,129,0.8)]">
                     {compareCount}
                   </span>
                 )}
@@ -231,44 +247,43 @@ export function Header() {
             {/* Post Ad Button */}
             <motion.div whileHover={{ scale: 1.03, y: -1 }} whileTap={{ scale: 0.97 }}>
               <Link href={session ? "/classifieds/new" : "#"}>
-                <Button
-                  size="sm"
-                  variant="outline"
+                <button
+                  type="button"
                   onClick={(e) => {
                     if (!session) {
                       e.preventDefault();
                       handleOpenAuth("login");
                     }
                   }}
-                  className="hidden sm:flex rounded-xl glass-pill border-emerald-600/30 text-emerald-700 dark:text-emerald-400 hover:bg-emerald-500/10 gap-1.5 text-xs font-semibold cursor-pointer shadow-xs"
+                  className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-white/30 bg-white/15 hover:bg-white/25 active:bg-white/30 text-white font-bold backdrop-blur-xl text-xs cursor-pointer shadow-[inset_0_1px_1px_rgba(255,255,255,0.35)] drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)] transition-all select-none"
                 >
-                  <PlusCircle className="h-3.5 w-3.5 text-emerald-600" />
-                  {t.nav.postAd}
-                </Button>
+                  <PlusCircle className="h-3.5 w-3.5 text-emerald-300 drop-shadow-[0_0_6px_rgba(52,211,153,0.8)]" />
+                  <span>{t.nav.postAd}</span>
+                </button>
               </Link>
             </motion.div>
 
             {/* Auth Button or User Profile */}
             {isPending ? (
-              <div className="h-9 w-20 rounded-md bg-muted animate-pulse" />
+              <div className="h-9 w-20 rounded-xl bg-white/20 animate-pulse backdrop-blur-md" />
             ) : session?.user ? (
               <DropdownMenu>
-                <DropdownMenuTrigger className="flex items-center gap-2 outline-hidden p-1 rounded-lg hover:bg-muted/70 transition-colors">
-                  <Avatar className="h-8 w-8 border border-border">
+                <DropdownMenuTrigger className="flex items-center gap-2 outline-hidden px-2 py-1.5 rounded-xl border border-white/25 bg-white/12 hover:bg-white/20 backdrop-blur-xl text-white transition-colors cursor-pointer shadow-[inset_0_1px_1px_rgba(255,255,255,0.3)]">
+                  <Avatar className="h-7 w-7 border border-white/30">
                     <AvatarImage src={session.user.image || undefined} />
-                    <AvatarFallback className="bg-emerald-100 text-emerald-800 font-bold text-xs">
+                    <AvatarFallback className="bg-emerald-600 text-white font-bold text-xs">
                       {session.user.name?.slice(0, 2).toUpperCase() || "УЗ"}
                     </AvatarFallback>
                   </Avatar>
                   <div className="hidden lg:flex flex-col text-left text-xs">
-                    <span className="font-semibold leading-tight line-clamp-1 max-w-[120px]">
+                    <span className="font-semibold leading-tight line-clamp-1 max-w-[120px] text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]">
                       {session.user.name}
                     </span>
-                    <span className="text-[10px] text-muted-foreground">
+                    <span className="text-[10px] text-white/80 drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]">
                       {roleInfo.label}
                     </span>
                   </div>
-                  <ChevronDown className="h-3.5 w-3.5 text-muted-foreground" />
+                  <ChevronDown className="h-3.5 w-3.5 text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]" />
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="w-56">
                   <DropdownMenuLabel>
@@ -347,34 +362,15 @@ export function Header() {
                 whileHover={{ scale: 1.04 }}
                 whileTap={{ scale: 0.96 }}
                 onClick={() => handleOpenAuth("login")}
-                className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold text-xs shadow-md shadow-emerald-600/25 transition-all cursor-pointer"
+                className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-emerald-500/35 hover:bg-emerald-500/50 active:bg-emerald-500/60 backdrop-blur-xl border border-emerald-400/60 text-white font-bold text-xs shadow-[0_8px_24px_rgba(16,185,129,0.35),inset_0_1px_1.5px_rgba(255,255,255,0.5)] transition-all cursor-pointer drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]"
               >
-                <LogIn className="h-3.5 w-3.5" />
+                <LogIn className="h-3.5 w-3.5 text-emerald-300 drop-shadow-[0_0_8px_rgba(52,211,153,0.9)]" />
                 <span>{t.nav.login}</span>
               </motion.button>
             )}
           </div>
         </div>
       </header>
-
-      {/* Full-width continuous Marquee Ticker (NOT sticky with header, edge-to-edge from screen left to right) */}
-      <div className="w-full overflow-hidden bg-gradient-to-r from-emerald-50/90 via-white/80 to-emerald-50/90 dark:from-slate-900/90 dark:via-slate-800/80 dark:to-slate-900/90 backdrop-blur-md border-y border-emerald-200/50 dark:border-white/10 py-1.5 shadow-[0_1px_3px_rgba(0,0,0,0.02)] select-none">
-        <div className="flex whitespace-nowrap animate-marquee">
-          {[0, 1].map((i) => (
-            <span
-              key={i}
-              className="inline-flex items-center gap-6 px-6 text-[11px] font-semibold tracking-widest uppercase text-emerald-950/80 dark:text-emerald-300"
-            >
-              <span><span className="text-emerald-600 mr-2">✦</span>{t.marquee.portalTitle}</span>
-              <span><span className="text-emerald-600 mr-2">✦</span>{t.marquee.directDev}</span>
-              <span><span className="text-emerald-600 mr-2">✦</span>{t.marquee.chessboards}</span>
-              <span><span className="text-emerald-600 mr-2">✦</span>{t.marquee.resaleHomes}</span>
-              <span><span className="text-emerald-600 mr-2">✦</span>{t.marquee.dualCurrency}</span>
-              <span><span className="text-emerald-600 mr-2">✦</span>{t.marquee.b2bCrm}</span>
-            </span>
-          ))}
-        </div>
-      </div>
 
       <AuthModal
         isOpen={authModalOpen}
