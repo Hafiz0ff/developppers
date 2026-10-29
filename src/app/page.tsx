@@ -18,12 +18,11 @@ import { PropertyMetricsBadge } from "@/components/modules/common/property-metri
 import { formatNewBuildingPricePerMeter, getPricePerMeterLabel } from "@/lib/pricing/new-building-price";
 import { NewBuildingPriceBlock } from "@/components/modules/new-building-price-block";
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import {
   Building2,
   Home,
@@ -35,6 +34,7 @@ import {
   Phone,
   MessageCircle,
   Eye,
+  ChevronDown,
   ChevronRight,
   ShieldCheck,
   Trees,
@@ -463,47 +463,68 @@ export default function HomePage() {
                 })}
               </div>
 
-              {/* Filter Inputs Grid - Perfectly Aligned Line & Height (iOS 18 Control Center Style) */}
+              {/* Filter Inputs Grid - Unified Sleek Height h-[38px] & Header-Style Animated Dropdown */}
               <div className="grid grid-cols-1 items-start gap-3 sm:grid-cols-2 lg:grid-cols-[minmax(180px,1fr)_minmax(220px,1.2fr)_minmax(200px,1.1fr)_minmax(190px,1.1fr)]">
-                {/* 1. City / Region */}
+                {/* 1. City / Region - Header-Style Animated Dropdown & Clean Frosted Glass */}
                 <div className="flex flex-col min-w-0">
                   <label className="h-5 flex items-center text-xs font-bold text-white mb-2 tracking-wide select-none drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]">
                     {t.catalog.city}
                   </label>
-                  <Select
-                    value={selectedCity}
-                    onValueChange={(val) => {
-                      if (val) setSelectedCity(val);
-                    }}
-                  >
-                    <SelectTrigger className="w-full h-11 box-border rounded-2xl bg-white/12 hover:bg-white/20 active:bg-white/25 backdrop-blur-xl border border-white/25 text-white text-sm font-semibold px-4 shadow-[inset_0_1px_1px_rgba(255,255,255,0.3)] transition-all cursor-pointer outline-hidden [&_svg]:text-white [&_[data-slot=select-value]]:text-white [&_[data-slot=select-value]]:drop-shadow-[0_1px_2px_rgba(0,0,0,0.5)]">
-                      <SelectValue placeholder={tDual("Все города Согда", "Ҳамаи шаҳрҳои Суғд")}>
-                        {(() => {
-                          if (selectedCity === "all") return tDual("Все города Согда", "Ҳамаи шаҳрҳои Суғд");
-                          const c = SOGD_CITIES.find((item) => item.value === selectedCity);
-                          return language === "tg" ? c?.nameTj : c?.nameRu || "Худжанд";
-                        })()}
-                      </SelectValue>
-                    </SelectTrigger>
-                    <SelectContent className="rounded-2xl bg-slate-900/95 backdrop-blur-2xl border border-white/20 text-white shadow-2xl p-1.5 z-50">
-                      <SelectItem value="all" className="rounded-xl cursor-pointer text-white focus:bg-white/20 focus:text-white font-medium text-xs px-3 py-2.5">
-                        {tDual("Все города Согда", "Ҳамаи шаҳрҳои Суғд")}
-                      </SelectItem>
-                      {SOGD_CITIES.map((c) => (
-                        <SelectItem key={c.value} value={c.value} className="rounded-xl cursor-pointer text-white focus:bg-white/20 focus:text-white font-medium text-xs px-3 py-2.5">
-                          {language === "tg" ? c.nameTj : c.nameRu}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger className="flex h-[38px] w-full items-center justify-between gap-1.5 rounded-2xl border border-white/25 bg-white/12 hover:bg-white/20 active:bg-white/25 backdrop-blur-xl px-4 text-white text-xs font-semibold shadow-[inset_0_1px_1px_rgba(255,255,255,0.3)] transition-all cursor-pointer outline-hidden select-none box-border">
+                      <span className="truncate drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]">
+                        {selectedCity === "all"
+                          ? tDual("Все города", "Ҳамаи шаҳрҳо")
+                          : (() => {
+                              const c = SOGD_CITIES.find((item) => item.value === selectedCity);
+                              return language === "tg" ? c?.nameTj : c?.nameRu || "Худжанд";
+                            })()}
+                      </span>
+                      <ChevronDown className="h-3.5 w-3.5 text-white shrink-0 drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]" />
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent
+                      align="start"
+                      sideOffset={6}
+                      className="w-64 max-h-80 overflow-y-auto p-1.5 rounded-2xl bg-white/95 dark:bg-slate-900/95 backdrop-blur-2xl shadow-2xl border border-slate-200/80 dark:border-white/15 z-50 [scrollbar-width:thin]"
+                    >
+                      <DropdownMenuItem
+                        onClick={() => setSelectedCity("all")}
+                        className={`cursor-pointer text-xs flex items-center justify-between px-3 py-2 rounded-xl transition-all ${
+                          selectedCity === "all"
+                            ? "text-emerald-700 dark:text-emerald-300 bg-emerald-50/90 dark:bg-emerald-500/20 border border-emerald-200/70 dark:border-emerald-500/30 font-bold shadow-xs"
+                            : "text-slate-700 dark:text-slate-200 hover:bg-slate-100/80 dark:hover:bg-white/10 font-semibold"
+                        }`}
+                      >
+                        <span>{tDual("Все города", "Ҳамаи шаҳрҳо")}</span>
+                        {selectedCity === "all" && <Check className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />}
+                      </DropdownMenuItem>
+                      {SOGD_CITIES.map((c) => {
+                        const isCitySelected = selectedCity === c.value;
+                        return (
+                          <DropdownMenuItem
+                            key={c.value}
+                            onClick={() => setSelectedCity(c.value)}
+                            className={`cursor-pointer text-xs flex items-center justify-between px-3 py-2 rounded-xl transition-all mt-0.5 ${
+                              isCitySelected
+                                ? "text-emerald-700 dark:text-emerald-300 bg-emerald-50/90 dark:bg-emerald-500/20 border border-emerald-200/70 dark:border-emerald-500/30 font-bold shadow-xs"
+                                : "text-slate-700 dark:text-slate-200 hover:bg-slate-100/80 dark:hover:bg-white/10 font-semibold"
+                            }`}
+                          >
+                            <span>{language === "tg" ? c.nameTj : c.nameRu}</span>
+                            {isCitySelected && <Check className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />}
+                          </DropdownMenuItem>
+                        );
+                      })}
+                    </DropdownMenuContent>
+                  </DropdownMenu>
                 </div>
 
-                {/* 2. Room Buttons */}
+                {/* 2. Room Buttons - Unified Height h-[38px] */}
                 <div className="flex flex-col min-w-0">
                   <label className="h-5 flex items-center text-xs font-bold text-white mb-2 tracking-wide select-none drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]">
                     {t.catalog.roomsCount}
                   </label>
-                  <div className="flex h-11 w-full box-border min-w-0 items-center gap-1 rounded-2xl border border-white/25 bg-white/12 backdrop-blur-xl p-1 shadow-[inset_0_1px_1px_rgba(255,255,255,0.3)]">
+                  <div className="flex h-[38px] w-full box-border min-w-0 items-center gap-1 rounded-2xl border border-white/25 bg-white/12 backdrop-blur-xl p-1 shadow-[inset_0_1px_1px_rgba(255,255,255,0.3)]">
                     {roomOptions.map((opt) => (
                       <button
                         key={opt.id}
@@ -521,28 +542,28 @@ export default function HomePage() {
                   </div>
                 </div>
 
-                {/* 3. Price Range From - To */}
+                {/* 3. Price Range From - To - Unified Height h-[38px] */}
                 <div className="flex flex-col min-w-0">
                   <label className="h-5 flex items-center text-xs font-bold text-white mb-2 tracking-wide select-none drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]">
                     {t.catalog.priceRange}
                   </label>
-                  <div className="flex h-11 w-full box-border items-center gap-2">
+                  <div className="flex h-[38px] w-full box-border items-center gap-2">
                     <Input
                       placeholder={t.common.from}
                       value={priceFrom}
                       onChange={(e) => setPriceFrom(e.target.value)}
-                      className="h-11 flex-1 min-w-0 box-border rounded-2xl border border-white/25 bg-white/12 hover:bg-white/20 focus:bg-white/25 backdrop-blur-xl px-3 text-sm font-semibold text-white placeholder:text-white/60 shadow-[inset_0_1px_1px_rgba(255,255,255,0.3)] outline-none focus:border-emerald-400/80 transition-all text-center drop-shadow-[0_1px_2px_rgba(0,0,0,0.5)]"
+                      className="h-[38px] flex-1 min-w-0 box-border rounded-2xl border border-white/25 bg-white/12 hover:bg-white/20 focus:bg-white/25 backdrop-blur-xl px-3 text-sm font-semibold text-white placeholder:text-white/60 shadow-[inset_0_1px_1px_rgba(255,255,255,0.3)] outline-none focus:border-emerald-400/80 transition-all text-center drop-shadow-[0_1px_2px_rgba(0,0,0,0.5)]"
                     />
                     <Input
                       placeholder={t.common.to}
                       value={priceTo}
                       onChange={(e) => setPriceTo(e.target.value)}
-                      className="h-11 flex-1 min-w-0 box-border rounded-2xl border border-white/25 bg-white/12 hover:bg-white/20 focus:bg-white/25 backdrop-blur-xl px-3 text-sm font-semibold text-white placeholder:text-white/60 shadow-[inset_0_1px_1px_rgba(255,255,255,0.3)] outline-none focus:border-emerald-400/80 transition-all text-center drop-shadow-[0_1px_2px_rgba(0,0,0,0.5)]"
+                      className="h-[38px] flex-1 min-w-0 box-border rounded-2xl border border-white/25 bg-white/12 hover:bg-white/20 focus:bg-white/25 backdrop-blur-xl px-3 text-sm font-semibold text-white placeholder:text-white/60 shadow-[inset_0_1px_1px_rgba(255,255,255,0.3)] outline-none focus:border-emerald-400/80 transition-all text-center drop-shadow-[0_1px_2px_rgba(0,0,0,0.5)]"
                     />
                   </div>
                 </div>
 
-                {/* 4. Action Button - Frosted Emerald Glass */}
+                {/* 4. Action Button - Unified Height h-[38px] Frosted Emerald Glass */}
                 <div className="flex flex-col min-w-0">
                   <div className="h-5 mb-2 select-none pointer-events-none hidden sm:block" aria-hidden="true" />
                   <motion.button
@@ -551,9 +572,9 @@ export default function HomePage() {
                     transition={{ type: "spring", stiffness: 400, damping: 25 }}
                     type="button"
                     onClick={handleSearchSubmit}
-                    className="flex h-11 w-full box-border items-center justify-center gap-2 rounded-2xl bg-emerald-500/35 hover:bg-emerald-500/50 active:bg-emerald-500/60 backdrop-blur-xl border border-emerald-400/60 text-white font-bold text-sm shadow-[0_8px_24px_rgba(16,185,129,0.35),inset_0_1px_1.5px_rgba(255,255,255,0.5)] transition-all cursor-pointer select-none drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]"
+                    className="flex h-[38px] w-full box-border items-center justify-center gap-2 rounded-2xl bg-emerald-500/35 hover:bg-emerald-500/50 active:bg-emerald-500/60 backdrop-blur-xl border border-emerald-400/60 text-white font-bold text-xs shadow-[0_8px_24px_rgba(16,185,129,0.35),inset_0_1px_1.5px_rgba(255,255,255,0.5)] transition-all cursor-pointer select-none drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]"
                   >
-                    <Search className="h-4 w-4 text-emerald-300 drop-shadow-[0_0_8px_rgba(52,211,153,0.9)]" />
+                    <Search className="h-3.5 w-3.5 text-emerald-300 drop-shadow-[0_0_8px_rgba(52,211,153,0.9)]" />
                     <span className="drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]">
                       {tDual(
                         activeTab === "new"
