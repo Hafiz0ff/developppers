@@ -398,9 +398,9 @@ export default function HomePage() {
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 pb-8 sm:pb-10">
 
-          {/* 2. APPLE-STYLE LIQUID GLASS SEARCH CARD (50% Transparency Level + Crisp Glowing Edges) */}
+          {/* 2. APPLE-STYLE LIQUID GLASS SEARCH CARD (Enhanced Transparency + Crisp Glowing Edges) */}
           <div className="relative mx-auto w-full max-w-5xl">
-            <div className="bg-white/[0.10] backdrop-blur-2xl border border-white/25 rounded-3xl p-5 sm:p-6 shadow-[0_20px_50px_rgba(0,0,0,0.35),inset_0_1px_1.5px_rgba(255,255,255,0.35)]">
+            <div className="bg-neutral-950/35 backdrop-blur-3xl border border-white/25 rounded-3xl p-5 sm:p-6 shadow-[0_20px_50px_rgba(0,0,0,0.35),inset_0_1px_1.5px_rgba(255,255,255,0.3)]">
               {/* Segment Tabs (Apple Liquid Glass Style with Dynamic Word-Length Underline & Forward Scale) */}
               <div
                 onMouseLeave={() => setHoveredSearchTab(null)}
@@ -485,18 +485,18 @@ export default function HomePage() {
                     <DropdownMenuContent
                       align="start"
                       sideOffset={6}
-                      className="w-64 max-h-80 overflow-y-auto p-1.5 rounded-2xl bg-white/95 dark:bg-slate-900/95 backdrop-blur-2xl shadow-2xl border border-slate-200/80 dark:border-white/15 z-50 [scrollbar-width:thin]"
+                      className="w-64 max-h-80 overflow-y-auto p-1.5 rounded-2xl bg-slate-900/85 backdrop-blur-3xl shadow-[0_20px_50px_rgba(0,0,0,0.5),inset_0_1px_1.5px_rgba(255,255,255,0.25)] border border-white/20 z-50 text-white [scrollbar-width:thin] [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-thumb]:bg-white/20 [&::-webkit-scrollbar-thumb]:rounded-full"
                     >
                       <DropdownMenuItem
                         onClick={() => setSelectedCity("all")}
                         className={`cursor-pointer text-xs flex items-center justify-between px-3 py-2 rounded-xl transition-all ${
                           selectedCity === "all"
-                            ? "text-emerald-700 dark:text-emerald-300 bg-emerald-50/90 dark:bg-emerald-500/20 border border-emerald-200/70 dark:border-emerald-500/30 font-bold shadow-xs"
-                            : "text-slate-700 dark:text-slate-200 hover:bg-slate-100/80 dark:hover:bg-white/10 font-semibold"
+                            ? "text-white bg-emerald-500/35 border border-emerald-400/60 font-bold shadow-[0_0_12px_rgba(16,185,129,0.35),inset_0_1px_1px_rgba(255,255,255,0.3)]"
+                            : "text-white/90 hover:text-white hover:bg-white/15 focus:text-white focus:bg-white/15 font-semibold"
                         }`}
                       >
-                        <span>{tDual("Все города", "Ҳамаи шаҳрҳо")}</span>
-                        {selectedCity === "all" && <Check className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />}
+                        <span className="drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]">{tDual("Все города", "Ҳамаи шаҳрҳо")}</span>
+                        {selectedCity === "all" && <Check className="h-3.5 w-3.5 text-emerald-300 drop-shadow-[0_0_6px_rgba(52,211,153,0.9)]" />}
                       </DropdownMenuItem>
                       {SOGD_CITIES.map((c) => {
                         const isCitySelected = selectedCity === c.value;
@@ -506,12 +506,12 @@ export default function HomePage() {
                             onClick={() => setSelectedCity(c.value)}
                             className={`cursor-pointer text-xs flex items-center justify-between px-3 py-2 rounded-xl transition-all mt-0.5 ${
                               isCitySelected
-                                ? "text-emerald-700 dark:text-emerald-300 bg-emerald-50/90 dark:bg-emerald-500/20 border border-emerald-200/70 dark:border-emerald-500/30 font-bold shadow-xs"
-                                : "text-slate-700 dark:text-slate-200 hover:bg-slate-100/80 dark:hover:bg-white/10 font-semibold"
+                                ? "text-white bg-emerald-500/35 border border-emerald-400/60 font-bold shadow-[0_0_12px_rgba(16,185,129,0.35),inset_0_1px_1px_rgba(255,255,255,0.3)]"
+                                : "text-white/90 hover:text-white hover:bg-white/15 focus:text-white focus:bg-white/15 font-semibold"
                             }`}
                           >
-                            <span>{language === "tg" ? c.nameTj : c.nameRu}</span>
-                            {isCitySelected && <Check className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />}
+                            <span className="drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]">{language === "tg" ? c.nameTj : c.nameRu}</span>
+                            {isCitySelected && <Check className="h-3.5 w-3.5 text-emerald-300 drop-shadow-[0_0_6px_rgba(52,211,153,0.9)]" />}
                           </DropdownMenuItem>
                         );
                       })}

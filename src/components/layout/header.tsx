@@ -111,9 +111,9 @@ export function Header() {
     <>
       <header className={`sticky top-0 z-50 w-full pt-2.5 sm:pt-3 pb-2 px-3 sm:px-6 pointer-events-none transition-all duration-300 ${isHome ? "-mb-20 sm:-mb-22" : ""}`}>
         <div className={`max-w-7xl mx-auto h-16 px-3 sm:px-4 lg:px-5 flex items-center justify-between gap-1.5 sm:gap-3 rounded-2xl pointer-events-auto relative transition-all duration-300 ${
-          isScrolled || !isHome
-            ? "bg-slate-950/80 backdrop-blur-2xl border border-white/20 shadow-[0_20px_50px_rgba(0,0,0,0.5),inset_0_1px_1.5px_rgba(255,255,255,0.25)]"
-            : "bg-white/[0.10] backdrop-blur-2xl border border-white/25 shadow-[0_20px_50px_rgba(0,0,0,0.35),inset_0_1px_1.5px_rgba(255,255,255,0.35)]"
+          isScrolled
+            ? "bg-black/55 backdrop-blur-3xl border border-white/20 shadow-[0_20px_50px_rgba(0,0,0,0.35),inset_0_1px_1.5px_rgba(255,255,255,0.25)]"
+            : "bg-black/25 sm:bg-white/[0.08] backdrop-blur-2xl border border-white/25 shadow-[0_20px_50px_rgba(0,0,0,0.25),inset_0_1px_1.5px_rgba(255,255,255,0.3)]"
         }`}>
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2 sm:gap-2.5 shrink-0 group">
@@ -205,24 +205,28 @@ export function Header() {
                 <span>{currency}</span>
                 <ChevronDown className="h-3 w-3 text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]" />
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-40 p-1.5 rounded-2xl bg-white/95 dark:bg-slate-900/95 backdrop-blur-2xl shadow-2xl border border-slate-200/80 dark:border-white/15 z-50">
+              <DropdownMenuContent align="end" className="w-40 p-1.5 rounded-2xl bg-slate-900/85 backdrop-blur-3xl shadow-[0_20px_50px_rgba(0,0,0,0.5),inset_0_1px_1.5px_rgba(255,255,255,0.25)] border border-white/20 z-50 text-white">
                 <DropdownMenuItem
                   onClick={() => setCurrency("TJS")}
-                  className={`cursor-pointer text-xs flex items-center justify-between px-3 py-2 rounded-xl font-semibold transition-colors ${
-                    currency === "TJS" ? "text-emerald-700 bg-emerald-50/80 border border-emerald-200/60 font-bold shadow-xs" : "text-slate-700 hover:bg-slate-100"
+                  className={`cursor-pointer text-xs flex items-center justify-between px-3 py-2 rounded-xl font-semibold transition-all ${
+                    currency === "TJS"
+                      ? "text-white bg-emerald-500/35 border border-emerald-400/60 font-bold shadow-[0_0_12px_rgba(16,185,129,0.35),inset_0_1px_1px_rgba(255,255,255,0.3)]"
+                      : "text-white/90 hover:text-white hover:bg-white/15 focus:text-white focus:bg-white/15"
                   }`}
                 >
-                  <span>TJS (Сомонӣ)</span>
-                  {currency === "TJS" && <Check className="h-3.5 w-3.5 text-emerald-600" />}
+                  <span className="drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]">TJS (Сомонӣ)</span>
+                  {currency === "TJS" && <Check className="h-3.5 w-3.5 text-emerald-300 drop-shadow-[0_0_6px_rgba(52,211,153,0.9)]" />}
                 </DropdownMenuItem>
                 <DropdownMenuItem
                   onClick={() => setCurrency("USD")}
-                  className={`cursor-pointer text-xs flex items-center justify-between px-3 py-2 rounded-xl font-semibold transition-colors mt-1 ${
-                    currency === "USD" ? "text-emerald-700 bg-emerald-50/80 border border-emerald-200/60 font-bold shadow-xs" : "text-slate-700 hover:bg-slate-100"
+                  className={`cursor-pointer text-xs flex items-center justify-between px-3 py-2 rounded-xl font-semibold transition-all mt-1 ${
+                    currency === "USD"
+                      ? "text-white bg-emerald-500/35 border border-emerald-400/60 font-bold shadow-[0_0_12px_rgba(16,185,129,0.35),inset_0_1px_1px_rgba(255,255,255,0.3)]"
+                      : "text-white/90 hover:text-white hover:bg-white/15 focus:text-white focus:bg-white/15"
                   }`}
                 >
-                  <span>USD (Доллар $)</span>
-                  {currency === "USD" && <Check className="h-3.5 w-3.5 text-emerald-600" />}
+                  <span className="drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]">USD (Доллар $)</span>
+                  {currency === "USD" && <Check className="h-3.5 w-3.5 text-emerald-300 drop-shadow-[0_0_6px_rgba(52,211,153,0.9)]" />}
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -284,72 +288,72 @@ export function Header() {
                   </div>
                   <ChevronDown className="h-3.5 w-3.5 text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]" />
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-56">
+                <DropdownMenuContent align="end" className="w-56 p-1.5 rounded-2xl bg-slate-900/85 backdrop-blur-3xl shadow-[0_20px_50px_rgba(0,0,0,0.5),inset_0_1px_1.5px_rgba(255,255,255,0.25)] border border-white/20 z-50 text-white">
                   <DropdownMenuLabel>
                     <div className="flex flex-col space-y-1">
-                      <p className="text-sm font-semibold">{session.user.name}</p>
-                      <p className="text-xs text-muted-foreground font-mono">
+                      <p className="text-sm font-semibold text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]">{session.user.name}</p>
+                      <p className="text-xs text-white/70 font-mono">
                         {session.user.email}
                       </p>
                       <div className="pt-1">
                         <Badge
                           variant="outline"
-                          className={`text-[10px] font-medium ${roleInfo.color}`}
+                          className="text-[10px] font-medium bg-emerald-500/20 text-emerald-300 border-emerald-400/40"
                         >
                           {roleInfo.label}
                         </Badge>
                       </div>
                     </div>
                   </DropdownMenuLabel>
-                  <DropdownMenuSeparator />
+                  <DropdownMenuSeparator className="bg-white/15" />
                   <Link href="/profile/crm">
-                    <DropdownMenuItem className="cursor-pointer text-emerald-700 dark:text-emerald-400 font-semibold">
-                      <Users className="mr-2 h-4 w-4 text-emerald-600" />
+                    <DropdownMenuItem className="cursor-pointer text-white/90 hover:text-white hover:bg-white/15 focus:text-white focus:bg-white/15 rounded-xl font-semibold transition-all">
+                      <Users className="mr-2 h-4 w-4 text-emerald-400" />
                       {t.nav.crm}
                     </DropdownMenuItem>
                   </Link>
                   <Link href="/profile/analytics">
-                    <DropdownMenuItem className="cursor-pointer text-slate-700 dark:text-slate-300">
-                      <TrendingUp className="mr-2 h-4 w-4 text-emerald-600" />
+                    <DropdownMenuItem className="cursor-pointer text-white/90 hover:text-white hover:bg-white/15 focus:text-white focus:bg-white/15 rounded-xl transition-all">
+                      <TrendingUp className="mr-2 h-4 w-4 text-emerald-400" />
                       {t.nav.analytics}
                     </DropdownMenuItem>
                   </Link>
                   <Link href="/profile/settings">
-                    <DropdownMenuItem className="cursor-pointer">
-                      <User className="mr-2 h-4 w-4" />
+                    <DropdownMenuItem className="cursor-pointer text-white/90 hover:text-white hover:bg-white/15 focus:text-white focus:bg-white/15 rounded-xl transition-all">
+                      <User className="mr-2 h-4 w-4 text-white/70" />
                       {t.nav.settings}
                     </DropdownMenuItem>
                   </Link>
                   <Link href="/classifieds">
-                    <DropdownMenuItem className="cursor-pointer">
-                      <Home className="mr-2 h-4 w-4" />
+                    <DropdownMenuItem className="cursor-pointer text-white/90 hover:text-white hover:bg-white/15 focus:text-white focus:bg-white/15 rounded-xl transition-all">
+                      <Home className="mr-2 h-4 w-4 text-white/70" />
                       {t.nav.myAds}
                     </DropdownMenuItem>
                   </Link>
 
                   {userRole === "developer" && (
                     <Link href="/developer-admin">
-                      <DropdownMenuItem className="cursor-pointer">
-                        <Building2 className="mr-2 h-4 w-4" />
+                      <DropdownMenuItem className="cursor-pointer text-white/90 hover:text-white hover:bg-white/15 focus:text-white focus:bg-white/15 rounded-xl transition-all">
+                        <Building2 className="mr-2 h-4 w-4 text-emerald-400" />
                         {t.nav.devCabinet}
                       </DropdownMenuItem>
                     </Link>
                   )}
                   {userRole === "admin" && (
                     <Link href="/developer-admin">
-                      <DropdownMenuItem className="cursor-pointer">
-                        <ShieldCheck className="mr-2 h-4 w-4 text-red-500" />
+                      <DropdownMenuItem className="cursor-pointer text-white/90 hover:text-white hover:bg-white/15 focus:text-white focus:bg-white/15 rounded-xl transition-all">
+                        <ShieldCheck className="mr-2 h-4 w-4 text-red-400" />
                         {t.nav.adminPanel}
                       </DropdownMenuItem>
                     </Link>
                   )}
-                  <DropdownMenuSeparator />
+                  <DropdownMenuSeparator className="bg-white/15" />
                   <DropdownMenuItem
                     onClick={async () => {
                       await signOut();
                       window.location.reload();
                     }}
-                    className="cursor-pointer text-destructive focus:text-destructive"
+                    className="cursor-pointer text-red-300 hover:text-red-200 hover:bg-red-500/20 focus:text-red-200 focus:bg-red-500/20 rounded-xl transition-all"
                   >
                     <LogOut className="mr-2 h-4 w-4" />
                     {t.nav.logout}

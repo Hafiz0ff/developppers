@@ -45,50 +45,50 @@ export function LanguageSwitcher({ className = "" }: LanguageSwitcherProps) {
         <span className="text-base leading-none select-none">{getFlag(language)}</span>
         <ChevronDown className="h-3 w-3 text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]" />
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-40 p-1.5 rounded-2xl bg-white/95 dark:bg-slate-900/95 backdrop-blur-2xl shadow-2xl border border-slate-200/80 dark:border-white/15 z-50">
+      <DropdownMenuContent align="end" className="w-40 p-1.5 rounded-2xl bg-slate-900/85 backdrop-blur-3xl shadow-[0_20px_50px_rgba(0,0,0,0.5),inset_0_1px_1.5px_rgba(255,255,255,0.25)] border border-white/20 z-50 text-white">
         <DropdownMenuItem
           onClick={() => setLanguage("ru")}
-          className={`cursor-pointer text-xs flex items-center justify-between px-3 py-2 rounded-lg font-semibold transition-colors ${
+          className={`cursor-pointer text-xs flex items-center justify-between px-3 py-2 rounded-xl font-semibold transition-all ${
             language === "ru"
-              ? "text-emerald-700 bg-emerald-50/80 border border-emerald-200/60"
-              : "text-slate-700 hover:bg-slate-100"
+              ? "text-white bg-emerald-500/35 border border-emerald-400/60 font-bold shadow-[0_0_12px_rgba(16,185,129,0.35),inset_0_1px_1px_rgba(255,255,255,0.3)]"
+              : "text-white/90 hover:text-white hover:bg-white/15 focus:text-white focus:bg-white/15"
           }`}
         >
           <div className="flex items-center gap-2">
             <span className="text-base leading-none">🇷🇺</span>
-            <span>Русский</span>
+            <span className="drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]">Русский</span>
           </div>
-          {language === "ru" && <Check className="h-3.5 w-3.5 text-emerald-600" />}
+          {language === "ru" && <Check className="h-3.5 w-3.5 text-emerald-300 drop-shadow-[0_0_6px_rgba(52,211,153,0.9)]" />}
         </DropdownMenuItem>
 
         <DropdownMenuItem
           onClick={() => setLanguage("tg")}
-          className={`cursor-pointer text-xs flex items-center justify-between px-3 py-2 rounded-lg font-semibold transition-colors mt-1 ${
+          className={`cursor-pointer text-xs flex items-center justify-between px-3 py-2 rounded-xl font-semibold transition-all mt-1 ${
             language === "tg"
-              ? "text-emerald-700 bg-emerald-50/80 border border-emerald-200/60"
-              : "text-slate-700 hover:bg-slate-100"
+              ? "text-white bg-emerald-500/35 border border-emerald-400/60 font-bold shadow-[0_0_12px_rgba(16,185,129,0.35),inset_0_1px_1px_rgba(255,255,255,0.3)]"
+              : "text-white/90 hover:text-white hover:bg-white/15 focus:text-white focus:bg-white/15"
           }`}
         >
           <div className="flex items-center gap-2">
             <span className="text-base leading-none">🇹🇯</span>
-            <span>Тоҷикӣ</span>
+            <span className="drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]">Тоҷикӣ</span>
           </div>
-          {language === "tg" && <Check className="h-3.5 w-3.5 text-emerald-600" />}
+          {language === "tg" && <Check className="h-3.5 w-3.5 text-emerald-300 drop-shadow-[0_0_6px_rgba(52,211,153,0.9)]" />}
         </DropdownMenuItem>
 
         <DropdownMenuItem
           onClick={() => setLanguage("en")}
-          className={`cursor-pointer text-xs flex items-center justify-between px-3 py-2 rounded-lg font-semibold transition-colors mt-1 ${
+          className={`cursor-pointer text-xs flex items-center justify-between px-3 py-2 rounded-xl font-semibold transition-all mt-1 ${
             language === "en"
-              ? "text-emerald-700 bg-emerald-50/80 border border-emerald-200/60"
-              : "text-slate-700 hover:bg-slate-100"
+              ? "text-white bg-emerald-500/35 border border-emerald-400/60 font-bold shadow-[0_0_12px_rgba(16,185,129,0.35),inset_0_1px_1px_rgba(255,255,255,0.3)]"
+              : "text-white/90 hover:text-white hover:bg-white/15 focus:text-white focus:bg-white/15"
           }`}
         >
           <div className="flex items-center gap-2">
             <span className="text-base leading-none">🇬🇧</span>
-            <span>English</span>
+            <span className="drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]">English</span>
           </div>
-          {language === "en" && <Check className="h-3.5 w-3.5 text-emerald-600" />}
+          {language === "en" && <Check className="h-3.5 w-3.5 text-emerald-300 drop-shadow-[0_0_6px_rgba(52,211,153,0.9)]" />}
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
