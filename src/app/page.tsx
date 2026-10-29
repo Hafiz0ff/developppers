@@ -397,9 +397,9 @@ export default function HomePage() {
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
 
-          {/* 2. APPLE-STYLE LIQUID GLASS SEARCH CARD (+7% TRANSPARENCY: 42% OPACITY) */}
+          {/* 2. APPLE-STYLE LIQUID GLASS SEARCH CARD (+7% TRANSPARENCY: 35% OPACITY) */}
           <div className="relative mx-auto w-full max-w-5xl">
-            <div className="bg-white/[0.42] backdrop-blur-2xl border border-white/50 rounded-2xl p-5 sm:p-6 shadow-2xl shadow-slate-950/30">
+            <div className="bg-white/[0.35] backdrop-blur-2xl border border-white/50 rounded-2xl p-5 sm:p-6 shadow-2xl shadow-slate-950/35">
               {/* Segment Tabs (Apple Liquid Glass Style with Dynamic Word-Length Underline & Forward Scale) */}
               <div
                 onMouseLeave={() => setHoveredSearchTab(null)}
@@ -466,11 +466,11 @@ export default function HomePage() {
                 })}
               </div>
 
-              {/* Filter Inputs Grid - fixed control height and enough room for every option */}
+              {/* Filter Inputs Grid - Liquid Glass Controls with Apple Contrast */}
               <div className="grid grid-cols-1 items-end gap-3.5 sm:grid-cols-2 lg:grid-cols-[minmax(180px,1fr)_minmax(220px,1.2fr)_minmax(200px,1.1fr)_minmax(200px,1.15fr)]">
                 {/* 1. City / Region */}
                 <div className="min-w-0">
-                  <label className="text-xs font-semibold text-slate-700 mb-1.5 block">
+                  <label className="text-xs font-semibold text-white/95 mb-1.5 block drop-shadow-xs">
                     {t.catalog.city}
                   </label>
                   <Select
@@ -479,7 +479,7 @@ export default function HomePage() {
                       if (val) setSelectedCity(val);
                     }}
                   >
-                    <SelectTrigger className="w-full h-10 rounded-xl bg-white border border-slate-200 text-sm font-medium px-3 shadow-none">
+                    <SelectTrigger className="w-full h-10 rounded-xl bg-white/50 hover:bg-white/65 focus:bg-white/80 backdrop-blur-md border border-white/60 text-slate-900 text-sm font-semibold px-3 shadow-xs transition-all">
                       <SelectValue placeholder={tDual("Все города Согда", "Ҳамаи шаҳрҳои Суғд")}>
                         {(() => {
                           if (selectedCity === "all") return tDual("Все города Согда", "Ҳамаи шаҳрҳои Суғд");
@@ -503,19 +503,19 @@ export default function HomePage() {
 
                 {/* 2. Room Buttons */}
                 <div className="min-w-0">
-                  <label className="text-xs font-semibold text-slate-700 mb-1.5 block">
+                  <label className="text-xs font-semibold text-white/95 mb-1.5 block drop-shadow-xs">
                     {t.catalog.roomsCount}
                   </label>
-                  <div className="flex h-10 min-w-0 items-center gap-1 rounded-xl border border-slate-200 bg-white p-1">
+                  <div className="flex h-10 min-w-0 items-center gap-1 rounded-xl border border-white/60 bg-white/45 backdrop-blur-md p-1 shadow-xs">
                     {roomOptions.map((opt) => (
                       <button
                         key={opt.id}
                         type="button"
                         onClick={() => setSelectedRooms(opt.id)}
-                        className={`h-full flex-1 rounded-lg px-2.5 text-xs font-medium transition-all cursor-pointer ${
+                        className={`h-full flex-1 rounded-lg px-2.5 text-xs transition-all cursor-pointer ${
                           selectedRooms === opt.id
-                            ? "bg-emerald-600 text-white shadow-xs font-semibold"
-                            : "text-slate-600 hover:bg-slate-100"
+                            ? "bg-emerald-600 text-white shadow-xs font-bold"
+                            : "text-slate-800 hover:bg-white/70 font-semibold"
                         }`}
                       >
                         {opt.label}
@@ -526,7 +526,7 @@ export default function HomePage() {
 
                 {/* 3. Price Range From - To */}
                 <div className="min-w-0">
-                  <label className="text-xs font-semibold text-slate-700 mb-1.5 block">
+                  <label className="text-xs font-semibold text-white/95 mb-1.5 block drop-shadow-xs">
                     {t.catalog.priceRange}
                   </label>
                   <div className="flex h-10 items-center gap-2">
@@ -534,13 +534,13 @@ export default function HomePage() {
                       placeholder={t.common.from}
                       value={priceFrom}
                       onChange={(e) => setPriceFrom(e.target.value)}
-                      className="h-10 w-24 rounded-xl border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500"
+                      className="h-10 w-24 rounded-xl border border-white/60 bg-white/50 hover:bg-white/65 focus:bg-white/85 backdrop-blur-md px-3 text-sm font-semibold text-slate-900 placeholder:text-slate-500 shadow-xs outline-none focus:border-emerald-500 transition-all"
                     />
                     <Input
                       placeholder={t.common.to}
                       value={priceTo}
                       onChange={(e) => setPriceTo(e.target.value)}
-                      className="h-10 w-24 rounded-xl border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500"
+                      className="h-10 w-24 rounded-xl border border-white/60 bg-white/50 hover:bg-white/65 focus:bg-white/85 backdrop-blur-md px-3 text-sm font-semibold text-slate-900 placeholder:text-slate-500 shadow-xs outline-none focus:border-emerald-500 transition-all"
                     />
                   </div>
                 </div>
@@ -550,7 +550,7 @@ export default function HomePage() {
                   <Button
                     type="button"
                     onClick={handleSearchSubmit}
-                    className="flex h-10 w-full items-center justify-center gap-2 rounded-xl bg-emerald-600 px-5 text-sm font-medium text-white shadow-sm transition-all hover:bg-emerald-700 cursor-pointer"
+                    className="flex h-10 w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 px-5 text-sm font-bold text-white shadow-md shadow-emerald-700/25 transition-all cursor-pointer"
                   >
                     <Search className="h-4 w-4" />
                     {tDual(
@@ -565,9 +565,9 @@ export default function HomePage() {
                 </div>
               </div>
 
-              {/* Quick Filter Chips (Text-only, compact) */}
-              <div className="mt-4 pt-3.5 border-t border-slate-200/50 flex flex-wrap items-center gap-2 text-xs">
-                <span className="font-semibold text-slate-500 mr-1 text-[11px] uppercase tracking-wider">
+              {/* Quick Filter Chips (Liquid Glass Style) */}
+              <div className="mt-4 pt-3.5 border-t border-white/20 flex flex-wrap items-center gap-2 text-xs">
+                <span className="font-semibold text-white/85 mr-1 text-[11px] uppercase tracking-wider drop-shadow-xs">
                   {tDual("Быстрый выбор:", "Интихоби фаврӣ:")}
                 </span>
                 {[
@@ -589,14 +589,30 @@ export default function HomePage() {
                       }}
                       className={`inline-flex items-center rounded-lg border px-3 py-1 text-xs transition-all cursor-pointer ${
                         isActive
-                          ? "bg-emerald-600 text-white border-emerald-600 shadow-xs font-semibold"
-                          : "border-slate-200/80 bg-white/80 text-slate-700 hover:bg-white"
+                          ? "bg-emerald-600 text-white border-emerald-500 shadow-xs font-bold"
+                          : "border-white/50 bg-white/40 hover:bg-white/65 text-slate-900 font-semibold backdrop-blur-md shadow-2xs"
                       }`}
                     >
                       {tDual(chip.ru, chip.tg)}
                     </button>
                   );
                 })}
+                {activeQuickChip && (
+                  <button
+                    type="button"
+                    onClick={() => setActiveQuickChip(null)}
+                    className="text-[11px] text-white/90 hover:text-red-300 underline ml-1 cursor-pointer font-bold drop-shadow-xs"
+                  >
+                    {isTg ? "Тоза кардан" : "Сбросить"}
+                  </button>
+                )}
+                <Link
+                  href="/map"
+                  className="inline-flex items-center gap-1.5 rounded-lg border border-white/60 bg-white/65 hover:bg-white/85 text-emerald-950 font-bold px-3 py-1 text-xs transition-all ml-auto shadow-xs backdrop-blur-md"
+                >
+                  <MapPin className="h-3.5 w-3.5 text-emerald-600" />
+                  <span>{tDual("Показать на карте Согда", "Дар харитаи Суғд дидан")}</span>
+                </Link>
                 {activeQuickChip && (
                   <button
                     type="button"
