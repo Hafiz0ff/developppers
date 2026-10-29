@@ -236,6 +236,7 @@ export default function HomePage() {
   const { t, tDual, language } = useLanguage();
   const isTg = language === "tg";
   const [activeTab, setActiveTab] = useState<"new" | "resale" | "rent" | "houses">("new");
+  const [hoveredSearchTab, setHoveredSearchTab] = useState<string | null>(null);
   const [selectedCity, setSelectedCity] = useState("all");
   const [selectedRooms, setSelectedRooms] = useState<string>("all");
   const [priceFrom, setPriceFrom] = useState("");
@@ -396,11 +397,14 @@ export default function HomePage() {
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
 
-          {/* 2. CIAN-STYLE SEARCH CARD WITH CLEAN GLASSMORPHISM (51% TRANSPARENCY / 49% OPACITY) */}
+          {/* 2. APPLE-STYLE LIQUID GLASS SEARCH CARD (+7% TRANSPARENCY: 42% OPACITY) */}
           <div className="relative mx-auto w-full max-w-5xl">
-            <div className="bg-white/[0.49] backdrop-blur-2xl border border-white/60 rounded-2xl p-5 sm:p-6 shadow-2xl shadow-slate-950/20">
-              {/* Segment Tabs (CIAN Underline Style) */}
-              <div className="flex items-center gap-6 overflow-x-auto overflow-y-hidden [scrollbar-width:none] [&::-webkit-scrollbar]:hidden pb-0 mb-5 border-b border-slate-200/80">
+            <div className="bg-white/[0.42] backdrop-blur-2xl border border-white/50 rounded-2xl p-5 sm:p-6 shadow-2xl shadow-slate-950/30">
+              {/* Segment Tabs (Apple Liquid Glass Style with Dynamic Word-Length Underline & Forward Scale) */}
+              <div
+                onMouseLeave={() => setHoveredSearchTab(null)}
+                className="flex items-center gap-1 sm:gap-2 overflow-x-auto overflow-y-hidden [scrollbar-width:none] [&::-webkit-scrollbar]:hidden pb-1 mb-5 border-b border-white/20 select-none"
+              >
                 {[
                   { id: "new", label: tDual("Новостройки (ЖК)", "Биноҳои навсохт (Маҷмааҳо)"), icon: Building2 },
                   { id: "resale", label: tDual("Купить вторичку", "Хонаҳои пешина (Вторичка)"), icon: Home },
@@ -408,20 +412,55 @@ export default function HomePage() {
                   { id: "rent", label: tDual("Аренда & Коммерция", "Иҷора ва амволи тиҷоратӣ"), icon: Store },
                 ].map((tab) => {
                   const Icon = tab.icon;
-                  const isActive = activeTab === tab.id;
+                  const isSelected = activeTab === tab.id;
+                  const isHovered = hoveredSearchTab === tab.id;
+                  const currentActive = hoveredSearchTab ?? activeTab;
+                  const isHighlighted = currentActive === tab.id;
+
                   return (
                     <button
                       key={tab.id}
                       type="button"
                       onClick={() => setActiveTab(tab.id as typeof activeTab)}
-                      className={`flex items-center gap-2 pb-3 px-1 text-sm transition-all whitespace-nowrap border-b-2 -mb-px ${
-                        isActive
-                          ? "text-emerald-700 border-emerald-600 font-semibold"
-                          : "text-slate-500 hover:text-slate-800 border-transparent font-medium"
-                      }`}
+                      onMouseEnter={() => setHoveredSearchTab(tab.id)}
+                      className="relative px-3 sm:px-4 py-2.5 flex items-center select-none cursor-pointer outline-hidden group"
                     >
-                      <Icon className={`h-4 w-4 ${isActive ? "text-emerald-600" : "text-slate-400"}`} />
-                      {tab.label}
+                      <motion.div
+                        whileHover={{ scale: 1.05, y: -1 }}
+                        transition={{ type: "spring", stiffness: 450, damping: 25 }}
+                        className={`relative z-10 flex items-center gap-2 text-sm font-semibold whitespace-nowrap transition-colors duration-200 ${
+                          isHighlighted
+                            ? "text-white drop-shadow-[0_1px_3px_rgba(0,0,0,0.6)]"
+                            : "text-white/75 group-hover:text-white"
+                        }`}
+                      >
+                        <Icon
+                          className={`h-4 w-4 transition-colors ${
+                            isHighlighted
+                              ? "text-emerald-300 drop-shadow-[0_0_6px_rgba(52,211,153,0.8)]"
+                              : "text-white/60 group-hover:text-white"
+                          }`}
+                        />
+                        <span>{tab.label}</span>
+                      </motion.div>
+
+                      {/* Soft Glass Hover Backing */}
+                      {isHovered && (
+                        <motion.div
+                          layoutId="search-tab-hover-bg"
+                          transition={{ type: "spring", stiffness: 450, damping: 32 }}
+                          className="absolute inset-0 rounded-xl bg-white/15 dark:bg-slate-800/40 backdrop-blur-md border border-white/25 -z-0"
+                        />
+                      )}
+
+                      {/* Apple-Style Dynamic Glowing Underline adapting to exact word length */}
+                      {isHighlighted && (
+                        <motion.div
+                          layoutId="search-tab-underline"
+                          transition={{ type: "spring", stiffness: 450, damping: 32 }}
+                          className="absolute -bottom-1 left-2.5 right-2.5 h-[3px] rounded-full bg-gradient-to-r from-emerald-400 via-teal-300 to-emerald-400 shadow-[0_0_12px_rgba(52,211,153,0.9),0_2px_4px_rgba(0,0,0,0.3)] z-20"
+                        />
+                      )}
                     </button>
                   );
                 })}
