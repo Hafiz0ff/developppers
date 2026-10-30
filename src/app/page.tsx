@@ -15,6 +15,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { ProjectCatalogCardBadge } from "@/components/modules/project-engagement-pills";
 import { PropertyMetricsBadge } from "@/components/modules/common/property-metrics-badge";
+import { HomepageShowcaseMatrix } from "@/components/modules/homepage-showcase-matrix";
 import { formatNewBuildingPricePerMeter, getPricePerMeterLabel } from "@/lib/pricing/new-building-price";
 import { NewBuildingPriceBlock } from "@/components/modules/new-building-price-block";
 import {
@@ -689,6 +690,9 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* 2.5. 9-BLOCK HOMEPAGE SHOWCASE MATRIX (TZ Section 9) */}
+      <HomepageShowcaseMatrix activeCity={selectedCity === "all" ? "khujand" : selectedCity} />
 
       {/* 3. NEW BUILDINGS & RESIDENTIAL COMPLEXES (CIAN STYLE) */}
       <section id="new-buildings" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
