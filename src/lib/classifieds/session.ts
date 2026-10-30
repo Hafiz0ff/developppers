@@ -13,7 +13,13 @@ export type ClassifiedsActor = {
 };
 
 export async function getClassifiedsActor(): Promise<ClassifiedsActor | null> {
-  const session = await auth.api.getSession({ headers: await headers() });
+  let session = null;
+  try {
+    const reqHeaders = await headers();
+    session = await auth.api.getSession({ headers: reqHeaders });
+  } catch {
+    return null;
+  }
   if (!session?.user?.id) return null;
 
   const rows = await db

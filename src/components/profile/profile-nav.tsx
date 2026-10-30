@@ -31,6 +31,11 @@ export function ProfileNav() {
       icon: Users,
     },
     {
+      title: tDual("Публикация объектов", "Нашри амвол"),
+      href: "/profile/publications",
+      icon: Share2,
+    },
+    {
       title: tDual("Аналитика и Open API", "Таҳлил ва Open API"),
       href: "/profile/analytics",
       icon: TrendingUp,

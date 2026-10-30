@@ -17,6 +17,7 @@ import {
   ShieldCheck,
   ChevronRight,
   Sparkles,
+  Share2,
 } from "lucide-react";
 
 import { INITIAL_DEVELOPERS } from "@/lib/data/mock-db";
@@ -46,6 +47,11 @@ function AdminNavList() {
       title: tDual("Шахматка квартир", "Ҷадвали шоҳмотии хонаҳо"),
       href: "/developer-admin/projects/proj_qayroqum/units",
       icon: Grid3X3,
+    },
+    {
+      title: tDual("Публикация ЖК", "Нашри МИ"),
+      href: "/developer-admin/publications",
+      icon: Share2,
     },
     {
       title: tDual("⚡ Управление стройкой (ERP)", "⚡ Идоракунии сохтмон (ERP)"),

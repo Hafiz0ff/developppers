@@ -45,6 +45,7 @@ import {
   ArrowLeftRight,
   KeyRound,
   FileText,
+  Share2,
 } from "lucide-react";
 import { useCompare } from "@/context/compare-context";
 
@@ -487,6 +488,14 @@ export function Header() {
                     <DropdownMenuItem className="cursor-pointer text-white/90 hover:text-white hover:bg-white/15 focus:text-white focus:bg-white/15 rounded-xl font-semibold transition-all">
                       <Users className="mr-2 h-4 w-4 text-emerald-400" />
                       {t.nav.crm}
+                    </DropdownMenuItem>
+                  </Link>
+                  <Link href={userRole === "developer" ? "/developer-admin/publications" : "/profile/publications"}>
+                    <DropdownMenuItem className="cursor-pointer text-white/90 hover:text-white hover:bg-white/15 focus:text-white focus:bg-white/15 rounded-xl transition-all">
+                      <Share2 className="mr-2 h-4 w-4 text-emerald-400" />
+                      {userRole === "developer"
+                        ? tDual("Публикация ЖК", "Нашри МИ")
+                        : tDual("Публикация объектов", "Нашри амвол")}
                     </DropdownMenuItem>
                   </Link>
                   <Link href="/profile/analytics">
