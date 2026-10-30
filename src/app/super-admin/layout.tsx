@@ -16,6 +16,7 @@ import {
   ExternalLink,
   Sparkles,
   Globe,
+  FolderTree,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
@@ -46,10 +47,22 @@ export default function SuperAdminLayout({
       badge: "Корти Милли, DC",
     },
     {
-      title: "Таксономия и SEO",
+      title: "Категории и SEO",
       href: "/super-admin/categories",
       icon: Globe,
       badge: "v1.7",
+    },
+    {
+      title: "Фасеты и фильтры",
+      href: "/super-admin/facets",
+      icon: Sliders,
+      badge: "ТЗ v1.1",
+    },
+    {
+      title: "Меню и навигация",
+      href: "/super-admin/navigation",
+      icon: FolderTree,
+      badge: "ТЗ v1.1",
     },
     {
       title: "Кабинет рекламодателя",
