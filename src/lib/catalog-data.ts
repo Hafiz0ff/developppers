@@ -940,12 +940,171 @@ export const CATALOG_PROPERTIES: CatalogProperty[] = [
   }
 ];
 
+export const COMMERCIAL_PROPERTIES: CatalogProperty[] = [
+  {
+    "id": "17050001",
+    "lat": 40.2850,
+    "lng": 69.6220,
+    "alias": "c101",
+    "slug": "17050001-ofis-v-biznes-centre-120-m2-tsentr",
+    "title": "Офис в бизнес-центре, 120 м², Центр",
+    "titleTg": "Дафтар дар маркази тиҷоратӣ, 120 м², Марказ",
+    "dealType": "Продажа",
+    "dealTypeTg": "Фурӯш",
+    "propertyType": "Коммерция",
+    "propertyTypeTg": "Амволи тиҷоратӣ",
+    "city": "Худжанд",
+    "cityTg": "Хуҷанд",
+    "district": "Центр",
+    "districtTg": "Марказ",
+    "landmark": "Возле мэрии",
+    "landmarkTg": "Назди ҳукумати шаҳр",
+    "rooms": 4,
+    "area": 120,
+    "floor": "3 этаж",
+    "floorTg": "Ошёнаи 3",
+    "priceTjs": 980000,
+    "priceUsd": 90000,
+    "sellerType": "Собственник",
+    "sellerTypeTg": "Соҳибмулк",
+    "phone": "+992 92 777 0011",
+    "whatsapp": "992927770011",
+    "isNegotiable": true,
+    "image": "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1200&q=80",
+    "images": [
+      "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1497215728101-856f4ea42174?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "features": ["Евроремонт", "Система вентиляции", "Охрана 24/7", "Паркинг", "Панорамные окна"],
+    "featuresTg": ["Таъмири аврупоӣ", "Вентилятсия", "Посбони шабонарӯзӣ", "Таваққуфгоҳ"],
+    "description": "Готовый представительский офис в центре Худжанда. 4 раздельных кабинета, переговорная, санузел, зона ресепшн. Панорамный вид на город.",
+    "descriptionTg": "Дафтари кории омода дар маркази Хуҷанд. 4 хонаи алоҳида, толори гуфтушунид, посбони 24 соата."
+  },
+  {
+    "id": "17050002",
+    "lat": 40.2790,
+    "lng": 69.6380,
+    "alias": "c102",
+    "slug": "17050002-torgovoe-pomeshchenie-i-sklad-280-m2-18-19-mkr",
+    "title": "Торговое помещение и склад, 280 м², 18-19 мкр",
+    "titleTg": "Мағоза ва анбори замонавӣ, 280 м², маҳаллаи 18-19",
+    "dealType": "Продажа",
+    "dealTypeTg": "Фурӯш",
+    "propertyType": "Коммерция",
+    "propertyTypeTg": "Амволи тиҷоратӣ",
+    "city": "Худжанд",
+    "cityTg": "Хуҷанд",
+    "district": "18-19 мкр",
+    "districtTg": "маҳаллаи 18-19",
+    "landmark": "Первая линия",
+    "landmarkTg": "Хати якум",
+    "rooms": 3,
+    "area": 280,
+    "floor": "1 этаж",
+    "floorTg": "Ошёнаи 1",
+    "priceTjs": 1650000,
+    "priceUsd": 151000,
+    "sellerType": "Собственник",
+    "sellerTypeTg": "Соҳибмулк",
+    "phone": "+992 92 888 1122",
+    "whatsapp": "992928881122",
+    "isNegotiable": false,
+    "image": "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=1200&q=80",
+    "images": [
+      "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "features": ["Первая линия", "Отдельный вход", "Парковка для клиентов", "Складская зона", "380 Вольт"],
+    "featuresTg": ["Хати якуми кӯча", "Даромади алоҳида", "Таваққуфгоҳ", "Анбор"],
+    "description": "Универсальное коммерческое помещение: торговый зал 180 м² + теплый склад 100 м². Отличный пешеходный трафик в густонаселенном районе 18-19 мкр.",
+    "descriptionTg": "Майдони савдо ва анбор дар маҳаллаи 18-19. Ҳаракати фаъоли мардум, шароити мусоид."
+  },
+  {
+    "id": "17050003",
+    "lat": 40.2860,
+    "lng": 69.6310,
+    "alias": "c103",
+    "slug": "17050003-arenda-ofisa-85-m2-panjshanbe",
+    "title": "Аренда офисного помещения, 85 м², Панчшанбе",
+    "titleTg": "Иҷораи ҷойи корӣ ва дафтар, 85 м², Панҷшанбе",
+    "dealType": "Аренда",
+    "dealTypeTg": "Иҷора",
+    "propertyType": "Коммерция",
+    "propertyTypeTg": "Амволи тиҷоратӣ",
+    "city": "Худжанд",
+    "cityTg": "Хуҷанд",
+    "district": "Панчшанбе",
+    "districtTg": "Панҷшанбе",
+    "landmark": "Рядом с рынком",
+    "landmarkTg": "Назди бозор",
+    "rooms": 3,
+    "area": 85,
+    "floor": "2 этаж",
+    "floorTg": "Ошёнаи 2",
+    "priceTjs": 8500,
+    "priceUsd": 780,
+    "sellerType": "Риелтор",
+    "sellerTypeTg": "Маклер",
+    "phone": "+992 92 555 4433",
+    "whatsapp": "992925554433",
+    "isNegotiable": true,
+    "image": "https://images.unsplash.com/photo-1497215842964-222b430dc094?auto=format&fit=crop&w=1200&q=80",
+    "images": [
+      "https://images.unsplash.com/photo-1497215842964-222b430dc094?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "features": ["Кондиционеры", "Интернет оптоволокно", "Свежий ремонт", "Кухонная зона"],
+    "featuresTg": ["Кондитсионерҳо", "Интернети тез", "Таъмири тоза"],
+    "description": "Светлый комфортный офис в аренду на длительный срок в районе рынка Панчшанбе. Идеально под филиал, IT-компанию или учебный центр.",
+    "descriptionTg": "Иҷораи дафтари кории мусоид дар наздикии бозори Панҷшанбе. Мувофиқ барои ширкатҳо ва марказҳои омӯзишӣ."
+  },
+  {
+    "id": "17050004",
+    "lat": 40.2750,
+    "lng": 69.6450,
+    "alias": "c104",
+    "slug": "17050004-skladskoy-kompleks-i-baza-450-m2-shelkokombinat",
+    "title": "Складской комплекс и база, 450 м², Шёлкокомбинат",
+    "titleTg": "Анбори калон ва пойгоҳи тиҷоратӣ, 450 м², Шёлкокомбинат",
+    "dealType": "Аренда",
+    "dealTypeTg": "Иҷора",
+    "propertyType": "Коммерция",
+    "propertyTypeTg": "Амволи тиҷоратӣ",
+    "city": "Худжанд",
+    "cityTg": "Хуҷанд",
+    "district": "Шёлкокомбинат",
+    "districtTg": "Шёлкокомбинат",
+    "landmark": "Промзона",
+    "landmarkTg": "Минтақаи саноатӣ",
+    "rooms": 2,
+    "area": 450,
+    "floor": "1 этаж",
+    "floorTg": "Ошёнаи 1",
+    "priceTjs": 19500,
+    "priceUsd": 1800,
+    "sellerType": "Собственник",
+    "sellerTypeTg": "Соҳибмулк",
+    "phone": "+992 92 666 7788",
+    "whatsapp": "992926667788",
+    "isNegotiable": true,
+    "image": "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=1200&q=80",
+    "images": [
+      "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "features": ["Высокие потолки 6м", "Удобный подъезд фур", "Охрана", "Электричество 100 кВт"],
+    "featuresTg": ["Шифти баланд", "Роҳ барои мошинҳои калон", "Нерӯи барқ"],
+    "description": "Складское помещение класса B+ с пандусом для разгрузки большегрузного транспорта. Бетонный беспылевой пол, круглосуточная охрана, видеонаблюдение.",
+    "descriptionTg": "Анбори калон барои нигоҳдории молҳо дар минтақаи Шёлкокомбинати Хуҷанд."
+  }
+];
+
+export const ALL_PROPERTIES: CatalogProperty[] = [...CATALOG_PROPERTIES, ...COMMERCIAL_PROPERTIES];
+
 export function getPropertyById(id: string): CatalogProperty | undefined {
   if (id === "c1") return CATALOG_PROPERTIES.find((p) => p.id === "17034738") || CATALOG_PROPERTIES[0];
   if (id === "c2") return CATALOG_PROPERTIES.find((p) => p.id === "16419531") || CATALOG_PROPERTIES.find((p) => p.propertyType === "Дом / Ҳавлӣ");
   if (id === "c3") return CATALOG_PROPERTIES.find((p) => p.id === "16766211");
   if (id === "c4") return CATALOG_PROPERTIES.find((p) => p.id === "17260830");
-  return CATALOG_PROPERTIES.find(
+  return ALL_PROPERTIES.find(
     (p) => p.id === id || p.slug === id || p.id === id.replace("classified-", "")
   );
 }

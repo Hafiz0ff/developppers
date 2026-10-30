@@ -12,6 +12,8 @@ import {
   transliterateToSlug,
 } from "./taxonomy-store";
 import { normalizePath } from "./url-alias-store";
+import { getFacetById, type FacetConfig } from "./facet-store";
+import { type MenuItem } from "../navigation/menu-store";
 
 export interface ResolvableListing {
   id: string; // Stable numeric or uuid string ID
@@ -386,3 +388,119 @@ export function resolveListingSeo(
     },
   };
 }
+
+/**
+ * Resolves the Canonical URL Path for a facet (e.g. offices, retail, rooms).
+ * URL pattern: /{localePrefix}/{city}/{dealSlug}/{categorySlug}/{facetSlug}/
+ */
+export function resolveFacetUrl(params: {
+  facet: FacetConfig;
+  citySlug?: string;
+  locale?: Locale;
+}): string {
+  const locale = params.locale || "ru";
+  const city = params.citySlug ? resolveCitySlug(params.citySlug) : "khujand";
+  const localePrefix = locale === "ru" ? "" : `/${locale}`;
+
+  const category = getTaxonomyCategoryById(params.facet.categoryId);
+  if (!category) {
+    return normalizePath(`${localePrefix}/${city}`);
+  }
+
+  const dealSlug =
+    category.parentId === "cat_deal_rent"
+      ? locale === "tg" ? "ijora" : locale === "en" ? "rent" : "arenda"
+      : locale === "tg" ? "furosh" : locale === "en" ? "sale" : "kupit";
+
+  const catSlug = category.slug[locale];
+  const facetSlug = params.facet.valueSlug[locale];
+
+  return normalizePath(`${localePrefix}/${city}/${dealSlug}/${catSlug}/${facetSlug}`);
+}
+
+/**
+ * Resolves URLs for City-level Catalogs (Commercial Hub, Developers, Agencies, Services).
+ * Commercial Hub: /{localePrefix}/{city}/kommercheskaya/
+ * Developers: /{localePrefix}/{city}/zastroyshchiki/
+ * Agencies: /{localePrefix}/{city}/agentstva/
+ * Services: /{localePrefix}/{city}/uslugi/
+ */
+export function resolveCatalogUrl(
+  catalogId: string,
+  citySlug?: string,
+  locale: Locale = "ru"
+): string {
+  const city = citySlug ? resolveCitySlug(citySlug) : "khujand";
+  const localePrefix = locale === "ru" ? "" : `/${locale}`;
+
+  switch (catalogId) {
+    case "catalog_commercial_hub": {
+      const slug = locale === "tg" ? "tijorati" : locale === "en" ? "commercial" : "kommercheskaya";
+      return normalizePath(`${localePrefix}/${city}/${slug}`);
+    }
+    case "catalog_developers": {
+      const slug = locale === "tg" ? "sohtmonchiyon" : locale === "en" ? "developers" : "zastroyshchiki";
+      return normalizePath(`${localePrefix}/${city}/${slug}`);
+    }
+    case "catalog_agencies": {
+      const slug = locale === "tg" ? "agenticho" : locale === "en" ? "agencies" : "agentstva";
+      return normalizePath(`${localePrefix}/${city}/${slug}`);
+    }
+    case "catalog_services": {
+      const slug = locale === "tg" ? "khizmatrasoniho" : locale === "en" ? "services" : "uslugi";
+      return normalizePath(`${localePrefix}/${city}/${slug}`);
+    }
+    case "catalog_buy_hub": {
+      const slug = locale === "tg" ? "furosh" : locale === "en" ? "sale" : "kupit";
+      return normalizePath(`${localePrefix}/${city}/${slug}`);
+    }
+    case "catalog_rent_hub": {
+      const slug = locale === "tg" ? "ijora" : locale === "en" ? "rent" : "arenda";
+      return normalizePath(`${localePrefix}/${city}/${slug}`);
+    }
+    default:
+      return normalizePath(`${localePrefix}/${city}`);
+  }
+}
+
+/**
+ * Resolves URL for any MenuItem dynamically
+ */
+export function resolveMenuItemUrl(
+  item: MenuItem,
+  citySlug?: string,
+  locale: Locale = "ru"
+): string {
+  if (item.type === "group-header") {
+    return "";
+  }
+
+  if (item.type === "action-button") {
+    return "/classifieds/new";
+  }
+
+  if (item.type === "link-to-static-page" && item.customUrl) {
+    return item.customUrl[locale] || "/";
+  }
+
+  if (item.type === "link-to-catalog" && item.targetId) {
+    return resolveCatalogUrl(item.targetId, citySlug, locale);
+  }
+
+  if (item.type === "link-to-facet" && item.targetId) {
+    const facet = getFacetById(item.targetId);
+    if (facet) {
+      return resolveFacetUrl({ facet, citySlug, locale });
+    }
+  }
+
+  if (item.type === "link-to-category" && item.targetId) {
+    const category = getTaxonomyCategoryById(item.targetId);
+    if (category) {
+      return resolveCategoryUrl({ category, citySlug, locale });
+    }
+  }
+
+  return normalizePath(locale === "ru" ? `/${citySlug || "khujand"}` : `/${locale}/${citySlug || "khujand"}`);
+}
+
