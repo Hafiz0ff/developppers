@@ -1,9 +1,9 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { motion } from "motion/react";
+import { motion, AnimatePresence } from "motion/react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -21,23 +21,67 @@ import { LanguageSwitcher } from "@/components/layout/language-switcher";
 import { AuthModal } from "@/components/auth/auth-modal";
 import { useSession, signOut } from "@/lib/auth-client";
 import {
+  getMenuItemsTree,
+  type MenuItemTree,
+} from "@/lib/navigation/menu-store";
+import { resolveMenuItemUrl } from "@/lib/seo/url-resolver";
+import {
   Building2,
-  PlusCircle,
+  Home,
+  Store,
+  Briefcase,
+  Sparkles,
+  ChevronDown,
+  ChevronRight,
+  Menu,
+  X,
   LogIn,
   LogOut,
   User,
-  Home,
   ShieldCheck,
-  Briefcase,
-  ChevronDown,
   TrendingUp,
   Users,
   Check,
-  MapPin,
   ArrowLeftRight,
+  KeyRound,
+  FileText,
 } from "lucide-react";
 import { useCompare } from "@/context/compare-context";
 
+interface MenuGroup {
+  id: string;
+  label: Record<"ru" | "tg" | "en", string>;
+  links: MenuItemTree[];
+}
+
+function parseColumnGroups(children: MenuItemTree[] | undefined, column: number): MenuGroup[] {
+  if (!children) return [];
+  const colItems = children.filter((c) => c.column === column);
+  const groups: MenuGroup[] = [];
+  let currentGroup: MenuGroup | null = null;
+
+  for (const item of colItems) {
+    if (item.type === "group-header") {
+      currentGroup = {
+        id: item.id,
+        label: item.label,
+        links: [],
+      };
+      groups.push(currentGroup);
+    } else if (currentGroup) {
+      currentGroup.links.push(item);
+    } else {
+      currentGroup = {
+        id: `auto_${item.id}`,
+        label: { ru: "", tg: "", en: "" },
+        links: [item],
+      };
+      groups.push(currentGroup);
+    }
+  }
+
+  return groups;
+}
 
 export function Header() {
   const pathname = usePathname();
@@ -46,24 +90,46 @@ export function Header() {
   const { compareCount } = useCompare();
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const [authModalTab, setAuthModalTab] = useState<"login" | "register">("login");
-  const [hoveredNav, setHoveredNav] = useState<string | null>(null);
-  const [isScrolled, setIsScrolled] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 24);
-    };
-    handleScroll();
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [mobileExpandedSection, setMobileExpandedSection] = useState<string | null>("nav_buy");
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const { data: session, isPending } = useSession();
+
+  // Resolve current active city from path
+  const pathParts = (pathname || "/").split("/").filter(Boolean);
+  const firstSegment = pathParts[0] === "tg" || pathParts[0] === "en" ? pathParts[1] : pathParts[0];
+  const activeCity =
+    firstSegment &&
+    ["khujand", "dushanbe", "gafurov", "guliston", "buston", "isfara", "istaravshan", "konibodom", "panjakent"].includes(firstSegment)
+      ? firstSegment
+      : "khujand";
+
+  // Menu items tree from Central Navigation Store
+  const menuTree = getMenuItemsTree("header_main");
 
   const handleOpenAuth = (tab: "login" | "register") => {
     setAuthModalTab(tab);
     setAuthModalOpen(true);
   };
+
+  const handleMouseEnter = (id: string) => {
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    setActiveDropdown(id);
+  };
+
+  const handleMouseLeave = () => {
+    timeoutRef.current = setTimeout(() => {
+      setActiveDropdown(null);
+    }, 180);
+  };
+
+  // Close menus on route change
+  useEffect(() => {
+    setActiveDropdown(null);
+    setMobileMenuOpen(false);
+  }, [pathname]);
 
   const roleLabels: Record<string, { label: string; color: string }> = {
     admin: {
@@ -87,31 +153,27 @@ export function Header() {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const userRole = (session?.user as any)?.role || "user";
   const roleInfo = roleLabels[userRole] || roleLabels.user;
-
-  const navItems = [
-    { href: "/#new-buildings", icon: Building2, label: t.nav.newBuildings },
-    { href: "/#classifieds", icon: Home, label: t.nav.resale },
-    { href: "/#houses", icon: null, label: t.nav.houses },
-    { href: "/map", icon: MapPin, label: t.nav.map },
-    {
-      href: "/compare",
-      icon: ArrowLeftRight,
-      label: t.nav.compare,
-      badge: compareCount > 0 ? compareCount : null,
-    },
-    { href: "/developers", icon: Briefcase, label: t.nav.developers },
-  ];
-
-  // Active section or hovered item determination for dynamic underline
-  const activeHref = hoveredNav ?? (
-    pathname === "/map" ? "/map" :
-    pathname === "/compare" ? "/compare" :
-    pathname?.startsWith("/developers") ? "/developers" :
-    pathname === "/" ? "/#new-buildings" :
-    null
-  );
-
   const isHome = pathname === "/";
+
+  // Top-level icon mapping
+  const getItemIcon = (id: string) => {
+    switch (id) {
+      case "nav_buy":
+        return Home;
+      case "nav_rent":
+        return KeyRound;
+      case "nav_new_buildings":
+        return Building2;
+      case "nav_commercial_hub":
+        return Store;
+      case "nav_services":
+        return Sparkles;
+      case "nav_companies":
+        return Briefcase;
+      default:
+        return null;
+    }
+  };
 
   return (
     <>
@@ -132,71 +194,156 @@ export function Header() {
             </div>
           </Link>
 
-          {/* Navigation Links with Dynamic Underline & Forward Scale */}
+          {/* Center Navigation Links with Interactive Mega-Menu (Desktop) */}
           <nav
-            onMouseLeave={() => setHoveredNav(null)}
-            className="hidden lg:flex items-center gap-0 p-1 rounded-2xl bg-white/[0.025] border border-white/15 text-xs font-semibold backdrop-blur-md shrink-0"
+            onMouseLeave={handleMouseLeave}
+            className="hidden lg:flex items-center gap-0.5 p-1 rounded-2xl bg-white/[0.025] border border-white/15 text-xs font-semibold backdrop-blur-md shrink-0"
           >
-            {navItems.map((item) => {
-              const isHovered = hoveredNav === item.href;
-              const isActive = activeHref === item.href;
-              const Icon = item.icon;
+            {menuTree.map((item) => {
+              const hasChildren = Boolean(item.children && item.children.length > 0);
+              const isMegaMenu = hasChildren && (item.id === "nav_buy" || item.id === "nav_rent");
+              const isSimpleDropdown = hasChildren && item.id === "nav_companies";
+              const isOpen = activeDropdown === item.id;
+              const Icon = getItemIcon(item.id);
+
+              const col1Groups = isMegaMenu ? parseColumnGroups(item.children, 1) : [];
+              const col2Groups = isMegaMenu ? parseColumnGroups(item.children, 2) : [];
+
               return (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  onMouseEnter={() => setHoveredNav(item.href)}
-                  className="relative px-1 xl:px-1.5 2xl:px-2 py-1 flex items-center select-none group whitespace-nowrap text-[11px] xl:text-xs"
+                <div
+                  key={item.id}
+                  className="relative"
+                  onMouseEnter={() => handleMouseEnter(item.id)}
                 >
-                  <motion.div
-                    whileHover={{ scale: 1.05, y: -1 }}
-                    transition={{ type: "spring", stiffness: 450, damping: 25 }}
-                    className={`relative z-10 flex items-center gap-1 transition-colors duration-200 ${
-                      isActive
-                        ? "text-emerald-300 font-bold drop-shadow-[0_0_8px_rgba(52,211,153,0.8)]"
-                        : "text-white font-semibold drop-shadow-[0_1px_2px_rgba(0,0,0,0.7)] group-hover:text-white"
-                    }`}
-                  >
-                    {Icon && (
-                      <Icon
-                        className={`h-3.5 w-3.5 transition-colors ${
-                          isActive
-                            ? "text-emerald-300 drop-shadow-[0_0_8px_rgba(52,211,153,0.8)]"
-                            : "text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.7)] group-hover:text-emerald-300"
+                  {hasChildren ? (
+                    <button
+                      type="button"
+                      onClick={() => setActiveDropdown(isOpen ? null : item.id)}
+                      className={`relative px-2 xl:px-2.5 py-1.5 flex items-center gap-1 select-none rounded-xl text-[11px] xl:text-xs font-semibold cursor-pointer transition-colors duration-200 ${
+                        isOpen
+                          ? "text-emerald-300 bg-white/10 shadow-[inset_0_1px_1px_rgba(255,255,255,0.25)]"
+                          : "text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.7)] hover:text-emerald-300 hover:bg-white/10"
+                      }`}
+                    >
+                      {Icon && <Icon className="h-3.5 w-3.5 shrink-0" />}
+                      <span>{item.label[language]}</span>
+                      <ChevronDown
+                        className={`h-3 w-3 opacity-70 transition-transform duration-200 ${
+                          isOpen ? "rotate-180 text-emerald-300 opacity-100" : ""
                         }`}
                       />
-                    )}
-                    <span>{item.label}</span>
-                    {item.badge && (
-                      <span className="bg-emerald-500 text-white text-[10px] font-bold px-1.5 py-0.2 rounded-full tabular-nums shadow-xs">
-                        {item.badge}
-                      </span>
-                    )}
-                  </motion.div>
-
-                  {/* Soft Frosted Glass Hover Backing */}
-                  {isHovered && (
-                    <motion.div
-                      layoutId="header-nav-hover-bg"
-                      transition={{ type: "spring", stiffness: 450, damping: 32 }}
-                      className="absolute inset-0 rounded-xl bg-white/15 backdrop-blur-md shadow-xs border border-white/25 -z-0"
-                    />
+                    </button>
+                  ) : (
+                    <Link
+                      href={resolveMenuItemUrl(item, activeCity, language)}
+                      className="relative px-2 xl:px-2.5 py-1.5 flex items-center gap-1 select-none rounded-xl text-[11px] xl:text-xs font-semibold text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.7)] hover:text-emerald-300 hover:bg-white/10 transition-colors"
+                    >
+                      {Icon && <Icon className="h-3.5 w-3.5 shrink-0" />}
+                      <span>{item.label[language]}</span>
+                    </Link>
                   )}
 
-                  {/* Dynamic Underline adapting to the exact length of the word */}
-                  {isActive && (
-                    <motion.div
-                      layoutId="header-nav-underline"
-                      transition={{ type: "spring", stiffness: 450, damping: 32 }}
-                      className="absolute bottom-0.5 left-2 right-2 h-[2.5px] rounded-full bg-gradient-to-r from-emerald-400 via-teal-300 to-emerald-400 shadow-[0_0_10px_rgba(52,211,153,0.9)] z-20"
-                    />
-                  )}
-                </Link>
+                  {/* 2-Column Mega-Menu Dropdown (Купить / Арендовать) */}
+                  <AnimatePresence>
+                    {isMegaMenu && isOpen && (
+                      <motion.div
+                        initial={{ opacity: 0, y: 10, scale: 0.98 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        exit={{ opacity: 0, y: 8, scale: 0.98 }}
+                        transition={{ duration: 0.16, ease: "easeOut" }}
+                        className="absolute top-full left-0 mt-3 w-[510px] p-4.5 rounded-2xl bg-slate-900/90 backdrop-blur-3xl backdrop-saturate-150 shadow-[0_25px_60px_rgba(0,0,0,0.6),inset_0_1px_1.5px_rgba(255,255,255,0.25)] border border-white/20 z-50 text-white grid grid-cols-2 gap-4.5"
+                      >
+                        {/* Column 1 */}
+                        <div className="space-y-3.5">
+                          {col1Groups.map((grp) => (
+                            <div key={grp.id} className="space-y-1">
+                              {grp.label[language] && (
+                                <div className="text-[10px] font-extrabold uppercase tracking-wider text-emerald-400 drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)] px-2.5 pb-0.5">
+                                  {grp.label[language]}
+                                </div>
+                              )}
+                              <div className="space-y-0.5">
+                                {grp.links.map((link) => (
+                                  <Link
+                                    key={link.id}
+                                    href={resolveMenuItemUrl(link, activeCity, language)}
+                                    onClick={() => setActiveDropdown(null)}
+                                    className="flex items-center justify-between px-2.5 py-1.5 rounded-xl text-xs font-semibold text-white/90 hover:text-white hover:bg-white/15 focus:bg-white/15 transition-all group/item cursor-pointer"
+                                  >
+                                    <span className="drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]">
+                                      {link.label[language]}
+                                    </span>
+                                    <ChevronRight className="h-3 w-3 text-emerald-400 opacity-0 group-hover/item:opacity-100 group-hover/item:translate-x-0.5 transition-all" />
+                                  </Link>
+                                ))}
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+
+                        {/* Column 2 */}
+                        <div className="space-y-3.5 border-l border-white/12 pl-4">
+                          {col2Groups.map((grp) => (
+                            <div key={grp.id} className="space-y-1">
+                              {grp.label[language] && (
+                                <div className="text-[10px] font-extrabold uppercase tracking-wider text-emerald-400 drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)] px-2.5 pb-0.5">
+                                  {grp.label[language]}
+                                </div>
+                              )}
+                              <div className="space-y-0.5">
+                                {grp.links.map((link) => (
+                                  <Link
+                                    key={link.id}
+                                    href={resolveMenuItemUrl(link, activeCity, language)}
+                                    onClick={() => setActiveDropdown(null)}
+                                    className="flex items-center justify-between px-2.5 py-1.5 rounded-xl text-xs font-semibold text-white/90 hover:text-white hover:bg-white/15 focus:bg-white/15 transition-all group/item cursor-pointer"
+                                  >
+                                    <span className="drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]">
+                                      {link.label[language]}
+                                    </span>
+                                    <ChevronRight className="h-3 w-3 text-emerald-400 opacity-0 group-hover/item:opacity-100 group-hover/item:translate-x-0.5 transition-all" />
+                                  </Link>
+                                ))}
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+
+                  {/* 1-Column Dropdown (Компании) */}
+                  <AnimatePresence>
+                    {isSimpleDropdown && isOpen && (
+                      <motion.div
+                        initial={{ opacity: 0, y: 10, scale: 0.98 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        exit={{ opacity: 0, y: 8, scale: 0.98 }}
+                        transition={{ duration: 0.16, ease: "easeOut" }}
+                        className="absolute top-full left-0 mt-3 w-56 p-1.5 rounded-2xl bg-slate-900/90 backdrop-blur-3xl backdrop-saturate-150 shadow-[0_25px_60px_rgba(0,0,0,0.6),inset_0_1px_1.5px_rgba(255,255,255,0.25)] border border-white/20 z-50 text-white space-y-0.5"
+                      >
+                        {item.children?.map((sub) => (
+                          <Link
+                            key={sub.id}
+                            href={resolveMenuItemUrl(sub, activeCity, language)}
+                            onClick={() => setActiveDropdown(null)}
+                            className="flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold text-white/90 hover:text-white hover:bg-white/15 focus:bg-white/15 transition-all group/sub cursor-pointer"
+                          >
+                            <span className="drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]">
+                              {sub.label[language]}
+                            </span>
+                            <ChevronRight className="h-3 w-3 text-emerald-400 opacity-0 group-hover/sub:opacity-100 group-hover/sub:translate-x-0.5 transition-all" />
+                          </Link>
+                        ))}
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
               );
             })}
           </nav>
 
-          {/* Right Controls: Language, Currency, Add Button, Auth */}
+          {/* Right Controls: Language, Currency, Compare, Post Ad, Auth */}
           <div className="flex items-center gap-1 sm:gap-1.5 shrink-0">
             {/* Language Selector */}
             <LanguageSwitcher />
@@ -250,23 +397,51 @@ export function Header() {
               </Link>
             </motion.div>
 
-            {/* Post Ad Button */}
-            <motion.div whileHover={{ scale: 1.03, y: -1 }} whileTap={{ scale: 0.97 }} className="shrink-0">
-              <Link href={session ? "/classifieds/new" : "#"}>
-                <button
-                  type="button"
-                  onClick={(e) => {
+            {/* Post Ad Button (Split CTA: Sell / Rent) */}
+            <DropdownMenu>
+              <DropdownMenuTrigger className="hidden sm:inline-flex h-8 box-border items-center justify-center gap-1 px-2 xl:px-2.5 rounded-xl border border-white/20 bg-white/[0.06] hover:bg-white/15 active:bg-white/20 text-white font-bold backdrop-blur-xl text-xs cursor-pointer shadow-[inset_0_1px_1px_rgba(255,255,255,0.35)] drop-shadow-[0_1px_2px_rgba(0,0,0,0.7)] transition-all select-none whitespace-nowrap outline-hidden">
+                <span>{language === "tg" ? "Эълон додан" : language === "en" ? "Post Ad" : "Подать объявление"}</span>
+                <ChevronDown className="h-3 w-3 text-white/80" />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent
+                align="end"
+                className="w-56 p-1.5 rounded-2xl bg-slate-900/90 backdrop-blur-3xl border border-white/20 shadow-[0_20px_50px_rgba(0,0,0,0.5),inset_0_1px_1.5px_rgba(255,255,255,0.25)] z-50 text-white ring-0"
+              >
+                <DropdownMenuItem
+                  onClick={() => {
                     if (!session) {
-                      e.preventDefault();
                       handleOpenAuth("login");
+                    } else {
+                      window.location.href = "/classifieds/new?deal=sale";
                     }
                   }}
-                  className="hidden sm:inline-flex h-8 box-border items-center justify-center px-2 xl:px-2.5 rounded-xl border border-white/20 bg-white/[0.06] hover:bg-white/15 active:bg-white/20 text-white font-bold backdrop-blur-xl text-xs cursor-pointer shadow-[inset_0_1px_1px_rgba(255,255,255,0.35)] drop-shadow-[0_1px_2px_rgba(0,0,0,0.7)] transition-all select-none whitespace-nowrap"
+                  className="cursor-pointer text-xs flex items-center justify-between px-3 py-2.5 rounded-xl font-semibold text-white/90 hover:text-white hover:bg-white/15 focus:text-white focus:bg-white/15 transition-all"
                 >
-                  <span>{t.nav.postAd}</span>
-                </button>
-              </Link>
-            </motion.div>
+                  <div className="flex items-center gap-2">
+                    <Home className="h-4 w-4 text-emerald-400" />
+                    <span>{language === "tg" ? "Фурӯши амвол" : language === "en" ? "Sell Property" : "Продать недвижимость"}</span>
+                  </div>
+                  <ChevronRight className="h-3 w-3 text-emerald-400 opacity-60" />
+                </DropdownMenuItem>
+
+                <DropdownMenuItem
+                  onClick={() => {
+                    if (!session) {
+                      handleOpenAuth("login");
+                    } else {
+                      window.location.href = "/classifieds/new?deal=rent";
+                    }
+                  }}
+                  className="cursor-pointer text-xs flex items-center justify-between px-3 py-2.5 rounded-xl font-semibold text-white/90 hover:text-white hover:bg-white/15 focus:text-white focus:bg-white/15 transition-all mt-1"
+                >
+                  <div className="flex items-center gap-2">
+                    <KeyRound className="h-4 w-4 text-emerald-400" />
+                    <span>{language === "tg" ? "Ба иҷора супоридан" : language === "en" ? "Rent Out Property" : "Сдать в аренду"}</span>
+                  </div>
+                  <ChevronRight className="h-3 w-3 text-emerald-400 opacity-60" />
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
 
             {/* Auth Button or User Profile */}
             {isPending ? (
@@ -373,9 +548,140 @@ export function Header() {
                 <span>{t.nav.login}</span>
               </motion.button>
             )}
+
+            {/* Mobile Hamburger Button */}
+            <button
+              type="button"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="lg:hidden flex h-8 w-8 box-border items-center justify-center rounded-xl border border-white/20 bg-white/[0.06] hover:bg-white/15 text-white cursor-pointer backdrop-blur-xl transition-all shrink-0 ml-0.5"
+              aria-label="Toggle navigation menu"
+            >
+              {mobileMenuOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
+            </button>
           </div>
         </div>
       </header>
+
+      {/* Mobile Drawer Navigation */}
+      <AnimatePresence>
+        {mobileMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-40 bg-black/70 backdrop-blur-md lg:hidden flex flex-col justify-end"
+            onClick={() => setMobileMenuOpen(false)}
+          >
+            <motion.div
+              initial={{ y: "100%" }}
+              animate={{ y: 0 }}
+              exit={{ y: "100%" }}
+              transition={{ type: "spring", damping: 28, stiffness: 300 }}
+              onClick={(e) => e.stopPropagation()}
+              className="w-full max-h-[85vh] overflow-y-auto bg-slate-900/95 border-t border-white/20 rounded-t-3xl p-5 space-y-4 text-white"
+            >
+              <div className="flex items-center justify-between pb-3 border-b border-white/10">
+                <span className="font-extrabold text-base tracking-tight text-white flex items-center gap-1">
+                  MASKANI<span className="text-emerald-400">.TJ</span>
+                </span>
+                <button
+                  type="button"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="h-8 w-8 rounded-full bg-white/10 flex items-center justify-center text-white/80 hover:text-white"
+                >
+                  <X className="h-4 w-4" />
+                </button>
+              </div>
+
+              {/* Mobile Menu Accordion Items */}
+              <div className="space-y-2">
+                {menuTree.map((item) => {
+                  const hasChildren = Boolean(item.children && item.children.length > 0);
+                  const isExpanded = mobileExpandedSection === item.id;
+                  const Icon = getItemIcon(item.id);
+
+                  if (!hasChildren) {
+                    return (
+                      <Link
+                        key={item.id}
+                        href={resolveMenuItemUrl(item, activeCity, language)}
+                        onClick={() => setMobileMenuOpen(false)}
+                        className="flex items-center justify-between p-3 rounded-xl bg-white/5 hover:bg-white/10 font-semibold text-sm transition-all"
+                      >
+                        <div className="flex items-center gap-2.5">
+                          {Icon && <Icon className="h-4 w-4 text-emerald-400" />}
+                          <span>{item.label[language]}</span>
+                        </div>
+                        <ChevronRight className="h-4 w-4 text-white/40" />
+                      </Link>
+                    );
+                  }
+
+                  return (
+                    <div key={item.id} className="rounded-xl bg-white/5 overflow-hidden">
+                      <button
+                        type="button"
+                        onClick={() => setMobileExpandedSection(isExpanded ? null : item.id)}
+                        className="w-full flex items-center justify-between p-3 font-semibold text-sm transition-all"
+                      >
+                        <div className="flex items-center gap-2.5">
+                          {Icon && <Icon className="h-4 w-4 text-emerald-400" />}
+                          <span>{item.label[language]}</span>
+                        </div>
+                        <ChevronDown className={`h-4 w-4 text-white/40 transition-transform ${isExpanded ? "rotate-180" : ""}`} />
+                      </button>
+
+                      {isExpanded && (
+                        <div className="p-3 pt-0 space-y-2 border-t border-white/5">
+                          {item.children?.map((child) => {
+                            if (child.type === "group-header") {
+                              return (
+                                <div key={child.id} className="text-[10px] font-bold uppercase tracking-wider text-emerald-400 pt-2 px-1">
+                                  {child.label[language]}
+                                </div>
+                              );
+                            }
+                            return (
+                              <Link
+                                key={child.id}
+                                href={resolveMenuItemUrl(child, activeCity, language)}
+                                onClick={() => setMobileMenuOpen(false)}
+                                className="block py-1.5 px-3 rounded-lg text-xs text-white/80 hover:text-white hover:bg-white/10 transition-colors"
+                              >
+                                {child.label[language]}
+                              </Link>
+                            );
+                          })}
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+
+              {/* Mobile Post Ad Buttons */}
+              <div className="pt-2 space-y-2 border-t border-white/10">
+                <Link
+                  href="/classifieds/new?deal=sale"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-md"
+                >
+                  <Home className="h-4 w-4" />
+                  <span>{language === "tg" ? "Фурӯши амвол" : language === "en" ? "Sell Property" : "Продать недвижимость"}</span>
+                </Link>
+                <Link
+                  href="/classifieds/new?deal=rent"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl border border-emerald-400/50 bg-emerald-500/15 text-white font-bold text-xs"
+                >
+                  <KeyRound className="h-4 w-4 text-emerald-400" />
+                  <span>{language === "tg" ? "Ба иҷора супоридан" : language === "en" ? "Rent Out Property" : "Сдать в аренду"}</span>
+                </Link>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <AuthModal
         isOpen={authModalOpen}
