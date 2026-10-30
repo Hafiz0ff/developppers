@@ -168,4 +168,41 @@ describe("MASKANI.TJ Specification v1.1 — Navigation, Categories & Facet Store
     const serviceUrl = resolveCatalogUrl("catalog_services", "khujand", "ru");
     assert.equal(serviceUrl, "/khujand/uslugi");
   });
+
+  test("Super Admin Facet Store CRUD: supports upsert, delete, and indexing toggle", () => {
+    resetFacetsToDefault();
+
+    const initialCount = getFacets().length;
+
+    // Create custom facet
+    const customFacet = upsertFacet({
+      id: "facet_test_warehouse",
+      categoryId: "cat_sale_commercial",
+      facetKey: "commercial_type",
+      valueKey: "warehouse_only",
+      displayName: { ru: "Только склады", tg: "Танҳо анборҳо", en: "Warehouses Only" },
+      valueSlug: { ru: "tolko-sklady", tg: "tanho-anborho", en: "warehouses-only" },
+      hasOwnPage: true,
+      indexable: false,
+      sortOrder: 99,
+      active: true,
+      seoTemplates: {
+        h1: { ru: "{title}", tg: "{title}", en: "{title}" },
+        title: { ru: "{title}", tg: "{title}", en: "{title}" },
+        description: { ru: "{description}", tg: "{description}", en: "{description}" },
+      },
+    });
+
+    assert.equal(getFacets().length, initialCount + 1);
+    assert.equal(getFacetById("facet_test_warehouse")?.displayName.ru, "Только склады");
+
+    // Toggle indexable
+    upsertFacet({ ...customFacet, indexable: true });
+    assert.equal(getFacetById("facet_test_warehouse")?.indexable, true);
+
+    // Delete
+    deleteFacet("facet_test_warehouse");
+    assert.equal(getFacets().length, initialCount);
+    assert.equal(getFacetById("facet_test_warehouse"), undefined);
+  });
 });
