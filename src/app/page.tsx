@@ -486,7 +486,7 @@ export default function HomePage() {
                     <DropdownMenuContent
                       align="start"
                       sideOffset={6}
-                      className="w-64 max-h-80 overflow-y-auto p-1.5 rounded-2xl bg-white/[0.04] backdrop-blur-3xl backdrop-saturate-150 shadow-[0_20px_50px_rgba(0,0,0,0.25),inset_0_1px_1.5px_rgba(255,255,255,0.4)] border border-white/20 z-50 text-white ring-0 [scrollbar-width:thin] [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-thumb]:bg-white/20 [&::-webkit-scrollbar-thumb]:rounded-full"
+                      className="w-64 max-h-80 overflow-y-auto p-1.5 rounded-2xl glass-dropdown-panel z-50 text-white ring-0 [scrollbar-width:thin] [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-thumb]:bg-white/20 [&::-webkit-scrollbar-thumb]:rounded-full"
                     >
                       <DropdownMenuItem
                         onClick={() => setSelectedCity("all")}

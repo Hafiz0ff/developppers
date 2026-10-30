@@ -208,7 +208,7 @@ const INITIAL_MENU_ITEMS: MenuItem[] = [
     id: "nav_rent",
     menuLocation: "header_main",
     type: "link-to-category",
-    label: { ru: "Арендовать", tg: "Ба иҷора гирифтан", en: "Rent" },
+    label: { ru: "Арендовать", tg: "Иҷора", en: "Rent" },
     targetType: "catalog",
     targetId: "catalog_rent_hub",
     parentId: null,

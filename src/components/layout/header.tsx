@@ -84,6 +84,9 @@ function parseColumnGroups(children: MenuItemTree[] | undefined, column: number)
   return groups;
 }
 
+// Toggle to true if you want to restore "Недвижимость Таджикистана" under the logo
+const SHOW_HEADER_SUBTITLE = false;
+
 export function Header() {
   const pathname = usePathname();
   const { currency, setCurrency } = useCurrency();
@@ -179,7 +182,7 @@ export function Header() {
   return (
     <>
       <header className={`sticky top-0 z-50 w-full pt-2.5 sm:pt-3 pb-2 px-3 sm:px-6 pointer-events-none transition-all duration-300 ${isHome ? "-mb-20 sm:-mb-22" : ""}`}>
-        <div className="max-w-7xl mx-auto h-16 px-3 sm:px-4 lg:px-5 flex items-center justify-between gap-1.5 sm:gap-3 rounded-2xl pointer-events-auto relative transition-all duration-300 bg-white/[0.025] backdrop-blur-2xl backdrop-saturate-150 border border-white/20 shadow-[0_20px_50px_rgba(0,0,0,0.20),inset_0_1px_1.5px_rgba(255,255,255,0.35)]">
+        <div className="w-full max-w-[1440px] mx-auto h-16 px-2.5 sm:px-4 lg:px-5 flex items-center justify-between gap-1 xl:gap-2.5 rounded-2xl pointer-events-auto relative transition-all duration-300 bg-white/[0.025] backdrop-blur-2xl backdrop-saturate-150 border border-white/20 shadow-[0_20px_50px_rgba(0,0,0,0.20),inset_0_1px_1.5px_rgba(255,255,255,0.35)]">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2 sm:gap-2.5 shrink-0 group">
             <div className="h-9 w-9 sm:h-10 sm:w-10 rounded-xl bg-gradient-to-tr from-emerald-600 via-teal-500 to-emerald-400 flex items-center justify-center text-white shadow-md shadow-emerald-500/25 group-hover:scale-105 transition-transform duration-300">
@@ -189,9 +192,11 @@ export function Header() {
               <span className="font-extrabold tracking-tight text-base sm:text-lg leading-tight text-white flex items-center gap-0.5 drop-shadow-[0_1px_2px_rgba(0,0,0,0.7)]">
                 MASKANI<span className="text-emerald-400 text-xs font-bold">.TJ</span>
               </span>
-              <span className="text-[10px] text-white/90 uppercase tracking-wider font-semibold drop-shadow-[0_1px_2px_rgba(0,0,0,0.7)] hidden 2xl:block">
-                {t.nav.subtitle}
-              </span>
+              {SHOW_HEADER_SUBTITLE && (
+                <span className="text-[9px] text-white/80 uppercase tracking-wider font-semibold drop-shadow-[0_1px_2px_rgba(0,0,0,0.7)] hidden 2xl:block truncate max-w-[160px]">
+                  {t.nav.subtitle}
+                </span>
+              )}
             </div>
           </Link>
 
@@ -220,13 +225,13 @@ export function Header() {
                     <button
                       type="button"
                       onClick={() => setActiveDropdown(isOpen ? null : item.id)}
-                      className={`relative px-2 xl:px-2.5 py-1.5 flex items-center gap-1 select-none rounded-xl text-[11px] xl:text-xs font-semibold cursor-pointer transition-colors duration-200 ${
+                      className={`relative px-1.5 xl:px-2.5 py-1.5 flex items-center gap-1 select-none rounded-xl text-[11px] xl:text-xs font-semibold cursor-pointer transition-colors duration-200 ${
                         isOpen
                           ? "text-emerald-300 bg-white/10 shadow-[inset_0_1px_1px_rgba(255,255,255,0.25)]"
                           : "text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.7)] hover:text-emerald-300 hover:bg-white/10"
                       }`}
                     >
-                      {Icon && <Icon className="h-3.5 w-3.5 shrink-0" />}
+                      {Icon && <Icon className="h-3.5 w-3.5 shrink-0 hidden 2xl:inline-block" />}
                       <span>{item.label[language]}</span>
                       <ChevronDown
                         className={`h-3 w-3 opacity-70 transition-transform duration-200 ${
@@ -237,9 +242,9 @@ export function Header() {
                   ) : (
                     <Link
                       href={resolveMenuItemUrl(item, activeCity, language)}
-                      className="relative px-2 xl:px-2.5 py-1.5 flex items-center gap-1 select-none rounded-xl text-[11px] xl:text-xs font-semibold text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.7)] hover:text-emerald-300 hover:bg-white/10 transition-colors"
+                      className="relative px-1.5 xl:px-2.5 py-1.5 flex items-center gap-1 select-none rounded-xl text-[11px] xl:text-xs font-semibold text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.7)] hover:text-emerald-300 hover:bg-white/10 transition-colors"
                     >
-                      {Icon && <Icon className="h-3.5 w-3.5 shrink-0" />}
+                      {Icon && <Icon className="h-3.5 w-3.5 shrink-0 hidden 2xl:inline-block" />}
                       <span>{item.label[language]}</span>
                     </Link>
                   )}
@@ -252,7 +257,7 @@ export function Header() {
                         animate={{ opacity: 1, y: 0, scale: 1 }}
                         exit={{ opacity: 0, y: 8, scale: 0.98 }}
                         transition={{ duration: 0.16, ease: "easeOut" }}
-                        className="absolute top-full left-0 mt-3 w-[510px] p-4.5 rounded-2xl bg-slate-900/90 backdrop-blur-3xl backdrop-saturate-150 shadow-[0_25px_60px_rgba(0,0,0,0.6),inset_0_1px_1.5px_rgba(255,255,255,0.25)] border border-white/20 z-50 text-white grid grid-cols-2 gap-4.5"
+                        className="absolute top-full left-0 mt-3 w-[510px] p-4.5 rounded-2xl glass-dropdown-panel z-50 text-white grid grid-cols-2 gap-4.5"
                       >
                         {/* Column 1 */}
                         <div className="space-y-3.5">
@@ -321,7 +326,7 @@ export function Header() {
                         animate={{ opacity: 1, y: 0, scale: 1 }}
                         exit={{ opacity: 0, y: 8, scale: 0.98 }}
                         transition={{ duration: 0.16, ease: "easeOut" }}
-                        className="absolute top-full left-0 mt-3 w-56 p-1.5 rounded-2xl bg-slate-900/90 backdrop-blur-3xl backdrop-saturate-150 shadow-[0_25px_60px_rgba(0,0,0,0.6),inset_0_1px_1.5px_rgba(255,255,255,0.25)] border border-white/20 z-50 text-white space-y-0.5"
+                        className="absolute top-full left-0 mt-3 w-56 p-1.5 rounded-2xl glass-dropdown-panel z-50 text-white space-y-0.5"
                       >
                         {item.children?.map((sub) => (
                           <Link
@@ -355,7 +360,7 @@ export function Header() {
                 <span>{currency}</span>
                 <ChevronDown className="h-3 w-3 text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.7)]" />
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-40 p-1.5 rounded-2xl bg-white/[0.04] backdrop-blur-3xl backdrop-saturate-150 shadow-[0_20px_50px_rgba(0,0,0,0.25),inset_0_1px_1.5px_rgba(255,255,255,0.4)] border border-white/20 z-50 text-white ring-0">
+              <DropdownMenuContent align="end" className="w-40 p-1.5 rounded-2xl glass-dropdown-panel z-50 text-white ring-0">
                 <DropdownMenuItem
                   onClick={() => setCurrency("TJS")}
                   className={`cursor-pointer text-xs flex items-center justify-between px-3 py-2 rounded-xl font-semibold transition-all ${
@@ -406,7 +411,7 @@ export function Header() {
               </DropdownMenuTrigger>
               <DropdownMenuContent
                 align="end"
-                className="w-56 p-1.5 rounded-2xl bg-slate-900/90 backdrop-blur-3xl border border-white/20 shadow-[0_20px_50px_rgba(0,0,0,0.5),inset_0_1px_1.5px_rgba(255,255,255,0.25)] z-50 text-white ring-0"
+                className="w-56 p-1.5 rounded-2xl glass-dropdown-panel z-50 text-white ring-0"
               >
                 <DropdownMenuItem
                   onClick={() => {
@@ -466,7 +471,7 @@ export function Header() {
                   </div>
                   <ChevronDown className="h-3.5 w-3.5 text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.7)]" />
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-56 p-1.5 rounded-2xl bg-white/[0.07] backdrop-blur-3xl backdrop-saturate-150 shadow-[0_20px_50px_rgba(0,0,0,0.25),inset_0_1px_1.5px_rgba(255,255,255,0.4)] border border-white/30 z-50 text-white ring-0">
+                <DropdownMenuContent align="end" className="w-56 p-1.5 rounded-2xl glass-dropdown-panel z-50 text-white ring-0">
                   <DropdownMenuLabel>
                     <div className="flex flex-col space-y-1">
                       <p className="text-sm font-semibold text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]">{session.user.name}</p>

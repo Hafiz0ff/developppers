@@ -283,6 +283,24 @@
               inset 0 1px 1.5px rgba(255, 255, 255, 0.45);
 }
 
+/* Signature Apple Liquid Frosted Dropdown Panel Default */
+.glass-dropdown-panel {
+  background: rgba(18, 26, 38, 0.78) !important;
+  backdrop-filter: blur(36px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(36px) saturate(180%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.18) !important;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.45),
+              inset 0 1px 1.5px rgba(255, 255, 255, 0.28) !important;
+  color: #ffffff !important;
+}
+
+.dark .glass-dropdown-panel {
+  background: rgba(12, 18, 28, 0.85) !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.55),
+              inset 0 1px 1.5px rgba(255, 255, 255, 0.20) !important;
+}
+
 .glass-badge-light {
   background: rgba(0, 0, 0, 0.25) !important;
   backdrop-filter: blur(16px) saturate(160%);

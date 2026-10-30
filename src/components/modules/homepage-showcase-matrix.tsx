@@ -98,7 +98,7 @@ export function HomepageShowcaseMatrix({ activeCity = "khujand" }: ShowcaseSecti
       },
       accentGradient: "from-emerald-500/20 via-teal-500/10 to-transparent",
       iconColor: "text-emerald-500",
-      badgeColor: "bg-emerald-500/10 text-emerald-700 border-emerald-500/25",
+      badgeColor: "bg-emerald-500/15 backdrop-blur-xl border border-emerald-400/40 text-emerald-800 dark:text-emerald-300 shadow-[0_4px_12px_rgba(16,185,129,0.15),inset_0_1px_1px_rgba(255,255,255,0.7)]",
     },
     {
       id: "showcase_resale",
@@ -121,7 +121,7 @@ export function HomepageShowcaseMatrix({ activeCity = "khujand" }: ShowcaseSecti
       },
       accentGradient: "from-blue-500/20 via-sky-500/10 to-transparent",
       iconColor: "text-blue-500",
-      badgeColor: "bg-blue-500/10 text-blue-700 border-blue-500/25",
+      badgeColor: "bg-sky-500/15 backdrop-blur-xl border border-sky-400/40 text-sky-800 dark:text-sky-300 shadow-[0_4px_12px_rgba(14,165,233,0.15),inset_0_1px_1px_rgba(255,255,255,0.7)]",
     },
     {
       id: "showcase_houses",
@@ -144,7 +144,7 @@ export function HomepageShowcaseMatrix({ activeCity = "khujand" }: ShowcaseSecti
       },
       accentGradient: "from-amber-500/20 via-orange-500/10 to-transparent",
       iconColor: "text-amber-500",
-      badgeColor: "bg-amber-500/10 text-amber-700 border-amber-500/25",
+      badgeColor: "bg-amber-500/15 backdrop-blur-xl border border-amber-400/40 text-amber-800 dark:text-amber-300 shadow-[0_4px_12px_rgba(245,158,11,0.15),inset_0_1px_1px_rgba(255,255,255,0.7)]",
     },
     {
       id: "showcase_rent",
@@ -167,7 +167,7 @@ export function HomepageShowcaseMatrix({ activeCity = "khujand" }: ShowcaseSecti
       },
       accentGradient: "from-purple-500/20 via-indigo-500/10 to-transparent",
       iconColor: "text-purple-500",
-      badgeColor: "bg-purple-500/10 text-purple-700 border-purple-500/25",
+      badgeColor: "bg-purple-500/15 backdrop-blur-xl border border-purple-400/40 text-purple-800 dark:text-purple-300 shadow-[0_4px_12px_rgba(168,85,247,0.15),inset_0_1px_1px_rgba(255,255,255,0.7)]",
     },
     {
       id: "showcase_commercial",
@@ -190,7 +190,7 @@ export function HomepageShowcaseMatrix({ activeCity = "khujand" }: ShowcaseSecti
       },
       accentGradient: "from-teal-500/20 via-emerald-500/10 to-transparent",
       iconColor: "text-teal-500",
-      badgeColor: "bg-teal-500/10 text-teal-700 border-teal-500/25",
+      badgeColor: "bg-teal-500/15 backdrop-blur-xl border border-teal-400/40 text-teal-800 dark:text-teal-300 shadow-[0_4px_12px_rgba(20,184,166,0.15),inset_0_1px_1px_rgba(255,255,255,0.7)]",
     },
     {
       id: "showcase_services",
@@ -213,7 +213,7 @@ export function HomepageShowcaseMatrix({ activeCity = "khujand" }: ShowcaseSecti
       },
       accentGradient: "from-rose-500/20 via-pink-500/10 to-transparent",
       iconColor: "text-rose-500",
-      badgeColor: "bg-rose-500/10 text-rose-700 border-rose-500/25",
+      badgeColor: "bg-rose-500/15 backdrop-blur-xl border border-rose-400/40 text-rose-800 dark:text-rose-300 shadow-[0_4px_12px_rgba(244,63,94,0.15),inset_0_1px_1px_rgba(255,255,255,0.7)]",
     },
     {
       id: "showcase_developers",
@@ -236,7 +236,7 @@ export function HomepageShowcaseMatrix({ activeCity = "khujand" }: ShowcaseSecti
       },
       accentGradient: "from-cyan-500/20 via-sky-500/10 to-transparent",
       iconColor: "text-cyan-500",
-      badgeColor: "bg-cyan-500/10 text-cyan-700 border-cyan-500/25",
+      badgeColor: "bg-cyan-500/15 backdrop-blur-xl border border-cyan-400/40 text-cyan-800 dark:text-cyan-300 shadow-[0_4px_12px_rgba(6,182,212,0.15),inset_0_1px_1px_rgba(255,255,255,0.7)]",
     },
     {
       id: "showcase_agencies",
@@ -259,7 +259,7 @@ export function HomepageShowcaseMatrix({ activeCity = "khujand" }: ShowcaseSecti
       },
       accentGradient: "from-violet-500/20 via-indigo-500/10 to-transparent",
       iconColor: "text-violet-500",
-      badgeColor: "bg-violet-500/10 text-violet-700 border-violet-500/25",
+      badgeColor: "bg-violet-500/15 backdrop-blur-xl border border-violet-400/40 text-violet-800 dark:text-violet-300 shadow-[0_4px_12px_rgba(139,92,246,0.15),inset_0_1px_1px_rgba(255,255,255,0.7)]",
     },
     {
       id: "showcase_blog",
@@ -282,7 +282,7 @@ export function HomepageShowcaseMatrix({ activeCity = "khujand" }: ShowcaseSecti
       },
       accentGradient: "from-emerald-500/20 via-green-500/10 to-transparent",
       iconColor: "text-emerald-500",
-      badgeColor: "bg-emerald-500/10 text-emerald-700 border-emerald-500/25",
+      badgeColor: "bg-emerald-500/15 backdrop-blur-xl border border-emerald-400/40 text-emerald-800 dark:text-emerald-300 shadow-[0_4px_12px_rgba(16,185,129,0.15),inset_0_1px_1px_rgba(255,255,255,0.7)]",
     },
   ];
 
@@ -325,7 +325,7 @@ export function HomepageShowcaseMatrix({ activeCity = "khujand" }: ShowcaseSecti
             >
               <Link
                 href={item.href}
-                className="group relative flex flex-col justify-between h-full p-4 sm:p-4.5 rounded-2xl bg-white/90 hover:bg-white border border-slate-200/90 hover:border-emerald-500/40 shadow-xs hover:shadow-lg hover:shadow-emerald-500/10 transition-all duration-300 overflow-hidden cursor-pointer"
+                className="group relative flex flex-col justify-between h-full p-4 sm:p-5 rounded-2xl glass-card hover:border-emerald-500/40 shadow-xs hover:shadow-xl hover:shadow-emerald-500/12 transition-all duration-300 overflow-hidden cursor-pointer"
               >
                 {/* Subtle Ambient Color Glow */}
                 <div
@@ -334,12 +334,12 @@ export function HomepageShowcaseMatrix({ activeCity = "khujand" }: ShowcaseSecti
 
                 {/* Top Row: Icon + Badge */}
                 <div className="flex items-center justify-between gap-3 relative z-10 mb-3">
-                  <div className="h-10 w-10 rounded-xl bg-slate-50 group-hover:bg-emerald-50 border border-slate-200/70 group-hover:border-emerald-300/60 flex items-center justify-center transition-colors shadow-2xs">
+                  <div className="h-10 w-10 rounded-xl bg-white/80 group-hover:bg-emerald-50/80 backdrop-blur-md border border-slate-200/80 group-hover:border-emerald-400/50 flex items-center justify-center transition-all shadow-2xs">
                     <Icon className={`h-5 w-5 ${item.iconColor} group-hover:scale-110 transition-transform duration-300`} />
                   </div>
 
                   <span
-                    className={`inline-flex items-center px-2 py-0.5 rounded-lg border text-[11px] font-bold tracking-tight transition-colors ${item.badgeColor}`}
+                    className={`inline-flex items-center px-2.5 py-1 rounded-xl text-xs font-bold tracking-tight select-none transition-all ${item.badgeColor}`}
                   >
                     {item.badge[language]}
                   </span>
