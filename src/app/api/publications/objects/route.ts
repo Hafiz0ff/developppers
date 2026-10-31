@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getClassifiedsActor } from "@/lib/classifieds/session";
+import { getPublicationsActor } from "@/lib/publications/auth-guard";
 import { getOwnedPublishableObjects } from "@/lib/publications/ownership";
 
 export interface PublishableObjectSummary {
@@ -20,20 +20,24 @@ export interface PublishableObjectSummary {
 
 export async function GET(req: NextRequest) {
   try {
-    const actor = await getClassifiedsActor();
-    const { searchParams } = new URL(req.url);
+    const actor = await getPublicationsActor(req);
 
-    // Support demoRole or x-demo-role header if not logged in via session
-    const demoRole = searchParams.get("demoRole") || req.headers.get("x-demo-role");
-    const role = actor?.role || demoRole || null;
-    const actorId = actor?.id || (role === "developer" ? "usr_dev_rep_01" : "usr_realtor_01");
+    if (!actor) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: "unauthorized",
+          message: "Требуется авторизация для доступа к модулю публикации",
+        },
+        { status: 401 }
+      );
+    }
 
-    // Rule TZ Section 3.1, 3.2, 5 & 11: Only Realtor, Agency, Developer, and Super Admin are allowed
-    const isRealtor = role === "realtor" || role === "agency_agent" || role === "agency";
-    const isDeveloper = role === "developer";
-    const isSuperAdmin = role === "super_admin" || role === "admin";
+    const isRealtor = actor.role === "realtor" || actor.role === "agency_agent" || actor.role === "agency";
+    const isDeveloper = actor.role === "developer";
+    const isSuperAdmin = actor.role === "super_admin" || actor.role === "admin";
 
-    if (!role || (!isRealtor && !isDeveloper && !isSuperAdmin)) {
+    if (!isRealtor && !isDeveloper && !isSuperAdmin) {
       return NextResponse.json(
         {
           success: false,
@@ -44,12 +48,13 @@ export async function GET(req: NextRequest) {
       );
     }
 
-    // Strict ownership filtering (Section 3 & 4)
-    const items = getOwnedPublishableObjects(role, actorId);
+    // Strict ownership filtering: returns ONLY objects owned by this actor
+    const items = await getOwnedPublishableObjects(actor.role, actor.id);
 
     return NextResponse.json({
       success: true,
-      role,
+      role: actor.role,
+      actorId: actor.id,
       count: items.length,
       items,
     });

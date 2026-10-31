@@ -1,22 +1,28 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getClassifiedsActor } from "@/lib/classifieds/session";
+import { getPublicationsActor } from "@/lib/publications/auth-guard";
 import { verifyTelegramChannelAdmin } from "@/lib/publications/telegram-publisher";
 import { saveLinkedChannel } from "@/lib/publications/telegram-channel-store";
 
 export async function POST(req: NextRequest) {
   try {
-    const actor = await getClassifiedsActor();
-    const body = await req.json();
+    const actor = await getPublicationsActor(req);
 
-    const { channelUsername, demoRole } = body;
-    const role = actor?.role || demoRole || null;
-    const actorId = actor?.id || (role === "developer" ? "usr_dev_rep_01" : "usr_realtor_01");
+    if (!actor) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: "unauthorized",
+          message: "Требуется авторизация для подключения Telegram-канала",
+        },
+        { status: 401 }
+      );
+    }
 
-    const isRealtor = role === "realtor" || role === "agency_agent" || role === "agency";
-    const isDeveloper = role === "developer";
-    const isSuperAdmin = role === "super_admin" || role === "admin";
+    const isRealtor = actor.role === "realtor" || actor.role === "agency_agent" || actor.role === "agency";
+    const isDeveloper = actor.role === "developer";
+    const isSuperAdmin = actor.role === "super_admin" || actor.role === "admin";
 
-    if (!role || (!isRealtor && !isDeveloper && !isSuperAdmin)) {
+    if (!isRealtor && !isDeveloper && !isSuperAdmin) {
       return NextResponse.json(
         {
           success: false,
@@ -26,6 +32,9 @@ export async function POST(req: NextRequest) {
         { status: 403 }
       );
     }
+
+    const body = await req.json();
+    const { channelUsername } = body;
 
     if (!channelUsername || typeof channelUsername !== "string" || channelUsername.trim() === "") {
       return NextResponse.json(
@@ -53,9 +62,9 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Save as default channel for this account
+    // Save as default channel for this actor account
     const saved = await saveLinkedChannel({
-      userId: actorId,
+      userId: actor.id,
       channelUsername: verification.channelUsername,
       channelTitle: verification.channelTitle || verification.channelUsername,
       channelId: verification.channelId,

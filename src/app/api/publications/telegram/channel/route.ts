@@ -1,24 +1,19 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getClassifiedsActor } from "@/lib/classifieds/session";
+import { getPublicationsActor } from "@/lib/publications/auth-guard";
 import { getLinkedChannel } from "@/lib/publications/telegram-channel-store";
 
 export async function GET(req: NextRequest) {
   try {
-    const actor = await getClassifiedsActor();
-    const { searchParams } = new URL(req.url);
+    const actor = await getPublicationsActor(req);
 
-    const demoRole = searchParams.get("demoRole") || req.headers.get("x-demo-role");
-    const role = actor?.role || demoRole || null;
-    const actorId = actor?.id || (role === "developer" ? "usr_dev_rep_01" : "usr_realtor_01");
-
-    if (!role) {
+    if (!actor) {
       return NextResponse.json(
         { success: false, error: "unauthorized", message: "Требуется авторизация" },
         { status: 401 }
       );
     }
 
-    const channel = await getLinkedChannel(actorId);
+    const channel = await getLinkedChannel(actor.id);
 
     return NextResponse.json({
       success: true,

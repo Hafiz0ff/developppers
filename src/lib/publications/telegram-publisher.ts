@@ -1,16 +1,16 @@
 /**
- * MASKANI.TJ — Telegram Publisher Engine
+ * MASKANI.TJ — Telegram Publisher Engine (Hardened v2.0)
  * Conforms to Technical Specification v2.0 (Sections 9, 12, 13)
  *
  * Server-only Telegram Bot API client for channel verification and
  * single-photo publishing using sendPhoto with HTML parse mode and 1,024 char limits.
- * Token is strictly isolated on the server.
+ * Implements atomic locks, handles network timeouts gracefully, and protects bot credentials.
  */
 
 import {
   normalizeChannelUsername,
-  recordPublicationLog,
-  checkRecentPublicationDuplicate,
+  acquirePublicationLock,
+  finalizePublicationLock,
 } from "./telegram-channel-store";
 
 export interface ChannelVerificationResult {
@@ -29,6 +29,7 @@ export interface TelegramPublishResult {
   channelUsername: string;
   simulated?: boolean;
   error?: string;
+  isUncertain?: boolean;
 }
 
 /**
@@ -67,7 +68,6 @@ export async function verifyTelegramChannelAdmin(
       };
     }
 
-    // Clean simulated channel
     const cleanName = channelUsername.replace(/^@/, "");
     return {
       verified: true,
@@ -181,7 +181,11 @@ export async function verifyTelegramChannelAdmin(
 
 /**
  * Publishes a single photo with an HTML caption to a Telegram channel via sendPhoto.
- * Strictly enforces Section 9: 1 photo + 1 message, <= 1024 characters, duplicate protection.
+ * Strictly enforces Section 9:
+ * - 1 photo + 1 message caption
+ * - Caption length <= 1,024 runes
+ * - Atomic in-flight lock to prevent race conditions
+ * - Handles uncertain network timeout states
  */
 export async function publishPhotoToTelegramChannel(params: {
   channelUsername: string;
@@ -191,8 +195,9 @@ export async function publishPhotoToTelegramChannel(params: {
   objectType: "classified" | "project";
   userId: string;
   userRole: string;
+  isDemo?: boolean;
 }): Promise<TelegramPublishResult> {
-  const { channelUsername, photoUrl, captionHtml, objectId, objectType, userId, userRole } = params;
+  const { channelUsername, photoUrl, captionHtml, objectId, objectType, userId, userRole, isDemo } = params;
   const normChannel = normalizeChannelUsername(channelUsername);
   const botToken = process.env.TELEGRAM_BOT_TOKEN;
 
@@ -205,8 +210,7 @@ export async function publishPhotoToTelegramChannel(params: {
     };
   }
 
-  // 2. Validate Caption Length (Telegram sendPhoto caption limit is 1024 characters)
-  // Stripping tags to count visible characters (URL inside <a href="..."> is not counted against caption limit)
+  // 2. Validate Caption Length (Telegram sendPhoto caption limit is 1024 runes)
   const visibleTextOnly = captionHtml.replace(/<[^>]+>/g, "");
   if (visibleTextOnly.length > 1024) {
     return {
@@ -216,32 +220,36 @@ export async function publishPhotoToTelegramChannel(params: {
     };
   }
 
-  // 3. Duplicate Prevention Check (Section 9.4)
-  const isDuplicate = await checkRecentPublicationDuplicate(userId, objectId, normChannel, 15);
-  if (isDuplicate) {
+  // 3. Acquire Atomic In-Flight Lock (prevents race condition / parallel double dispatch)
+  const lock = await acquirePublicationLock({
+    userId,
+    objectId,
+    channelUsername: normChannel,
+    userRole,
+    objectType,
+    photoUrl,
+    captionSnippet: visibleTextOnly.slice(0, 100),
+  });
+
+  if (!lock.acquired) {
     return {
       success: false,
       channelUsername: normChannel,
-      error: "Этот объект уже был опубликован в данный канал несколько секунд назад. Во избежание дубликатов повторная публикация отклонена.",
+      error: lock.reason || "Публикация временно заблокирована во избежание дублирования.",
     };
   }
 
-  // 4. Handle Simulated Mode when TELEGRAM_BOT_TOKEN is not set
-  if (!botToken || botToken.trim() === "") {
+  const lockId = lock.lockId!;
+
+  // 4. Force Simulation Mode if Demo Actor or No Bot Token (Section 9.2)
+  if (isDemo || !botToken || botToken.trim() === "") {
     const mockMessageId = Math.floor(1000 + Math.random() * 9000);
     const cleanChannel = normChannel.replace(/^@/, "");
     const postUrl = `https://t.me/${cleanChannel}/${mockMessageId}`;
 
-    await recordPublicationLog({
-      userId,
-      objectId,
-      objectType,
-      userRole,
-      channelUsername: normChannel,
-      messageId: mockMessageId,
-      photoUrl,
-      captionSnippet: visibleTextOnly.slice(0, 100),
+    await finalizePublicationLock(lockId, {
       status: "success",
+      messageId: mockMessageId,
     });
 
     return {
@@ -273,14 +281,7 @@ export async function publishPhotoToTelegramChannel(params: {
       const errDescription = data.description || "Telegram API Error";
       console.error("[Telegram sendPhoto Error]:", data);
 
-      await recordPublicationLog({
-        userId,
-        objectId,
-        objectType,
-        userRole,
-        channelUsername: normChannel,
-        photoUrl,
-        captionSnippet: visibleTextOnly.slice(0, 100),
+      await finalizePublicationLock(lockId, {
         status: "failed",
         error: errDescription,
       });
@@ -307,16 +308,9 @@ export async function publishPhotoToTelegramChannel(params: {
     const cleanChannel = normChannel.replace(/^@/, "");
     const postUrl = `https://t.me/${cleanChannel}/${messageId}`;
 
-    await recordPublicationLog({
-      userId,
-      objectId,
-      objectType,
-      userRole,
-      channelUsername: normChannel,
-      messageId,
-      photoUrl,
-      captionSnippet: visibleTextOnly.slice(0, 100),
+    await finalizePublicationLock(lockId, {
       status: "success",
+      messageId,
     });
 
     return {
@@ -326,25 +320,26 @@ export async function publishPhotoToTelegramChannel(params: {
       channelUsername: normChannel,
     };
   } catch (err: unknown) {
-    const msg = err instanceof Error ? err.message : String(err);
-    console.error("publishPhotoToTelegramChannel exception:", msg);
+    const isTimeout =
+      (err instanceof Error && (err.name === "AbortError" || err.name === "TimeoutError")) ||
+      String(err).includes("timeout");
 
-    await recordPublicationLog({
-      userId,
-      objectId,
-      objectType,
-      userRole,
-      channelUsername: normChannel,
-      photoUrl,
-      captionSnippet: visibleTextOnly.slice(0, 100),
-      status: "failed",
-      error: msg,
+    const errorMsg = isTimeout
+      ? "Сетевой таймаут при отправке в Telegram. Сообщение могло быть доставлено. Проверьте ваш канал перед повторной попыткой."
+      : "Сетевая ошибка при отправке публикации в Telegram. Проверьте соединение и повторите попытку.";
+
+    console.error("publishPhotoToTelegramChannel error:", err);
+
+    await finalizePublicationLock(lockId, {
+      status: isTimeout ? "uncertain" : "failed",
+      error: errorMsg,
     });
 
     return {
       success: false,
       channelUsername: normChannel,
-      error: "Сетевая ошибка при отправке публикации в Telegram. Проверьте соединение и повторите попытку.",
+      error: errorMsg,
+      isUncertain: isTimeout,
     };
   }
 }

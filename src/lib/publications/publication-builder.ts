@@ -293,22 +293,11 @@ export function buildProjectPublicationParts(
   const address = isTg ? project.addressTg || project.address : project.address;
   bodyLines.push(`${labels.location}: ${[city, district, address].filter(Boolean).join(", ")}`);
 
-  const rawDesc = isTg
-    ? project.shortDescriptionTg || project.descriptionTg || project.description
-    : project.shortDescription || project.description;
-  let desc = (rawDesc || "").trim();
-  if (desc.length > 400) {
-    const dotIndex = desc.indexOf(".", 250);
-    if (dotIndex !== -1 && dotIndex <= 380) {
-      desc = desc.slice(0, dotIndex + 1);
-    } else {
-      desc = `${desc.slice(0, 360)}...`;
-    }
-  }
-  if (desc && desc.length > 0) {
+  const desc = isTg ? project.descriptionTg || project.description : project.description;
+  if (desc && desc.trim().length > 0) {
     bodyLines.push("");
     bodyLines.push(`${labels.description}:`);
-    bodyLines.push(desc);
+    bodyLines.push(desc.trim());
   }
 
   const editableBody = bodyLines.join("\n");

@@ -205,7 +205,7 @@ export function PublicationWorkspace({ forcedRole }: PublicationWorkspaceProps) 
   // Live Telegram character counting (Section 6 & 6.1)
   const charCounts = material
     ? calculateTelegramCharCount(editableText, material.protectedContacts, material.mandatoryCtaText)
-    : { totalVisibleChars: 0, remainingChars: 1024, isOverLimit: false, reservedChars: 0 };
+    : { totalVisibleChars: 0, remainingChars: 1024, isOverLimit: false, reservedChars: 0, maxAllowedBodyChars: 1024 };
 
   // Handle Telegram Single Photo Publishing (Section 9.3 & 9.4)
   const handlePublishToTelegram = async () => {
@@ -735,14 +735,24 @@ export function PublicationWorkspace({ forcedRole }: PublicationWorkspaceProps) 
                 <div className="space-y-1.5">
                   <label className="text-[11px] font-bold text-slate-700 flex items-center justify-between">
                     <span>{tDual("Редактируемая часть (заголовок, цена, описание):", "Қисми таҳриршаванда (ном, нарх, тавсиф):")}</span>
-                    <span className="text-[10px] text-slate-400 font-normal">
-                      {tDual("разрешено редактировать", "таҳрир иҷозат аст")}
+                    <span className="text-[10px] text-slate-500 font-mono">
+                      {tDual(
+                        `лимит: ${charCounts.maxAllowedBodyChars} симв.`,
+                        `ҳадди аксар: ${charCounts.maxAllowedBodyChars} аломат`,
+                        `limit: ${charCounts.maxAllowedBodyChars} chars`
+                      )}
                     </span>
                   </label>
                   <textarea
                     value={editableText}
+                    maxLength={charCounts.maxAllowedBodyChars}
                     onChange={(e) => {
-                      setEditableText(e.target.value);
+                      const val = e.target.value;
+                      if (val.length > charCounts.maxAllowedBodyChars) {
+                        setEditableText(val.slice(0, charCounts.maxAllowedBodyChars));
+                      } else {
+                        setEditableText(val);
+                      }
                       setPublishSuccess(null);
                       setPublishError(null);
                     }}

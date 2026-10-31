@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getClassifiedsActor } from "@/lib/classifieds/session";
+import { getPublicationsActor } from "@/lib/publications/auth-guard";
 import { ALL_PROPERTIES, type CatalogProperty } from "@/lib/catalog-data";
 import { INITIAL_PROJECTS, INITIAL_DEVELOPERS, type ProjectData, type DeveloperData } from "@/lib/data/mock-db";
 import {
@@ -7,25 +7,29 @@ import {
   type PublishableObjectType,
 } from "@/lib/publications/publication-builder";
 import { checkObjectOwnership } from "@/lib/publications/ownership";
+import { getCanonicalSiteOrigin } from "@/lib/publications/site-origin";
 import { type Locale } from "@/lib/seo/taxonomy-store";
 
 export async function POST(req: NextRequest) {
   try {
-    const actor = await getClassifiedsActor();
-    const body = await req.json();
+    const actor = await getPublicationsActor(req);
 
-    const { objectId, objectType = "classified", locale = "ru", demoRole, selectedPhoto } = body;
+    if (!actor) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: "unauthorized",
+          message: "Требуется авторизация для подготовки публикации",
+        },
+        { status: 401 }
+      );
+    }
 
-    // Support demoRole or x-demo-role header if not logged in via session
-    const effectiveDemoRole = demoRole || req.headers.get("x-demo-role");
-    const role = actor?.role || effectiveDemoRole || null;
-    const actorId = actor?.id || (role === "developer" ? "usr_dev_rep_01" : "usr_realtor_01");
+    const isRealtor = actor.role === "realtor" || actor.role === "agency_agent" || actor.role === "agency";
+    const isDeveloper = actor.role === "developer";
+    const isSuperAdmin = actor.role === "super_admin" || actor.role === "admin";
 
-    const isRealtor = role === "realtor" || role === "agency_agent" || role === "agency";
-    const isDeveloper = role === "developer";
-    const isSuperAdmin = role === "super_admin" || role === "admin";
-
-    if (!role || (!isRealtor && !isDeveloper && !isSuperAdmin)) {
+    if (!isRealtor && !isDeveloper && !isSuperAdmin) {
       return NextResponse.json(
         {
           success: false,
@@ -36,6 +40,9 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    const body = await req.json();
+    const { objectId, objectType = "classified", locale = "ru", selectedPhoto } = body;
+
     if (!objectId) {
       return NextResponse.json(
         { success: false, error: "bad_request", message: "Параметр objectId обязателен" },
@@ -43,12 +50,12 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Server-side strict ownership check (IDOR Protection per Section 3.3)
-    const ownership = checkObjectOwnership({
+    // Strict server-side ownership check (IDOR Protection per Section 3.3)
+    const ownership = await checkObjectOwnership({
       objectId,
       objectType: objectType as "classified" | "project",
-      actorRole: role,
-      actorId,
+      actorRole: actor.role,
+      actorId: actor.id,
     });
 
     if (!ownership.allowed) {
@@ -58,13 +65,12 @@ export async function POST(req: NextRequest) {
           error: "forbidden",
           message: ownership.reason || "Доступ к чужому объекту заблокирован",
         },
-        { status: 403 }
+        { status: ownership.statusCode || 403 }
       );
     }
 
-    const host = req.headers.get("host") || "maskani.tj";
-    const protocol = host.includes("localhost") ? "http" : "https";
-    const origin = `${protocol}://${host}`;
+    // Trusted origin from environment (Point 8 - Prevents Host spoofing)
+    const origin = getCanonicalSiteOrigin();
 
     let classifiedItem: CatalogProperty | undefined = undefined;
     let projectItem: ProjectData | undefined = undefined;
@@ -102,6 +108,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({
       success: true,
       material: result,
+      validPhotos: ownership.validPhotos,
     });
   } catch (error) {
     console.error("Publications Prepare POST error:", error);
