@@ -6,6 +6,7 @@ import {
   preparePublicationMaterial,
   type PublishableObjectType,
 } from "@/lib/publications/publication-builder";
+import { checkObjectOwnership } from "@/lib/publications/ownership";
 import { type Locale } from "@/lib/seo/taxonomy-store";
 
 export async function POST(req: NextRequest) {
@@ -13,11 +14,12 @@ export async function POST(req: NextRequest) {
     const actor = await getClassifiedsActor();
     const body = await req.json();
 
-    const { objectId, objectType = "classified", locale = "ru", demoRole } = body;
+    const { objectId, objectType = "classified", locale = "ru", demoRole, selectedPhoto } = body;
 
     // Support demoRole or x-demo-role header if not logged in via session
     const effectiveDemoRole = demoRole || req.headers.get("x-demo-role");
     const role = actor?.role || effectiveDemoRole || null;
+    const actorId = actor?.id || (role === "developer" ? "usr_dev_rep_01" : "usr_realtor_01");
 
     const isRealtor = role === "realtor" || role === "agency_agent" || role === "agency";
     const isDeveloper = role === "developer";
@@ -41,6 +43,25 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    // Server-side strict ownership check (IDOR Protection per Section 3.3)
+    const ownership = checkObjectOwnership({
+      objectId,
+      objectType: objectType as "classified" | "project",
+      actorRole: role,
+      actorId,
+    });
+
+    if (!ownership.allowed) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: "forbidden",
+          message: ownership.reason || "Доступ к чужому объекту заблокирован",
+        },
+        { status: 403 }
+      );
+    }
+
     const host = req.headers.get("host") || "maskani.tj";
     const protocol = host.includes("localhost") ? "http" : "https";
     const origin = `${protocol}://${host}`;
@@ -50,23 +71,10 @@ export async function POST(req: NextRequest) {
     let developerItem: DeveloperData | undefined = undefined;
 
     if (objectType === "classified") {
-      classifiedItem = ALL_PROPERTIES.find((p) => p.id === objectId);
-      if (!classifiedItem) {
-        return NextResponse.json(
-          { success: false, error: "not_found", message: "Объявление не найдено" },
-          { status: 404 }
-        );
-      }
+      classifiedItem = ownership.object as CatalogProperty;
     } else if (objectType === "project") {
-      const foundProject = INITIAL_PROJECTS.find((p) => p.id === objectId);
-      if (!foundProject) {
-        return NextResponse.json(
-          { success: false, error: "not_found", message: "Жилой комплекс не найден" },
-          { status: 404 }
-        );
-      }
-      projectItem = foundProject;
-      developerItem = INITIAL_DEVELOPERS.find((d) => d.id === foundProject.developerId);
+      projectItem = ownership.object as ProjectData;
+      developerItem = INITIAL_DEVELOPERS.find((d) => d.id === projectItem?.developerId);
     } else {
       return NextResponse.json(
         { success: false, error: "invalid_type", message: "Некорректный тип объекта" },
@@ -81,6 +89,7 @@ export async function POST(req: NextRequest) {
       developer: developerItem,
       locale: locale as Locale,
       origin,
+      selectedPhoto,
     });
 
     if ("error" in result) {

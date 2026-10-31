@@ -1,9 +1,9 @@
 /**
  * MASKANI.TJ — Module «Object Publication» (Модуль «Публикация объектов»)
- * Conforms to Specification v1.1 (Sections 4, 7, 8, 11)
+ * Conforms to Technical Specification v2.0 (Sections 5, 6, 7, 8, 11)
  *
- * Single Source of Truth for generating universal text publications from existing listings.
- * Pure programmatic logic without AI hallucinations or external LLM dependencies.
+ * Single Source of Truth for generating universal and Telegram-optimized
+ * publications from existing listings. Pure programmatic logic without AI hallucinations.
  */
 
 import { type Locale } from "@/lib/seo/taxonomy-store";
@@ -15,9 +15,21 @@ export type PublishableObjectType = "classified" | "project";
 
 export interface PublicationTargetOptions {
   telegram?: boolean;
-  whatsapp?: boolean;
-  instagram?: boolean;
-  vkontakte?: boolean;
+}
+
+export interface PublicationLimits {
+  maxTotal: number; // 1024
+  reservedChars: number; // length of contacts + CTA + separators
+  maxBodyChars: number; // 1024 - reservedChars
+}
+
+export interface PublicationParts {
+  title: string;
+  editableBody: string;
+  protectedContacts: string;
+  mandatoryCtaHtml: string;
+  mandatoryCtaText: string;
+  canonicalUrl: string;
 }
 
 export interface PreparedPublicationMaterial {
@@ -25,9 +37,14 @@ export interface PreparedPublicationMaterial {
   objectType: PublishableObjectType;
   locale: Locale;
   title: string;
-  text: string;
+  text: string; // Complete combined text (for copy/legacy)
+  editableBody: string; // Permitted for editing by user
+  protectedContacts: string; // Locked contacts block
+  mandatoryCtaHtml: string; // Locked CTA HTML with anchor
+  mandatoryCtaText: string; // Visible CTA anchor text
   canonicalUrl: string;
   images: string[];
+  selectedPhoto?: string; // Single selected cover photo
   contacts: {
     phone?: string;
     whatsapp?: string;
@@ -35,6 +52,7 @@ export interface PreparedPublicationMaterial {
   hasPhotos: boolean;
   photosCount: number;
   statusNotice: string;
+  limits: PublicationLimits;
 }
 
 export interface PublicationBuildError {
@@ -66,7 +84,6 @@ export function hasPublishedTranslation(
   locale: Locale
 ): boolean {
   if (locale === "ru") {
-    // Russian is the base published version for all seeded items
     return true;
   }
 
@@ -81,10 +98,8 @@ export function hasPublishedTranslation(
   }
 
   if (locale === "en") {
-    // Check if English translation fields exist
     const hasTitleEn = "titleEn" in item && Boolean((item as unknown as Record<string, unknown>).titleEn);
     const hasNameEn = "nameEn" in item && Boolean((item as unknown as Record<string, unknown>).nameEn);
-    // In our system, if English is published, titleEn / nameEn must be non-empty
     return hasTitleEn || hasNameEn;
   }
 
@@ -92,21 +107,29 @@ export function hasPublishedTranslation(
 }
 
 /**
- * Builds universal publication text for a Classified Listing (Вторичка, Дома, Аренда)
- * Structure according to TZ Section 7.1:
- * 1. Заголовок
- * 2. Цена и валюта
- * 3. Местоположение
- * 4. Основные характеристики
- * 5. Исходное описание
- * 6. Контакты
- * 7. Актуальная ссылка Maskani.tj
+ * Returns the non-editable mandatory Call-to-Action text according to Section 5.2 & 5.3
  */
-export function buildClassifiedPublicationText(
+export function getMandatoryCtaText(role: "realtor" | "developer", locale: Locale = "ru"): string {
+  if (role === "realtor") {
+    if (locale === "tg") return "Ҳамаи аксҳо ва тафсилоти амвол — дар Maskani.tj";
+    if (locale === "en") return "All photos and property details on Maskani.tj";
+    return "Все фотографии и подробности объекта — на Maskani.tj";
+  } else {
+    if (locale === "tg") return "Хонадонро интихоб намуда, тарҳҳо ва шартҳои харидро дар Maskani.tj омӯзед";
+    if (locale === "en") return "Choose an apartment, explore floor plans and terms on Maskani.tj";
+    return "Выбирайте квартиру, изучайте планировки и условия покупки на Maskani.tj";
+  }
+}
+
+/**
+ * Builds structured publication parts for a Classified Listing (Вторичка, Дома, Аренда)
+ * Conforms to TZ v2.0 Sections 5.1 & 5.2.
+ */
+export function buildClassifiedPublicationParts(
   property: CatalogProperty,
   locale: Locale = "ru",
   origin: string = "https://maskani.tj"
-): { text: string; title: string; canonicalUrl: string } {
+): PublicationParts {
   const isTg = locale === "tg";
   const isEn = locale === "en";
 
@@ -117,12 +140,11 @@ export function buildClassifiedPublicationText(
     : property.title;
 
   const priceStr = formatPublicationPrice(property.priceTjs, property.priceUsd, locale);
-
   const city = isTg ? property.cityTg || property.city : property.city;
   const district = isTg ? property.districtTg || property.district : property.district;
   const landmark = isTg ? property.landmarkTg || property.landmark : property.landmark;
 
-  // Resolve Canonical URL via central URL-service (TZ Section 8.2)
+  // Resolve Canonical URL via central URL-service (TZ Section 8.2 & 5.2)
   const resolvable: ResolvableListing = {
     id: property.id,
     title: property.title,
@@ -136,7 +158,6 @@ export function buildClassifiedPublicationText(
   const canonicalPath = resolveListingUrl(resolvable, locale);
   const canonicalUrl = `${origin.replace(/\/$/, "")}${canonicalPath}`;
 
-  // Localized Labels
   const labels = {
     price: isTg ? "Нарх" : isEn ? "Price" : "Цена",
     area: isTg ? "Масоҳат" : isEn ? "Area" : "Площадь",
@@ -144,76 +165,72 @@ export function buildClassifiedPublicationText(
     floor: isTg ? "Ошёна" : isEn ? "Floor" : "Этаж",
     location: isTg ? "Макон" : isEn ? "Location" : "Местоположение",
     description: isTg ? "Тавсиф" : isEn ? "Description" : "Описание",
-    contacts: isTg ? "Тамос" : isEn ? "Contacts" : "Контакты",
-    more: isTg ? "Маълумоти бештар дар сомона" : isEn ? "View on Maskani" : "Подробнее на Maskani.tj",
+    contacts: isTg ? "Тамос" : isEn ? "Контакты" : "Контакты",
   };
 
-  const lines: string[] = [];
+  // 1. Editable Body (Title, Price, Location, Characteristics, Description)
+  const bodyLines: string[] = [];
+  bodyLines.push(title);
+  bodyLines.push("");
+  bodyLines.push(`${labels.price}: ${priceStr}`);
 
-  // 1. Title
-  lines.push(title);
-  lines.push("");
-
-  // 2. Price
-  lines.push(`${labels.price}: ${priceStr}`);
-
-  // 3. Location
   const locParts = [city, district, landmark].filter(Boolean);
   if (locParts.length > 0) {
-    lines.push(`${labels.location}: ${locParts.join(", ")}`);
+    bodyLines.push(`${labels.location}: ${locParts.join(", ")}`);
   }
 
-  // 4. Characteristics
   if (property.area) {
-    lines.push(`${labels.area}: ${property.area} м²`);
+    bodyLines.push(`${labels.area}: ${property.area} м²`);
   }
   if (property.rooms) {
-    lines.push(`${labels.rooms}: ${property.rooms}`);
+    bodyLines.push(`${labels.rooms}: ${property.rooms}`);
   }
   const floorVal = isTg ? property.floorTg || property.floor : property.floor;
   if (floorVal) {
-    lines.push(`${labels.floor}: ${floorVal}`);
+    bodyLines.push(`${labels.floor}: ${floorVal}`);
   }
   const landVal = isTg ? property.landAreaTg || property.landArea : property.landArea;
   if (landVal) {
-    lines.push(`${isTg ? "Қитъаи замин" : isEn ? "Land Plot" : "Участок"}: ${landVal}`);
+    bodyLines.push(`${isTg ? "Қитъаи замин" : isEn ? "Land Plot" : "Участок"}: ${landVal}`);
   }
 
-  // 5. Description
   const desc = isTg ? property.descriptionTg || property.description : property.description;
   if (desc && desc.trim().length > 0) {
-    lines.push("");
-    lines.push(`${labels.description}:`);
-    lines.push(desc.trim());
+    bodyLines.push("");
+    bodyLines.push(`${labels.description}:`);
+    bodyLines.push(desc.trim());
   }
 
-  // 6. Public Contacts
+  const editableBody = bodyLines.join("\n");
+
+  // 2. Protected Contacts (Section 5.1)
   const phoneVal = property.phone;
-  if (phoneVal) {
-    lines.push("");
-    lines.push(`${labels.contacts}: ${phoneVal}`);
-  }
+  const protectedContacts = phoneVal ? `${labels.contacts}: ${phoneVal}` : "";
 
-  // 7. Canonical URL
-  lines.push("");
-  lines.push(`${labels.more}: ${canonicalUrl}`);
+  // 3. Mandatory Protected CTA (Section 5.2)
+  const ctaText = getMandatoryCtaText("realtor", locale);
+  const mandatoryCtaHtml = `<a href="${canonicalUrl}">${ctaText}</a>`;
 
   return {
-    text: lines.join("\n"),
     title,
+    editableBody,
+    protectedContacts,
+    mandatoryCtaHtml,
+    mandatoryCtaText: ctaText,
     canonicalUrl,
   };
 }
 
 /**
- * Builds universal publication text for a Developer Project (Новостройки / ЖК)
+ * Builds structured publication parts for a Developer Project (Новостройки / ЖК)
+ * Conforms to TZ v2.0 Sections 5.1 & 5.3.
  */
-export function buildProjectPublicationText(
+export function buildProjectPublicationParts(
   project: ProjectData,
   developer?: DeveloperData,
   locale: Locale = "ru",
   origin: string = "https://maskani.tj"
-): { text: string; title: string; canonicalUrl: string } {
+): PublicationParts {
   const isTg = locale === "tg";
   const isEn = locale === "en";
 
@@ -230,7 +247,6 @@ export function buildProjectPublicationText(
     installment: isTg ? "Пардохти қисм-қисм" : isEn ? "Installment plan" : "Рассрочка",
     description: isTg ? "Тавсифи лоиҳа" : isEn ? "Project Overview" : "Описание проекта",
     contacts: isTg ? "Шӯъбаи фурӯш" : isEn ? "Sales Office" : "Отдел продаж",
-    more: isTg ? "Маълумоти бештар ва ҷадвали шоҳмотӣ" : isEn ? "Project details & floor plans" : "Подробнее и шахматка на Maskani.tj",
   };
 
   const statusMap = {
@@ -243,74 +259,194 @@ export function buildProjectPublicationText(
     planned: isTg ? "Дар нақша" : isEn ? "Planned" : "В проекте",
   };
 
-  const lines: string[] = [];
+  // 1. Editable Body
+  const bodyLines: string[] = [];
+  bodyLines.push(title);
+  bodyLines.push("");
 
-  // 1. Title
-  lines.push(title);
-  lines.push("");
-
-  // 2. Developer
   if (developer) {
-    lines.push(`${labels.developer}: ${isTg ? developer.nameTg || developer.name : developer.name}`);
+    bodyLines.push(`${labels.developer}: ${isTg ? developer.nameTg || developer.name : developer.name}`);
   }
 
-  // 3. Status
-  lines.push(`${labels.status}: ${statusMap[project.status] || project.status}`);
+  bodyLines.push(`${labels.status}: ${statusMap[project.status] || project.status}`);
 
-  // 4. Price
   if (project.minTotalPriceTjs > 0) {
     const minPriceFormatted = formatPublicationPrice(project.minTotalPriceTjs, project.minTotalPriceUsd, locale);
-    lines.push(`${labels.priceFrom}: ${minPriceFormatted}`);
+    bodyLines.push(`${labels.priceFrom}: ${minPriceFormatted}`);
   }
   if (project.minPricePerMeterTjs > 0) {
     const meterPriceFormatted = formatPublicationPrice(project.minPricePerMeterTjs, project.minPricePerMeterUsd, locale);
-    lines.push(`${labels.pricePerMeter}: ${meterPriceFormatted}`);
+    bodyLines.push(`${labels.pricePerMeter}: ${meterPriceFormatted}`);
   }
 
-  // 5. Installment terms
   if (project.hasInstallment) {
     const instStr = isTg
       ? `то ${project.installmentMonths} моҳ (пешпардохт аз ${project.installmentDownPaymentPercent}%)`
       : isEn
       ? `up to ${project.installmentMonths} months (down payment from ${project.installmentDownPaymentPercent}%)`
       : `до ${project.installmentMonths} мес. (взнос от ${project.installmentDownPaymentPercent}%)`;
-    lines.push(`${labels.installment}: ${instStr}`);
+    bodyLines.push(`${labels.installment}: ${instStr}`);
   }
 
-  // 6. Location
-  const city = isTg ? project.city : project.city;
+  const city = project.city;
   const district = isTg ? project.districtTg || project.district : project.district;
   const address = isTg ? project.addressTg || project.address : project.address;
-  lines.push(`${labels.location}: ${[city, district, address].filter(Boolean).join(", ")}`);
+  bodyLines.push(`${labels.location}: ${[city, district, address].filter(Boolean).join(", ")}`);
 
-  // 7. Description
-  const desc = isTg ? project.descriptionTg || project.description : project.description;
-  if (desc && desc.trim().length > 0) {
-    lines.push("");
-    lines.push(`${labels.description}:`);
-    lines.push(desc.trim());
+  const rawDesc = isTg
+    ? project.shortDescriptionTg || project.descriptionTg || project.description
+    : project.shortDescription || project.description;
+  let desc = (rawDesc || "").trim();
+  if (desc.length > 400) {
+    const dotIndex = desc.indexOf(".", 250);
+    if (dotIndex !== -1 && dotIndex <= 380) {
+      desc = desc.slice(0, dotIndex + 1);
+    } else {
+      desc = `${desc.slice(0, 360)}...`;
+    }
+  }
+  if (desc && desc.length > 0) {
+    bodyLines.push("");
+    bodyLines.push(`${labels.description}:`);
+    bodyLines.push(desc);
   }
 
-  // 8. Contacts
+  const editableBody = bodyLines.join("\n");
+
+  // 2. Protected Contacts (Section 5.1)
   const phone = developer?.phone || developer?.whatsapp;
-  if (phone) {
-    lines.push("");
-    lines.push(`${labels.contacts}: ${phone}`);
-  }
+  const protectedContacts = phone ? `${labels.contacts}: ${phone}` : "";
 
-  // 9. Canonical URL
-  lines.push("");
-  lines.push(`${labels.more}: ${canonicalUrl}`);
+  // 3. Mandatory Protected CTA (Section 5.3)
+  const ctaText = getMandatoryCtaText("developer", locale);
+  const mandatoryCtaHtml = `<a href="${canonicalUrl}">${ctaText}</a>`;
 
   return {
-    text: lines.join("\n"),
     title,
+    editableBody,
+    protectedContacts,
+    mandatoryCtaHtml,
+    mandatoryCtaText: ctaText,
     canonicalUrl,
   };
 }
 
 /**
- * Prepares complete publication materials for an object with safety and language checks
+ * Escapes characters for Telegram HTML parse mode
+ */
+export function escapeTelegramHtml(text: string): string {
+  return text
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
+}
+
+/**
+ * Assembles final Telegram caption HTML from editable body, protected contacts, and mandatory CTA
+ */
+export function assembleFinalTelegramCaption(
+  editableBody: string,
+  protectedContacts: string,
+  mandatoryCtaHtml: string
+): string {
+  const parts: string[] = [];
+
+  const cleanBody = editableBody.trim();
+  if (cleanBody) {
+    parts.push(escapeTelegramHtml(cleanBody));
+  }
+
+  const cleanContacts = protectedContacts.trim();
+  if (cleanContacts) {
+    parts.push(escapeTelegramHtml(cleanContacts));
+  }
+
+  if (mandatoryCtaHtml.trim()) {
+    parts.push(mandatoryCtaHtml.trim());
+  }
+
+  return parts.join("\n\n");
+}
+
+/**
+ * Calculates character usage against the strict 1,024 Telegram limit (Section 6 & 6.1)
+ */
+export function calculateTelegramCharCount(
+  editableBody: string,
+  protectedContacts: string,
+  mandatoryCtaText: string
+): {
+  totalVisibleChars: number;
+  remainingChars: number;
+  isOverLimit: boolean;
+  reservedChars: number;
+  maxAllowedBodyChars: number;
+} {
+  const bodyLen = editableBody.trim().length;
+  const contactsLen = protectedContacts.trim().length;
+  const ctaLen = mandatoryCtaText.trim().length;
+
+  // Telegram separates blocks with double newlines
+  const separatorsLen = (contactsLen > 0 ? 2 : 0) + (ctaLen > 0 ? 2 : 0);
+  const reservedChars = contactsLen + ctaLen + separatorsLen;
+  const maxAllowedBodyChars = Math.max(0, 1024 - reservedChars);
+
+  const totalVisibleChars = bodyLen + reservedChars;
+  const remainingChars = 1024 - totalVisibleChars;
+  const isOverLimit = totalVisibleChars > 1024;
+
+  return {
+    totalVisibleChars,
+    remainingChars,
+    isOverLimit,
+    reservedChars,
+    maxAllowedBodyChars,
+  };
+}
+
+/**
+ * Backward-compatible full text builder for Classified Listing (v1.1 compatibility)
+ */
+export function buildClassifiedPublicationText(
+  property: CatalogProperty,
+  locale: Locale = "ru",
+  origin: string = "https://maskani.tj"
+): { text: string; title: string; canonicalUrl: string } {
+  const parts = buildClassifiedPublicationParts(property, locale, origin);
+  const labels = {
+    more: locale === "tg" ? "Маълумоти бештар дар сомона" : locale === "en" ? "View on Maskani" : "Подробнее на Maskani.tj",
+  };
+  const fullText = `${parts.editableBody}\n\n${parts.protectedContacts}\n\n${labels.more}: ${parts.canonicalUrl}`;
+  return {
+    text: fullText,
+    title: parts.title,
+    canonicalUrl: parts.canonicalUrl,
+  };
+}
+
+/**
+ * Backward-compatible full text builder for Developer Project (v1.1 compatibility)
+ */
+export function buildProjectPublicationText(
+  project: ProjectData,
+  developer?: DeveloperData,
+  locale: Locale = "ru",
+  origin: string = "https://maskani.tj"
+): { text: string; title: string; canonicalUrl: string } {
+  const parts = buildProjectPublicationParts(project, developer, locale, origin);
+  const labels = {
+    more: locale === "tg" ? "Маълумоти бештар ва ҷадвали шоҳмотӣ" : locale === "en" ? "Project details & floor plans" : "Подробнее и шахматка на Maskani.tj",
+  };
+  const fullText = `${parts.editableBody}\n\n${parts.protectedContacts}\n\n${labels.more}: ${parts.canonicalUrl}`;
+  return {
+    text: fullText,
+    title: parts.title,
+    canonicalUrl: parts.canonicalUrl,
+  };
+}
+
+/**
+ * Prepares complete publication materials for an object with safety, ownership and language checks
  */
 export function preparePublicationMaterial(params: {
   objectType: PublishableObjectType;
@@ -319,8 +455,9 @@ export function preparePublicationMaterial(params: {
   developer?: DeveloperData;
   locale: Locale;
   origin?: string;
+  selectedPhoto?: string;
 }): PreparedPublicationMaterial | PublicationBuildError {
-  const { objectType, classified, project, developer, locale, origin } = params;
+  const { objectType, classified, project, developer, locale, origin = "https://maskani.tj" } = params;
 
   if (objectType === "classified") {
     if (!classified) {
@@ -339,28 +476,41 @@ export function preparePublicationMaterial(params: {
       };
     }
 
-    const { text, title, canonicalUrl } = buildClassifiedPublicationText(classified, locale, origin);
+    const parts = buildClassifiedPublicationParts(classified, locale, origin);
     const images = Array.isArray(classified.images) && classified.images.length > 0
       ? classified.images
       : classified.image
       ? [classified.image]
       : [];
 
+    const selectedPhoto = params.selectedPhoto || images[0] || "";
+    const counts = calculateTelegramCharCount(parts.editableBody, parts.protectedContacts, parts.mandatoryCtaText);
+
     return {
       objectId: classified.id,
       objectType: "classified",
       locale,
-      title,
-      text,
-      canonicalUrl,
+      title: parts.title,
+      text: `${parts.editableBody}\n\n${parts.protectedContacts}\n\n${parts.mandatoryCtaText}: ${parts.canonicalUrl}`,
+      editableBody: parts.editableBody,
+      protectedContacts: parts.protectedContacts,
+      mandatoryCtaHtml: parts.mandatoryCtaHtml,
+      mandatoryCtaText: parts.mandatoryCtaText,
+      canonicalUrl: parts.canonicalUrl,
       images,
+      selectedPhoto,
       contacts: {
         phone: classified.phone,
         whatsapp: classified.whatsapp,
       },
       hasPhotos: images.length > 0,
       photosCount: images.length,
-      statusNotice: "Материалы готовы к публикации",
+      statusNotice: "Материалы готовы к публикации в Telegram",
+      limits: {
+        maxTotal: 1024,
+        reservedChars: counts.reservedChars,
+        maxBodyChars: counts.maxAllowedBodyChars,
+      },
     };
   }
 
@@ -381,7 +531,7 @@ export function preparePublicationMaterial(params: {
       };
     }
 
-    const { text, title, canonicalUrl } = buildProjectPublicationText(project, developer, locale, origin);
+    const parts = buildProjectPublicationParts(project, developer, locale, origin);
     const images: string[] = [];
     if (project.coverImageUrl) images.push(project.coverImageUrl);
     if (Array.isArray(project.images)) {
@@ -390,21 +540,34 @@ export function preparePublicationMaterial(params: {
       }
     }
 
+    const selectedPhoto = params.selectedPhoto || images[0] || "";
+    const counts = calculateTelegramCharCount(parts.editableBody, parts.protectedContacts, parts.mandatoryCtaText);
+
     return {
       objectId: project.id,
       objectType: "project",
       locale,
-      title,
-      text,
-      canonicalUrl,
+      title: parts.title,
+      text: `${parts.editableBody}\n\n${parts.protectedContacts}\n\n${parts.mandatoryCtaText}: ${parts.canonicalUrl}`,
+      editableBody: parts.editableBody,
+      protectedContacts: parts.protectedContacts,
+      mandatoryCtaHtml: parts.mandatoryCtaHtml,
+      mandatoryCtaText: parts.mandatoryCtaText,
+      canonicalUrl: parts.canonicalUrl,
       images,
+      selectedPhoto,
       contacts: {
         phone: developer?.phone,
         whatsapp: developer?.whatsapp,
       },
       hasPhotos: images.length > 0,
       photosCount: images.length,
-      statusNotice: "Материалы готовы к публикации",
+      statusNotice: "Материалы готовы к публикации в Telegram",
+      limits: {
+        maxTotal: 1024,
+        reservedChars: counts.reservedChars,
+        maxBodyChars: counts.maxAllowedBodyChars,
+      },
     };
   }
 
