@@ -822,39 +822,55 @@ export default function HomePage() {
                   transition={{ type: "spring", stiffness: 350, damping: 25 }}
                   className="glass-card rounded-2xl overflow-hidden group transition-all duration-300 hover:shadow-[0_22px_45px_-12px_rgba(16,185,129,0.18)] flex flex-col"
                 >
-                  <div className="relative h-64 sm:h-72 w-full overflow-hidden bg-slate-100">
+                  <div className="relative h-64 sm:h-72 w-full overflow-hidden bg-slate-900 rounded-t-2xl">
                     <img
                       src={coverImage}
                       alt={projName}
+                      onError={(e) => {
+                        e.currentTarget.onerror = null;
+                        e.currentTarget.src = "/images/complexes/hero-1.jpg";
+                      }}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                     />
 
-                    <div className="absolute top-3.5 left-3.5 flex flex-wrap gap-2 z-10">
-                      <span className="inline-flex items-center px-2.5 py-1 rounded-xl bg-emerald-500/30 hover:bg-emerald-500/40 backdrop-blur-xl border border-emerald-400/50 text-white font-bold text-xs shadow-[0_4px_16px_rgba(16,185,129,0.30),inset_0_1px_1.5px_rgba(255,255,255,0.45)] drop-shadow-[0_1px_2px_rgba(0,0,0,0.7)] select-none transition-all">
-                        {projStatus}
-                      </span>
-                      <span className="inline-flex items-center px-2.5 py-1 rounded-xl bg-black/25 hover:bg-black/35 backdrop-blur-xl border border-white/25 text-white font-bold text-xs shadow-[0_4px_16px_rgba(0,0,0,0.25),inset_0_1px_1.5px_rgba(255,255,255,0.35)] drop-shadow-[0_1px_2px_rgba(0,0,0,0.7)] select-none transition-all">
-                        {projClass}
-                      </span>
+                    {/* Top Row: Responsive Flex Container (Guarantees NO badge collisions on mobile) */}
+                    <div className="absolute top-3 left-3 right-3 flex items-start justify-between gap-2 z-10 pointer-events-none">
+                      {/* Left: Status & Building Class Badges */}
+                      <div className="flex flex-wrap items-center gap-1.5 max-w-[62%] sm:max-w-[70%] pointer-events-auto">
+                        <span className="inline-flex items-center px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-xl bg-emerald-500/35 hover:bg-emerald-500/45 backdrop-blur-xl border border-emerald-400/50 text-white font-bold text-[11px] sm:text-xs shadow-[0_4px_16px_rgba(16,185,129,0.30),inset_0_1px_1.5px_rgba(255,255,255,0.45)] drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)] select-none transition-all">
+                          {projStatus}
+                        </span>
+                        <span className="inline-flex items-center px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-xl bg-black/35 hover:bg-black/45 backdrop-blur-xl border border-white/25 text-white font-bold text-[11px] sm:text-xs shadow-[0_4px_16px_rgba(0,0,0,0.25),inset_0_1px_1.5px_rgba(255,255,255,0.35)] drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)] select-none transition-all">
+                          {projClass}
+                        </span>
+                      </div>
+
+                      {/* Right: Developer Pill Badge */}
+                      <Link
+                        href={developer ? `/developers/${developer.slug}` : "#"}
+                        className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-black/35 hover:bg-black/50 backdrop-blur-xl border border-white/25 text-[11px] sm:text-xs font-bold text-white shadow-[0_4px_16px_rgba(0,0,0,0.25),inset_0_1px_1.5px_rgba(255,255,255,0.35)] drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)] transition-all hover:scale-105 select-none pointer-events-auto shrink-0 max-w-[36%] sm:max-w-[40%]"
+                      >
+                        <DeveloperAvatar name={projDevName} size="sm" className="h-4 w-4 sm:h-5 sm:w-5 text-[8px] sm:text-[9px] shrink-0" />
+                        <span className="truncate drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]">{projDevName}</span>
+                        <CheckCircle2 className="h-3 w-3 sm:h-3.5 sm:w-3.5 text-emerald-400 drop-shadow-[0_0_6px_rgba(52,211,153,0.9)] shrink-0" />
+                      </Link>
                     </div>
 
-                    <div className="absolute bottom-3.5 left-3.5 z-10 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-black/25 hover:bg-black/35 backdrop-blur-xl border border-white/25 text-white font-bold text-xs shadow-[0_4px_16px_rgba(0,0,0,0.25),inset_0_1px_1.5px_rgba(255,255,255,0.35)] drop-shadow-[0_1px_2px_rgba(0,0,0,0.7)] select-none transition-all">
-                      <Percent className="h-3.5 w-3.5 text-emerald-400 drop-shadow-[0_0_6px_rgba(52,211,153,0.9)] shrink-0" />
-                      <span className="text-white font-bold drop-shadow-[0_1px_2px_rgba(0,0,0,0.7)]">{projInstallment} {projDownPayment ? `(${projDownPayment})` : ""}</span>
-                    </div>
+                    {/* Bottom Row: Responsive Flex Container (Guarantees NO badge collisions on mobile) */}
+                    <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between gap-2 z-10 pointer-events-none">
+                      {/* Left: Installment Badge */}
+                      <div className="inline-flex items-center gap-1.5 px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-xl bg-black/35 hover:bg-black/45 backdrop-blur-xl border border-white/25 text-white font-bold text-[11px] sm:text-xs shadow-[0_4px_16px_rgba(0,0,0,0.25),inset_0_1px_1.5px_rgba(255,255,255,0.35)] drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)] select-none transition-all pointer-events-auto truncate max-w-[65%] sm:max-w-[70%]">
+                        <Percent className="h-3 w-3 sm:h-3.5 sm:w-3.5 text-emerald-400 drop-shadow-[0_0_6px_rgba(52,211,153,0.9)] shrink-0" />
+                        <span className="truncate drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]">
+                          {projInstallment} {projDownPayment ? `(${projDownPayment})` : ""}
+                        </span>
+                      </div>
 
-                    <div className="absolute bottom-3.5 right-3.5 z-10">
-                      <ProjectCatalogCardBadge slug={proj.slug} />
+                      {/* Right: Engagement Stats Badge (Favorites & Views) */}
+                      <div className="shrink-0 pointer-events-auto">
+                        <ProjectCatalogCardBadge slug={proj.slug} />
+                      </div>
                     </div>
-
-                    <Link
-                      href={developer ? `/developers/${developer.slug}` : "#"}
-                      className="absolute top-3.5 right-3.5 z-10 inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-black/25 hover:bg-black/35 backdrop-blur-xl border border-white/25 text-xs font-bold text-white shadow-[0_4px_16px_rgba(0,0,0,0.25),inset_0_1px_1.5px_rgba(255,255,255,0.35)] drop-shadow-[0_1px_2px_rgba(0,0,0,0.7)] transition-all hover:scale-105 select-none"
-                    >
-                      <DeveloperAvatar name={projDevName} size="sm" className="h-5 w-5 text-[9px]" />
-                      <span className="truncate max-w-[130px] drop-shadow-[0_1px_2px_rgba(0,0,0,0.7)]">{projDevName}</span>
-                      <CheckCircle2 className="h-3.5 w-3.5 text-emerald-400 drop-shadow-[0_0_6px_rgba(52,211,153,0.9)] shrink-0" />
-                    </Link>
                   </div>
 
                   <CardContent className="p-5 sm:p-6 space-y-4 flex-1 flex flex-col justify-between">

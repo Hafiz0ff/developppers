@@ -354,9 +354,9 @@ export function Header() {
             {/* Language Selector */}
             <LanguageSwitcher />
 
-            {/* Currency Selector */}
+            {/* Currency Selector (Desktop / Tablet - hidden on small mobile to give breathing room) */}
             <DropdownMenu>
-              <DropdownMenuTrigger className="flex h-8 box-border items-center gap-1 px-2 sm:px-2.5 rounded-xl border border-white/15 bg-white/[0.05] hover:bg-white/10 active:bg-white/15 backdrop-blur-xl text-white text-xs font-bold shadow-[inset_0_1px_1px_rgba(255,255,255,0.3)] drop-shadow-[0_1px_2px_rgba(0,0,0,0.7)] transition-all outline-hidden cursor-pointer shrink-0">
+              <DropdownMenuTrigger className="hidden sm:flex h-8 box-border items-center gap-1 px-2 sm:px-2.5 rounded-xl border border-white/15 bg-white/[0.05] hover:bg-white/10 active:bg-white/15 backdrop-blur-xl text-white text-xs font-bold shadow-[inset_0_1px_1px_rgba(255,255,255,0.3)] drop-shadow-[0_1px_2px_rgba(0,0,0,0.7)] transition-all outline-hidden cursor-pointer shrink-0">
                 <span>{currency}</span>
                 <ChevronDown className="h-3 w-3 text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.7)]" />
               </DropdownMenuTrigger>
@@ -386,8 +386,8 @@ export function Header() {
               </DropdownMenuContent>
             </DropdownMenu>
 
-            {/* Compare Link / Icon */}
-            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="shrink-0">
+            {/* Compare Link / Icon (Hidden on small mobile to prevent header overflow) */}
+            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="hidden sm:block shrink-0">
               <Link
                 href="/compare"
                 className="relative flex h-8 w-8 box-border items-center justify-center rounded-xl border border-white/15 bg-white/[0.05] hover:bg-white/10 active:bg-white/15 backdrop-blur-xl text-white shadow-[inset_0_1px_1px_rgba(255,255,255,0.3)] drop-shadow-[0_1px_2px_rgba(0,0,0,0.7)] transition-all cursor-pointer"
@@ -563,27 +563,31 @@ export function Header() {
               </motion.button>
             )}
 
-            {/* Mobile Hamburger Button */}
+            {/* Mobile Hamburger Button (High contrast with shadows for bright & dark backgrounds, properly contained) */}
             <button
               type="button"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="lg:hidden flex h-8 w-8 box-border items-center justify-center rounded-xl border border-white/20 bg-white/[0.06] hover:bg-white/15 text-white cursor-pointer backdrop-blur-xl transition-all shrink-0 ml-0.5"
+              className="lg:hidden flex h-8 w-8 box-border items-center justify-center rounded-xl border border-white/30 bg-slate-950/45 hover:bg-slate-950/65 active:scale-95 text-white cursor-pointer backdrop-blur-2xl transition-all shrink-0 shadow-[0_4px_16px_rgba(0,0,0,0.45),inset_0_1px_1.5px_rgba(255,255,255,0.4)] drop-shadow-[0_2px_4px_rgba(0,0,0,0.85)]"
               aria-label="Toggle navigation menu"
             >
-              {mobileMenuOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
+              {mobileMenuOpen ? (
+                <X className="h-4 w-4 text-white drop-shadow-[0_1px_3px_rgba(0,0,0,0.9)]" />
+              ) : (
+                <Menu className="h-4 w-4 text-white drop-shadow-[0_1px_3px_rgba(0,0,0,0.9)]" />
+              )}
             </button>
           </div>
         </div>
       </header>
 
-      {/* Mobile Drawer Navigation */}
+      {/* Mobile Drawer Navigation (Tahoe Frosted Liquid Glass Style) */}
       <AnimatePresence>
         {mobileMenuOpen && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-40 bg-black/70 backdrop-blur-md lg:hidden flex flex-col justify-end"
+            className="fixed inset-0 z-40 bg-slate-950/50 backdrop-blur-md backdrop-saturate-150 lg:hidden flex flex-col justify-end"
             onClick={() => setMobileMenuOpen(false)}
           >
             <motion.div
@@ -592,22 +596,69 @@ export function Header() {
               exit={{ y: "100%" }}
               transition={{ type: "spring", damping: 28, stiffness: 300 }}
               onClick={(e) => e.stopPropagation()}
-              className="w-full max-h-[85vh] overflow-y-auto bg-slate-900/95 border-t border-white/20 rounded-t-3xl p-5 space-y-4 text-white"
+              className="w-full max-h-[85vh] overflow-y-auto bg-[#080B11]/90 backdrop-blur-2xl border-t border-white/20 rounded-t-[32px] p-5 pb-8 space-y-4 text-white shadow-[0_-20px_50px_rgba(0,0,0,0.6),inset_0_1px_1.5px_rgba(255,255,255,0.35)]"
             >
+              {/* Tahoe Pull Indicator Handle */}
+              <div className="w-10 h-1.5 rounded-full bg-white/25 mx-auto -mt-1 mb-2" />
+
+              {/* Drawer Header */}
               <div className="flex items-center justify-between pb-3 border-b border-white/10">
-                <span className="font-extrabold text-base tracking-tight text-white flex items-center gap-1">
-                  MASKANI<span className="text-emerald-400">.TJ</span>
+                <span className="font-extrabold text-base tracking-tight text-white flex items-center gap-2">
+                  <div className="h-7 w-7 rounded-lg bg-gradient-to-tr from-emerald-600 to-teal-500 flex items-center justify-center text-white shadow-sm">
+                    <Building2 className="h-4 w-4" />
+                  </div>
+                  MASKANI<span className="text-emerald-400 font-bold">.TJ</span>
                 </span>
                 <button
                   type="button"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="h-8 w-8 rounded-full bg-white/10 flex items-center justify-center text-white/80 hover:text-white"
+                  className="h-8 w-8 rounded-full border border-white/15 bg-white/10 flex items-center justify-center text-white/80 hover:text-white hover:bg-white/20 transition-colors cursor-pointer"
                 >
                   <X className="h-4 w-4" />
                 </button>
               </div>
 
-              {/* Mobile Menu Accordion Items */}
+              {/* Mobile Quick Action Strip (Currency, Compare, Profile/Login) */}
+              <div className="grid grid-cols-3 gap-2 pb-1">
+                {/* Currency Switcher */}
+                <button
+                  type="button"
+                  onClick={() => setCurrency(currency === "TJS" ? "USD" : "TJS")}
+                  className="flex items-center justify-center gap-1.5 py-2 px-2.5 rounded-xl border border-white/10 bg-white/[0.04] text-xs font-semibold text-white/90 hover:bg-white/10 active:bg-white/15 transition-all shadow-[inset_0_1px_1px_rgba(255,255,255,0.15)] cursor-pointer"
+                  title="Переключить валюту"
+                >
+                  <span className="text-emerald-400 font-bold">{currency}</span>
+                  <span className="text-[10px] text-white/50">{currency === "TJS" ? "⇄ USD" : "⇄ TJS"}</span>
+                </button>
+
+                <Link
+                  href="/compare"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="flex items-center justify-center gap-1.5 py-2 px-2.5 rounded-xl border border-white/10 bg-white/[0.04] text-xs font-semibold text-white/90 hover:bg-white/10 transition-all shadow-[inset_0_1px_1px_rgba(255,255,255,0.15)]"
+                >
+                  <ArrowLeftRight className="h-3.5 w-3.5 text-emerald-400" />
+                  <span>{t.nav.compare}</span>
+                  {compareCount > 0 && (
+                    <span className="bg-emerald-500 text-white font-bold text-[9px] px-1.5 py-0.2 rounded-full">
+                      {compareCount}
+                    </span>
+                  )}
+                </Link>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    setMobileMenuOpen(false);
+                    handleOpenAuth("login");
+                  }}
+                  className="flex items-center justify-center gap-1.5 py-2 px-2.5 rounded-xl border border-emerald-500/30 bg-emerald-500/15 text-xs font-semibold text-emerald-300 hover:bg-emerald-500/25 transition-all shadow-[inset_0_1px_1px_rgba(255,255,255,0.15)] cursor-pointer"
+                >
+                  <LogIn className="h-3.5 w-3.5 text-emerald-400" />
+                  <span>{session ? t.nav.profile : t.nav.login}</span>
+                </button>
+              </div>
+
+              {/* Mobile Menu Accordion Items (Tahoe Liquid Frosted Glass) */}
               <div className="space-y-2">
                 {menuTree.map((item) => {
                   const hasChildren = Boolean(item.children && item.children.length > 0);
@@ -620,7 +671,7 @@ export function Header() {
                         key={item.id}
                         href={resolveMenuItemUrl(item, activeCity, language)}
                         onClick={() => setMobileMenuOpen(false)}
-                        className="flex items-center justify-between p-3 rounded-xl bg-white/5 hover:bg-white/10 font-semibold text-sm transition-all"
+                        className="flex items-center justify-between p-3.5 rounded-2xl border border-white/10 bg-white/[0.04] hover:bg-white/[0.08] active:bg-white/[0.12] font-semibold text-sm transition-all shadow-[inset_0_1px_1px_rgba(255,255,255,0.15)]"
                       >
                         <div className="flex items-center gap-2.5">
                           {Icon && <Icon className="h-4 w-4 text-emerald-400" />}
@@ -632,25 +683,35 @@ export function Header() {
                   }
 
                   return (
-                    <div key={item.id} className="rounded-xl bg-white/5 overflow-hidden">
+                    <div
+                      key={item.id}
+                      className="rounded-2xl border border-white/10 bg-white/[0.04] overflow-hidden transition-all shadow-[inset_0_1px_1px_rgba(255,255,255,0.15)]"
+                    >
                       <button
                         type="button"
                         onClick={() => setMobileExpandedSection(isExpanded ? null : item.id)}
-                        className="w-full flex items-center justify-between p-3 font-semibold text-sm transition-all"
+                        className="w-full flex items-center justify-between p-3.5 font-semibold text-sm transition-all cursor-pointer hover:bg-white/[0.03]"
                       >
                         <div className="flex items-center gap-2.5">
                           {Icon && <Icon className="h-4 w-4 text-emerald-400" />}
                           <span>{item.label[language]}</span>
                         </div>
-                        <ChevronDown className={`h-4 w-4 text-white/40 transition-transform ${isExpanded ? "rotate-180" : ""}`} />
+                        <ChevronDown
+                          className={`h-4 w-4 text-white/40 transition-transform duration-300 ${
+                            isExpanded ? "rotate-180 text-emerald-400" : ""
+                          }`}
+                        />
                       </button>
 
                       {isExpanded && (
-                        <div className="p-3 pt-0 space-y-2 border-t border-white/5">
+                        <div className="p-3 pt-1 space-y-1.5 border-t border-white/10 bg-white/[0.02]">
                           {item.children?.map((child) => {
                             if (child.type === "group-header") {
                               return (
-                                <div key={child.id} className="text-[10px] font-bold uppercase tracking-wider text-emerald-400 pt-2 px-1">
+                                <div
+                                  key={child.id}
+                                  className="text-[10px] font-bold uppercase tracking-wider text-emerald-400 pt-2 px-2 pb-0.5"
+                                >
                                   {child.label[language]}
                                 </div>
                               );
@@ -660,7 +721,7 @@ export function Header() {
                                 key={child.id}
                                 href={resolveMenuItemUrl(child, activeCity, language)}
                                 onClick={() => setMobileMenuOpen(false)}
-                                className="block py-1.5 px-3 rounded-lg text-xs text-white/80 hover:text-white hover:bg-white/10 transition-colors"
+                                className="block py-2 px-3 rounded-xl text-xs text-white/80 hover:text-white hover:bg-white/10 transition-colors"
                               >
                                 {child.label[language]}
                               </Link>
@@ -673,23 +734,35 @@ export function Header() {
                 })}
               </div>
 
-              {/* Mobile Post Ad Buttons */}
+              {/* Mobile Post Ad Buttons (Tahoe Emerald Accents) */}
               <div className="pt-2 space-y-2 border-t border-white/10">
                 <Link
                   href="/classifieds/new?deal=sale"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-md"
+                  className="w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold text-xs shadow-lg shadow-emerald-900/40 transition-transform active:scale-[0.99]"
                 >
                   <Home className="h-4 w-4" />
-                  <span>{language === "tg" ? "Фурӯши амвол" : language === "en" ? "Sell Property" : "Продать недвижимость"}</span>
+                  <span>
+                    {language === "tg"
+                      ? "Фурӯши амвол"
+                      : language === "en"
+                      ? "Sell Property"
+                      : "Продать недвижимость"}
+                  </span>
                 </Link>
                 <Link
                   href="/classifieds/new?deal=rent"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl border border-emerald-400/50 bg-emerald-500/15 text-white font-bold text-xs"
+                  className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl border border-emerald-400/40 bg-emerald-500/10 text-emerald-300 hover:bg-emerald-500/20 font-bold text-xs transition-colors"
                 >
                   <KeyRound className="h-4 w-4 text-emerald-400" />
-                  <span>{language === "tg" ? "Ба иҷора супоридан" : language === "en" ? "Rent Out Property" : "Сдать в аренду"}</span>
+                  <span>
+                    {language === "tg"
+                      ? "Ба иҷора супоридан"
+                      : language === "en"
+                      ? "Rent Out Property"
+                      : "Сдать в аренду"}
+                  </span>
                 </Link>
               </div>
             </motion.div>
