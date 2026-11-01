@@ -624,7 +624,11 @@ export function LoginFormV7({
               >
                 {SOGD_CITIES.map((c) => (
                   <option key={c.value} value={c.value} className="bg-[#14141D] text-white">
-                    {language === "tg" ? c.nameTj : c.nameRu}
+                    {language === "tg"
+                      ? c.nameTj
+                      : language === "en"
+                        ? c.nameEn || c.nameRu
+                        : c.nameRu}
                   </option>
                 ))}
               </select>
