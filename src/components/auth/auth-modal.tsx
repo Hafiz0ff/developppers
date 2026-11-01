@@ -1,26 +1,11 @@
 "use client";
 
-import React, { useState } from "react";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { SOGD_CITIES } from "@/lib/constants/locations";
-import { signIn, signUp } from "@/lib/auth-client";
-import { Loader2, Building2, User, KeyRound, Phone, MapPin } from "lucide-react";
+import React, { useEffect, useState } from "react";
+import { motion, AnimatePresence } from "motion/react";
+import { X, ShieldCheck, KeyRound } from "lucide-react";
+import { LoginFormV7 } from "./login-form-v7";
+import { OtpVerificationV7 } from "./otp-verification-v7";
+import { useLanguage } from "@/context/language-context";
 
 interface AuthModalProps {
   isOpen: boolean;
@@ -29,313 +14,143 @@ interface AuthModalProps {
 }
 
 export function AuthModal({ isOpen, onClose, defaultTab = "login" }: AuthModalProps) {
-  const [tab, setTab] = useState<"login" | "register">(defaultTab);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const { language } = useLanguage();
+  const [step, setStep] = useState<"auth" | "otp">("auth");
+  const [otpPhone, setOtpPhone] = useState<string>("+992 92 700 0000");
+  const [demoCode, setDemoCode] = useState<string>("4545");
 
-  // Form states
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [name, setName] = useState("");
-  const [phone, setPhone] = useState("+992 ");
-  const [city, setCity] = useState("khujand");
-  const [role, setRole] = useState<"user" | "realtor" | "developer">("user");
-  const [agencyName, setAgencyName] = useState("");
-
-  const resetForm = () => {
-    setEmail("");
-    setPassword("");
-    setName("");
-    setPhone("+992 ");
-    setError(null);
-  };
-
-  const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    setError(null);
-
-    try {
-      const res = await signIn.email({
-        email,
-        password,
-      });
-
-      if (res.error) {
-        setError(res.error.message || "Ошибка входа. Проверьте email и пароль.");
-      } else {
-        onClose();
-        resetForm();
-        window.location.reload();
-      }
-    } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : "Не удалось войти в аккаунт";
-      setError(message);
-    } finally {
-      setLoading(false);
+  useEffect(() => {
+    if (isOpen) {
+      setStep("auth");
     }
-  };
+  }, [isOpen, defaultTab]);
 
-  const handleRegister = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    setError(null);
+  // Close on Escape
+  useEffect(() => {
+    if (!isOpen) return;
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [isOpen, onClose]);
 
-    try {
-      const res = await signUp.email({
-        email,
-        password,
-        name,
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        ...({
-          role,
-          phone,
-          city,
-          agencyName: role === "realtor" ? agencyName : undefined,
-        } as any),
-      });
-
-      if (res.error) {
-        setError(res.error.message || "Ошибка регистрации. Проверьте данные.");
-      } else {
-        onClose();
-        resetForm();
-        window.location.reload();
-      }
-    } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : "Не удалось зарегистрироваться";
-      setError(message);
-    } finally {
-      setLoading(false);
-    }
+  const tr = (ru: string, tg: string, en: string) => {
+    if (language === "tg") return tg;
+    if (language === "en") return en;
+    return ru;
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="sm:max-w-md max-h-[90vh] overflow-y-auto">
-        <DialogHeader>
-          <div className="flex items-center gap-2 mb-1">
-            <div className="h-9 w-9 rounded-lg bg-emerald-600 flex items-center justify-center text-white font-bold shadow-sm">
-              <Building2 className="h-5 w-5" />
-            </div>
-            <div>
-              <DialogTitle className="text-xl font-bold">
-                {tab === "login" ? "Вход в аккаунт" : "Регистрация на портале"}
-              </DialogTitle>
-              <DialogDescription className="text-xs text-muted-foreground">
-                Недвижимость Согдийской области (Худжанд и регионы)
-              </DialogDescription>
-            </div>
-          </div>
-        </DialogHeader>
+    <AnimatePresence>
+      {isOpen && (
+        <div
+          role="dialog"
+          aria-modal="true"
+          className="fixed inset-0 z-[120] flex items-center justify-center overflow-y-auto p-4 sm:p-6"
+        >
+          {/* Deep Obsidian Frosted Backdrop */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.22 }}
+            onClick={onClose}
+            className="fixed inset-0 bg-[#060609]/85 backdrop-blur-xl"
+          />
 
-        {/* Tab switchers */}
-        <div className="flex border rounded-lg p-1 bg-muted/40">
-          <button
-            type="button"
-            onClick={() => {
-              setTab("login");
-              setError(null);
-            }}
-            className={`flex-1 py-1.5 text-sm font-medium rounded-md transition-all ${
-              tab === "login"
-                ? "bg-background shadow-xs text-foreground font-semibold"
-                : "text-muted-foreground hover:text-foreground"
-            }`}
+          {/* Modal Stage */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.94, y: 14 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.95, y: 10 }}
+            transition={{ type: "spring", stiffness: 320, damping: 28 }}
+            className="relative z-10 flex w-full max-w-[440px] flex-col items-center my-auto"
           >
-            Войти
-          </button>
-          <button
-            type="button"
-            onClick={() => {
-              setTab("register");
-              setError(null);
-            }}
-            className={`flex-1 py-1.5 text-sm font-medium rounded-md transition-all ${
-              tab === "register"
-                ? "bg-background shadow-xs text-foreground font-semibold"
-                : "text-muted-foreground hover:text-foreground"
-            }`}
-          >
-            Регистрация
-          </button>
-        </div>
-
-        {error && (
-          <div className="p-3 text-xs rounded-md bg-destructive/10 text-destructive border border-destructive/20">
-            {error}
-          </div>
-        )}
-
-        {tab === "login" ? (
-          <form onSubmit={handleLogin} className="space-y-4 pt-1">
-            <div className="space-y-1.5">
-              <Label htmlFor="login-email">Электронная почта (Email)</Label>
-              <Input
-                id="login-email"
-                type="email"
-                placeholder="name@example.tj"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
-            </div>
-            <div className="space-y-1.5">
-              <div className="flex items-center justify-between">
-                <Label htmlFor="login-password">Пароль</Label>
-              </div>
-              <Input
-                id="login-password"
-                type="password"
-                placeholder="••••••••"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
-            </div>
-
-            <Button
-              type="submit"
-              className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-medium"
-              disabled={loading}
-            >
-              {loading ? (
-                <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Вход...
-                </>
-              ) : (
-                <>
-                  <KeyRound className="mr-2 h-4 w-4" />
-                  Войти
-                </>
-              )}
-            </Button>
-          </form>
-        ) : (
-          <form onSubmit={handleRegister} className="space-y-3.5 pt-1">
-            <div className="space-y-1.5">
-              <Label>Кто вы?</Label>
-              <Select
-                value={role}
-                onValueChange={(val) => {
-                  if (val) setRole(val as "user" | "realtor" | "developer");
-                }}
-              >
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="user">Покупатель / Частный продавец</SelectItem>
-                  <SelectItem value="realtor">Риелтор / Агентство недвижимости</SelectItem>
-                  <SelectItem value="developer">Представитель застройщика</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-
-            <div className="space-y-1.5">
-              <Label htmlFor="reg-name">Имя и фамилия</Label>
-              <Input
-                id="reg-name"
-                placeholder="Дилшод Назаров"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                required
-              />
-            </div>
-
-            {role === "realtor" && (
-              <div className="space-y-1.5">
-                <Label htmlFor="reg-agency">Название агентства (опционально)</Label>
-                <Input
-                  id="reg-agency"
-                  placeholder="Сугд-Инвест Недвижимость"
-                  value={agencyName}
-                  onChange={(e) => setAgencyName(e.target.value)}
-                />
-              </div>
-            )}
-
-            <div className="grid grid-cols-2 gap-2">
-              <div className="space-y-1.5">
-                <Label htmlFor="reg-phone">Номер телефона</Label>
-                <div className="relative">
-                  <Input
-                    id="reg-phone"
-                    placeholder="+992 92 700 0000"
-                    value={phone}
-                    onChange={(e) => setPhone(e.target.value)}
-                    required
-                  />
-                </div>
-              </div>
-              <div className="space-y-1.5">
-                <Label>Город / Район</Label>
-                <Select
-                  value={city}
-                  onValueChange={(val) => {
-                    if (val) setCity(val);
-                  }}
+            {/* Top Mode Switcher Bar + Close Button */}
+            <div className="mb-3 flex w-full items-center justify-between px-1">
+              <div className="inline-flex items-center gap-1 rounded-full border border-white/10 bg-[#12121A]/90 p-1 backdrop-blur-md">
+                <button
+                  type="button"
+                  onClick={() => setStep("auth")}
+                  className={`inline-flex cursor-pointer items-center gap-1.5 rounded-full px-3 py-1 text-[11px] font-semibold transition-all ${
+                    step === "auth"
+                      ? "bg-[#FACC15] text-slate-950 shadow-sm"
+                      : "text-slate-400 hover:text-white"
+                  }`}
                 >
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {SOGD_CITIES.map((c) => (
-                      <SelectItem key={c.value} value={c.value}>
-                        {c.nameRu}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                  <KeyRound className="h-3 w-3" />
+                  <span>{tr("Вход / Регистрация", "Воридшавӣ", "Login / Sign Up")}</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setStep("otp")}
+                  className={`inline-flex cursor-pointer items-center gap-1.5 rounded-full px-3 py-1 text-[11px] font-semibold transition-all ${
+                    step === "otp"
+                      ? "bg-emerald-500 text-white shadow-sm"
+                      : "text-slate-400 hover:text-white"
+                  }`}
+                >
+                  <ShieldCheck className="h-3 w-3" />
+                  <span>{tr("OTP Верификация", "Тасдиқи OTP", "OTP Verify")}</span>
+                </button>
               </div>
+
+              <button
+                type="button"
+                onClick={onClose}
+                aria-label="Close modal"
+                className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full border border-white/12 bg-[#12121A]/90 text-slate-400 transition-colors hover:border-white/25 hover:text-white"
+              >
+                <X className="h-4 w-4" />
+              </button>
             </div>
 
-            <div className="space-y-1.5">
-              <Label htmlFor="reg-email">Email</Label>
-              <Input
-                id="reg-email"
-                type="email"
-                placeholder="name@example.tj"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
-            </div>
-
-            <div className="space-y-1.5">
-              <Label htmlFor="reg-password">Пароль</Label>
-              <Input
-                id="reg-password"
-                type="password"
-                placeholder="Минимум 8 символов"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                minLength={8}
-              />
-            </div>
-
-            <Button
-              type="submit"
-              className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-medium"
-              disabled={loading}
-            >
-              {loading ? (
-                <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Создание аккаунта...
-                </>
+            {/* Active View: LoginFormV7 OR OtpVerificationV7 */}
+            <AnimatePresence mode="wait">
+              {step === "auth" ? (
+                <motion.div
+                  key="auth-v7-card"
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -8 }}
+                  transition={{ duration: 0.2 }}
+                  className="w-full"
+                >
+                  <LoginFormV7
+                    defaultMode={defaultTab}
+                    accentTheme="gold"
+                    onSuccess={onClose}
+                    onRequestOtpVerification={(phoneVal, codeHint) => {
+                      setOtpPhone(phoneVal || "+992 92 700 0000");
+                      if (codeHint) setDemoCode(codeHint);
+                      setStep("otp");
+                    }}
+                  />
+                </motion.div>
               ) : (
-                <>
-                  <User className="mr-2 h-4 w-4" />
-                  Зарегистрироваться
-                </>
+                <motion.div
+                  key="otp-v7-card"
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -8 }}
+                  transition={{ duration: 0.2 }}
+                  className="w-full flex justify-center"
+                >
+                  <OtpVerificationV7
+                    phone={otpPhone}
+                    demoCodeHint={demoCode}
+                    onBack={() => setStep("auth")}
+                    onVerified={() => {
+                      onClose();
+                    }}
+                  />
+                </motion.div>
               )}
-            </Button>
-          </form>
-        )}
-      </DialogContent>
-    </Dialog>
+            </AnimatePresence>
+          </motion.div>
+        </div>
+      )}
+    </AnimatePresence>
   );
 }

@@ -6,8 +6,11 @@ export function setOtp(phone: string, code: string, expiresAt: number): void {
   otps.set(phone, { code, expiresAt });
 }
 
-export function issueOtp(phone: string, now = Date.now()): string {
-  const code = String(Math.floor(100000 + Math.random() * 900000));
+export function issueOtp(phone: string, now = Date.now(), length: 4 | 6 = 4): string {
+  const code =
+    length === 4
+      ? String(Math.floor(1000 + Math.random() * 9000))
+      : String(Math.floor(100000 + Math.random() * 900000));
   setOtp(phone, code, now + 10 * 60 * 1000);
   return code;
 }

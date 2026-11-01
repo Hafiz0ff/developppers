@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useLanguage } from "@/lib/i18n/language-context";
 import { PhotoUploader } from "@/components/classifieds/photo-uploader";
+import { OtpVerificationV7 } from "@/components/auth/otp-verification-v7";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -606,29 +607,16 @@ export default function NewClassifiedPage() {
                   </div>
 
                   {otpSent && !phoneVerified && (
-                    <div className="flex items-center gap-2 pt-2">
-                      <Input
-                        type="text"
-                        maxLength={6}
-                        placeholder={isTg ? "Коди 4-рақама" : "Код из SMS"}
-                        value={otpCode}
-                        onChange={(e) => setOtpCode(e.target.value)}
-                        className="w-36 text-center font-mono text-xs font-bold tracking-widest"
+                    <div className="pt-3">
+                      <OtpVerificationV7
+                        phone={contactPhone}
+                        autoCloseDelayMs={1600}
+                        onResend={handleSendOtp}
+                        onVerified={(code) => {
+                          setOtpCode(code);
+                          setPhoneVerified(true);
+                        }}
                       />
-                      <Button
-                        type="button"
-                        onClick={handleVerifyOtp}
-                        disabled={verifying}
-                        className="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold px-4 cursor-pointer"
-                      >
-                        {verifying
-                          ? isTg
-                            ? "Санҷиш..."
-                            : "Проверка..."
-                          : isTg
-                          ? "Тасдиқ кардан"
-                          : "Подтвердить"}
-                      </Button>
                     </div>
                   )}
 
