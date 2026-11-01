@@ -14,6 +14,7 @@ import {
   Loader2,
   Check,
   Smartphone,
+  ShieldCheck,
 } from "lucide-react";
 import { ChamferedGlassCard, type MorphPhase } from "./chamfered-glass-card";
 import { SOGD_CITIES } from "@/lib/constants/locations";
@@ -36,6 +37,7 @@ export function LoginFormV7({
   const { language } = useLanguage();
   const [mode, setMode] = useState<"login" | "register">(defaultMode);
   const [morphPhase, setMorphPhase] = useState<MorphPhase>("idle");
+  const [loginMethod, setLoginMethod] = useState<"otp" | "password">("otp");
 
   // Form state
   const [email, setEmail] = useState("");
@@ -44,7 +46,7 @@ export function LoginFormV7({
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [name, setName] = useState("");
-  const [phone, setPhone] = useState("+992 92 ");
+  const [phone, setPhone] = useState("+992 92 700 0000");
   const [city, setCity] = useState("khujand");
   const [role, setRole] = useState<"user" | "realtor" | "developer">("user");
   const [agencyName, setAgencyName] = useState("");
@@ -122,12 +124,30 @@ export function LoginFormV7({
 
   const handleLoginSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
     setError(null);
 
+    const cleanPhone = phone.trim();
+    if (cleanPhone.replace(/\D/g, "").length < 9) {
+      setError(
+        tr(
+          "Введите корректный номер телефона (+992 ...)",
+          "Рақами дурусти телефонро ворид кунед (+992 ...)",
+          "Please enter a valid phone number (+992 ...)"
+        )
+      );
+      return;
+    }
+
+    if (loginMethod === "otp") {
+      await requestPhoneOtp(cleanPhone);
+      return;
+    }
+
+    setLoading(true);
     try {
+      const syntheticEmail = email.trim() || `${cleanPhone.replace(/\D/g, "")}@maskani.tj`;
       const res = await signIn.email({
-        email,
+        email: syntheticEmail,
         password,
       });
 
@@ -135,9 +155,9 @@ export function LoginFormV7({
         setError(
           res.error.message ||
             tr(
-              "Ошибка входа. Проверьте email и пароль или используйте вход по SMS-коду.",
-              "Хатогии воридшавӣ. Email ва рамзро санҷед ё тавассути SMS ворид шавед.",
-              "Sign in failed. Check your email and password or verify via SMS code."
+              "Неверный пароль. Вы можете войти по SMS-коду без пароля.",
+              "Рамз нодуруст аст. Шумо метавонед бо SMS-код бе рамз ворид шавед.",
+              "Invalid password. You can sign in via SMS code instead."
             )
         );
       } else {
@@ -145,15 +165,15 @@ export function LoginFormV7({
         window.location.reload();
       }
     } catch {
-      // If DB is offline in local demo environment, transition smoothly to OTP verification
+      // If DB is offline in demo, transition smoothly to OTP verification
       if (onRequestOtpVerification) {
-        await requestPhoneOtp(phone);
+        await requestPhoneOtp(cleanPhone);
       } else {
         setError(
           tr(
-            "Сервер авторизации временно недоступен. Попробуйте вход по SMS-коду.",
-            "Сервери воридшавӣ муваққатан дастрас нест. Воридшавӣ бо SMS-кодро санҷед.",
-            "Auth server temporarily unavailable. Try SMS code verification."
+            "Сервер временно недоступен. Войдите по коду из SMS.",
+            "Сервер муваққатан дастрас нест. Бо рамзи SMS ворид шавед.",
+            "Server temporarily unavailable. Try SMS code."
           )
         );
       }
@@ -165,6 +185,18 @@ export function LoginFormV7({
   const handleRegisterSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
+
+    const cleanPhone = phone.trim();
+    if (cleanPhone.replace(/\D/g, "").length < 9) {
+      setError(
+        tr(
+          "Введите действующий номер телефона (+992 ...)",
+          "Рақами дурусти телефонро ворид кунед (+992 ...)",
+          "Please enter a valid phone number (+992 ...)"
+        )
+      );
+      return;
+    }
 
     if (password !== confirmPassword) {
       setError(
@@ -190,54 +222,29 @@ export function LoginFormV7({
 
     setLoading(true);
     try {
+      const syntheticEmail = email.trim() || `${cleanPhone.replace(/\D/g, "")}@maskani.tj`;
       const res = await signUp.email({
-        email,
+        email: syntheticEmail,
         password,
-        name,
+        name: name.trim() || "Пользователь Maskani",
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         ...({
           role,
-          phone,
+          phone: cleanPhone,
           city,
           agencyName: role === "realtor" ? agencyName : undefined,
         } as any),
       });
 
       if (res.error) {
-        // Even if DB is offline in demo mode, let user proceed to OTP verification showcase
-        if (onRequestOtpVerification) {
-          await requestPhoneOtp(phone);
-          return;
-        }
-        setError(
-          res.error.message ||
-            tr(
-              "Ошибка регистрации. Проверьте введённые данные.",
-              "Хатогии бақайдгирӣ. Маълумотро санҷед.",
-              "Registration error. Please check your details."
-            )
-        );
+        // In case account exists or demo mode, proceed to phone verification
+        await requestPhoneOtp(cleanPhone);
       } else {
-        // After registration, launch OTP Verification V7 for the user's phone number
-        if (onRequestOtpVerification) {
-          await requestPhoneOtp(phone);
-        } else {
-          onSuccess?.();
-          window.location.reload();
-        }
+        // After registration, verify phone number via OTP
+        await requestPhoneOtp(cleanPhone);
       }
     } catch {
-      if (onRequestOtpVerification) {
-        await requestPhoneOtp(phone);
-      } else {
-        setError(
-          tr(
-            "Не удалось создать аккаунт",
-            "Сохтани ҳисоб имконнопазир шуд",
-            "Could not create account"
-          )
-        );
-      }
+      await requestPhoneOtp(cleanPhone);
     } finally {
       setLoading(false);
     }
@@ -270,9 +277,9 @@ export function LoginFormV7({
             </h2>
             <p className="mt-1 text-xs text-slate-400">
               {tr(
-                "Введите данные для входа в защищённый кабинет",
-                "Маълумоти худро барои дастрасӣ ба ҳуҷраи шахсӣ ворид кунед",
-                "Enter your credentials to access your secure account"
+                "Вход только по номеру телефона (+992)",
+                "Воридшавӣ танҳо бо рақами телефон (+992)",
+                "Sign in via verified phone number (+992)"
               )}
             </p>
           </>
@@ -284,9 +291,9 @@ export function LoginFormV7({
             </h2>
             <p className="mt-1 text-xs text-slate-400">
               {tr(
-                "Присоединяйтесь к единому жилищному порталу Таджикистана",
-                "Ба портали ягонаи манзили Тоҷикистон ҳамроҳ шавед",
-                "Join us today to access your secure workspace"
+                "Регистрация с подтверждением номера телефона",
+                "Бақайдгирӣ бо тасдиқи рақами телефон",
+                "Registration with SMS phone verification"
               )}
             </p>
           </>
@@ -301,61 +308,96 @@ export function LoginFormV7({
       )}
 
       {mode === "login" ? (
-        /* ==================== SIGN IN FORM ==================== */
+        /* ==================== SIGN IN FORM (PHONE ONLY) ==================== */
         <form onSubmit={handleLoginSubmit} className="space-y-4">
-          {/* Email Address */}
-          <div className="space-y-1.5">
-            <label
-              htmlFor="v7-login-email"
-              className="block text-[11px] font-semibold tracking-wide text-slate-300"
+          {/* Method Switcher: Fast SMS Code vs Password */}
+          <div className="grid grid-cols-2 gap-1 rounded-xl border border-white/10 bg-white/[0.03] p-1">
+            <button
+              type="button"
+              onClick={() => setLoginMethod("otp")}
+              className={`cursor-pointer rounded-lg py-1.5 text-[11px] font-bold transition-all flex items-center justify-center gap-1.5 ${
+                loginMethod === "otp"
+                  ? "bg-[#FACC15] text-slate-950 shadow-sm"
+                  : "text-slate-400 hover:text-white"
+              }`}
             >
-              {tr("Электронная почта", "Почтаи электронӣ", "Email Address")}
-            </label>
-            <div className="relative flex items-center">
-              <Mail className="pointer-events-none absolute left-3.5 h-4 w-4 text-slate-400" />
-              <input
-                id="v7-login-email"
-                type="email"
-                required
-                placeholder="name@domain.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="h-11 w-full rounded-xl border border-white/10 bg-white/[0.04] pr-4 pl-10 text-xs text-white placeholder:text-slate-500 transition-all outline-none focus:border-[#FACC15]/70 focus:bg-white/[0.07] focus:ring-2 focus:ring-[#FACC15]/20"
-              />
-            </div>
+              <Smartphone className="h-3.5 w-3.5" />
+              <span>{tr("SMS-код", "Бо SMS-код", "SMS Code")}</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => setLoginMethod("password")}
+              className={`cursor-pointer rounded-lg py-1.5 text-[11px] font-bold transition-all flex items-center justify-center gap-1.5 ${
+                loginMethod === "password"
+                  ? "bg-[#FACC15] text-slate-950 shadow-sm"
+                  : "text-slate-400 hover:text-white"
+              }`}
+            >
+              <Lock className="h-3.5 w-3.5" />
+              <span>{tr("Пароль", "Бо рамз", "Password")}</span>
+            </button>
           </div>
 
-          {/* Password */}
+          {/* Phone Number Input (Primary) */}
           <div className="space-y-1.5">
             <label
-              htmlFor="v7-login-password"
+              htmlFor="v7-login-phone"
               className="block text-[11px] font-semibold tracking-wide text-slate-300"
             >
-              {tr("Пароль", "Рамз", "Password")}
+              {tr("Номер мобильного телефона", "Рақами телефони мобилӣ", "Mobile Phone Number")}
             </label>
             <div className="relative flex items-center">
-              <Lock className="pointer-events-none absolute left-3.5 h-4 w-4 text-slate-400" />
+              <Phone className="pointer-events-none absolute left-3.5 h-4 w-4 text-slate-400" />
               <input
-                id="v7-login-password"
-                type={showPassword ? "text" : "password"}
+                id="v7-login-phone"
+                type="tel"
                 required
-                placeholder="••••••••"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="h-11 w-full rounded-xl border border-white/10 bg-white/[0.04] pr-10 pl-10 text-xs text-white placeholder:text-slate-500 transition-all outline-none focus:border-[#FACC15]/70 focus:bg-white/[0.07] focus:ring-2 focus:ring-[#FACC15]/20"
+                placeholder="+992 92 700 0000"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                className="h-11 w-full rounded-xl border border-white/10 bg-white/[0.04] pr-4 pl-10 text-xs text-white placeholder:text-slate-500 transition-all outline-none focus:border-[#FACC15]/70 focus:bg-white/[0.07] focus:ring-2 focus:ring-[#FACC15]/20 font-mono"
               />
-              <button
-                type="button"
-                onClick={() => setShowPassword((v) => !v)}
-                className="absolute right-3 cursor-pointer text-slate-400 transition-colors hover:text-white"
-                aria-label="Toggle password visibility"
+            </div>
+            <p className="text-[10px] text-slate-400">
+              {loginMethod === "otp"
+                ? tr("На этот номер поступит SMS с кодом подтверждения", "Ба ин рақам SMS бо рамзи тасдиқ фиристода мешавад", "A verification SMS code will be sent to this number")
+                : tr("Введите пароль от подтверждённого профиля", "Рамзи ҳуҷраи тасдиқшударо ворид кунед", "Enter password for your verified account")}
+            </p>
+          </div>
+
+          {/* Password field if loginMethod === 'password' */}
+          {loginMethod === "password" && (
+            <div className="space-y-1.5">
+              <label
+                htmlFor="v7-login-password"
+                className="block text-[11px] font-semibold tracking-wide text-slate-300"
               >
-                {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-              </button>
+                {tr("Пароль", "Рамз", "Password")}
+              </label>
+              <div className="relative flex items-center">
+                <Lock className="pointer-events-none absolute left-3.5 h-4 w-4 text-slate-400" />
+                <input
+                  id="v7-login-password"
+                  type={showPassword ? "text" : "password"}
+                  required
+                  placeholder="••••••••"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="h-11 w-full rounded-xl border border-white/10 bg-white/[0.04] pr-10 pl-10 text-xs text-white placeholder:text-slate-500 transition-all outline-none focus:border-[#FACC15]/70 focus:bg-white/[0.07] focus:ring-2 focus:ring-[#FACC15]/20"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword((v) => !v)}
+                  className="absolute right-3 cursor-pointer text-slate-400 transition-colors hover:text-white"
+                  aria-label="Toggle password visibility"
+                >
+                  {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                </button>
+              </div>
             </div>
-          </div>
+          )}
 
-          {/* Remember me & Forgot password */}
+          {/* Remember me & toggle between SMS code / Password */}
           <div className="flex items-center justify-between pt-0.5 text-xs">
             <label className="inline-flex cursor-pointer items-center gap-2 text-slate-300">
               <button
@@ -376,13 +418,24 @@ export function LoginFormV7({
               </span>
             </label>
 
-            {onRequestOtpVerification && (
+            {loginMethod === "password" ? (
               <button
                 type="button"
-                onClick={() => requestPhoneOtp(phone)}
+                onClick={() => {
+                  setLoginMethod("otp");
+                  requestPhoneOtp(phone);
+                }}
                 className="cursor-pointer text-[11px] font-medium text-slate-400 transition-colors hover:text-[#FACC15]"
               >
-                {tr("Забыли пароль?", "Рамзро фаромӯш кардед?", "Forgot password?")}
+                {tr("Войти по коду из SMS", "Бо рамзи SMS ворид шудан", "Sign in via SMS code")}
+              </button>
+            ) : (
+              <button
+                type="button"
+                onClick={() => setLoginMethod("password")}
+                className="cursor-pointer text-[11px] font-medium text-slate-400 transition-colors hover:text-[#FACC15]"
+              >
+                {tr("Войти с паролем", "Бо рамз ворид шудан", "Use password")}
               </button>
             )}
           </div>
@@ -397,82 +450,33 @@ export function LoginFormV7({
             {loading ? (
               <>
                 <Loader2 className="h-4 w-4 animate-spin" />
-                <span>{tr("Вход...", "Воридшавӣ...", "Signing In...")}</span>
+                <span>{tr("Отправка...", "Дар ҳоли ирсол...", "Processing...")}</span>
+              </>
+            ) : loginMethod === "otp" ? (
+              <>
+                <Smartphone className="h-4 w-4" />
+                <span>{tr("Получить SMS-код и войти", "Гирифтани SMS-код ва воридшавӣ", "Get SMS Code & Sign In")}</span>
+                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
               </>
             ) : (
               <>
-                <span>{tr("Войти", "Воридшавӣ", "Sign In")}</span>
+                <span>{tr("Войти в кабинет", "Воридшавӣ ба ҳуҷра", "Sign In to Cabinet")}</span>
                 <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
               </>
             )}
           </button>
 
-          {/* Divider */}
-          <div className="relative flex items-center justify-center py-1">
-            <div className="h-px flex-1 bg-gradient-to-r from-transparent via-white/12 to-white/12" />
-            <span className="px-3 text-[10px] font-semibold tracking-widest text-slate-500 uppercase">
-              {tr("или продолжить через", "ё идома диҳед бо", "OR CONTINUE WITH")}
+          {/* Tahoe Frosted Trust & Anti-Fraud Notice */}
+          <div className="rounded-xl border border-emerald-500/20 bg-emerald-500/[0.06] p-2.5 text-[11px] text-emerald-300 flex items-start gap-2 leading-relaxed">
+            <ShieldCheck className="h-4 w-4 text-emerald-400 shrink-0 mt-0.5" />
+            <span>
+              {tr(
+                "Авторизация только по подтверждённому номеру телефона (+992) для защиты от спама и мошенников. Привязка Google и Apple доступна в профиле.",
+                "Воридшавӣ танҳо бо рақами тасдиқшудаи телефон (+992) барои пешгирии қаллобон. Пайвасти Google ва Apple дар ҳуҷраи шахсӣ дастрас аст.",
+                "Phone authorization only (+992) to prevent fraud. Linking Google & Apple is available in profile settings."
+              )}
             </span>
-            <div className="h-px flex-1 bg-gradient-to-l from-transparent via-white/12 to-white/12" />
           </div>
-
-          {/* Social & SMS OTP Buttons Row */}
-          <div className="grid grid-cols-2 gap-3">
-            <button
-              type="button"
-              onClick={() => requestPhoneOtp(phone)}
-              className="flex h-10 cursor-pointer items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/[0.04] text-xs font-semibold text-white transition-all hover:border-white/25 hover:bg-white/[0.08]"
-            >
-              <svg className="h-4 w-4" viewBox="0 0 24 24">
-                <path
-                  fill="#4285F4"
-                  d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.17z"
-                />
-                <path
-                  fill="#34A853"
-                  d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.11-6.72-4.96H1.29v3.14C3.26 21.3 7.31 24 12 24z"
-                />
-                <path
-                  fill="#FBBC05"
-                  d="M5.28 14.24c-.24-.72-.38-1.49-.38-2.24s.14-1.52.38-2.24V6.62H1.29C.47 8.24 0 10.06 0 12s.47 3.76 1.29 5.38l3.99-3.14z"
-                />
-                <path
-                  fill="#EA4335"
-                  d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.31 0 3.26 2.7 1.29 6.62l3.99 3.14c.95-2.85 3.6-4.96 6.72-4.96z"
-                />
-              </svg>
-              <span>Google</span>
-            </button>
-
-            <button
-              type="button"
-              onClick={() => requestPhoneOtp(phone)}
-              className="flex h-10 cursor-pointer items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/[0.04] text-xs font-semibold text-white transition-all hover:border-white/25 hover:bg-white/[0.08]"
-            >
-              <svg className="h-4 w-4 fill-current" viewBox="0 0 24 24">
-                <path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.53 4.08zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z" />
-              </svg>
-              <span>Apple</span>
-            </button>
-          </div>
-
-          {/* Direct SMS OTP Verification Pill */}
-          {onRequestOtpVerification && (
-            <button
-              type="button"
-              onClick={() => requestPhoneOtp(phone)}
-              className="flex h-9 w-full cursor-pointer items-center justify-center gap-2 rounded-xl border border-emerald-500/25 bg-emerald-500/10 text-[11px] font-semibold text-emerald-300 transition-all hover:border-emerald-500/45 hover:bg-emerald-500/15"
-            >
-              <Smartphone className="h-3.5 w-3.5 text-emerald-400" />
-              <span>
-                {tr(
-                  "Подтвердить номер по SMS-коду (OTP V7)",
-                  "Тасдиқи рақам бо SMS-код (OTP V7)",
-                  "Verify phone via SMS Code (OTP V7)"
-                )}
-              </span>
-            </button>
-          )}
 
           {/* Switch to Sign Up */}
           <p className="pt-1 text-center text-xs text-slate-400">
@@ -744,53 +748,16 @@ export function LoginFormV7({
             )}
           </button>
 
-          {/* Divider */}
-          <div className="relative flex items-center justify-center py-0.5">
-            <div className="h-px flex-1 bg-gradient-to-r from-transparent via-white/12 to-white/12" />
-            <span className="px-3 text-[10px] font-semibold tracking-widest text-slate-500 uppercase">
-              {tr("или регистрация через", "ё бақайдгирӣ бо", "OR SIGN UP WITH")}
+          {/* Tahoe Frosted Anti-Fraud Notice */}
+          <div className="rounded-xl border border-emerald-500/20 bg-emerald-500/[0.06] p-2.5 text-[11px] text-emerald-300 flex items-start gap-2 leading-relaxed">
+            <ShieldCheck className="h-4 w-4 text-emerald-400 shrink-0 mt-0.5" />
+            <span>
+              {tr(
+                "Все объявления привязываются к подтверждённому номеру телефона (+992). Привязка аккаунтов Google и Apple доступна в профиле.",
+                "Ҳамаи эълонҳо ба рақами тасдиқшудаи телефон (+992) пайваст мешаванд. Пайвасти Google ва Apple дар ҳуҷраи шахсӣ дастрас аст.",
+                "All listings are linked to verified phone numbers (+992). Linking Google & Apple is available in your profile."
+              )}
             </span>
-            <div className="h-px flex-1 bg-gradient-to-l from-transparent via-white/12 to-white/12" />
-          </div>
-
-          {/* Social Buttons Row */}
-          <div className="grid grid-cols-2 gap-3">
-            <button
-              type="button"
-              onClick={() => requestPhoneOtp(phone)}
-              className="flex h-9 cursor-pointer items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/[0.04] text-xs font-semibold text-white transition-all hover:border-white/25 hover:bg-white/[0.08]"
-            >
-              <svg className="h-3.5 w-3.5" viewBox="0 0 24 24">
-                <path
-                  fill="#4285F4"
-                  d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.17z"
-                />
-                <path
-                  fill="#34A853"
-                  d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.11-6.72-4.96H1.29v3.14C3.26 21.3 7.31 24 12 24z"
-                />
-                <path
-                  fill="#FBBC05"
-                  d="M5.28 14.24c-.24-.72-.38-1.49-.38-2.24s.14-1.52.38-2.24V6.62H1.29C.47 8.24 0 10.06 0 12s.47 3.76 1.29 5.38l3.99-3.14z"
-                />
-                <path
-                  fill="#EA4335"
-                  d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.31 0 3.26 2.7 1.29 6.62l3.99 3.14c.95-2.85 3.6-4.96 6.72-4.96z"
-                />
-              </svg>
-              <span>Google</span>
-            </button>
-
-            <button
-              type="button"
-              onClick={() => requestPhoneOtp(phone)}
-              className="flex h-9 cursor-pointer items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/[0.04] text-xs font-semibold text-white transition-all hover:border-white/25 hover:bg-white/[0.08]"
-            >
-              <svg className="h-3.5 w-3.5 fill-current" viewBox="0 0 24 24">
-                <path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.53 4.08zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z" />
-              </svg>
-              <span>Apple</span>
-            </button>
           </div>
 
           {/* Switch to Sign In */}

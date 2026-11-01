@@ -47,25 +47,25 @@ export function AuthModal({ isOpen, onClose, defaultTab = "login" }: AuthModalPr
         <div
           role="dialog"
           aria-modal="true"
-          className="fixed inset-0 z-[120] flex items-center justify-center overflow-y-auto p-4 sm:p-6"
+          className="fixed inset-0 z-[120] flex items-center justify-center overflow-y-auto p-4 sm:p-6 [perspective:1200px]"
         >
-          {/* Deep Obsidian Frosted Backdrop */}
+          {/* Tahoe Frosted Glass Backdrop (50% blur & gentle tint, keeps website context recognizable) */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.22 }}
+            transition={{ duration: 0.22, ease: "easeOut" }}
             onClick={onClose}
-            className="fixed inset-0 bg-[#060609]/85 backdrop-blur-xl"
+            className="fixed inset-0 bg-slate-950/45 backdrop-blur-md backdrop-saturate-150"
           />
 
-          {/* Modal Stage */}
+          {/* Modal Stage: Tahoe Spring 3D Fly-In Animation (lightweight & fluid) */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.94, y: 14 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.95, y: 10 }}
-            transition={{ type: "spring", stiffness: 320, damping: 28 }}
-            className="relative z-10 flex w-full max-w-[440px] flex-col items-center my-auto"
+            initial={{ opacity: 0, scale: 0.88, y: -44, rotateX: 10, filter: "blur(6px)" }}
+            animate={{ opacity: 1, scale: 1, y: 0, rotateX: 0, filter: "blur(0px)" }}
+            exit={{ opacity: 0, scale: 0.93, y: 24, filter: "blur(4px)" }}
+            transition={{ type: "spring", stiffness: 340, damping: 24, mass: 0.75 }}
+            className="relative z-10 flex w-full max-w-[440px] flex-col items-center my-auto transform-gpu"
           >
             {/* Top Mode Switcher Bar + Close Button */}
             <div className="mb-3 flex w-full items-center justify-between px-1">

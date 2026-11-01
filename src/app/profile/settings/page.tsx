@@ -220,6 +220,142 @@ export default function ProfileSettingsPage() {
           </CardContent>
         </Card>
 
+        {/* 2.5. LINKED SOCIAL ACCOUNTS (GOOGLE & APPLE) AS COMPLEMENT TO PHONE */}
+        <Card className="bg-white border-slate-200/80 shadow-xs rounded-2xl overflow-hidden">
+          <CardHeader className="p-5 sm:p-6 pb-4 border-b border-slate-100 bg-gradient-to-r from-emerald-50/40 via-white to-white">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div className="flex items-center gap-3">
+                <div className="h-11 w-11 rounded-xl bg-emerald-600 text-white flex items-center justify-center shadow-md shadow-emerald-600/20">
+                  <ShieldCheck className="h-5 w-5" />
+                </div>
+                <div>
+                  <div className="flex items-center gap-2">
+                    <CardTitle className="text-lg font-bold text-slate-900">
+                      {isTg ? "Пайвасти ҳисобҳо (Google & Apple)" : "Связанные аккаунты (Google & Apple)"}
+                    </CardTitle>
+                    <Badge className="bg-emerald-50 text-emerald-700 border-emerald-200 text-[10px] font-bold">
+                      {isTg ? "Иловагӣ" : "Дополнение к номеру"}
+                    </Badge>
+                  </div>
+                  <CardDescription className="text-xs text-slate-500 mt-0.5">
+                    {isTg
+                      ? "Пайвасти ҳисобҳо ҳамчун усули иловагӣ барои воридшавии зуд дар дигар дастгоҳҳо хизмат мекунад. Рақами асосӣ барои эълонҳо тағйирнопазир мемонад."
+                      : "Дополнительные способы авторизации для быстрого входа. Основным идентификатором для размещения объявлений всегда остаётся ваш подтверждённый номер."}
+                  </CardDescription>
+                </div>
+              </div>
+            </div>
+          </CardHeader>
+
+          <CardContent className="p-5 sm:p-6 space-y-4">
+            {/* Primary Verified Phone Row */}
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3.5 rounded-xl border border-emerald-100 bg-emerald-50/30">
+              <div className="flex items-center gap-3">
+                <div className="h-9 w-9 rounded-lg bg-emerald-100 text-emerald-800 flex items-center justify-center shrink-0">
+                  <Smartphone className="h-4 w-4" />
+                </div>
+                <div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs font-bold text-slate-900 font-mono">+992 92 777 00 22</span>
+                    <Badge className="bg-emerald-600 text-white border-transparent text-[10px] font-semibold gap-1">
+                      <CheckCircle2 className="h-3 w-3" />
+                      {isTg ? "Асосӣ (Тасдиқшуда)" : "Основной (Подтверждён)"}
+                    </Badge>
+                  </div>
+                  <p className="text-[11px] text-slate-500 mt-0.5">
+                    {isTg
+                      ? "Ҳамаи эълонҳо ва тамосҳо ба ин рақам сабт мешаванд"
+                      : "Все объявления и контакты привязаны к этому номеру"}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Google Account Row */}
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3.5 rounded-xl border border-slate-200/80 bg-slate-50/50 hover:bg-slate-50 transition-colors">
+              <div className="flex items-center gap-3">
+                <div className="h-9 w-9 rounded-lg bg-white border border-slate-200 flex items-center justify-center shrink-0 shadow-2xs">
+                  <svg className="h-4 w-4" viewBox="0 0 24 24">
+                    <path
+                      fill="#4285F4"
+                      d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.17z"
+                    />
+                    <path
+                      fill="#34A853"
+                      d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.11-6.72-4.96H1.29v3.14C3.26 21.3 7.31 24 12 24z"
+                    />
+                    <path
+                      fill="#FBBC05"
+                      d="M5.28 14.24c-.24-.72-.38-1.49-.38-2.24s.14-1.52.38-2.24V6.62H1.29C.47 8.24 0 10.06 0 12s.47 3.76 1.29 5.38l3.99-3.14z"
+                    />
+                    <path
+                      fill="#EA4335"
+                      d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.31 0 3.26 2.7 1.29 6.62l3.99 3.14c.95-2.85 3.6-4.96 6.72-4.96z"
+                    />
+                  </svg>
+                </div>
+                <div>
+                  <span className="text-xs font-bold text-slate-800">Google Account</span>
+                  <p className="text-[11px] text-slate-500 mt-0.5">
+                    {isTg
+                      ? "Барои воридшавии зуд дар компютер ё планшет"
+                      : "Для мгновенного входа на ПК или планшете"}
+                  </p>
+                </div>
+              </div>
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                className="h-8 px-3 text-xs font-semibold rounded-lg border-slate-200 text-slate-700 hover:bg-white hover:text-slate-900 cursor-pointer shadow-2xs"
+                onClick={() => {
+                  alert(
+                    isTg
+                      ? "Пайвасти ҳисоби Google ба рақами +992 92 777 00 22 дар ҳоли коркард қарор дорад."
+                      : "Интеграция привязки Google аккаунта к подтверждённому номеру +992 92 777 00 22."
+                  );
+                }}
+              >
+                {isTg ? "Пайваст кардан" : "Привязать Google"}
+              </Button>
+            </div>
+
+            {/* Apple ID Row */}
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3.5 rounded-xl border border-slate-200/80 bg-slate-50/50 hover:bg-slate-50 transition-colors">
+              <div className="flex items-center gap-3">
+                <div className="h-9 w-9 rounded-lg bg-black text-white flex items-center justify-center shrink-0 shadow-2xs">
+                  <svg className="h-4 w-4 fill-current" viewBox="0 0 24 24">
+                    <path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.53 4.08zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z" />
+                  </svg>
+                </div>
+                <div>
+                  <span className="text-xs font-bold text-slate-800">Apple ID</span>
+                  <p className="text-[11px] text-slate-500 mt-0.5">
+                    {isTg
+                      ? "Воридшавӣ тавассути Face ID ва экосистемаи Apple"
+                      : "Вход через Face ID и экосистему Apple"}
+                  </p>
+                </div>
+              </div>
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                className="h-8 px-3 text-xs font-semibold rounded-lg border-slate-200 text-slate-700 hover:bg-white hover:text-slate-900 cursor-pointer shadow-2xs"
+                onClick={() => {
+                  alert(
+                    isTg
+                      ? "Пайвасти Apple ID ба рақами +992 92 777 00 22 дар ҳоли коркард қарор дорад."
+                      : "Интеграция привязки Apple ID к подтверждённому номеру +992 92 777 00 22."
+                  );
+                }}
+              >
+                {isTg ? "Пайваст кардан" : "Привязать Apple ID"}
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+
         {/* 3. TELEGRAM INTEGRATION CARD */}
         <Card className="bg-white border-slate-200/80 shadow-xs rounded-2xl overflow-hidden">
           <CardHeader className="p-5 sm:p-6 pb-4 border-b border-slate-100 bg-gradient-to-r from-sky-50/50 via-white to-white">
