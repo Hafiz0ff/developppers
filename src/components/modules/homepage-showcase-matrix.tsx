@@ -2,21 +2,10 @@
 
 import React from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { motion } from "motion/react";
 import { useLanguage } from "@/context/language-context";
-import {
-  Building2,
-  Home,
-  Trees,
-  KeyRound,
-  Store,
-  Sparkles,
-  Briefcase,
-  Users,
-  FileText,
-  ChevronRight,
-  TrendingUp,
-} from "lucide-react";
+import { TrendingUp } from "lucide-react";
 import {
   INITIAL_PROJECTS,
   INITIAL_DEVELOPERS,
@@ -39,19 +28,17 @@ export function HomepageShowcaseMatrix({ activeCity = "khujand" }: ShowcaseSecti
   const newProjectsCount = INITIAL_PROJECTS.length; // 26
   const resaleCount = ALL_PROPERTIES.filter(
     (p) => p.dealType === "Продажа" && (p.propertyType === "Квартира" || p.propertyType === "Новостройка")
-  ).length;
+  ).length || 35;
   const housesCount = ALL_PROPERTIES.filter(
     (p) => p.dealType === "Продажа" && p.propertyType === "Дом / Ҳавлӣ"
   ).length || 6;
-  const rentCount = ALL_PROPERTIES.filter((p) => p.dealType === "Аренда").length || 8;
-  const commercialCount = COMMERCIAL_PROPERTIES.length; // 4
-  const developersCount = INITIAL_DEVELOPERS.length; // 5
+  const commercialCount = COMMERCIAL_PROPERTIES.length || 4;
+  const developersCount = INITIAL_DEVELOPERS.length || 5;
 
-  // 2. Resolve URLs strictly via central URL resolver (TZ Section 9)
+  // 2. Resolve URLs strictly via central URL resolver
   const catNewBuilds = getTaxonomyCategoryById("cat_sale_new_builds");
   const catResale = getTaxonomyCategoryById("cat_sale_resale");
   const catHouses = getTaxonomyCategoryById("cat_sale_houses");
-  const catRentApartments = getTaxonomyCategoryById("cat_rent_apartments");
 
   const urlNewBuilds = catNewBuilds
     ? resolveCategoryUrl({ category: catNewBuilds, citySlug: activeCity, locale: language })
@@ -65,30 +52,20 @@ export function HomepageShowcaseMatrix({ activeCity = "khujand" }: ShowcaseSecti
     ? resolveCategoryUrl({ category: catHouses, citySlug: activeCity, locale: language })
     : `/${activeCity}/kupit/doma-dachi`;
 
-  const urlRent = catRentApartments
-    ? resolveCategoryUrl({ category: catRentApartments, citySlug: activeCity, locale: language })
-    : `/${activeCity}/snyat/kvartiry`;
-
   const urlCommercial = resolveCatalogUrl("catalog_commercial_hub", activeCity, language);
   const urlServices = resolveCatalogUrl("catalog_services", activeCity, language);
   const urlDevelopers = resolveCatalogUrl("catalog_developers", activeCity, language);
   const urlAgencies = resolveCatalogUrl("catalog_agencies", activeCity, language);
-  const urlBlog = language === "ru" ? "/blog" : `/${language}/blog`;
 
-  // 3. Define the 9 Showcase Tiles strictly per TZ Section 9
+  // 3. Define the 7 Showcase Items strictly per User Specs (Variant 2: Title Below)
   const showcaseItems = [
     {
       id: "showcase_new_builds",
-      icon: Building2,
+      icon: "/images/categories/novostroyki.png",
       title: {
         ru: "Новостройки",
         tg: "Биноҳои навсохт",
         en: "New Buildings",
-      },
-      subtitle: {
-        ru: "ЖК от застройщиков без комиссии",
-        tg: "Маҷмааҳо бе комиссия аз сохтмончиён",
-        en: "Verified residential complexes",
       },
       href: urlNewBuilds,
       badge: {
@@ -96,91 +73,47 @@ export function HomepageShowcaseMatrix({ activeCity = "khujand" }: ShowcaseSecti
         tg: `${newProjectsCount} МИ`,
         en: `${newProjectsCount} Complexes`,
       },
-      accentGradient: "from-emerald-500/20 via-teal-500/10 to-transparent",
-      iconColor: "text-emerald-500",
-      badgeColor: "bg-emerald-500/15 backdrop-blur-xl border border-emerald-400/40 text-emerald-800 dark:text-emerald-300 shadow-[0_4px_12px_rgba(16,185,129,0.15),inset_0_1px_1px_rgba(255,255,255,0.7)]",
+      accentGlow: "from-emerald-500/25 via-teal-500/15 to-transparent",
     },
     {
       id: "showcase_resale",
-      icon: Home,
+      icon: "/images/categories/vtorichka.png",
       title: {
-        ru: "Вторичный рынок",
+        ru: "Вторичка",
         tg: "Бозори дуюмдараҷа",
         en: "Secondary Market",
       },
-      subtitle: {
-        ru: "Квартиры с ремонтом от собственников",
-        tg: "Хонадонҳо бо таъмир аз соҳибмулкон",
-        en: "Apartments from verified owners",
-      },
       href: urlResale,
       badge: {
-        ru: `${resaleCount} объявлений`,
-        tg: `${resaleCount} эълон`,
-        en: `${resaleCount} listings`,
+        ru: `${resaleCount}+ объявл.`,
+        tg: `${resaleCount}+ эълон`,
+        en: `${resaleCount}+ listings`,
       },
-      accentGradient: "from-blue-500/20 via-sky-500/10 to-transparent",
-      iconColor: "text-blue-500",
-      badgeColor: "bg-sky-500/15 backdrop-blur-xl border border-sky-400/40 text-sky-800 dark:text-sky-300 shadow-[0_4px_12px_rgba(14,165,233,0.15),inset_0_1px_1px_rgba(255,255,255,0.7)]",
+      accentGlow: "from-blue-500/25 via-sky-500/15 to-transparent",
     },
     {
       id: "showcase_houses",
-      icon: Trees,
+      icon: "/images/categories/doma-dachi.png",
       title: {
-        ru: "Дома и участки",
-        tg: "Ҳавлиҳо ва қитъаҳо",
-        en: "Houses & Land",
-      },
-      subtitle: {
-        ru: "Коттеджи, дачи и земельные участки",
-        tg: "Ҳавлиҳо, бӯстонсароҳо ва қитъаҳо",
-        en: "Houses, villas and land plots",
+        ru: "Дома и дачи",
+        tg: "Ҳавлиҳо ва дачаҳо",
+        en: "Houses & Villas",
       },
       href: urlHouses,
       badge: {
-        ru: `${housesCount}+ объектов`,
-        tg: `${housesCount}+ иншоот`,
-        en: `${housesCount}+ properties`,
+        ru: `${housesCount}+ домов`,
+        tg: `${housesCount}+ ҳавлӣ`,
+        en: `${housesCount}+ houses`,
       },
-      accentGradient: "from-amber-500/20 via-orange-500/10 to-transparent",
-      iconColor: "text-amber-500",
-      badgeColor: "bg-amber-500/15 backdrop-blur-xl border border-amber-400/40 text-amber-800 dark:text-amber-300 shadow-[0_4px_12px_rgba(245,158,11,0.15),inset_0_1px_1px_rgba(255,255,255,0.7)]",
-    },
-    {
-      id: "showcase_rent",
-      icon: KeyRound,
-      title: {
-        ru: "Аренда жилья",
-        tg: "Иҷораи манзил",
-        en: "Rent Property",
-      },
-      subtitle: {
-        ru: "Квартиры и комнаты на долгий срок",
-        tg: "Хонадонҳо ва ҳуҷраҳо барои муддати дароз",
-        en: "Long-term apartments and rooms",
-      },
-      href: urlRent,
-      badge: {
-        ru: `${rentCount}+ предложений`,
-        tg: `${rentCount}+ пешниҳод`,
-        en: `${rentCount}+ rentals`,
-      },
-      accentGradient: "from-purple-500/20 via-indigo-500/10 to-transparent",
-      iconColor: "text-purple-500",
-      badgeColor: "bg-purple-500/15 backdrop-blur-xl border border-purple-400/40 text-purple-800 dark:text-purple-300 shadow-[0_4px_12px_rgba(168,85,247,0.15),inset_0_1px_1px_rgba(255,255,255,0.7)]",
+      accentGlow: "from-amber-500/25 via-orange-500/15 to-transparent",
     },
     {
       id: "showcase_commercial",
-      icon: Store,
+      icon: "/images/categories/commerce.png",
       title: {
-        ru: "Коммерческая",
+        ru: "Коммерция",
         tg: "Амволи тиҷоратӣ",
         en: "Commercial Hub",
-      },
-      subtitle: {
-        ru: "Офисы, склады, торговля (Купить/Снять)",
-        tg: "Дафтарҳо, анборҳо ва мағозаҳо",
-        en: "Offices, warehouses, retail spaces",
       },
       href: urlCommercial,
       badge: {
@@ -188,108 +121,62 @@ export function HomepageShowcaseMatrix({ activeCity = "khujand" }: ShowcaseSecti
         tg: `${commercialCount}+ иншоот`,
         en: `${commercialCount}+ objects`,
       },
-      accentGradient: "from-teal-500/20 via-emerald-500/10 to-transparent",
-      iconColor: "text-teal-500",
-      badgeColor: "bg-teal-500/15 backdrop-blur-xl border border-teal-400/40 text-teal-800 dark:text-teal-300 shadow-[0_4px_12px_rgba(20,184,166,0.15),inset_0_1px_1px_rgba(255,255,255,0.7)]",
+      accentGlow: "from-indigo-500/25 via-blue-500/15 to-transparent",
     },
     {
       id: "showcase_services",
-      icon: Sparkles,
+      icon: "/images/categories/services.png",
       title: {
-        ru: "Услуги и сервис",
+        ru: "Услуги",
         tg: "Хизматрасониҳо",
         en: "Services & Home",
       },
-      subtitle: {
-        ru: "Ремонт, дизайн, оценка и юристы",
-        tg: "Таъмир, лоиҳакашӣ ва ёрии ҳуқуқӣ",
-        en: "Renovation, design, valuation & legal",
-      },
       href: urlServices,
       badge: {
-        ru: "Каталог услуг",
-        tg: "Феҳристи хизмат",
-        en: "Services",
+        ru: "10+ услуг",
+        tg: "10+ хизмат",
+        en: "10+ services",
       },
-      accentGradient: "from-rose-500/20 via-pink-500/10 to-transparent",
-      iconColor: "text-rose-500",
-      badgeColor: "bg-rose-500/15 backdrop-blur-xl border border-rose-400/40 text-rose-800 dark:text-rose-300 shadow-[0_4px_12px_rgba(244,63,94,0.15),inset_0_1px_1px_rgba(255,255,255,0.7)]",
+      accentGlow: "from-cyan-500/25 via-teal-500/15 to-transparent",
+    },
+    {
+      id: "showcase_realtors",
+      icon: "/images/categories/realtors.png",
+      title: {
+        ru: "Риелторы",
+        tg: "Риелторон",
+        en: "Certified Realtors",
+      },
+      href: urlAgencies,
+      badge: {
+        ru: "15+ риелторов",
+        tg: "15+ риелтор",
+        en: "15+ realtors",
+      },
+      accentGlow: "from-violet-500/25 via-purple-500/15 to-transparent",
     },
     {
       id: "showcase_developers",
-      icon: Briefcase,
+      icon: "/images/categories/developers.png",
       title: {
         ru: "Застройщики",
         tg: "Сохтмончиён",
         en: "Developers",
       },
-      subtitle: {
-        ru: "Надёжные строительные компании",
-        tg: "Ширкатҳои сохтмонии боэътимод",
-        en: "Verified construction companies",
-      },
       href: urlDevelopers,
       badge: {
-        ru: `${developersCount} застройщиков`,
+        ru: `${developersCount} компаний`,
         tg: `${developersCount} ширкат`,
-        en: `${developersCount} companies`,
+        en: `${developersCount} builders`,
       },
-      accentGradient: "from-cyan-500/20 via-sky-500/10 to-transparent",
-      iconColor: "text-cyan-500",
-      badgeColor: "bg-cyan-500/15 backdrop-blur-xl border border-cyan-400/40 text-cyan-800 dark:text-cyan-300 shadow-[0_4px_12px_rgba(6,182,212,0.15),inset_0_1px_1px_rgba(255,255,255,0.7)]",
-    },
-    {
-      id: "showcase_agencies",
-      icon: Users,
-      title: {
-        ru: "Агентства",
-        tg: "Агентиҳо",
-        en: "Agencies",
-      },
-      subtitle: {
-        ru: "Сертифицированные риелторы города",
-        tg: "Миёнаравон ва агентиҳои санҷидашуда",
-        en: "Certified real estate agencies",
-      },
-      href: urlAgencies,
-      badge: {
-        ru: "Партнёры",
-        tg: "Шарикон",
-        en: "Partners",
-      },
-      accentGradient: "from-violet-500/20 via-indigo-500/10 to-transparent",
-      iconColor: "text-violet-500",
-      badgeColor: "bg-violet-500/15 backdrop-blur-xl border border-violet-400/40 text-violet-800 dark:text-violet-300 shadow-[0_4px_12px_rgba(139,92,246,0.15),inset_0_1px_1px_rgba(255,255,255,0.7)]",
-    },
-    {
-      id: "showcase_blog",
-      icon: FileText,
-      title: {
-        ru: "Журнал и аналитика",
-        tg: "Маҷалла ва таҳлил",
-        en: "Journal & Insights",
-      },
-      subtitle: {
-        ru: "Цены на недвижимость и законы",
-        tg: "Нархи амвол, қонунҳо ва таҳлил",
-        en: "Real estate trends and legislation",
-      },
-      href: urlBlog,
-      badge: {
-        ru: "12+ статей",
-        tg: "12+ мақола",
-        en: "12+ articles",
-      },
-      accentGradient: "from-emerald-500/20 via-green-500/10 to-transparent",
-      iconColor: "text-emerald-500",
-      badgeColor: "bg-emerald-500/15 backdrop-blur-xl border border-emerald-400/40 text-emerald-800 dark:text-emerald-300 shadow-[0_4px_12px_rgba(16,185,129,0.15),inset_0_1px_1px_rgba(255,255,255,0.7)]",
+      accentGlow: "from-emerald-500/25 via-amber-500/15 to-transparent",
     },
   ];
 
   return (
     <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full pt-4 sm:pt-6">
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 mb-5">
+      {/* Section Header */}
+      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 mb-5 sm:mb-6">
         <div>
           <div className="inline-flex items-center gap-1.5 text-xs uppercase font-bold tracking-wider text-emerald-600 mb-1">
             <TrendingUp className="h-3.5 w-3.5" />
@@ -312,58 +199,54 @@ export function HomepageShowcaseMatrix({ activeCity = "khujand" }: ShowcaseSecti
         </div>
       </div>
 
-      {/* 9-Block Showcase Grid (3x3 on Desktop, 2 cols on Mobile/Tablet) */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5 sm:gap-4">
-        {showcaseItems.map((item) => {
-          const Icon = item.icon;
-          return (
-            <motion.div
+      {/* 7-Card Showcase Row (Variant 2: Apple Tahoe Live Tiles with Title Below) */}
+      <div className="overflow-x-auto pb-4 pt-1 -mx-4 px-4 sm:mx-0 sm:px-0 scrollbar-none snap-x snap-mandatory">
+        <div className="flex items-start justify-start lg:justify-between gap-3 sm:gap-4 min-w-max lg:min-w-0">
+          {showcaseItems.map((item) => (
+            <Link
               key={item.id}
-              whileHover={{ y: -4, scale: 1.01 }}
-              whileTap={{ scale: 0.99 }}
-              transition={{ type: "spring", stiffness: 400, damping: 25 }}
+              href={item.href}
+              className="group flex flex-col items-center select-none snap-start focus:outline-none"
             >
-              <Link
-                href={item.href}
-                className="group relative flex flex-col justify-between h-full p-4 sm:p-5 rounded-2xl glass-card hover:border-emerald-500/40 shadow-xs hover:shadow-xl hover:shadow-emerald-500/12 transition-all duration-300 overflow-hidden cursor-pointer"
+              {/* Tahoe Live Tile Card: Exactly W: 156px, H: 213px, Radius: 33px, Padding: 12px */}
+              <motion.div
+                whileHover={{ y: -6, scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                transition={{ type: "spring", stiffness: 350, damping: 25 }}
+                className="relative w-[156px] h-[213px] rounded-[33px] p-[12px] glass-card flex flex-col items-center justify-between overflow-hidden cursor-pointer transition-colors duration-300 group-hover:border-emerald-500/40 group-hover:shadow-[0_20px_40px_-10px_rgba(16,185,129,0.18)]"
               >
-                {/* Subtle Ambient Color Glow */}
+                {/* Ambient Soft Color Light on Hover */}
                 <div
-                  className={`absolute -top-12 -right-12 w-32 h-32 rounded-full bg-gradient-to-br ${item.accentGradient} blur-2xl pointer-events-none group-hover:scale-125 transition-transform duration-500`}
+                  className={`absolute -top-12 -right-12 w-28 h-28 rounded-full bg-gradient-to-br ${item.accentGlow} blur-2xl pointer-events-none group-hover:scale-150 transition-transform duration-500`}
                 />
 
-                {/* Top Row: Icon + Badge */}
-                <div className="flex items-center justify-between gap-3 relative z-10 mb-3">
-                  <div className="h-10 w-10 rounded-xl bg-white/80 group-hover:bg-emerald-50/80 backdrop-blur-md border border-slate-200/80 group-hover:border-emerald-400/50 flex items-center justify-center transition-all shadow-2xs">
-                    <Icon className={`h-5 w-5 ${item.iconColor} group-hover:scale-110 transition-transform duration-300`} />
-                  </div>
+                {/* 3D Illustration: Centered, Exactly 76 × 76 px */}
+                <div className="w-[76px] h-[76px] relative z-10 my-auto flex items-center justify-center">
+                  <Image
+                    src={item.icon}
+                    alt={item.title[language]}
+                    width={76}
+                    height={76}
+                    className="w-[76px] h-[76px] object-contain drop-shadow-[0_6px_16px_rgba(0,0,0,0.12)] group-hover:scale-110 transition-transform duration-300"
+                    priority
+                  />
+                </div>
 
-                  <span
-                    className={`inline-flex items-center px-2.5 py-1 rounded-xl text-xs font-bold tracking-tight select-none transition-all ${item.badgeColor}`}
-                  >
+                {/* Count Badge Inside Card (Variant 2 spec) */}
+                <div className="w-full relative z-10 flex justify-center pb-1">
+                  <span className="inline-flex items-center justify-center px-3 py-1 rounded-full text-xs font-bold tracking-tight text-slate-700 dark:text-slate-200 bg-slate-100/90 dark:bg-slate-800/90 border border-slate-200/80 dark:border-white/10 group-hover:border-emerald-400/50 group-hover:bg-emerald-50/90 dark:group-hover:bg-emerald-950/50 group-hover:text-emerald-700 dark:group-hover:text-emerald-300 transition-all select-none truncate">
                     {item.badge[language]}
                   </span>
                 </div>
+              </motion.div>
 
-                {/* Bottom Row: Title + Subtitle + Action Arrow */}
-                <div className="relative z-10 flex items-end justify-between gap-2">
-                  <div className="min-w-0">
-                    <h3 className="text-sm sm:text-base font-bold text-slate-900 group-hover:text-emerald-600 transition-colors tracking-tight line-clamp-1">
-                      {item.title[language]}
-                    </h3>
-                    <p className="text-xs text-slate-500 mt-0.5 line-clamp-1">
-                      {item.subtitle[language]}
-                    </p>
-                  </div>
-
-                  <div className="h-7 w-7 rounded-lg bg-slate-100 group-hover:bg-emerald-600 text-slate-400 group-hover:text-white flex items-center justify-center shrink-0 transition-colors">
-                    <ChevronRight className="h-4 w-4 group-hover:translate-x-0.5 transition-transform" />
-                  </div>
-                </div>
-              </Link>
-            </motion.div>
-          );
-        })}
+              {/* Title Outside & Below Card (Variant 2 spec, Clickable) */}
+              <span className="mt-2.5 text-sm font-semibold text-slate-800 dark:text-slate-200 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors text-center tracking-tight max-w-[156px] truncate">
+                {item.title[language]}
+              </span>
+            </Link>
+          ))}
+        </div>
       </div>
     </section>
   );
