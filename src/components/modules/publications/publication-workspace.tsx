@@ -55,8 +55,10 @@ export function PublicationWorkspace({ forcedRole }: PublicationWorkspaceProps) 
   const [channelError, setChannelError] = useState<string | null>(null);
   const [showChannelHelp, setShowChannelHelp] = useState(false);
 
-  // 3. Generation & Editing State
-  const [targetLocale, setTargetLocale] = useState<Locale>(language as Locale);
+  // 3. Generation & Editing State (RU and TG only)
+  const [targetLocale, setTargetLocale] = useState<Locale>(
+    language === "tg" ? "tg" : "ru"
+  );
   const [preparing, setPreparing] = useState(false);
   const [material, setMaterial] = useState<PreparedPublicationMaterial | null>(null);
   const [editableText, setEditableText] = useState("");
@@ -554,7 +556,6 @@ export function PublicationWorkspace({ forcedRole }: PublicationWorkspaceProps) 
                 {[
                   { id: "ru", label: "RU" },
                   { id: "tg", label: "TG (Тоҷ)" },
-                  { id: "en", label: "EN" },
                 ].map((l) => (
                   <button
                     key={l.id}
