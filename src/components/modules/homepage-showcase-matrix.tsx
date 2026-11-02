@@ -25,7 +25,7 @@ export function HomepageShowcaseMatrix({ activeCity = "khujand" }: ShowcaseSecti
   const { language, tDual } = useLanguage();
 
   // 1. Calculate live counts
-  const newProjectsCount = INITIAL_PROJECTS.length; // 26
+  const newProjectsCount = INITIAL_PROJECTS.length; // 26 -> 25+
   const resaleCount = ALL_PROPERTIES.filter(
     (p) => p.dealType === "Продажа" && (p.propertyType === "Квартира" || p.propertyType === "Новостройка")
   ).length || 35;
@@ -57,7 +57,7 @@ export function HomepageShowcaseMatrix({ activeCity = "khujand" }: ShowcaseSecti
   const urlDevelopers = resolveCatalogUrl("catalog_developers", activeCity, language);
   const urlAgencies = resolveCatalogUrl("catalog_agencies", activeCity, language);
 
-  // 3. Define the 7 Showcase Items strictly per User Specs (Variant 2: Title Below)
+  // 3. Define the 7 Showcase Items strictly per User Specs (Variant 2: Title Below, Pure Number+ Badges)
   const showcaseItems = [
     {
       id: "showcase_new_builds",
@@ -68,11 +68,7 @@ export function HomepageShowcaseMatrix({ activeCity = "khujand" }: ShowcaseSecti
         en: "New Buildings",
       },
       href: urlNewBuilds,
-      badge: {
-        ru: `${newProjectsCount} ЖК`,
-        tg: `${newProjectsCount} МИ`,
-        en: `${newProjectsCount} Complexes`,
-      },
+      badge: "25+",
       accentGlow: "from-emerald-500/25 via-teal-500/15 to-transparent",
     },
     {
@@ -84,11 +80,7 @@ export function HomepageShowcaseMatrix({ activeCity = "khujand" }: ShowcaseSecti
         en: "Secondary Market",
       },
       href: urlResale,
-      badge: {
-        ru: `${resaleCount}+ объявл.`,
-        tg: `${resaleCount}+ эълон`,
-        en: `${resaleCount}+ listings`,
-      },
+      badge: "30+",
       accentGlow: "from-blue-500/25 via-sky-500/15 to-transparent",
     },
     {
@@ -100,44 +92,32 @@ export function HomepageShowcaseMatrix({ activeCity = "khujand" }: ShowcaseSecti
         en: "Houses & Villas",
       },
       href: urlHouses,
-      badge: {
-        ru: `${housesCount}+ домов`,
-        tg: `${housesCount}+ ҳавлӣ`,
-        en: `${housesCount}+ houses`,
-      },
+      badge: "5+",
       accentGlow: "from-amber-500/25 via-orange-500/15 to-transparent",
     },
     {
       id: "showcase_commercial",
-      icon: "/images/categories/commerce.png",
+      icon: "/images/categories/commerce-v2.png",
       title: {
         ru: "Коммерция",
         tg: "Амволи тиҷоратӣ",
         en: "Commercial Hub",
       },
       href: urlCommercial,
-      badge: {
-        ru: `${commercialCount}+ объекта`,
-        tg: `${commercialCount}+ иншоот`,
-        en: `${commercialCount}+ objects`,
-      },
+      badge: "4+",
       accentGlow: "from-indigo-500/25 via-blue-500/15 to-transparent",
     },
     {
       id: "showcase_services",
-      icon: "/images/categories/services.png",
+      icon: "/images/categories/services-v2.png",
       title: {
         ru: "Услуги",
         tg: "Хизматрасониҳо",
         en: "Services & Home",
       },
       href: urlServices,
-      badge: {
-        ru: "10+ услуг",
-        tg: "10+ хизмат",
-        en: "10+ services",
-      },
-      accentGlow: "from-cyan-500/25 via-teal-500/15 to-transparent",
+      badge: "10+",
+      accentGlow: "from-teal-500/25 via-cyan-500/15 to-transparent",
     },
     {
       id: "showcase_realtors",
@@ -148,27 +128,19 @@ export function HomepageShowcaseMatrix({ activeCity = "khujand" }: ShowcaseSecti
         en: "Certified Realtors",
       },
       href: urlAgencies,
-      badge: {
-        ru: "15+ риелторов",
-        tg: "15+ риелтор",
-        en: "15+ realtors",
-      },
+      badge: "15+",
       accentGlow: "from-violet-500/25 via-purple-500/15 to-transparent",
     },
     {
       id: "showcase_developers",
-      icon: "/images/categories/developers.png",
+      icon: "/images/categories/developers-v2.png",
       title: {
         ru: "Застройщики",
         tg: "Сохтмончиён",
         en: "Developers",
       },
       href: urlDevelopers,
-      badge: {
-        ru: `${developersCount} компаний`,
-        tg: `${developersCount} ширкат`,
-        en: `${developersCount} builders`,
-      },
+      badge: "3+",
       accentGlow: "from-emerald-500/25 via-amber-500/15 to-transparent",
     },
   ];
@@ -232,10 +204,10 @@ export function HomepageShowcaseMatrix({ activeCity = "khujand" }: ShowcaseSecti
                   />
                 </div>
 
-                {/* Count Badge Inside Card (Variant 2 spec) */}
-                <div className="w-full relative z-10 flex justify-center pb-1">
-                  <span className="inline-flex items-center justify-center px-3 py-1 rounded-full text-xs font-bold tracking-tight text-slate-700 dark:text-slate-200 bg-slate-100/90 dark:bg-slate-800/90 border border-slate-200/80 dark:border-white/10 group-hover:border-emerald-400/50 group-hover:bg-emerald-50/90 dark:group-hover:bg-emerald-950/50 group-hover:text-emerald-700 dark:group-hover:text-emerald-300 transition-all select-none truncate">
-                    {item.badge[language]}
+                {/* Count Badge Inside Card (Variant 2 spec: purely numerical with +, larger & bolder) */}
+                <div className="w-full relative z-10 flex justify-center pb-1.5">
+                  <span className="inline-flex items-center justify-center min-w-[70px] px-3.5 py-1 rounded-full text-sm font-extrabold tracking-wide text-slate-800 dark:text-slate-100 bg-slate-100/90 dark:bg-slate-800/90 border border-slate-200/90 dark:border-white/15 shadow-xs group-hover:border-emerald-500/50 group-hover:bg-emerald-50/90 dark:group-hover:bg-emerald-950/60 group-hover:text-emerald-700 dark:group-hover:text-emerald-300 transition-all select-none">
+                    {item.badge}
                   </span>
                 </div>
               </motion.div>
