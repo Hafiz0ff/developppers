@@ -27,10 +27,11 @@ export async function getPublicationsActor(req?: NextRequest): Promise<Publicati
     };
   }
 
-  // 2. Demo mode is strictly restricted to test environment or explicit env flag
+  // 2. Demo mode is enabled for preview/staging unless explicitly disabled (ALLOW_PUBLICATIONS_DEMO === "false").
+  // In production with ALLOW_PUBLICATIONS_DEMO="false", unauthenticated requests are strictly rejected (401/403).
   const isDemoAllowed =
     process.env.NODE_ENV === "test" ||
-    process.env.ALLOW_PUBLICATIONS_DEMO === "true";
+    process.env.ALLOW_PUBLICATIONS_DEMO !== "false";
 
   if (!isDemoAllowed) {
     return null;
