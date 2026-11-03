@@ -21,24 +21,24 @@ export function FloatingCompareBar() {
   }
 
   return (
-    <div className="fixed bottom-5 left-1/2 -translate-x-1/2 z-45 w-[92%] max-w-2xl animate-in slide-in-from-bottom-5 duration-300">
-      <div className="bg-slate-900/95 backdrop-blur-md text-white rounded-2xl p-3 sm:p-4 border border-slate-700/80 shadow-2xl flex flex-col sm:flex-row items-center justify-between gap-3">
-        {/* Left: Icon & Title */}
+    <div className="fixed bottom-5 left-1/2 -translate-x-1/2 z-45 w-[94%] max-w-2xl animate-in slide-in-from-bottom-5 duration-300">
+      <div className="bg-white/80 dark:bg-slate-900/85 backdrop-blur-2xl backdrop-saturate-180 text-slate-900 dark:text-white rounded-3xl p-3 sm:p-4 border border-white/80 dark:border-white/15 shadow-[0_24px_60px_-12px_rgba(15,23,42,0.18),0_12px_24px_-6px_rgba(16,185,129,0.12),inset_0_1.5px_1.5px_0_rgba(255,255,255,0.95)] flex flex-col sm:flex-row items-center justify-between gap-3">
+        {/* Left: Emerald Icon & Title */}
         <div className="flex items-center gap-3 w-full sm:w-auto">
-          <div className="h-10 w-10 rounded-xl bg-blue-500/20 text-blue-400 border border-blue-500/30 flex items-center justify-center shrink-0">
+          <div className="h-10 w-10 rounded-2xl bg-gradient-to-tr from-emerald-600 via-teal-500 to-emerald-400 text-white flex items-center justify-center shrink-0 shadow-md shadow-emerald-500/25">
             <ArrowLeftRight className="h-5 w-5" />
           </div>
 
           <div className="min-w-0">
             <div className="flex items-center gap-2">
-              <span className="font-extrabold text-sm text-white">
+              <span className="font-extrabold text-sm text-slate-900 dark:text-white">
                 {isTg ? "Муқоисаи амвол" : "Сравнение объектов"}
               </span>
-              <Badge className="bg-blue-600 text-white font-bold text-[10px] px-1.5 py-0">
+              <Badge className="bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 border border-emerald-400/40 font-black text-[11px] px-2 py-0.5 rounded-full">
                 {compareCount} / 4
               </Badge>
             </div>
-            <p className="text-[11px] text-slate-400 truncate">
+            <p className="text-[11px] text-slate-500 dark:text-slate-400 truncate">
               {isTg
                 ? "Хонадонҳо ва ҳавлиҳои интихобшуда"
                 : "Параметры, цены и коммуникации"}
@@ -46,18 +46,18 @@ export function FloatingCompareBar() {
           </div>
         </div>
 
-        {/* Center: Thumbnails list */}
+        {/* Center: Thumbnails list with frosted borders */}
         <div className="flex items-center gap-2 overflow-x-auto py-1 max-w-full">
           {compareItems.map((item) => (
             <div
               key={item.id}
-              className="relative group shrink-0 h-10 w-10 rounded-lg overflow-hidden border border-slate-700 bg-slate-800"
+              className="relative group shrink-0 h-10 w-10 rounded-xl overflow-hidden border border-white/80 dark:border-white/20 shadow-xs bg-slate-100 dark:bg-slate-800"
               title={item.title}
             >
               <img
                 src={item.image}
                 alt={item.title}
-                className="h-full w-full object-cover"
+                className="h-full w-full object-cover group-hover:scale-105 transition-transform"
               />
               <button
                 type="button"
@@ -76,7 +76,7 @@ export function FloatingCompareBar() {
           <button
             type="button"
             onClick={clearCompare}
-            className="text-[11px] text-slate-400 hover:text-slate-200 transition-colors p-2"
+            className="text-[11px] text-slate-400 hover:text-rose-500 dark:hover:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 p-2 rounded-xl transition-all cursor-pointer"
             title={isTg ? "Тоза кардан" : "Очистить список"}
           >
             <Trash2 className="h-4 w-4" />
@@ -85,7 +85,7 @@ export function FloatingCompareBar() {
           <Link href="/compare">
             <Button
               size="sm"
-              className="h-9 px-4 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs gap-1.5 shadow-sm cursor-pointer"
+              className="h-9 px-4 rounded-xl bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-500 hover:from-emerald-500 hover:to-teal-400 text-white font-bold text-xs gap-1.5 shadow-[0_8px_20px_rgba(16,185,129,0.30),inset_0_1px_1px_rgba(255,255,255,0.4)] transition-all cursor-pointer active:scale-95"
             >
               <span>{isTg ? "Ба муқоиса гузаштан" : "Сравнить"}</span>
               <ArrowRight className="h-3.5 w-3.5" />

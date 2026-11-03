@@ -43,6 +43,28 @@ function postLead(item: ClassifiedCardData, source: "phone_click" | "whatsapp_cl
   }).catch(() => {});
 }
 
+const FALLBACK_APARTMENT_IMAGES = [
+  "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=1200&h=800&fit=crop",
+  "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=1200&h=800&fit=crop",
+  "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=1200&h=800&fit=crop",
+  "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=1200&h=800&fit=crop",
+  "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=1200&h=800&fit=crop",
+];
+
+const FALLBACK_HOUSE_IMAGES = [
+  "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1200&h=800&fit=crop",
+  "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1200&h=800&fit=crop",
+  "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=1200&h=800&fit=crop",
+  "https://images.unsplash.com/photo-1513694203232-719a280e022f?w=1200&h=800&fit=crop",
+  "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1200&h=800&fit=crop",
+];
+
+const FALLBACK_COMMERCIAL_IMAGES = [
+  "https://images.unsplash.com/photo-1497215842964-222b430dc094?auto=format&fit=crop&w=1200&q=80",
+  "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=1200&h=800&fit=crop",
+  "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1200&q=80",
+];
+
 export function ClassifiedCard({ item, formatPrice, onPromote }: Props) {
   const { language } = useLanguage();
   const isTg = language === "tg";
@@ -152,6 +174,18 @@ export function ClassifiedCard({ item, formatPrice, onPromote }: Props) {
     }, 120);
   };
 
+  const getFallbackImage = (idx = 0) => {
+    const isHouse = item.propertyType?.includes("Дом") || item.propertyType?.includes("Ҳавлӣ");
+    const isComm = item.propertyType?.includes("Коммерция");
+    if (isHouse) {
+      return FALLBACK_HOUSE_IMAGES[idx % FALLBACK_HOUSE_IMAGES.length];
+    }
+    if (isComm) {
+      return FALLBACK_COMMERCIAL_IMAGES[idx % FALLBACK_COMMERCIAL_IMAGES.length];
+    }
+    return FALLBACK_APARTMENT_IMAGES[idx % FALLBACK_APARTMENT_IMAGES.length];
+  };
+
   const handleCardLinkClick = (e: React.MouseEvent) => {
     if (isSwipingRef.current) {
       e.preventDefault();
@@ -181,8 +215,15 @@ export function ClassifiedCard({ item, formatPrice, onPromote }: Props) {
             className="block w-full h-full"
           >
             <img
-              src={photos[activePhotoIdx] || item.image}
+              src={photos[activePhotoIdx] || item.image || getFallbackImage(activePhotoIdx)}
               alt={item.title}
+              onError={(e) => {
+                const target = e.currentTarget;
+                const fallback = getFallbackImage(activePhotoIdx);
+                if (target.src !== fallback) {
+                  target.src = fallback;
+                }
+              }}
               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
             />
           </Link>
@@ -207,90 +248,105 @@ export function ClassifiedCard({ item, formatPrice, onPromote }: Props) {
                 <ChevronRight className="h-4 w-4" />
               </button>
 
-              {/* Frosted Glass Dots / Counter Indicator (AC-24, AC-27) */}
-              <div className="absolute bottom-2.5 left-1/2 -translate-x-1/2 z-20 flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-black/45 backdrop-blur-md border border-white/15 pointer-events-none">
-                {photos.slice(0, 6).map((_, idx) => (
+            </>
+          )}
+
+          {/* Top Overlay: Left Status Badges & Right Action Cluster (Collision-Free) */}
+          <div className="absolute top-2.5 inset-x-2.5 z-20 flex items-center justify-between gap-1.5 pointer-events-none">
+            {/* Left: Status Badges (Top, Urgent, Deal Type, Property Type) */}
+            <div className="flex items-center gap-1 min-w-0 shrink overflow-hidden pointer-events-auto">
+              {isTop && (
+                <Badge variant="gold" className="rounded-lg px-2 py-0.5 text-[10px] font-black shrink-0 shadow-xs">
+                  👑 {isTg ? "ТОП" : "ТОП"}
+                </Badge>
+              )}
+              {isUrgent && (
+                <Badge variant="destructive" className="rounded-lg px-2 py-0.5 text-[10px] font-black shrink-0 bg-rose-600/95 text-white border-none shadow-xs">
+                  🔥 {isTg ? "Таъҷилӣ" : "Срочно"}
+                </Badge>
+              )}
+              <Badge variant="emerald" className="rounded-lg px-2 py-0.5 text-[10px] font-bold shrink-0 shadow-xs">
+                {dealTypeDisplay}
+              </Badge>
+              {!isTop && !isUrgent && (
+                <Badge variant="frostedLight" className="rounded-lg px-2 py-0.5 text-[10px] font-bold truncate max-w-[75px] shadow-xs">
+                  {propertyTypeDisplay}
+                </Badge>
+              )}
+            </div>
+
+            {/* Right: Compare Toggle & Metrics Cluster (Matching Height h-7) */}
+            <div className="flex items-center gap-1.5 shrink-0 pointer-events-auto">
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  toggleCompare(classifiedToCompareProperty(item));
+                }}
+                title={
+                  isCompared
+                    ? isTg
+                      ? "Аз муқоиса тоза кардан"
+                      : "Удалить из сравнения"
+                    : isTg
+                    ? "Ба муқоиса илова кардан"
+                    : "Добавить в сравнение"
+                }
+                aria-label={
+                  isCompared
+                    ? isTg
+                      ? "Аз муқоиса тоза кардан"
+                      : "Удалить из сравнения"
+                    : isTg
+                    ? "Ба муқоиса илова кардан"
+                    : "Добавить в сравнение"
+                }
+                className={`h-7 w-7 rounded-lg flex items-center justify-center backdrop-blur-md transition-all shadow-xs cursor-pointer border ${
+                  isCompared
+                    ? "bg-emerald-600 text-white border-emerald-400 ring-2 ring-emerald-300"
+                    : "bg-black/50 hover:bg-black/70 text-white hover:text-emerald-300 border-white/20"
+                }`}
+              >
+                <ArrowLeftRight className="h-3.5 w-3.5" />
+              </button>
+              <PropertyMetricsBadge idOrSlug={item.slug || item.id} />
+            </div>
+          </div>
+
+          {/* Bottom Overlay: Photo Pagination Dots (Left) & Negotiable Tag (Right) (Collision-Free) */}
+          <div className="absolute bottom-2.5 inset-x-2.5 z-20 flex items-center justify-between gap-1.5 pointer-events-none">
+            {/* Left: Photos Indicator */}
+            {photos.length > 1 ? (
+              <div className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-black/55 backdrop-blur-md border border-white/15 pointer-events-auto shadow-xs">
+                {photos.slice(0, 5).map((_, idx) => (
                   <span
                     key={idx}
                     className={`block rounded-full transition-all duration-300 ${
                       idx === activePhotoIdx
-                        ? "w-3 h-1.5 bg-white shadow-xs"
-                        : "w-1.5 h-1.5 bg-white/40"
+                        ? "w-2.5 h-1.5 bg-white shadow-xs"
+                        : "w-1 h-1 bg-white/40"
                     }`}
                   />
                 ))}
-                {photos.length > 6 && (
+                {photos.length > 5 && (
                   <span className="text-[9px] font-bold text-white/90 ml-0.5 font-mono">
                     {activePhotoIdx + 1}/{photos.length}
                   </span>
                 )}
               </div>
-            </>
-          )}
-
-          <div className="absolute top-3 left-3 flex flex-wrap gap-1.5 z-10 pointer-events-none">
-            {isTop && (
-              <Badge variant="gold" className="rounded-xl px-2.5 py-1 text-[11px] font-black tracking-wide pointer-events-auto">
-                👑 {isTg ? "ТОП" : "ТОП"}
-              </Badge>
+            ) : (
+              <div />
             )}
-            <Badge variant="emerald" className="rounded-xl px-2.5 py-1 text-[11px] font-bold pointer-events-auto">
-              {dealTypeDisplay}
-            </Badge>
-            <Badge variant="frostedLight" className="rounded-xl px-2.5 py-1 text-[11px] font-bold pointer-events-auto">
-              {propertyTypeDisplay}
-            </Badge>
-          </div>
-          <div className="absolute top-3 right-3 z-10 flex items-center gap-1.5">
-            <button
-              type="button"
-              onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                toggleCompare(classifiedToCompareProperty(item));
-              }}
-              title={
-                isCompared
-                  ? isTg
-                    ? "Аз муқоиса тоза кардан"
-                    : "Удалить из сравнения"
-                  : isTg
-                  ? "Ба муқоиса илова кардан"
-                  : "Добавить в сравнение"
-              }
-              aria-label={
-                isCompared
-                  ? isTg
-                    ? "Аз муқоиса тоза кардан"
-                    : "Удалить из сравнения"
-                  : isTg
-                  ? "Ба муқоиса илова кардан"
-                  : "Добавить в сравнение"
-              }
-              className={`h-7 w-7 rounded-xl flex items-center justify-center backdrop-blur-xl transition-all shadow-xs cursor-pointer border ${
-                isCompared
-                  ? "bg-blue-600 text-white border-blue-400 ring-2 ring-blue-300"
-                  : "bg-white/85 text-slate-700 hover:bg-white hover:text-emerald-600 border-white/60 dark:bg-slate-900/80 dark:text-slate-200 dark:border-white/20"
-              }`}
-            >
-              <ArrowLeftRight className="h-3.5 w-3.5" />
-            </button>
-            <PropertyMetricsBadge idOrSlug={item.slug || item.id} />
-          </div>
 
-          {/* Urgent Sale Fire Badge */}
-          {isUrgent && (
-            <div className="absolute bottom-3 left-3 glass-badge-red text-white text-[10px] font-black px-2.5 py-1 rounded-xl shadow-md flex items-center gap-1 z-10 animate-pulse pointer-events-none">
-              <span>🔥</span>
-              <span>{isTg ? "Таъҷилӣ" : "Срочно"}</span>
-            </div>
-          )}
-
-          {item.isNegotiable && (
-            <div className="absolute bottom-3 right-3 glass-pill text-[10px] font-bold text-slate-800 dark:text-slate-100 px-2.5 py-1 rounded-xl shadow-xs pointer-events-none">
-              🤝 {isTg ? "Савдо мешавад" : "Торг уместен"}
-            </div>
-          )}
+            {/* Right: Торг уместен (Negotiable Pill) */}
+            {item.isNegotiable && (
+              <div className="flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-black/55 backdrop-blur-md border border-white/15 text-[10px] font-bold text-white/95 shadow-xs shrink-0 pointer-events-auto select-none">
+                <span>🤝</span>
+                <span>{isTg ? "Савдо" : "Торг уместен"}</span>
+              </div>
+            )}
+          </div>
         </div>
 
         <CardContent className="p-4 sm:p-5 space-y-3">

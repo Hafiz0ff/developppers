@@ -140,7 +140,7 @@ export function PropertyMetricsBadge({
         e.preventDefault();
         e.stopPropagation();
       }}
-      className={`inline-flex items-center gap-2 bg-slate-900/65 backdrop-blur-md px-2.5 py-1 rounded-lg text-white text-[11px] font-medium shadow-xs border border-white/10 ${className}`}
+      className={`inline-flex items-center gap-1.5 h-7 box-border bg-black/50 backdrop-blur-md px-2 rounded-lg text-white text-[11px] font-medium shadow-xs border border-white/20 select-none ${className}`}
     >
       {/* Favorite button */}
       <button

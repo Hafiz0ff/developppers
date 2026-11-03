@@ -129,6 +129,19 @@ export function HomepageShowcaseSections({ activeCity = "khujand" }: Props) {
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
                 {newBuildProjects.map((project) => {
                   const dev = INITIAL_DEVELOPERS.find((d) => d.id === project.developerId);
+                  const projectHeroImage =
+                    project.slug === "qayroqum-avenue"
+                      ? "/images/qayroqum/qayroqum-9.jpg"
+                      : project.slug === "zhk-kohi-munavvar"
+                      ? "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=1200&h=800&fit=crop"
+                      : project.slug === "zhk-kohi-azim"
+                      ? "https://images.unsplash.com/photo-1590674899484-d5640e854abe?w=1200&h=800&fit=crop"
+                      : project.slug === "zhk-istiqlol-royal-towers"
+                      ? "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=1200&h=800&fit=crop"
+                      : project.images && project.images.length > 0 && !project.images[0].includes("somon.tj")
+                      ? project.images[0]
+                      : "/images/qayroqum/qayroqum-9.jpg";
+
                   return (
                     <div
                       key={project.id}
@@ -141,8 +154,11 @@ export function HomepageShowcaseSections({ activeCity = "khujand" }: Props) {
                           className="relative h-48 w-full block overflow-hidden bg-slate-900"
                         >
                           <img
-                            src={project.customBuildingFeatures?.[0]?.value || "/images/qayroqum/qayroqum-1.jpg"}
+                            src={projectHeroImage}
                             alt={project.name}
+                            onError={(e) => {
+                              e.currentTarget.src = "/images/qayroqum/qayroqum-9.jpg";
+                            }}
                             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                           />
                           <div className="absolute top-3 left-3 z-10">
