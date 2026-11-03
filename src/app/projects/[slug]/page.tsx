@@ -33,6 +33,7 @@ import { ParkingSpot, StorageUnit } from "@/types/parking-storage";
 import { getDeveloperCrmSettings } from "@/lib/crm-booking-store";
 import { ProjectDealBuilderBlock } from "@/components/modules/projects/project-deal-builder-block";
 import { LeadRequestDrawer } from "@/components/modules/projects/lead-request-drawer";
+import { ProjectConstructionTimeline } from "@/components/modules/projects/project-construction-timeline";
 import { motion } from "motion/react";
 
 import {
@@ -890,44 +891,17 @@ export default function PublicProjectPage() {
         />
       </section>
 
-      {/* CONSTRUCTION PROGRESS (ХОД СТРОИТЕЛЬСТВА) */}
-      {project.constructionProgress.length > 0 && (
-        <section className="container mx-auto px-4 space-y-6">
-          <div>
-            <h2 className="text-2xl font-bold text-foreground">
-              {tDual("Ход строительства", "Раванди сохтмон")}
-            </h2>
-            <p className="text-xs text-muted-foreground mt-0.5">
-              {tDual(
-                "Фотоотчеты со строительной площадки",
-                "Ҳисоботи аксҳо аз майдони сохтмон"
-              )}
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {project.constructionProgress.map((item, idx) => (
-              <Card key={idx} className="overflow-hidden border p-4 space-y-3">
-                <div className="flex items-center justify-between text-xs">
-                  <span className="font-bold text-foreground">{item.title}</span>
-                  <Badge variant="outline" className="text-[10px]">
-                    {item.date}
-                  </Badge>
-                </div>
-                {item.photos[0] && (
-                  <div className="h-48 rounded-xl overflow-hidden bg-muted">
-                    <img
-                      src={item.photos[0]}
-                      alt={item.title}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                )}
-              </Card>
-            ))}
-          </div>
-        </section>
-      )}
+      {/* CONSTRUCTION PROGRESS & READINESS TIMELINE (TAHOE / PRIMEREACT PATTERN) */}
+      <ProjectConstructionTimeline
+        projectName={project.name}
+        projectNameTg={project.nameTg || undefined}
+        status={project.status}
+        deadlineYear={project.deadlineYear}
+        deadlineQuarter={project.deadlineQuarter}
+        floorsCount={project.floorsCount}
+        reports={project.constructionProgress}
+        developerName={developer.name}
+      />
 
       {/* OFFICIAL PROJECT DOCUMENTS (STRICTLY AFTER CONSTRUCTION PROGRESS) */}
       <ProjectDocumentsSection
