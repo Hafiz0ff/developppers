@@ -4,13 +4,17 @@ import React from "react";
 
 /**
  * AmbientAuroraBackground
- * Inspired by Uiverse "slimy-newt-42" by ariba_9087
- * https://uiverse.io/ariba_9087/slimy-newt-42
+ * Inspired by Uiverse "slimy-newt-42" by ariba_9087, customized to Maskani brand identity:
+ * - Emerald-teal (#10b981, #0d9488, #14b8a6)
+ * - Fresh mint (#6ee7b7, #a7f3d0)
+ * - Cyan & turquoise (#22d3ee)
+ * - Azure sky (#38bdf8, #93c5fd)
+ * - Warm golden sand (#fde68a, #fed7aa)
  *
  * Implements a full-screen fixed ambient rotating mesh gradient:
- * - Base pastel gradient (#ffe8f3 -> #d9f3ff)
- * - Dual-layer conic gradients with soft pastel stops rotating in opposite directions
- * - Hardware-accelerated GPU transforms with heavy blurs (65px - 85px)
+ * - Base pastel gradient (#f0fdf9 -> #f4fbfb -> #fefcf3 -> #f0f9ff)
+ * - Dual-layer conic gradients with soft brand stops rotating in opposite directions
+ * - Hardware-accelerated GPU transforms with heavy blurs (65px - 80px)
  * - Radial overlay and frosted glass pass-through for Apple Tahoe / VisionOS aesthetics
  */
 export function AmbientAuroraBackground() {

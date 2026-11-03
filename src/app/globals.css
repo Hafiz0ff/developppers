@@ -507,16 +507,16 @@
 }
 
 /* ==========================================================================
-   Ambient Aurora Background (Uiverse slimy-newt-42 by ariba_9087)
-   https://uiverse.io/ariba_9087/slimy-newt-42
+   Ambient Aurora Background (Maskani Brand Palette: Emerald, Mint, Cyan, Azure, Sand)
+   Structure based on Uiverse slimy-newt-42 by ariba_9087
    ========================================================================== */
 
 .slimy-base-gradient {
-  background: linear-gradient(135deg, #ffe8f3 0%, #f6eef8 45%, #e1f4fc 75%, #d9f3ff 100%);
+  background: linear-gradient(135deg, #f0fdf9 0%, #f4fbfb 30%, #fefcf3 65%, #f0f9ff 100%);
 }
 
 .dark .slimy-base-gradient {
-  background: linear-gradient(135deg, #090d16 0%, #0f172a 50%, #020617 100%);
+  background: linear-gradient(135deg, #021a15 0%, #062426 40%, #082238 75%, #020617 100%);
 }
 
 .slimy-mesh-container {
@@ -532,19 +532,22 @@
   border-radius: 50%;
   background: conic-gradient(
     from 0deg,
-    #ff9aa2,
-    #ffb7b2,
-    #ffdac1,
-    #e2f0cb,
-    #a2e4ff,
-    #c9afff,
-    #ffb7b2,
-    #ff9aa2
+    #10b981, /* emerald */
+    #34d399, /* light emerald */
+    #6ee7b7, /* fresh mint */
+    #22d3ee, /* vibrant cyan */
+    #38bdf8, /* azure */
+    #93c5fd, /* soft sky azure */
+    #fde68a, /* warm golden sand */
+    #fed7aa, /* soft peach sand */
+    #a7f3d0, /* mint seafoam */
+    #14b8a6, /* teal */
+    #10b981  /* closing loop */
   );
-  animation: slimy-rotate 10s linear infinite;
+  animation: slimy-rotate 11s linear infinite;
   filter: blur(65px);
   -webkit-filter: blur(65px);
-  opacity: 0.75;
+  opacity: 0.70;
   will-change: transform;
   transform: translate3d(0, 0, 0);
   backface-visibility: hidden;
@@ -558,49 +561,72 @@
   min-height: 1100px;
   border-radius: 50%;
   background: conic-gradient(
-    from 0deg,
-    #c9afff,
-    #a2e4ff,
-    #e2f0cb,
-    #ffdac1,
-    #ffb7b2,
-    #ff9aa2,
-    #ffb7b2,
-    #c9afff
+    from 180deg,
+    #38bdf8, /* azure */
+    #22d3ee, /* cyan */
+    #6ee7b7, /* mint */
+    #fef08a, /* pale sand */
+    #fed7aa, /* warm sand */
+    #34d399, /* bright emerald */
+    #0d9488, /* deep teal */
+    #60a5fa, /* sky azure */
+    #a7f3d0, /* soft mint */
+    #38bdf8  /* closing loop */
   );
-  animation: slimy-rotate-reverse 14s linear infinite;
+  animation: slimy-rotate-reverse 15s linear infinite;
   filter: blur(80px);
   -webkit-filter: blur(80px);
-  opacity: 0.55;
+  opacity: 0.50;
   will-change: transform;
   transform: translate3d(0, 0, 0);
   backface-visibility: hidden;
 }
 
 .dark .slimy-aurora-layer-1 {
-  opacity: 0.22;
+  background: conic-gradient(
+    from 0deg,
+    #064e3b,
+    #047857,
+    #0d9488,
+    #0e7490,
+    #1d4ed8,
+    #b45309,
+    #047857,
+    #064e3b
+  );
+  opacity: 0.28;
   filter: blur(85px);
 }
 
 .dark .slimy-aurora-layer-2 {
-  opacity: 0.18;
+  background: conic-gradient(
+    from 180deg,
+    #0369a1,
+    #0f766e,
+    #047857,
+    #92400e,
+    #0284c7,
+    #064e3b,
+    #0369a1
+  );
+  opacity: 0.22;
   filter: blur(100px);
 }
 
 .slimy-radial-overlay {
   background: radial-gradient(
     circle at center,
-    rgba(255, 255, 255, 0.3) 0%,
-    rgba(255, 255, 255, 0.08) 60%,
-    rgba(0, 0, 0, 0.06) 100%
+    rgba(255, 255, 255, 0.45) 0%,
+    rgba(255, 255, 255, 0.15) 55%,
+    rgba(13, 148, 136, 0.05) 100%
   );
 }
 
 .dark .slimy-radial-overlay {
   background: radial-gradient(
     circle at center,
-    rgba(15, 23, 42, 0.3) 0%,
-    rgba(2, 6, 23, 0.7) 100%
+    rgba(15, 23, 42, 0.25) 0%,
+    rgba(2, 6, 23, 0.75) 100%
   );
 }
 
