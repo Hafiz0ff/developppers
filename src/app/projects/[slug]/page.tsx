@@ -34,6 +34,7 @@ import { getDeveloperCrmSettings } from "@/lib/crm-booking-store";
 import { ProjectDealBuilderBlock } from "@/components/modules/projects/project-deal-builder-block";
 import { LeadRequestDrawer } from "@/components/modules/projects/lead-request-drawer";
 import { ProjectConstructionTimeline } from "@/components/modules/projects/project-construction-timeline";
+import { FloatingQuickActions } from "@/components/modules/projects/floating-quick-actions";
 import { motion } from "motion/react";
 
 import {
@@ -350,13 +351,13 @@ export default function PublicProjectPage() {
               variant={isFavorite ? "default" : "outline"}
               size="sm"
               onClick={toggleFavorite}
-              className={`h-8 text-xs gap-1.5 transition-colors cursor-pointer ${
+              className={`h-8 text-xs gap-1.5 transition-all cursor-pointer tactile-press ${
                 isFavorite
-                  ? "bg-rose-600 hover:bg-rose-700 text-white"
-                  : "hover:text-rose-600"
+                  ? "bg-rose-500 hover:bg-rose-600 text-white border-rose-400 shadow-sm"
+                  : "hover:text-rose-600 glass-pill"
               }`}
             >
-              <Heart className={`h-3.5 w-3.5 ${isFavorite ? "fill-white" : ""}`} />
+              <Heart className={`h-3.5 w-3.5 ${isFavorite ? "fill-white animate-heart-pop text-white" : ""}`} />
               {isFavorite ? tDual("В избранном", "Дар баргузидаҳо") : tDual("В избранное", "Ба баргузидаҳо")}
             </Button>
           </div>
@@ -690,7 +691,7 @@ export default function PublicProjectPage() {
                           setDrawerType("booking");
                           setIsDrawerOpen(true);
                         }}
-                        className="w-full h-11 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-md gap-1.5 cursor-pointer"
+                        className="w-full h-11 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-black text-xs shadow-md gap-1.5 cursor-pointer btn-shimmer btn-glow-emerald tactile-press"
                       >
                         <Bookmark className="h-4 w-4" />
                         <span>{tDual("Забронировать", "Банд кардан")}</span>
@@ -703,7 +704,7 @@ export default function PublicProjectPage() {
                           setDrawerType("callback");
                           setIsDrawerOpen(true);
                         }}
-                        className="w-full h-11 rounded-xl border-border hover:bg-muted font-bold text-xs gap-1.5 cursor-pointer"
+                        className="w-full h-11 rounded-xl glass-pill font-bold text-xs gap-1.5 cursor-pointer tactile-press hover:border-emerald-500/50"
                       >
                         <PhoneCall className="h-4 w-4 text-emerald-600" />
                         <span>{tDual("Звонок", "Занг")}</span>
@@ -720,9 +721,9 @@ export default function PublicProjectPage() {
                 ) : (
                   <a
                     href={`tel:${developer.phone}`}
-                    className="w-full inline-flex items-center justify-center gap-2 h-10 px-4 rounded-xl border hover:bg-muted font-semibold text-xs transition-colors"
+                    className="w-full inline-flex items-center justify-center gap-2 h-10 px-4 rounded-xl glass-pill hover:bg-muted font-bold text-xs transition-colors tactile-press cursor-pointer"
                   >
-                    <Phone className="h-4 w-4" />
+                    <Phone className="h-4 w-4 text-emerald-600" />
                     {developer.phone}
                   </a>
                 )}
@@ -735,9 +736,9 @@ export default function PublicProjectPage() {
                   )}`}
                   target="_blank"
                   rel="noreferrer"
-                  className="w-full inline-flex items-center justify-center gap-2 h-10 px-4 rounded-xl border border-emerald-500/30 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-50 font-semibold text-xs transition-colors"
+                  className="w-full inline-flex items-center justify-center gap-2 h-11 px-4 rounded-xl text-white font-bold text-xs shadow-md btn-shimmer btn-glow-whatsapp tactile-press transition-all cursor-pointer"
                 >
-                  <MessageCircle className="h-4 w-4" />
+                  <MessageCircle className="h-4 w-4 fill-white text-transparent" />
                   {tDual("Консультация в WhatsApp", "Машварат дар WhatsApp")}
                 </a>
 
@@ -924,6 +925,17 @@ export default function PublicProjectPage() {
         bundle={dealBundle}
         workHoursStart={crmSettings.workHoursStart}
         workHoursEnd={crmSettings.workHoursEnd}
+      />
+
+      {/* FLOATING QUICK ACTIONS DOCK (DYNAMIC ISLAND) */}
+      <FloatingQuickActions
+        projectName={displayName}
+        phone={developer.phone}
+        whatsapp={developer.whatsapp}
+        onScrollToChessboard={() => {
+          const el = document.getElementById("chessboard-section");
+          if (el) el.scrollIntoView({ behavior: "smooth" });
+        }}
       />
     </div>
   );

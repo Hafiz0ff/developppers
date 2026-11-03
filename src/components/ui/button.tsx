@@ -17,6 +17,18 @@ const buttonVariants = cva(
         destructive:
           "bg-destructive/10 text-destructive hover:bg-destructive/20 focus-visible:border-destructive/40 focus-visible:ring-destructive/20 dark:bg-destructive/20 dark:hover:bg-destructive/30 dark:focus-visible:ring-destructive/40",
         link: "text-primary underline-offset-4 hover:underline",
+        emerald:
+          "bg-emerald-600 hover:bg-emerald-700 text-white shadow-md btn-shimmer btn-glow-emerald font-bold",
+        emeraldGlow:
+          "bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-600 hover:from-emerald-500 hover:to-teal-500 text-white shadow-lg btn-shimmer btn-glow-emerald font-extrabold",
+        glass:
+          "glass-pill text-foreground hover:bg-white/30 dark:hover:bg-white/10 border border-white/60 dark:border-white/15 hover:border-emerald-500/50 tactile-press shadow-xs",
+        glassEmerald:
+          "bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 border border-emerald-500/30 hover:border-emerald-500/60 tactile-press shadow-xs font-semibold",
+        whatsapp:
+          "bg-[#25D366] hover:bg-[#20bd5a] text-white shadow-md btn-shimmer btn-glow-whatsapp tactile-press font-bold",
+        gold:
+          "bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-white shadow-md btn-shimmer btn-glow-gold tactile-press font-bold",
       },
       size: {
         default:

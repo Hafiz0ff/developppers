@@ -912,7 +912,7 @@ export default function HomePage() {
                     <div className="pt-2 flex items-center gap-3">
                       <Link href={`/projects/${proj.slug}`} className="flex-1">
                         <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-                          <Button className="w-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-semibold text-xs h-10 px-4 rounded-xl shadow-md shadow-emerald-600/20 cursor-pointer">
+                          <Button className="w-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold text-xs h-10 px-4 rounded-xl shadow-md btn-shimmer btn-glow-emerald tactile-press cursor-pointer">
                             {tDual(`Смотреть ${availableUnitsCount} квартир`, `Дидани ${availableUnitsCount} хонадон`)}
                           </Button>
                         </motion.div>
@@ -923,7 +923,7 @@ export default function HomePage() {
                         rel="noreferrer"
                       >
                         <motion.div whileHover={{ scale: 1.04, y: -1 }} whileTap={{ scale: 0.96 }}>
-                          <Button variant="outline" size="sm" className="text-xs font-semibold h-10 px-3.5 rounded-xl gap-1.5 glass-pill border-slate-200/80 hover:border-emerald-500/50 hover:text-emerald-700 cursor-pointer">
+                          <Button variant="outline" size="sm" className="text-xs font-semibold h-10 px-3.5 rounded-xl gap-1.5 glass-pill border-slate-200/80 hover:border-emerald-500/50 hover:text-emerald-700 cursor-pointer tactile-press btn-shimmer">
                             <MessageCircle className="h-4 w-4 text-emerald-600" />
                             {tDual("Отдел продаж", "Шӯъбаи фурӯш")}
                           </Button>

@@ -199,7 +199,7 @@ export function ClassifiedCard({ item, formatPrice, onPromote }: Props) {
               size="sm"
               variant="outline"
               onClick={() => onPromote(item)}
-              className="h-8 px-2 text-[11px] font-bold border-amber-300 bg-amber-50/70 hover:bg-amber-100/80 text-amber-900 gap-1 rounded-xl cursor-pointer shadow-2xs transition-all"
+              className="h-8 px-2 text-[11px] font-bold border-amber-300 bg-amber-50/70 hover:bg-amber-100/80 text-amber-900 gap-1 rounded-xl cursor-pointer shadow-2xs transition-all tactile-press btn-shimmer"
               title={isTg ? "Пешбарӣ дар ТОП" : "Продвинуть в ТОП"}
             >
               <Zap className="h-3 w-3 text-amber-600 fill-amber-500" />
@@ -214,7 +214,7 @@ export function ClassifiedCard({ item, formatPrice, onPromote }: Props) {
               setRevealed(next);
               if (next) postLead(item, "phone_click");
             }}
-            className="h-8 px-2.5 text-xs font-semibold gap-1 rounded-xl glass-pill border-slate-200/80 hover:border-emerald-500/50 hover:text-emerald-700 cursor-pointer transition-all"
+            className="h-8 px-2.5 text-xs font-semibold gap-1 rounded-xl glass-pill border-slate-200/80 hover:border-emerald-500/50 hover:text-emerald-700 cursor-pointer transition-all tactile-press btn-shimmer"
           >
             <Phone className="h-3.5 w-3.5 text-emerald-600" />
             {revealed
@@ -230,7 +230,7 @@ export function ClassifiedCard({ item, formatPrice, onPromote }: Props) {
             target="_blank"
             rel="noreferrer"
             onClick={() => postLead(item, "whatsapp_click")}
-            className="h-8 w-8 rounded-xl bg-emerald-50 text-emerald-600 hover:bg-emerald-600 hover:text-white flex items-center justify-center transition-all border border-emerald-200/80 shadow-2xs hover:scale-105"
+            className="h-8 w-8 rounded-xl bg-emerald-50 text-emerald-600 hover:bg-emerald-600 hover:text-white flex items-center justify-center transition-all border border-emerald-200/80 shadow-2xs hover:scale-105 tactile-press btn-glow-whatsapp cursor-pointer"
           >
             <MessageCircle className="h-4 w-4" />
           </a>

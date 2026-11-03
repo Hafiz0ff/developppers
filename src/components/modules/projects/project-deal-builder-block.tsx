@@ -253,7 +253,7 @@ export function ProjectDealBuilderBlock({
               size="sm"
               variant="outline"
               onClick={onScrollToChessboard}
-              className="h-7 text-[11px] px-2.5 rounded-lg border-emerald-500/40 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-50 gap-1 cursor-pointer shrink-0"
+              className="h-7 text-[11px] px-2.5 rounded-lg border-emerald-500/40 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-50 gap-1 cursor-pointer shrink-0 tactile-press btn-shimmer"
             >
               <span>{tDual("К шахматке", "Ба ҷадвал")}</span>
               <ArrowDown className="h-3 w-3" />
@@ -284,9 +284,9 @@ export function ProjectDealBuilderBlock({
                   size="sm"
                   variant={storage ? "secondary" : "outline"}
                   onClick={onOpenStorageModal}
-                  className={`h-8 text-xs font-semibold rounded-xl gap-1.5 cursor-pointer ${
+                  className={`h-8 text-xs font-semibold rounded-xl gap-1.5 cursor-pointer tactile-press btn-shimmer ${
                     storage
-                      ? "bg-emerald-500/15 text-emerald-800 dark:text-emerald-200 border border-emerald-500/30"
+                      ? "bg-emerald-500/15 text-emerald-800 dark:text-emerald-200 border border-emerald-500/30 shadow-xs"
                       : "border-emerald-500/30 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-500/10"
                   }`}
                 >
@@ -306,9 +306,9 @@ export function ProjectDealBuilderBlock({
                   size="sm"
                   variant={parking ? "secondary" : "outline"}
                   onClick={onOpenParkingModal}
-                  className={`h-8 text-xs font-semibold rounded-xl gap-1.5 cursor-pointer ${
+                  className={`h-8 text-xs font-semibold rounded-xl gap-1.5 cursor-pointer tactile-press btn-shimmer ${
                     parking
-                      ? "bg-emerald-500/15 text-emerald-800 dark:text-emerald-200 border border-emerald-500/30"
+                      ? "bg-emerald-500/15 text-emerald-800 dark:text-emerald-200 border border-emerald-500/30 shadow-xs"
                       : "border-emerald-500/30 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-500/10"
                   }`}
                 >
