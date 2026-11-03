@@ -132,7 +132,7 @@ export function HomepageShowcaseSections({ activeCity = "khujand" }: Props) {
                   return (
                     <div
                       key={project.id}
-                      className="glass-card rounded-2xl overflow-hidden hover:border-emerald-500/50 hover:shadow-[0_16px_36px_-12px_rgba(16,185,129,0.18)] hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between group"
+                      className="glass-card rounded-2xl overflow-hidden flex flex-col justify-between group"
                     >
                       <div>
                         {/* Project Hero Image */}
@@ -256,7 +256,7 @@ export function HomepageShowcaseSections({ activeCity = "khujand" }: Props) {
                 {services.map((srv) => (
                   <div
                     key={srv.id}
-                    className="glass-card rounded-2xl overflow-hidden hover:border-emerald-500/50 hover:shadow-[0_16px_36px_-12px_rgba(16,185,129,0.18)] hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between group"
+                    className="glass-card rounded-2xl overflow-hidden flex flex-col justify-between group"
                   >
                     <div>
                       <div className="h-44 w-full overflow-hidden relative bg-slate-900">
@@ -319,7 +319,7 @@ export function HomepageShowcaseSections({ activeCity = "khujand" }: Props) {
                   return (
                     <div
                       key={dev.id}
-                      className="glass-card rounded-2xl p-5 space-y-4 hover:border-emerald-500/50 hover:shadow-[0_16px_36px_-12px_rgba(16,185,129,0.18)] hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between group"
+                      className="glass-card rounded-2xl p-5 space-y-4 flex flex-col justify-between group"
                     >
                       <div className="space-y-3">
                         <div className="flex items-center gap-3">
@@ -342,7 +342,7 @@ export function HomepageShowcaseSections({ activeCity = "khujand" }: Props) {
                         </div>
 
                         {/* Subtitle with apartment count strictly when verified (AC-30) */}
-                        <div className="bg-slate-50 dark:bg-slate-800/60 rounded-xl p-2.5 text-xs space-y-1">
+                        <div className="bg-white/40 dark:bg-slate-800/40 backdrop-blur-sm border border-white/50 dark:border-white/10 rounded-xl p-2.5 text-xs space-y-1">
                           <div className="flex items-center justify-between text-[11px]">
                             <span className="text-slate-500">{isTg ? "Лоиҳаҳои фаъол:" : "Проектов:"}</span>
                             <span className="font-bold text-slate-800 dark:text-slate-200">{dev.activeProjectsCount} ЖК</span>
@@ -395,7 +395,7 @@ export function HomepageShowcaseSections({ activeCity = "khujand" }: Props) {
                   return (
                     <article
                       key={art.id}
-                      className="glass-card rounded-2xl overflow-hidden hover:border-emerald-500/50 hover:shadow-[0_16px_36px_-12px_rgba(16,185,129,0.18)] hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between group"
+                      className="glass-card rounded-2xl overflow-hidden flex flex-col justify-between group"
                     >
                       <div>
                         {/* AI-Generated Thematic Cover (AC-32) */}

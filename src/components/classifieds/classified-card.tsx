@@ -161,10 +161,11 @@ export function ClassifiedCard({ item, formatPrice, onPromote }: Props) {
 
   return (
     <Card
+      variant="glass"
       className={`rounded-2xl flex flex-col justify-between overflow-hidden transition-all duration-300 group relative ${
         isHighlighted
-          ? "glass-card border-2 border-amber-400/80 shadow-[0_16px_36px_-10px_rgba(245,158,11,0.22)] ring-2 ring-amber-400/30"
-          : "glass-card hover:border-emerald-500/40 hover:shadow-[0_20px_45px_-12px_rgba(16,185,129,0.18)] hover:-translate-y-1"
+          ? "border-2 border-amber-400/80 ring-2 ring-amber-400/30"
+          : ""
       }`}
     >
       <div>
