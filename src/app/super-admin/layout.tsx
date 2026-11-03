@@ -17,6 +17,7 @@ import {
   Sparkles,
   Globe,
   FolderTree,
+  LayoutGrid,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
@@ -63,6 +64,12 @@ export default function SuperAdminLayout({
       href: "/super-admin/navigation",
       icon: FolderTree,
       badge: "ТЗ v1.1",
+    },
+    {
+      title: "Витрина главной",
+      href: "/super-admin/showcase",
+      icon: LayoutGrid,
+      badge: "Этап 2",
     },
     {
       title: "Кабинет рекламодателя",

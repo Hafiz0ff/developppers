@@ -478,6 +478,10 @@ export function resolveCatalogUrl(
       const slug = locale === "tg" ? "agenticho" : locale === "en" ? "agencies" : "agentstva";
       return normalizePath(`${localePrefix}/${city}/${slug}`);
     }
+    case "catalog_realtors": {
+      const slug = locale === "tg" ? "rieltoron" : locale === "en" ? "realtors" : "rieltory";
+      return normalizePath(`${localePrefix}/${city}/${slug}`);
+    }
     case "catalog_services": {
       const slug = locale === "tg" ? "khizmatrasoniho" : locale === "en" ? "services" : "uslugi";
       return normalizePath(`${localePrefix}/${city}/${slug}`);

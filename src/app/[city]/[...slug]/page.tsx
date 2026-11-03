@@ -33,6 +33,8 @@ import {
 import { resolveUrlAlias, normalizePath } from "@/lib/seo/url-alias-store";
 import { ALL_PROPERTIES, type CatalogProperty } from "@/lib/catalog-data";
 import { INITIAL_DEVELOPERS } from "@/lib/data/mock-db";
+import { REALTORS_DATA } from "@/lib/data/realtors-data";
+import { SERVICES_DATA } from "@/lib/data/services-data";
 import {
   Building2,
   Home,
@@ -132,11 +134,12 @@ function resolveDealKind(dealSlug: string): "sale" | "rent" | null {
  */
 function resolveCityCatalogKind(
   segment: string
-): "commercial_hub" | "developers" | "agencies" | "services" | null {
+): "commercial_hub" | "developers" | "agencies" | "services" | "realtors" | null {
   const s = segment.toLowerCase();
   if (s === "kommercheskaya" || s === "tijorati" || s === "commercial") return "commercial_hub";
   if (s === "zastroyshchiki" || s === "sohtmonchiyon" || s === "developers") return "developers";
   if (s === "agentstva" || s === "agenticho" || s === "agencies") return "agencies";
+  if (s === "rieltory" || s === "rieltoron" || s === "realtors") return "realtors";
   if (s === "uslugi" || s === "khizmatrasoniho" || s === "services") return "services";
   return null;
 }
@@ -255,6 +258,17 @@ export async function generateMetadata({
             : `Агентства недвижимости в ${cityName} | Maskani.tj`;
         const description = `Проверенные агентства недвижимости и риелторы в ${cityName}.`;
         const canonicalPath = resolveCatalogUrl("catalog_agencies", citySlug, locale);
+        return { title, description, alternates: { canonical: `${baseUrl}${canonicalPath}` } };
+      }
+      if (catalogKind === "realtors") {
+        const title =
+          locale === "tg"
+            ? `Риелторони касбӣ ва аттестатсияшуда дар ${cityName} | Maskani.tj`
+            : locale === "en"
+            ? `Certified Realtors in ${cityName} | Maskani.tj`
+            : `Риелторы и аттестованные агенты в ${cityName} | Maskani.tj`;
+        const description = `Каталог проверенных риелторов и специалистов по недвижимости в ${cityName}. Рейтинг, отзывы и помощь в покупке.`;
+        const canonicalPath = resolveCatalogUrl("catalog_realtors", citySlug, locale);
         return { title, description, alternates: { canonical: `${baseUrl}${canonicalPath}` } };
       }
       if (catalogKind === "services") {
@@ -749,9 +763,9 @@ export default async function DynamicSeoPage({ params, searchParams }: DynamicSe
       );
     }
 
-    if (catalogKind === "developers") {
-      const cityDevelopers = INITIAL_DEVELOPERS.filter(
-        (dev) => resolveCitySlug(dev.city) === citySlug || citySlug === "khujand"
+    if (catalogKind === "realtors") {
+      const cityRealtors = REALTORS_DATA.filter(
+        (r) => resolveCitySlug(r.city) === citySlug || citySlug === "khujand"
       );
 
       return (
@@ -767,7 +781,7 @@ export default async function DynamicSeoPage({ params, searchParams }: DynamicSe
                   {cityName}
                 </Link>
                 <span>/</span>
-                <span className="text-slate-800 font-semibold">{isTg ? "Ширкатҳои сохтмонӣ" : "Застройщики"}</span>
+                <span className="text-slate-800 font-semibold">{isTg ? "Риелторон" : "Риелторы"}</span>
               </div>
               <Badge variant="outline" className="border-emerald-200 text-emerald-800 bg-emerald-50 text-xs">
                 {cityName}
@@ -778,40 +792,156 @@ export default async function DynamicSeoPage({ params, searchParams }: DynamicSe
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 space-y-6">
             <div className="space-y-2">
               <h1 className="text-2xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
-                {isTg ? `Ширкатҳои сохтмонӣ ва застройшикони ${cityName}` : `Застройщики и строительные компании в ${cityName}`}
+                {isTg ? `Риелторони касбии шаҳри ${cityName}` : `Аттестованные риелторы в ${cityName}`}
               </h1>
               <p className="text-xs sm:text-sm text-slate-500">
                 {isTg
-                  ? `Каталоги расмии ширкатҳои сохтмонии санҷидашудаи шаҳри ${cityName}.`
-                  : `Официальный реестр надежных строительных компаний и жилых комплексов в ${cityName}.`}
+                  ? `Мутахассисони санҷидашудаи амвол барои хариду фурӯш ва иҷора дар ${cityName}.`
+                  : `Проверенные специалисты по недвижимости, эксперты вторичного рынка и новостроек в ${cityName}.`}
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {cityDevelopers.map((dev) => (
-                <div key={dev.id} className="bg-white rounded-2xl border border-slate-200/80 p-6 space-y-4 shadow-xs hover:border-emerald-500 transition-all">
-                  <div className="flex items-center gap-3">
-                    <div className="h-12 w-12 rounded-xl bg-slate-900 text-white flex items-center justify-center font-bold text-lg">
-                      {dev.name.slice(0, 2)}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              {cityRealtors.map((rlt) => (
+                <div key={rlt.id} className="bg-white rounded-2xl border border-slate-200/80 p-5 space-y-4 shadow-xs hover:border-emerald-500 transition-all flex flex-col justify-between">
+                  <div className="space-y-3">
+                    <div className="flex items-center gap-3">
+                      <img
+                        src={rlt.photoUrl}
+                        alt={rlt.name}
+                        className="h-14 w-14 rounded-2xl object-cover border border-slate-100 shadow-xs"
+                      />
+                      <div>
+                        <div className="flex items-center gap-1">
+                          <h3 className="font-bold text-slate-900 text-sm">{isTg ? rlt.nameTg : rlt.name}</h3>
+                          {rlt.isVerified && (
+                            <Badge className="bg-emerald-50 text-emerald-700 border border-emerald-200 text-[10px] px-1 py-0">
+                              ✓
+                            </Badge>
+                          )}
+                        </div>
+                        <p className="text-[11px] text-slate-500">{isTg && rlt.agencyNameTg ? rlt.agencyNameTg : rlt.agencyName}</p>
+                        <p className="text-xs font-semibold text-amber-500 flex items-center gap-1 mt-0.5">
+                          ★ {rlt.rating} <span className="text-slate-400 font-normal">({rlt.reviewsCount})</span>
+                        </p>
+                      </div>
                     </div>
-                    <div>
-                      <h3 className="font-bold text-slate-900 text-base">{dev.name}</h3>
-                      <p className="text-xs text-slate-500 flex items-center gap-1">
-                        <MapPin className="h-3 w-3 text-emerald-600" />
-                        <span>{cityName}</span>
+
+                    <div className="text-xs text-slate-600 bg-slate-50 rounded-xl p-2.5 space-y-1">
+                      <p className="font-medium text-slate-800">{isTg ? rlt.specializationTg : rlt.specialization}</p>
+                      <p className="text-[11px] text-slate-500">
+                        {isTg ? `${rlt.dealsCount} аҳди басташуда • ${rlt.experienceYears} соли таҷриба` : `${rlt.dealsCount} успешных сделок • ${rlt.experienceYears} лет стажа`}
                       </p>
                     </div>
+
+                    <p className="text-xs text-slate-500 line-clamp-2">
+                      {isTg ? rlt.bioTg : rlt.bio}
+                    </p>
                   </div>
-                  <p className="text-xs text-slate-600 line-clamp-3">
-                    {isTg && dev.descriptionTg ? dev.descriptionTg : dev.description}
-                  </p>
-                  <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
-                    <span className="font-semibold text-emerald-700">{dev.phone}</span>
-                    <Link href={`/developers/${dev.slug}`}>
-                      <Button variant="outline" size="sm" className="rounded-xl text-xs font-semibold">
-                        {isTg ? "Маҷмааҳо" : "Проекты"}
-                      </Button>
-                    </Link>
+
+                  <div className="pt-3 border-t border-slate-100 flex items-center justify-between gap-2">
+                    <a
+                      href={`tel:${rlt.phone.replace(/\s+/g, "")}`}
+                      className="flex-1 text-center py-2 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold transition-colors"
+                    >
+                      {rlt.phone}
+                    </a>
+                    <a
+                      href={`https://wa.me/${rlt.whatsapp.replace(/\D/g, "")}`}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="h-8 w-8 rounded-xl bg-emerald-50 text-emerald-600 hover:bg-emerald-600 hover:text-white flex items-center justify-center transition-colors border border-emerald-200"
+                    >
+                      <MessageCircle className="h-4 w-4" />
+                    </a>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    if (catalogKind === "services") {
+      const cityServices = SERVICES_DATA.filter(
+        (s) => resolveCitySlug(s.city) === citySlug || citySlug === "khujand"
+      );
+
+      return (
+        <div className="min-h-screen bg-[#F8FAFC] pb-24">
+          <div className="bg-white border-b border-slate-200/80 sticky top-0 z-20 backdrop-blur-md bg-white/95">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex items-center justify-between">
+              <div className="flex items-center gap-2 text-xs text-slate-500 truncate">
+                <Link href={`${prefix || "/"}`} className="hover:text-emerald-700">
+                  {isTg ? "Асосӣ" : "Главная"}
+                </Link>
+                <span>/</span>
+                <Link href={`${prefix}/${citySlug}`} className="hover:text-emerald-700">
+                  {cityName}
+                </Link>
+                <span>/</span>
+                <span className="text-slate-800 font-semibold">{isTg ? "Хизматрасониҳо" : "Услуги"}</span>
+              </div>
+              <Badge variant="outline" className="border-emerald-200 text-emerald-800 bg-emerald-50 text-xs">
+                {cityName}
+              </Badge>
+            </div>
+          </div>
+
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 space-y-6">
+            <div className="space-y-2">
+              <h1 className="text-2xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
+                {isTg ? `Хизматрасониҳои амвол дар ${cityName}` : `Услуги в сфере недвижимости в ${cityName}`}
+              </h1>
+              <p className="text-xs sm:text-sm text-slate-500">
+                {isTg
+                  ? `Юриспруденсия, баҳодиҳии мустақил, тарроҳӣ ва таъмири манзил дар ${cityName}.`
+                  : `Юридическое сопровождение, независимая оценка, дизайн интерьера и ремонт квартир в ${cityName}.`}
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              {cityServices.map((srv) => (
+                <div key={srv.id} className="bg-white rounded-2xl border border-slate-200/80 overflow-hidden shadow-xs hover:border-emerald-500 transition-all flex flex-col justify-between">
+                  <div>
+                    <div className="h-40 w-full overflow-hidden relative">
+                      <img
+                        src={srv.imageUrl}
+                        alt={srv.title}
+                        className="w-full h-full object-cover"
+                      />
+                      <div className="absolute top-2.5 left-2.5">
+                        <Badge className="bg-slate-900/80 text-white text-[10px] font-bold border-none">
+                          {isTg ? srv.categoryTg : srv.category}
+                        </Badge>
+                      </div>
+                    </div>
+
+                    <div className="p-4 space-y-2">
+                      <h3 className="font-bold text-slate-900 text-sm line-clamp-1">{isTg ? srv.titleTg : srv.title}</h3>
+                      <p className="text-xs text-slate-500 line-clamp-2">{isTg ? srv.shortDescriptionTg : srv.shortDescription}</p>
+
+                      <div className="pt-2 text-xs">
+                        <span className="text-slate-400 block text-[10px] uppercase font-bold tracking-wider">{isTg ? "Нарх" : "Стоимость"}</span>
+                        <span className="font-extrabold text-emerald-700 text-base">
+                          {isTg ? `Аз ${srv.priceStartingFromTjs} TJS` : `от ${srv.priceStartingFromTjs} TJS`}
+                        </span>
+                        <span className="text-slate-400 text-xs ml-1">/ {isTg ? srv.priceUnitTg : srv.priceUnit}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="p-4 pt-0 border-t border-slate-100 mt-2 flex items-center justify-between gap-2">
+                    <span className="text-[11px] font-medium text-slate-600 truncate">{isTg ? srv.providerNameTg : srv.providerName}</span>
+                    <a
+                      href={`https://wa.me/${srv.whatsapp.replace(/\D/g, "")}`}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="py-1 px-3 rounded-lg bg-emerald-50 text-emerald-700 text-xs font-bold hover:bg-emerald-100 transition-colors"
+                    >
+                      WhatsApp
+                    </a>
                   </div>
                 </div>
               ))}
