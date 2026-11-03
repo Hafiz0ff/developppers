@@ -130,20 +130,21 @@ export default function DevelopersDirectoryPage() {
             return (
               <Card
                 key={dev.id}
-                className="overflow-hidden border hover:border-emerald-500/50 transition-all hover:shadow-xl group flex flex-col justify-between"
+                variant="glassHover"
+                className="flex flex-col justify-between"
               >
                 <div>
                   {/* Developer Cover & Avatar */}
-                  <div className="relative h-44 w-full bg-muted overflow-hidden">
+                  <div className="relative h-44 w-full bg-slate-900 rounded-t-2xl overflow-hidden">
                     <img
                       src={dev.coverUrl}
                       alt={devName}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/30 to-transparent" />
                     <div className="absolute top-3 right-3">
                       {dev.isVerified && (
-                        <Badge className="bg-emerald-600 text-white text-[11px] gap-1 font-semibold shadow-xs">
+                        <Badge variant="emerald" className="rounded-xl px-2.5 py-1 text-[11px] gap-1 font-bold">
                           <ShieldCheck className="h-3 w-3" />
                           {tDual("Проверен", "Тасдиқшуда")}
                         </Badge>

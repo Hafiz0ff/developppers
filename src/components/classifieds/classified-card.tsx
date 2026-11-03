@@ -75,32 +75,29 @@ export function ClassifiedCard({ item, formatPrice, onPromote }: Props) {
 
   return (
     <Card
-      className={`rounded-xl flex flex-col justify-between overflow-hidden transition-all duration-200 group relative ${
+      className={`rounded-2xl flex flex-col justify-between overflow-hidden transition-all duration-300 group relative ${
         isHighlighted
-          ? "bg-linear-to-b from-amber-50/50 via-white to-white border-2 border-amber-400 shadow-md ring-2 ring-amber-400/20"
-          : "bg-white border border-slate-200/80 hover:border-emerald-300 hover:shadow-lg"
+          ? "glass-card border-2 border-amber-400/80 shadow-[0_16px_36px_-10px_rgba(245,158,11,0.22)] ring-2 ring-amber-400/30"
+          : "glass-card hover:border-emerald-500/40 hover:shadow-[0_20px_45px_-12px_rgba(16,185,129,0.18)] hover:-translate-y-1"
       }`}
     >
       <div>
-        <Link href={href} className="relative h-48 w-full overflow-hidden bg-slate-100 block">
+        <Link href={href} className="relative h-48 sm:h-52 w-full overflow-hidden bg-slate-900 block rounded-t-2xl">
           <img
             src={item.image}
             alt={item.title}
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
           />
           <div className="absolute top-3 left-3 flex flex-wrap gap-1.5 z-10">
             {isTop && (
-              <Badge className="bg-amber-500 hover:bg-amber-600 text-slate-950 font-black text-[10px] tracking-wider px-2 shadow-xs">
+              <Badge variant="gold" className="rounded-xl px-2.5 py-1 text-[11px] font-black tracking-wide">
                 👑 {isTg ? "ТОП" : "ТОП"}
               </Badge>
             )}
-            <Badge className="bg-emerald-600 text-white text-[11px] font-medium shadow-xs">
+            <Badge variant="emerald" className="rounded-xl px-2.5 py-1 text-[11px] font-bold">
               {dealTypeDisplay}
             </Badge>
-            <Badge
-              variant="secondary"
-              className="backdrop-blur-md bg-white/90 text-slate-800 text-[11px] font-medium"
-            >
+            <Badge variant="frostedLight" className="rounded-xl px-2.5 py-1 text-[11px] font-bold">
               {propertyTypeDisplay}
             </Badge>
           </div>
@@ -130,10 +127,10 @@ export function ClassifiedCard({ item, formatPrice, onPromote }: Props) {
                   ? "Ба муқоиса илова кардан"
                   : "Добавить в сравнение"
               }
-              className={`h-7 w-7 rounded-lg flex items-center justify-center backdrop-blur-md transition-all shadow-xs cursor-pointer ${
+              className={`h-7 w-7 rounded-xl flex items-center justify-center backdrop-blur-xl transition-all shadow-xs cursor-pointer border ${
                 isCompared
-                  ? "bg-blue-600 text-white ring-2 ring-blue-300"
-                  : "bg-white/90 text-slate-700 hover:bg-white hover:text-blue-600"
+                  ? "bg-blue-600 text-white border-blue-400 ring-2 ring-blue-300"
+                  : "bg-white/85 text-slate-700 hover:bg-white hover:text-emerald-600 border-white/60 dark:bg-slate-900/80 dark:text-slate-200 dark:border-white/20"
               }`}
             >
               <ArrowLeftRight className="h-3.5 w-3.5" />
@@ -143,40 +140,42 @@ export function ClassifiedCard({ item, formatPrice, onPromote }: Props) {
 
           {/* Urgent Sale Fire Badge */}
           {isUrgent && (
-            <div className="absolute bottom-3 left-3 bg-linear-to-r from-red-600 to-amber-600 text-white text-[10px] font-black px-2.5 py-1 rounded-md shadow-md flex items-center gap-1 z-10 animate-pulse">
+            <div className="absolute bottom-3 left-3 glass-badge-red text-white text-[10px] font-black px-2.5 py-1 rounded-xl shadow-md flex items-center gap-1 z-10 animate-pulse">
               <span>🔥</span>
               <span>{isTg ? "Таъҷилӣ" : "Срочно"}</span>
             </div>
           )}
 
           {item.isNegotiable && (
-            <div className="absolute bottom-3 right-3 bg-white/95 backdrop-blur-md text-[10px] font-semibold text-slate-700 px-2.5 py-1 rounded-md shadow-xs">
-              {isTg ? "Савдо мешавад" : "Торг уместен"}
+            <div className="absolute bottom-3 right-3 glass-pill text-[10px] font-bold text-slate-800 dark:text-slate-100 px-2.5 py-1 rounded-xl shadow-xs">
+              🤝 {isTg ? "Савдо мешавад" : "Торг уместен"}
             </div>
           )}
         </Link>
 
-        <CardContent className="p-4 sm:p-5 space-y-2.5">
+        <CardContent className="p-4 sm:p-5 space-y-3">
           <div>
-            <div className="text-lg font-bold text-emerald-600">
+            <div className="text-xl font-black text-emerald-600 dark:text-emerald-400 tracking-tight">
               {formatPrice(item.priceTjs, item.priceUsd)}
             </div>
             <Link href={href}>
-              <h4 className="font-semibold text-sm text-slate-900 line-clamp-1 mt-0.5">{item.title}</h4>
+              <h4 className="font-bold text-base text-slate-900 dark:text-slate-100 line-clamp-1 mt-0.5 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
+                {item.title}
+              </h4>
             </Link>
-            <p className="text-xs text-slate-500 flex items-center gap-1 mt-1 font-medium">
+            <p className="text-xs text-slate-500 dark:text-slate-400 flex items-center gap-1 mt-1 font-medium">
               <MapPin className="h-3.5 w-3.5 text-emerald-600 shrink-0" />
               {item.city}, {item.district}
               {item.landmark ? ` (${item.landmark})` : ""}
             </p>
           </div>
 
-          <div className="flex items-center gap-3 text-xs text-slate-600 border-y border-slate-100 py-2 font-medium">
-            <span className="font-bold text-slate-900">
+          <div className="flex items-center gap-3 text-xs text-slate-600 dark:text-slate-300 border-y border-slate-200/60 dark:border-white/10 py-2.5 font-medium">
+            <span className="font-bold text-slate-900 dark:text-white">
               {isTg ? `${item.rooms} ҳуҷр.` : `${item.rooms} комн.`}
             </span>
             <span>•</span>
-            <span className="font-bold text-slate-900">{item.area} м²</span>
+            <span className="font-bold text-slate-900 dark:text-white">{item.area} м²</span>
             {item.floor || item.landArea ? (
               <>
                 <span>•</span>
@@ -187,10 +186,10 @@ export function ClassifiedCard({ item, formatPrice, onPromote }: Props) {
         </CardContent>
       </div>
 
-      <div className="p-4 sm:p-5 pt-0 border-t border-slate-100 mt-2 flex items-center justify-between text-xs">
+      <div className="p-4 sm:p-5 pt-0 border-t border-slate-100/80 dark:border-white/10 mt-2 flex items-center justify-between text-xs">
         <div>
-          <span className="text-[10px] text-slate-400 block font-medium">{sellerTypeDisplay}</span>
-          <span className="font-semibold text-slate-900 font-mono text-xs">
+          <span className="text-[10px] text-slate-400 dark:text-slate-500 block font-medium uppercase tracking-wider">{sellerTypeDisplay}</span>
+          <span className="font-bold text-slate-900 dark:text-white font-mono text-xs">
             {revealed ? item.phone : `${item.phone.slice(0, 8)} •• ••`}
           </span>
         </div>
@@ -200,7 +199,7 @@ export function ClassifiedCard({ item, formatPrice, onPromote }: Props) {
               size="sm"
               variant="outline"
               onClick={() => onPromote(item)}
-              className="h-8 px-2 text-[11px] font-bold border-amber-300 bg-amber-50/60 hover:bg-amber-100/80 text-amber-900 gap-1 rounded-lg cursor-pointer shadow-2xs"
+              className="h-8 px-2 text-[11px] font-bold border-amber-300 bg-amber-50/70 hover:bg-amber-100/80 text-amber-900 gap-1 rounded-xl cursor-pointer shadow-2xs transition-all"
               title={isTg ? "Пешбарӣ дар ТОП" : "Продвинуть в ТОП"}
             >
               <Zap className="h-3 w-3 text-amber-600 fill-amber-500" />
@@ -209,13 +208,13 @@ export function ClassifiedCard({ item, formatPrice, onPromote }: Props) {
           )}
           <Button
             size="sm"
-            variant={revealed ? "secondary" : "outline"}
+            variant="outline"
             onClick={() => {
               const next = !revealed;
               setRevealed(next);
               if (next) postLead(item, "phone_click");
             }}
-            className="h-8 px-2.5 text-xs font-semibold gap-1 rounded-lg border-slate-200 cursor-pointer"
+            className="h-8 px-2.5 text-xs font-semibold gap-1 rounded-xl glass-pill border-slate-200/80 hover:border-emerald-500/50 hover:text-emerald-700 cursor-pointer transition-all"
           >
             <Phone className="h-3.5 w-3.5 text-emerald-600" />
             {revealed
@@ -231,7 +230,7 @@ export function ClassifiedCard({ item, formatPrice, onPromote }: Props) {
             target="_blank"
             rel="noreferrer"
             onClick={() => postLead(item, "whatsapp_click")}
-            className="h-8 w-8 rounded-lg bg-emerald-50 text-emerald-600 hover:bg-emerald-600 hover:text-white flex items-center justify-center transition-colors border border-emerald-100"
+            className="h-8 w-8 rounded-xl bg-emerald-50 text-emerald-600 hover:bg-emerald-600 hover:text-white flex items-center justify-center transition-all border border-emerald-200/80 shadow-2xs hover:scale-105"
           >
             <MessageCircle className="h-4 w-4" />
           </a>

@@ -837,12 +837,12 @@ export default function HomePage() {
                     <div className="absolute top-3 left-3 right-3 flex items-start justify-between gap-2 z-10 pointer-events-none">
                       {/* Left: Status & Building Class Badges */}
                       <div className="flex flex-wrap items-center gap-1.5 max-w-[62%] sm:max-w-[70%] pointer-events-auto">
-                        <span className="inline-flex items-center px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-xl bg-emerald-500/35 hover:bg-emerald-500/45 backdrop-blur-xl border border-emerald-400/50 text-white font-bold text-[11px] sm:text-xs shadow-[0_4px_16px_rgba(16,185,129,0.30),inset_0_1px_1.5px_rgba(255,255,255,0.45)] drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)] select-none transition-all">
+                        <Badge variant="emerald" className="rounded-xl px-2 py-0.5 sm:px-2.5 sm:py-1 text-[11px] sm:text-xs select-none">
                           {projStatus}
-                        </span>
-                        <span className="inline-flex items-center px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-xl bg-black/35 hover:bg-black/45 backdrop-blur-xl border border-white/25 text-white font-bold text-[11px] sm:text-xs shadow-[0_4px_16px_rgba(0,0,0,0.25),inset_0_1px_1.5px_rgba(255,255,255,0.35)] drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)] select-none transition-all">
+                        </Badge>
+                        <Badge variant="frosted" className="rounded-xl px-2 py-0.5 sm:px-2.5 sm:py-1 text-[11px] sm:text-xs select-none">
                           {projClass}
-                        </span>
+                        </Badge>
                       </div>
 
                       {/* Right: Developer Pill Badge */}
@@ -859,12 +859,12 @@ export default function HomePage() {
                     {/* Bottom Row: Responsive Flex Container (Guarantees NO badge collisions on mobile) */}
                     <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between gap-2 z-10 pointer-events-none">
                       {/* Left: Installment Badge */}
-                      <div className="inline-flex items-center gap-1.5 px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-xl bg-black/35 hover:bg-black/45 backdrop-blur-xl border border-white/25 text-white font-bold text-[11px] sm:text-xs shadow-[0_4px_16px_rgba(0,0,0,0.25),inset_0_1px_1.5px_rgba(255,255,255,0.35)] drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)] select-none transition-all pointer-events-auto truncate max-w-[65%] sm:max-w-[70%]">
+                      <Badge variant="frosted" className="rounded-xl px-2.5 py-1 sm:px-3 sm:py-1.5 text-[11px] sm:text-xs select-none truncate max-w-[65%] sm:max-w-[70%] pointer-events-auto gap-1.5">
                         <Percent className="h-3 w-3 sm:h-3.5 sm:w-3.5 text-emerald-400 drop-shadow-[0_0_6px_rgba(52,211,153,0.9)] shrink-0" />
                         <span className="truncate drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]">
                           {projInstallment} {projDownPayment ? `(${projDownPayment})` : ""}
                         </span>
-                      </div>
+                      </Badge>
 
                       {/* Right: Engagement Stats Badge (Favorites & Views) */}
                       <div className="shrink-0 pointer-events-auto">
@@ -987,20 +987,20 @@ export default function HomePage() {
           {RECENT_CLASSIFIEDS.map((item) => (
             <Card
               key={item.id}
-              className="bg-white rounded-xl border border-slate-200/80 hover:border-emerald-300 hover:shadow-lg flex flex-col justify-between overflow-hidden transition-all duration-200 group"
+              className="glass-card rounded-2xl flex flex-col justify-between overflow-hidden transition-all duration-300 group hover:border-emerald-500/40 hover:shadow-[0_20px_45px_-12px_rgba(16,185,129,0.18)] hover:-translate-y-1"
             >
               <div>
-                <Link href={`/classifieds/${item.slug || item.id}`} className="block relative h-48 w-full overflow-hidden bg-slate-100">
+                <Link href={`/classifieds/${item.slug || item.id}`} className="block relative h-48 sm:h-52 w-full overflow-hidden bg-slate-900 rounded-t-2xl">
                   <img
                     src={item.image}
                     alt={isTg ? item.titleTg || item.title : item.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                   />
                   <div className="absolute top-3 left-3 flex gap-1.5">
-                    <Badge className="bg-emerald-600 text-white text-[11px] font-medium shadow-xs">
+                    <Badge variant="emerald" className="rounded-xl px-2.5 py-1 text-[11px] font-bold">
                       {isTg ? item.dealTypeTg || item.dealType : item.dealType}
                     </Badge>
-                    <Badge variant="secondary" className="backdrop-blur-md bg-white/90 text-slate-800 text-[11px] font-medium">
+                    <Badge variant="frostedLight" className="rounded-xl px-2.5 py-1 text-[11px] font-bold">
                       {isTg ? item.propertyTypeTg || item.propertyType : item.propertyType}
                     </Badge>
                   </div>
@@ -1008,23 +1008,23 @@ export default function HomePage() {
                     <PropertyMetricsBadge idOrSlug={item.slug || item.id} />
                   </div>
                   {item.isNegotiable && (
-                    <div className="absolute bottom-3 right-3 bg-white/95 backdrop-blur-md text-[10px] font-semibold text-slate-700 px-2.5 py-1 rounded-md shadow-xs">
-                      {isTg ? "Савдо мешавад" : "Торг уместен"}
+                    <div className="absolute bottom-3 right-3 glass-pill text-[10px] font-bold text-slate-800 dark:text-slate-100 px-2.5 py-1 rounded-xl shadow-xs">
+                      🤝 {isTg ? "Савдо мешавад" : "Торг уместен"}
                     </div>
                   )}
                 </Link>
 
-                <CardContent className="p-4 sm:p-5 space-y-2.5">
+                <CardContent className="p-4 sm:p-5 space-y-3">
                   <div>
-                    <div className="text-lg font-bold text-emerald-600">
+                    <div className="text-xl font-black text-emerald-600 dark:text-emerald-400 tracking-tight">
                       {formatPrice(item.priceTjs, item.priceUsd)}
                     </div>
                     <Link href={`/classifieds/${item.slug || item.id}`}>
-                      <h4 className="font-semibold text-sm text-slate-900 line-clamp-1 mt-0.5 hover:text-emerald-600 transition-colors">
+                      <h4 className="font-bold text-base text-slate-900 dark:text-slate-100 line-clamp-1 mt-0.5 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
                         {isTg ? item.titleTg || item.title : item.title}
                       </h4>
                     </Link>
-                    <p className="text-xs text-slate-500 flex items-center gap-1 mt-1 font-medium">
+                    <p className="text-xs text-slate-500 dark:text-slate-400 flex items-center gap-1 mt-1 font-medium">
                       <MapPin className="h-3.5 w-3.5 text-emerald-600 shrink-0" />
                       {isTg
                         ? `${item.cityTg || item.city}, ${item.districtTg || item.district} (${item.landmarkTg || item.landmark})`
@@ -1033,12 +1033,12 @@ export default function HomePage() {
                   </div>
 
                   {/* Specs */}
-                  <div className="flex items-center gap-3 text-xs text-slate-600 border-y border-slate-100 py-2 font-medium">
-                    <span className="font-bold text-slate-900">
+                  <div className="flex items-center gap-3 text-xs text-slate-600 dark:text-slate-300 border-y border-slate-200/60 dark:border-white/10 py-2.5 font-medium">
+                    <span className="font-bold text-slate-900 dark:text-white">
                       {item.rooms} {isTg ? "ҳуҷр." : "комн."}
                     </span>
                     <span>•</span>
-                    <span className="font-bold text-slate-900">{item.area} м²</span>
+                    <span className="font-bold text-slate-900 dark:text-white">{item.area} м²</span>
                     <span>•</span>
                     <span>
                       {isTg
@@ -1048,11 +1048,11 @@ export default function HomePage() {
                   </div>
 
                   {/* Features */}
-                  <div className="flex flex-wrap gap-1">
+                  <div className="flex flex-wrap gap-1.5">
                     {(isTg ? item.featuresTg || item.features : item.features).map((f) => (
                       <span
                         key={f}
-                        className="text-[10px] font-medium px-2 py-0.5 rounded bg-slate-100 text-slate-600"
+                        className="text-[11px] font-semibold px-2.5 py-0.5 rounded-lg glass-amenity-card text-slate-700 dark:text-slate-200 select-none cursor-default"
                       >
                         {f}
                       </span>
@@ -1062,21 +1062,21 @@ export default function HomePage() {
               </div>
 
               {/* Contacts */}
-              <div className="p-4 sm:p-5 pt-0 border-t border-slate-100 mt-2 flex items-center justify-between text-xs">
+              <div className="p-4 sm:p-5 pt-0 border-t border-slate-100/80 dark:border-white/10 mt-2 flex items-center justify-between text-xs">
                 <div>
-                  <span className="text-[10px] text-slate-400 block font-medium">
+                  <span className="text-[10px] text-slate-400 dark:text-slate-500 block font-medium uppercase tracking-wider">
                     {isTg ? item.sellerTypeTg || item.sellerType : item.sellerType}
                   </span>
-                  <span className="font-semibold text-slate-900 font-mono text-xs">
+                  <span className="font-bold text-slate-900 dark:text-white font-mono text-xs">
                     {revealedPhones[item.id] ? item.phone : `${item.phone.slice(0, 8)} •• ••`}
                   </span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Button
                     size="xs"
-                    variant={revealedPhones[item.id] ? "secondary" : "outline"}
+                    variant="outline"
                     onClick={() => togglePhone(item)}
-                    className="h-8 px-2.5 text-xs font-semibold gap-1 rounded-lg border-slate-200 cursor-pointer"
+                    className="h-8 px-2.5 text-xs font-semibold gap-1 rounded-xl glass-pill border-slate-200/80 hover:border-emerald-500/50 hover:text-emerald-700 cursor-pointer transition-all"
                   >
                     <Phone className="h-3.5 w-3.5 text-emerald-600" />
                     {revealedPhones[item.id]
@@ -1092,7 +1092,7 @@ export default function HomePage() {
                     target="_blank"
                     rel="noreferrer"
                     onClick={() => handleWhatsappLead(item)}
-                    className="h-8 w-8 rounded-lg bg-emerald-50 text-emerald-600 hover:bg-emerald-600 hover:text-white flex items-center justify-center transition-colors border border-emerald-100"
+                    className="h-8 w-8 rounded-xl bg-emerald-50 text-emerald-600 hover:bg-emerald-600 hover:text-white flex items-center justify-center transition-all border border-emerald-200/80 shadow-2xs hover:scale-105"
                   >
                     <MessageCircle className="h-4 w-4" />
                   </a>
@@ -1124,7 +1124,7 @@ export default function HomePage() {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
             {/* 1. For Buyers */}
-            <div className="bg-slate-50/70 border border-slate-200/70 rounded-xl p-5 sm:p-6 space-y-3 hover:border-emerald-300 hover:bg-white hover:shadow-sm transition-all">
+            <div className="glass-card rounded-2xl p-5 sm:p-6 space-y-3 hover:border-emerald-500/40 hover:shadow-[0_20px_45px_-12px_rgba(16,185,129,0.18)] hover:-translate-y-1 transition-all duration-300">
               <div className="h-10 w-10 rounded-xl bg-emerald-100/70 text-emerald-700 flex items-center justify-center">
                 <Home className="h-5 w-5" />
               </div>
@@ -1143,7 +1143,7 @@ export default function HomePage() {
             </div>
 
             {/* 2. For Developers */}
-            <div className="bg-slate-50/70 border border-slate-200/70 rounded-xl p-5 sm:p-6 space-y-3 hover:border-emerald-300 hover:bg-white hover:shadow-sm transition-all">
+            <div className="glass-card rounded-2xl p-5 sm:p-6 space-y-3 hover:border-emerald-500/40 hover:shadow-[0_20px_45px_-12px_rgba(16,185,129,0.18)] hover:-translate-y-1 transition-all duration-300">
               <div className="h-10 w-10 rounded-xl bg-teal-100/70 text-teal-700 flex items-center justify-center">
                 <Building2 className="h-5 w-5" />
               </div>
@@ -1162,7 +1162,7 @@ export default function HomePage() {
             </div>
 
             {/* 3. For Realtors & CRM */}
-            <div className="bg-slate-50/70 border border-slate-200/70 rounded-xl p-5 sm:p-6 space-y-3 hover:border-emerald-300 hover:bg-white hover:shadow-sm transition-all">
+            <div className="glass-card rounded-2xl p-5 sm:p-6 space-y-3 hover:border-emerald-500/40 hover:shadow-[0_20px_45px_-12px_rgba(16,185,129,0.18)] hover:-translate-y-1 transition-all duration-300">
               <div className="h-10 w-10 rounded-xl bg-emerald-100/70 text-emerald-700 flex items-center justify-center">
                 <TrendingUp className="h-5 w-5" />
               </div>
@@ -1191,7 +1191,7 @@ export default function HomePage() {
 
       {/* 6. VERIFIED DEVELOPERS */}
       <section id="developers" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-        <div className="bg-white border border-slate-200/80 rounded-2xl p-6 sm:p-8 shadow-sm">
+        <div className="glass-card rounded-3xl p-6 sm:p-8">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
             <div className="max-w-2xl">
               <h2 className="text-2xl font-bold text-slate-900 tracking-tight">
@@ -1219,7 +1219,7 @@ export default function HomePage() {
               <Link
                 key={dev.id}
                 href={`/developers/${dev.slug}`}
-                className="bg-slate-50/60 border border-slate-200/70 rounded-xl p-5 flex flex-col justify-between hover:border-emerald-300 hover:bg-white hover:shadow-md transition-all group"
+                className="glass-card rounded-2xl p-5 flex flex-col justify-between hover:border-emerald-500/40 hover:shadow-[0_20px_45px_-12px_rgba(16,185,129,0.18)] hover:-translate-y-1 transition-all duration-300 group"
               >
                 <div className="flex items-start gap-3.5">
                   <div className="h-12 w-12 rounded-xl overflow-hidden bg-white border border-slate-200 shrink-0 shadow-xs">
@@ -1235,7 +1235,7 @@ export default function HomePage() {
                         {dev.name}
                       </h4>
                       {dev.isVerified && (
-                        <Badge className="bg-emerald-50 text-emerald-800 border-emerald-200 text-[10px] px-1.5 py-0 h-4">
+                        <Badge variant="emeraldSubtle" className="text-[10px] px-2 py-0.5 rounded-lg">
                           {isTg ? "Тасдиқшуда" : "Верифицирован"}
                         </Badge>
                       )}
@@ -1256,7 +1256,7 @@ export default function HomePage() {
                   </div>
                 </div>
 
-                <div className="mt-3.5 pt-3 border-t border-slate-200/60 text-[11px] text-slate-500 space-y-1">
+                <div className="mt-3.5 pt-3 border-t border-slate-200/60 dark:border-white/10 text-[11px] text-slate-500 space-y-1">
                   <p className="flex items-center gap-1 truncate">
                     <MapPin className="h-3 w-3 text-emerald-600 shrink-0" />
                     <span className="truncate">{dev.officeAddress}</span>
