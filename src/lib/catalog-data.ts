@@ -272,9 +272,9 @@ export const CATALOG_PROPERTIES: CatalogProperty[] = [
     "description": "Продается 3-комнатная квартира на 3 этаже в 13 микрорайоне. Квартира в среднем жилом состоянии, чистая, светлая. Все необходимое для жизни находится в шаговой доступности: школа, детский сад, магазины и остановки общественного транспорта.",
     "descriptionTg": "Хонадони 3-ҳуҷрагӣ дар ошёнаи 3 дар микрорайони 13 ба фурӯш гузошта мешавад. Ҳолати миёнаи зист, тоза ва равшан. Мактаб, боғча ва нақлиёт дар наздикии хона.",
     "originalSomonUrl": "https://somon.tj/adv/17342045_3-komn-kvartira-3-etazh-68-m2-13-mkr/",
-    "image": "https://images.unsplash.com/photo-1502005229762-ee1b2b8ab98f?auto=format&fit=crop&w=1200&q=80",
+    "image": "https://images.unsplash.com/photo-1556912172-45b7abe8b7e1?auto=format&fit=crop&w=1200&q=80",
     "images": [
-      "https://images.unsplash.com/photo-1502005229762-ee1b2b8ab98f?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1556912172-45b7abe8b7e1?auto=format&fit=crop&w=1200&q=80",
       "https://cdntj.somon.tj/media/cache1/ef/3c/ef3c00d4dcfc0ce3b0f4ef11a259f4c5.webp",
       "https://cdntj.somon.tj/media/cache1/77/59/7759062ff0df035fb0cc80bb5e3c95e8.webp",
       "https://cdntj.somon.tj/media/cache1/79/8d/798d200d85563c2dca2d93c8891f9e73.webp",
