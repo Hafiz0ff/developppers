@@ -101,7 +101,10 @@ export default function PublicProjectPage() {
     INITIAL_DEVELOPERS.find((d) => d.id === project.developerId) ||
     INITIAL_DEVELOPERS[0];
 
-  const displayName = language === "tg" && project.nameTg ? project.nameTg : project.name;
+  const rawName = language === "tg" && project.nameTg ? project.nameTg : project.name;
+  const cleanProjectName = (name: string) => name.replace(/^(?:ЖК|МИ)\s*[«"']?|[»"']$/gi, "").trim();
+  const cleanName = cleanProjectName(rawName);
+  const displayName = `${language === "tg" ? "МИ" : "ЖК"} «${cleanName}»`;
   const displayDesc = language === "tg" && project.descriptionTg ? project.descriptionTg : project.description;
   const displayAddress = language === "tg" && project.addressTg ? project.addressTg : project.address;
   const displayLandmark = language === "tg" && project.landmarkTg ? project.landmarkTg : project.landmark;
@@ -858,21 +861,21 @@ export default function PublicProjectPage() {
         />
       )}
 
-      {/* INTERACTIVE UNIT CHESSBOARD FOR BUYERS */}
-      <section id="chessboard-section" className="container mx-auto px-4 pt-6 space-y-6">
+      {/* INTERACTIVE UNIT CHESSBOARD & LAYOUTS FOR BUYERS */}
+      <section id="chessboard-section" className="container mx-auto px-4 pt-6 space-y-6 scroll-mt-28">
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3">
           <div>
             <div className="text-xs uppercase font-bold tracking-wider text-emerald-600 mb-1 flex items-center gap-1.5">
               <Sparkles className="h-3.5 w-3.5" />
-              {tDual("Выбор квартиры", "Интихоби хонадон")}
+              {tDual("Интерактивный выбор и планировки", "Интихоби интерактивӣ ва тарҳҳо")}
             </div>
             <h2 className="text-2xl sm:text-3xl font-extrabold text-foreground">
-              {tDual(`Интерактивная шахматка ЖК «${displayName}»`, `Ҷадвали интерактивии МИ «${displayName}»`)}
+              {tDual(`Шахматка и планировки ${displayName}`, `Ҷадвали хонаҳо ва тарҳҳои ${displayName}`)}
             </h2>
             <p className="text-xs sm:text-sm text-muted-foreground mt-0.5">
               {tDual(
-                "Выберите этаж и расположение на площадке или отфильтруйте планировки по комнатности и цене",
-                "Ошёна ва мавқеиятро дар майдонча интихоб намоед ё нақшаҳоро аз рӯи шумораи ҳуҷраҳо ва нарх филтр кунед"
+                "Интерактивная сетка квартир и таблица планировок с детальным расчетом рассрочки и бронированием",
+                "Ҷадвали интерактивии хонаҳо ва рӯйхати тарҳҳо бо ҳисоби қисм-қисм ва брон кардан"
               )}
             </p>
           </div>

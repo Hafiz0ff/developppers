@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useMemo } from "react";
-import { Maximize2, MessageCircle, Phone, CheckCircle2, FileText, Layers } from "lucide-react";
+import { Maximize2, MessageCircle, Phone, CheckCircle2, FileText, Layers, Compass } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -144,9 +144,9 @@ export function ShowcaseLayoutView({
   const [isZoomOpen, setIsZoomOpen] = useState(false);
 
   return (
-    <div className="relative w-full h-[360px] sm:h-[480px] bg-slate-950 p-4 sm:p-6 overflow-hidden flex flex-col justify-between">
-      {/* 1. TOP LAYOUT SWITCHER */}
-      <div className="flex items-center gap-2 overflow-x-auto [scrollbar-width:none] z-10">
+    <div className="relative w-full h-[380px] sm:h-[500px] glass-card rounded-2xl md:rounded-3xl border border-white/60 dark:border-white/10 p-4 sm:p-6 overflow-hidden flex flex-col justify-between backdrop-blur-2xl">
+      {/* 1. TOP LAYOUT SWITCHER (TAHOE PILLS) */}
+      <div className="flex items-center gap-2 overflow-x-auto [scrollbar-width:none] z-10 pb-1">
         {layouts.map((lay) => {
           const isActive = activeLayout.id === lay.id;
           return (
@@ -154,10 +154,10 @@ export function ShowcaseLayoutView({
               key={lay.id}
               type="button"
               onClick={() => setActiveLayoutId(lay.id)}
-              className={`h-9 px-3.5 rounded-xl text-xs font-semibold flex items-center gap-2 whitespace-nowrap transition-all cursor-pointer shadow-sm ${
+              className={`h-9 px-4 rounded-xl text-xs font-bold flex items-center gap-2 whitespace-nowrap transition-all cursor-pointer shadow-xs ${
                 isActive
-                  ? "bg-emerald-600 text-white"
-                  : "bg-slate-900/90 text-slate-300 hover:bg-slate-800 border border-white/10"
+                  ? "bg-emerald-600 text-white shadow-md ring-2 ring-emerald-500/25"
+                  : "bg-background/80 hover:bg-background text-foreground/80 hover:text-foreground border border-border/60 backdrop-blur-md"
               }`}
             >
               <span>{lay.rooms}</span>
@@ -168,21 +168,21 @@ export function ShowcaseLayoutView({
       </div>
 
       {/* 2. CENTER PLAN PREVIEW WITH ZOOM BUTTON */}
-      <div className="relative flex-1 my-3 rounded-xl overflow-hidden bg-slate-900 border border-white/10 flex items-center justify-center group">
+      <div className="relative flex-1 my-3 rounded-2xl overflow-hidden bg-muted/30 border border-border/60 flex items-center justify-center group shadow-inner">
         <img
           src={activeLayout.planUrl}
           alt={tDual(
             `План ${activeLayout.rooms} в ${projectName}`,
             `Нақшаи ${activeLayout.rooms} дар ${projectName}`
           )}
-          className="max-h-full max-w-full object-contain p-2 group-hover:scale-105 transition-transform duration-300"
+          className="max-h-full max-w-full object-contain p-3 group-hover:scale-105 transition-transform duration-300"
         />
 
         {/* Zoom trigger button */}
         <button
           type="button"
           onClick={() => setIsZoomOpen(true)}
-          className="absolute top-3 right-3 h-9 px-3 rounded-lg bg-black/60 hover:bg-black/80 backdrop-blur-md text-white text-xs font-medium flex items-center gap-1.5 transition-colors cursor-pointer border border-white/20"
+          className="absolute top-3 right-3 h-9 px-3 rounded-xl bg-background/80 hover:bg-background backdrop-blur-md text-foreground text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer border border-border/80 shadow-xs"
         >
           <Maximize2 className="h-3.5 w-3.5" />
           <span>{tDual("Увеличить", "Калон кардан")}</span>
@@ -190,21 +190,33 @@ export function ShowcaseLayoutView({
       </div>
 
       {/* 3. BOTTOM EXPLICATION & CTA BAR */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-slate-900/90 backdrop-blur-md border border-white/10 p-3 sm:p-3.5 rounded-xl z-10">
-        <div className="flex flex-wrap items-center gap-3 text-xs text-white">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-background/80 backdrop-blur-md border border-border/60 p-3 sm:p-4 rounded-2xl z-10 shadow-sm">
+        <div className="flex flex-wrap items-center gap-3 text-xs">
           <div>
-            <span className="text-slate-400 text-[11px] block">{tDual("Общая площадь:", "Масоҳати умумӣ:")}</span>
-            <strong className="text-emerald-400 font-bold">{activeLayout.area} м²</strong>
+            <span className="text-muted-foreground text-[11px] block font-medium">
+              {tDual("Общая площадь:", "Масоҳати умумӣ:")}
+            </span>
+            <strong className="text-emerald-600 dark:text-emerald-400 font-black text-sm">
+              {activeLayout.area} м²
+            </strong>
           </div>
-          <div className="h-6 w-px bg-white/10 hidden sm:block" />
+          <div className="h-6 w-px bg-border/60 hidden sm:block" />
           <div>
-            <span className="text-slate-400 text-[11px] block">{tDual("Жилая:", "Истиқоматӣ:")}</span>
-            <strong className="text-white font-semibold">{activeLayout.livingArea} м²</strong>
+            <span className="text-muted-foreground text-[11px] block font-medium">
+              {tDual("Жилая:", "Истиқоматӣ:")}
+            </span>
+            <strong className="text-foreground font-bold">
+              {activeLayout.livingArea} м²
+            </strong>
           </div>
-          <div className="h-6 w-px bg-white/10 hidden sm:block" />
+          <div className="h-6 w-px bg-border/60 hidden sm:block" />
           <div>
-            <span className="text-slate-400 text-[11px] block">{tDual("Кухня:", "Ошхона:")}</span>
-            <strong className="text-white font-semibold">{activeLayout.kitchenArea} м²</strong>
+            <span className="text-muted-foreground text-[11px] block font-medium">
+              {tDual("Кухня:", "Ошхона:")}
+            </span>
+            <strong className="text-foreground font-bold">
+              {activeLayout.kitchenArea} м²
+            </strong>
           </div>
         </div>
 
@@ -216,7 +228,7 @@ export function ShowcaseLayoutView({
           )}`}
           target="_blank"
           rel="noreferrer"
-          className="inline-flex items-center justify-center gap-2 h-9 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs shadow-xs transition-colors shrink-0"
+          className="inline-flex items-center justify-center gap-2 h-10 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-xs transition-colors shrink-0 cursor-pointer"
         >
           <MessageCircle className="h-3.5 w-3.5" />
           {tDual("Узнать цены планировки в WhatsApp", "Нархи нақша дар WhatsApp")}
@@ -225,9 +237,9 @@ export function ShowcaseLayoutView({
 
       {/* 4. ZOOM MODAL DIALOG */}
       <Dialog open={isZoomOpen} onOpenChange={setIsZoomOpen}>
-        <DialogContent className="max-w-3xl p-6 bg-slate-950 text-white border-slate-800">
+        <DialogContent className="max-w-3xl p-6 rounded-3xl border border-white/60 dark:border-white/10 backdrop-blur-2xl shadow-2xl">
           <DialogHeader>
-            <DialogTitle className="text-lg font-bold text-white flex items-center justify-between">
+            <DialogTitle className="text-lg font-black flex items-center justify-between">
               <span>
                 {tDual(
                   `План ${activeLayout.rooms} (${activeLayout.area} м²) — ${projectName}`,
@@ -236,7 +248,7 @@ export function ShowcaseLayoutView({
               </span>
             </DialogTitle>
           </DialogHeader>
-          <div className="relative h-[480px] w-full rounded-xl overflow-hidden bg-slate-900 border border-slate-800 flex items-center justify-center">
+          <div className="relative h-[480px] w-full rounded-2xl overflow-hidden bg-muted/40 border border-border/80 flex items-center justify-center">
             <img
               src={activeLayout.planUrl}
               alt={tDual("План в высоком разрешении", "Нақша бо сифати баланд")}
@@ -245,12 +257,13 @@ export function ShowcaseLayoutView({
           </div>
           <div className="flex flex-wrap gap-2 pt-2">
             {activeLayout.features.map((feat) => (
-              <span
+              <Badge
                 key={feat}
-                className="text-xs font-medium px-3 py-1 rounded-lg bg-emerald-500/10 text-emerald-400 border border-emerald-500/20"
+                variant="emerald"
+                className="text-xs font-semibold px-3 py-1.5"
               >
                 ✓ {feat}
-              </span>
+              </Badge>
             ))}
           </div>
         </DialogContent>
