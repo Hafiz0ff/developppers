@@ -14,6 +14,11 @@ import {
 import { normalizePath } from "./url-alias-store";
 import { getFacetById, type FacetConfig } from "./facet-store";
 import { type MenuItem } from "../navigation/menu-store";
+import {
+  getGeoEntityBySlug,
+  resolveGeoEntity,
+  resolveH1GeoName as resolveH1GeoNameFromStore,
+} from "../geo/geo-store";
 
 export interface ResolvableListing {
   id: string; // Stable numeric or uuid string ID
@@ -84,6 +89,11 @@ export function getBaseSiteUrl(): string {
  * Translates city name into canonical URL-slug
  */
 export function resolveCitySlug(cityName: string): string {
+  if (!cityName) return "khujand";
+  const geo = resolveGeoEntity(cityName);
+  if (geo) {
+    return geo.slug.ru;
+  }
   const norm = (cityName || "khujand").toLowerCase().trim();
   if (norm.includes("хуҷ") || norm.includes("худж") || norm === "khujand") return "khujand";
   if (norm.includes("душанбе") || norm === "dushanbe") return "dushanbe";
@@ -94,6 +104,11 @@ export function resolveCitySlug(cityName: string): string {
   if (norm.includes("истаравшан") || norm === "istaravshan") return "istaravshan";
   if (norm.includes("конибодом") || norm.includes("канибадам") || norm === "konibodom") return "konibodom";
   if (norm.includes("панҷакент") || norm.includes("пенджикент") || norm === "panjakent") return "panjakent";
+  if (norm.includes("бохтар") || norm.includes("курган") || norm === "bokhtar") return "bokhtar";
+  if (norm.includes("кӯлоб") || norm.includes("куляб") || norm === "kulob") return "kulob";
+  if (norm.includes("варзоб") || norm === "varzob") return "varzob";
+  if (norm.includes("рудаки") || norm.includes("рӯдакӣ") || norm === "rudaki") return "rudaki";
+  if (norm.includes("данғара") || norm.includes("дангара") || norm === "danghara") return "danghara";
   return transliterateToSlug(norm) || "khujand";
 }
 
@@ -101,6 +116,10 @@ export function resolveCitySlug(cityName: string): string {
  * Returns localized city display name
  */
 export function resolveCityDisplayName(citySlug: string, locale: Locale): string {
+  const geo = getGeoEntityBySlug(citySlug);
+  if (geo) {
+    return geo.name[locale] || geo.name.ru;
+  }
   const dict: Record<string, { ru: string; tg: string; en: string }> = {
     khujand: { ru: "Худжанд", tg: "Хуҷанд", en: "Khujand" },
     dushanbe: { ru: "Душанбе", tg: "Душанбе", en: "Dushanbe" },
@@ -111,8 +130,21 @@ export function resolveCityDisplayName(citySlug: string, locale: Locale): string
     istaravshan: { ru: "Истаравшан", tg: "Истаравшан", en: "Istaravshan" },
     konibodom: { ru: "Канибадам", tg: "Конибодом", en: "Konibodom" },
     panjakent: { ru: "Пенджикент", tg: "Панҷакент", en: "Panjakent" },
+    bokhtar: { ru: "Бохтар", tg: "Бохтар", en: "Bokhtar" },
+    kulob: { ru: "Куляб", tg: "Кӯлоб", en: "Kulob" },
+    varzob: { ru: "Варзоб", tg: "Варзоб", en: "Varzob" },
+    rudaki: { ru: "Рудаки", tg: "Рӯдакӣ", en: "Rudaki" },
+    danghara: { ru: "Дангара", tg: "Данғара", en: "Danghara" },
   };
   return dict[citySlug]?.[locale] || (locale === "tg" ? "Хуҷанд" : locale === "en" ? "Khujand" : "Худжанд");
+}
+
+/**
+ * Returns grammatical locative form for H1 heading (e.g. "Худжанде", "Душанбе", "Бохтаре")
+ * Conforms to MASKANI.TJ Specification v1.8 FINAL Section 15.2
+ */
+export function resolveCityH1Name(citySlug: string, locale: Locale = "ru"): string {
+  return resolveH1GeoNameFromStore(citySlug, locale);
 }
 
 /**

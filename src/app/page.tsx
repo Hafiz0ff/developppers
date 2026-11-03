@@ -399,6 +399,24 @@ export default function HomePage() {
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 pb-8 sm:pb-10">
 
+          {/* Hero H1 & Subtitle Strictly Conforming to TZ Section 15.1 & AC-55 */}
+          <div className="text-center max-w-3xl mx-auto mb-6 sm:mb-8 pt-2 sm:pt-4">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-white tracking-tight leading-tight drop-shadow-[0_2px_12px_rgba(0,0,0,0.5)]">
+              {isTg
+                ? "Амволи ғайриманқул дар Тоҷикистон"
+                : language === "en"
+                ? "Real Estate in Tajikistan"
+                : "Недвижимость в Таджикистане"}
+            </h1>
+            <p className="mt-2 sm:mt-3 text-xs sm:text-sm md:text-base text-slate-200/90 font-medium leading-relaxed drop-shadow-[0_1px_4px_rgba(0,0,0,0.6)] max-w-2xl mx-auto">
+              {isTg
+                ? "Эълонҳои фурӯш ва иҷораи хонадонҳо, ҳавлиҳо ва амволи тиҷоратӣ дар саросари Тоҷикистон"
+                : language === "en"
+                ? "Listings for sale and rent of apartments, houses and commercial real estate across Tajikistan"
+                : "Объявления о продаже и аренде квартир, домов и коммерческой недвижимости по всему Таджикистану"}
+            </p>
+          </div>
+
           {/* 2. APPLE-STYLE LIQUID GLASS SEARCH CARD (Luminous Transparent Glass: 2.5% Opacity + Crisp Glowing Edges) */}
           <div className="relative mx-auto w-full max-w-5xl">
             <div className="bg-white/[0.025] backdrop-blur-2xl backdrop-saturate-150 border border-white/20 rounded-3xl p-5 sm:p-6 shadow-[0_20px_50px_rgba(0,0,0,0.20),inset_0_1px_1.5px_rgba(255,255,255,0.35)]">

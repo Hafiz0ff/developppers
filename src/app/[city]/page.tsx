@@ -7,6 +7,7 @@ import {
   resolveCityDisplayName,
   getBaseSiteUrl,
 } from "@/lib/seo/url-resolver";
+import { getRouteEnabledCities, resolveH1GeoName } from "@/lib/geo/geo-store";
 import type { Locale } from "@/lib/seo/taxonomy-store";
 import { CATALOG_PROPERTIES } from "@/lib/catalog-data";
 import {
@@ -22,6 +23,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 
 const VALID_CITY_SLUGS = new Set([
+  ...getRouteEnabledCities().flatMap((c) => [c.slug.ru, c.slug.tg, c.slug.en]),
   "khujand",
   "dushanbe",
   "gafurov",
@@ -56,14 +58,15 @@ export async function generateMetadata({ params, searchParams }: PageProps): Pro
 
   const locale = resolveLocale(sp);
   const cityName = resolveCityDisplayName(citySlug, locale);
+  const h1Name = resolveH1GeoName(citySlug, locale);
   const baseUrl = getBaseSiteUrl();
 
   const title =
     locale === "tg"
-      ? `Амволи ғайриманқул дар ${cityName} — Хариду фурӯш ва иҷора | Maskani.tj`
+      ? `Амволи ғайриманқул дар ${h1Name} — Хариду фурӯш ва иҷора | Maskani.tj`
       : locale === "en"
-      ? `Real Estate in ${cityName} — Buy, Sell & Rent | Maskani.tj`
-      : `Недвижимость в ${cityName} — Купить, снять или продать жильё | Maskani.tj`;
+      ? `Real Estate in ${h1Name} — Buy, Sell & Rent | Maskani.tj`
+      : `Недвижимость в ${h1Name} — Купить, снять или продать жильё | Maskani.tj`;
 
   const description =
     locale === "tg"
@@ -193,18 +196,18 @@ export default async function CityHubPage({ params, searchParams }: PageProps) {
 
             <h1 className="text-2xl sm:text-4xl md:text-5xl font-black tracking-tight leading-tight">
               {locale === "tg"
-                ? `Амволи ғайриманқул дар ${cityName}`
+                ? `Амволи ғайриманқул дар ${resolveH1GeoName(citySlug, "tg")}`
                 : locale === "en"
-                ? `Real Estate in ${cityName}`
-                : `Недвижимость в ${cityName}`}
+                ? `Real Estate in ${resolveH1GeoName(citySlug, "en")}`
+                : `Недвижимость в ${resolveH1GeoName(citySlug, "ru")}`}
             </h1>
 
             <p className="text-slate-300 text-xs sm:text-sm leading-relaxed">
               {locale === "tg"
-                ? `Беҳтарин пешниҳодҳои хариду фурӯш ва иҷораи хонадонҳо, ҳавлиҳо ва биноҳои навсохти шаҳри ${cityName} мустақим аз соҳибмулкон ва ширкатҳо.`
+                ? "Эълонҳои фурӯш ва иҷораи хонадонҳо, ҳавлиҳо ва амволи тиҷоратӣ"
                 : locale === "en"
-                ? `Discover verified apartments, houses, new buildings, and rentals in ${cityName} directly from owners and verified developers.`
-                : `Проверенные объявления о продаже и аренде квартир, домов и новостроек в городе ${cityName} напрямую от собственников и застройщиков.`}
+                ? "Listings for sale and rent of apartments, houses and commercial real estate"
+                : "Объявления о продаже и аренде квартир, домов и коммерческой недвижимости"}
             </p>
 
             {/* Quick Deal Switchers */}

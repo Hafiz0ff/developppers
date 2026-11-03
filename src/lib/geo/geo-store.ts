@@ -1,0 +1,1951 @@
+/**
+ * Unified Geographic Store of Tajikistan
+ * Single Source of Truth for all 67 Administrative Entities (Appendix A)
+ * Conforms to MASKANI.TJ Specification v1.8 FINAL (Sections 12, 13, 15)
+ */
+
+import { type Locale, type LocalizedString } from "../seo/taxonomy-store";
+
+export type GeoType = "city" | "district" | "town" | "alias";
+export type GeoVerificationStatus = "verified" | "needs_clarification" | "alias";
+
+export interface GeoEntity {
+  id: string; // e.g. "geo_dushanbe", "geo_khujand"
+  number: number; // 1..67 from Appendix A
+  legacyCityId?: string; // e.g. "khujand", "dushanbe", "gafurov"
+  type: GeoType;
+  parentGeoId: string;
+  parentGeoNameRu: string;
+  name: LocalizedString;
+  h1GeoName: LocalizedString; // Locative grammatical form
+  slug: LocalizedString;
+  aliases: string[];
+  selectorEnabled: boolean;
+  routeEnabled: boolean;
+  indexable: boolean;
+  verificationStatus: GeoVerificationStatus;
+  comment?: string;
+}
+
+export const TAJIKISTAN_GEO_ENTITIES: GeoEntity[] = [
+  {
+    id: "geo_dushanbe",
+    number: 1,
+    legacyCityId: "dushanbe",
+    type: "city",
+    parentGeoId: "Прямое (Столица)",
+    parentGeoNameRu: "Прямое (Столица)",
+    name: {
+      ru: "Душанбе",
+      tg: "Душанбе",
+      en: "Dushanbe",
+    },
+    h1GeoName: {
+      ru: "Душанбе",
+      tg: "Душанбе",
+      en: "Dushanbe",
+    },
+    slug: {
+      ru: "dushanbe",
+      tg: "dushanbe",
+      en: "dushanbe",
+    },
+    aliases: ["Сталинабад", "Stalinabad"],
+    selectorEnabled: true,
+    routeEnabled: true,
+    indexable: true,
+    verificationStatus: "verified",
+  },
+  {
+    id: "geo_khujand",
+    number: 2,
+    legacyCityId: "khujand",
+    type: "city",
+    parentGeoId: "Согдийская область",
+    parentGeoNameRu: "Согдийская область",
+    name: {
+      ru: "Худжанд",
+      tg: "Хуҷанд",
+      en: "Khujand",
+    },
+    h1GeoName: {
+      ru: "Худжанде",
+      tg: "Хуҷанд",
+      en: "Khujand",
+    },
+    slug: {
+      ru: "khujand",
+      tg: "khujand",
+      en: "khujand",
+    },
+    aliases: ["Ленинабад", "Ходжент", "Leninabad"],
+    selectorEnabled: true,
+    routeEnabled: true,
+    indexable: true,
+    verificationStatus: "verified",
+  },
+  {
+    id: "geo_abdurahmoni_jomi",
+    number: 3,
+    type: "district",
+    parentGeoId: "Хатлонская область",
+    parentGeoNameRu: "Хатлонская область",
+    name: {
+      ru: "Абдурахмони Джоми",
+      tg: "Абдураҳмони Ҷомӣ",
+      en: "Abdurahmoni Jomi",
+    },
+    h1GeoName: {
+      ru: "районе Абдурахмони Джоми",
+      tg: "Абдураҳмони Ҷомӣ",
+      en: "Abdurahmoni Jomi District",
+    },
+    slug: {
+      ru: "abdurahmoni-jomi",
+      tg: "abdurahmoni-jomi",
+      en: "abdurahmoni-jomi",
+    },
+    aliases: ["Джами", "Ҷомӣ", "Куйбышевский"],
+    selectorEnabled: true,
+    routeEnabled: false,
+    indexable: false,
+    verificationStatus: "verified",
+  },
+  {
+    id: "geo_ayni",
+    number: 4,
+    legacyCityId: "ayni",
+    type: "district",
+    parentGeoId: "Согдийская область",
+    parentGeoNameRu: "Согдийская область",
+    name: {
+      ru: "Айни",
+      tg: "Айнӣ",
+      en: "Ayni",
+    },
+    h1GeoName: {
+      ru: "районе Айни",
+      tg: "Айнӣ",
+      en: "Ayni District",
+    },
+    slug: {
+      ru: "ayni",
+      tg: "ayni",
+      en: "ayni",
+    },
+    aliases: ["Варзиминор", "Захматабад"],
+    selectorEnabled: true,
+    routeEnabled: false,
+    indexable: false,
+    verificationStatus: "verified",
+  },
+  {
+    id: "geo_asht",
+    number: 5,
+    legacyCityId: "asht",
+    type: "district",
+    parentGeoId: "Согдийская область",
+    parentGeoNameRu: "Согдийская область",
+    name: {
+      ru: "Ашт",
+      tg: "Ашт",
+      en: "Asht",
+    },
+    h1GeoName: {
+      ru: "Аштском районе",
+      tg: "Ашт",
+      en: "Asht District",
+    },
+    slug: {
+      ru: "asht",
+      tg: "asht",
+      en: "asht",
+    },
+    aliases: ["Шайдон", "Shaydon"],
+    selectorEnabled: true,
+    routeEnabled: false,
+    indexable: false,
+    verificationStatus: "verified",
+  },
+  {
+    id: "geo_baljuvon",
+    number: 6,
+    type: "district",
+    parentGeoId: "Хатлонская область",
+    parentGeoNameRu: "Хатлонская область",
+    name: {
+      ru: "Бальджувон",
+      tg: "Балҷувон",
+      en: "Baljuvon",
+    },
+    h1GeoName: {
+      ru: "Бальджувонском районе",
+      tg: "Балҷувон",
+      en: "Baljuvon District",
+    },
+    slug: {
+      ru: "baljuvon",
+      tg: "baljuvon",
+      en: "baljuvon",
+    },
+    aliases: ["Балджуван", "Baldzhuvon"],
+    selectorEnabled: true,
+    routeEnabled: false,
+    indexable: false,
+    verificationStatus: "verified",
+  },
+  {
+    id: "geo_gafurov",
+    number: 7,
+    legacyCityId: "gafurov",
+    type: "district",
+    parentGeoId: "Согдийская область",
+    parentGeoNameRu: "Согдийская область",
+    name: {
+      ru: "Бободжон Гафуров",
+      tg: "Бобоҷон Ғафуров",
+      en: "Bobojon Gafurov",
+    },
+    h1GeoName: {
+      ru: "районе Бободжон Гафуров",
+      tg: "Бобоҷон Ғафуров",
+      en: "Bobojon Gafurov District",
+    },
+    slug: {
+      ru: "gafurov",
+      tg: "gafurov",
+      en: "gafurov",
+    },
+    aliases: ["Б. Гафуров", "Гафуров", "Ходжентский р-н"],
+    selectorEnabled: true,
+    routeEnabled: true,
+    indexable: true,
+    verificationStatus: "verified",
+  },
+  {
+    id: "geo_bokhtar",
+    number: 8,
+    legacyCityId: "bokhtar",
+    type: "city",
+    parentGeoId: "Хатлонская область",
+    parentGeoNameRu: "Хатлонская область",
+    name: {
+      ru: "Бохтар",
+      tg: "Бохтар",
+      en: "Bokhtar",
+    },
+    h1GeoName: {
+      ru: "Бохтаре",
+      tg: "Бохтар",
+      en: "Bokhtar",
+    },
+    slug: {
+      ru: "bokhtar",
+      tg: "bokhtar",
+      en: "bokhtar",
+    },
+    aliases: ["Курган-Тюбе", "Қӯрғонтеппа", "Qurghonteppa"],
+    selectorEnabled: true,
+    routeEnabled: true,
+    indexable: true,
+    verificationStatus: "verified",
+  },
+  {
+    id: "geo_buston",
+    number: 9,
+    legacyCityId: "buston",
+    type: "city",
+    parentGeoId: "Согдийская область",
+    parentGeoNameRu: "Согдийская область",
+    name: {
+      ru: "Бустон",
+      tg: "Бӯстон",
+      en: "Buston",
+    },
+    h1GeoName: {
+      ru: "Бустоне",
+      tg: "Бӯстон",
+      en: "Buston",
+    },
+    slug: {
+      ru: "buston",
+      tg: "buston",
+      en: "buston",
+    },
+    aliases: ["Чкаловск", "Chkalovsk"],
+    selectorEnabled: true,
+    routeEnabled: true,
+    indexable: true,
+    verificationStatus: "verified",
+  },
+  {
+    id: "geo_vanj",
+    number: 10,
+    type: "district",
+    parentGeoId: "ГБАО",
+    parentGeoNameRu: "ГБАО",
+    name: {
+      ru: "Вандж",
+      tg: "Ванҷ",
+      en: "Vanj",
+    },
+    h1GeoName: {
+      ru: "Ванджском районе",
+      tg: "Ванҷ",
+      en: "Vanj District",
+    },
+    slug: {
+      ru: "vanj",
+      tg: "vanj",
+      en: "vanj",
+    },
+    aliases: ["Ванч", "Рохарв"],
+    selectorEnabled: true,
+    routeEnabled: false,
+    indexable: false,
+    verificationStatus: "verified",
+  },
+  {
+    id: "geo_varzob",
+    number: 11,
+    type: "district",
+    parentGeoId: "РРП",
+    parentGeoNameRu: "РРП",
+    name: {
+      ru: "Варзоб",
+      tg: "Варзоб",
+      en: "Varzob",
+    },
+    h1GeoName: {
+      ru: "Варзобском районе",
+      tg: "Варзоб",
+      en: "Varzob District",
+    },
+    slug: {
+      ru: "varzob",
+      tg: "varzob",
+      en: "varzob",
+    },
+    aliases: ["Варзобское ущелье", "Дачи Варзоб"],
+    selectorEnabled: true,
+    routeEnabled: true,
+    indexable: true,
+    verificationStatus: "verified",
+  },
+  {
+    id: "geo_vahdat",
+    number: 12,
+    type: "city",
+    parentGeoId: "РРП",
+    parentGeoNameRu: "РРП",
+    name: {
+      ru: "Вахдат",
+      tg: "Ваҳдат",
+      en: "Vahdat",
+    },
+    h1GeoName: {
+      ru: "Вахдате",
+      tg: "Ваҳдат",
+      en: "Vahdat",
+    },
+    slug: {
+      ru: "vahdat",
+      tg: "vahdat",
+      en: "vahdat",
+    },
+    aliases: ["Орджоникидзеабад", "Кофарнихон"],
+    selectorEnabled: true,
+    routeEnabled: true,
+    indexable: true,
+    verificationStatus: "verified",
+  },
+  {
+    id: "geo_vakhsh",
+    number: 13,
+    type: "district",
+    parentGeoId: "Хатлонская область",
+    parentGeoNameRu: "Хатлонская область",
+    name: {
+      ru: "Вахш",
+      tg: "Вахш",
+      en: "Vakhsh",
+    },
+    h1GeoName: {
+      ru: "Вахшском районе",
+      tg: "Вахш",
+      en: "Vakhsh District",
+    },
+    slug: {
+      ru: "vakhsh",
+      tg: "vakhsh",
+      en: "vakhsh",
+    },
+    aliases: ["Вахшский район"],
+    selectorEnabled: true,
+    routeEnabled: false,
+    indexable: false,
+    verificationStatus: "verified",
+  },
+  {
+    id: "geo_vose",
+    number: 14,
+    type: "district",
+    parentGeoId: "Хатлонская область",
+    parentGeoNameRu: "Хатлонская область",
+    name: {
+      ru: "Восе",
+      tg: "Восеъ",
+      en: "Vose",
+    },
+    h1GeoName: {
+      ru: "районе Восе",
+      tg: "Восеъ",
+      en: "Vose District",
+    },
+    slug: {
+      ru: "vose",
+      tg: "vose",
+      en: "vose",
+    },
+    aliases: ["Хулбук", "пгт Восе", "Hulbuk"],
+    selectorEnabled: true,
+    routeEnabled: false,
+    indexable: false,
+    verificationStatus: "verified",
+  },
+  {
+    id: "geo_hisor",
+    number: 15,
+    legacyCityId: "hisor",
+    type: "city",
+    parentGeoId: "РРП",
+    parentGeoNameRu: "РРП",
+    name: {
+      ru: "Гиссар",
+      tg: "Ҳисор",
+      en: "Hisor",
+    },
+    h1GeoName: {
+      ru: "Гиссаре",
+      tg: "Ҳисор",
+      en: "Hisor",
+    },
+    slug: {
+      ru: "hisor",
+      tg: "hisor",
+      en: "hisor",
+    },
+    aliases: ["Хисор", "Hissar", "Gissar"],
+    selectorEnabled: true,
+    routeEnabled: true,
+    indexable: true,
+    verificationStatus: "verified",
+  },
+  {
+    id: "geo_kuhistoni_mastchoh",
+    number: 16,
+    legacyCityId: "kuhistoni_mastchoh",
+    type: "district",
+    parentGeoId: "Согдийская область",
+    parentGeoNameRu: "Согдийская область",
+    name: {
+      ru: "Горная Матча",
+      tg: "Кӯҳистони Мастчоҳ",
+      en: "Kuhistoni Mastchoh",
+    },
+    h1GeoName: {
+      ru: "Горной Матче",
+      tg: "Кӯҳистони Мастчоҳ",
+      en: "Kuhistoni Mastchoh District",
+    },
+    slug: {
+      ru: "kuhistoni-mastchoh",
+      tg: "kuhistoni-mastchoh",
+      en: "kuhistoni-mastchoh",
+    },
+    aliases: ["Кухистони Мастчох", "Мехрон"],
+    selectorEnabled: true,
+    routeEnabled: false,
+    indexable: false,
+    verificationStatus: "verified",
+  },
+  {
+    id: "geo_guliston",
+    number: 17,
+    legacyCityId: "guliston",
+    type: "city",
+    parentGeoId: "Согдийская область",
+    parentGeoNameRu: "Согдийская область",
+    name: {
+      ru: "Гулистон",
+      tg: "Гулистон",
+      en: "Guliston",
+    },
+    h1GeoName: {
+      ru: "Гулистоне",
+      tg: "Гулистон",
+      en: "Guliston",
+    },
+    slug: {
+      ru: "guliston",
+      tg: "guliston",
+      en: "guliston",
+    },
+    aliases: ["Кайраккум", "Қайроққум", "Kayrakkum"],
+    selectorEnabled: true,
+    routeEnabled: true,
+    indexable: true,
+    verificationStatus: "verified",
+  },
+  {
+    id: "geo_danghara",
+    number: 18,
+    type: "district",
+    parentGeoId: "Хатлонская область",
+    parentGeoNameRu: "Хатлонская область",
+    name: {
+      ru: "Дангара",
+      tg: "Данғара",
+      en: "Danghara",
+    },
+    h1GeoName: {
+      ru: "Дангаре",
+      tg: "Данғара",
+      en: "Danghara District",
+    },
+    slug: {
+      ru: "danghara",
+      tg: "danghara",
+      en: "danghara",
+    },
+    aliases: ["пгт Дангара", "СЭЗ Дангара"],
+    selectorEnabled: true,
+    routeEnabled: true,
+    indexable: true,
+    verificationStatus: "verified",
+  },
+  {
+    id: "geo_darvoz",
+    number: 19,
+    type: "district",
+    parentGeoId: "ГБАО",
+    parentGeoNameRu: "ГБАО",
+    name: {
+      ru: "Дарваз",
+      tg: "Дарвоз",
+      en: "Darvoz",
+    },
+    h1GeoName: {
+      ru: "Дарвазском районе",
+      tg: "Дарвоз",
+      en: "Darvoz District",
+    },
+    slug: {
+      ru: "darvoz",
+      tg: "darvoz",
+      en: "darvoz",
+    },
+    aliases: ["Калаи-Хумб", "Калъаи Хумб"],
+    selectorEnabled: true,
+    routeEnabled: false,
+    indexable: false,
+    verificationStatus: "verified",
+  },
+  {
+    id: "geo_devashtich",
+    number: 20,
+    legacyCityId: "devashtich",
+    type: "district",
+    parentGeoId: "Согдийская область",
+    parentGeoNameRu: "Согдийская область",
+    name: {
+      ru: "Деваштич",
+      tg: "Деваштич",
+      en: "Devashtich",
+    },
+    h1GeoName: {
+      ru: "районе Деваштич",
+      tg: "Деваштич",
+      en: "Devashtich District",
+    },
+    slug: {
+      ru: "devashtich",
+      tg: "devashtich",
+      en: "devashtich",
+    },
+    aliases: ["Ганчи", "Ғончӣ", "Ghonchi"],
+    selectorEnabled: true,
+    routeEnabled: false,
+    indexable: false,
+    verificationStatus: "verified",
+  },
+  {
+    id: "geo_rasulov",
+    number: 21,
+    legacyCityId: "rasulov",
+    type: "district",
+    parentGeoId: "Согдийская область",
+    parentGeoNameRu: "Согдийская область",
+    name: {
+      ru: "Джаббор Расулов",
+      tg: "Ҷаббор Расулов",
+      en: "Jabbor Rasulov",
+    },
+    h1GeoName: {
+      ru: "районе Джаббор Расулов",
+      tg: "Ҷаббор Расулов",
+      en: "Jabbor Rasulov District",
+    },
+    slug: {
+      ru: "rasulov",
+      tg: "rasulov",
+      en: "rasulov",
+    },
+    aliases: ["Пролетарск", "Мехробод", "Дж. Расулов"],
+    selectorEnabled: true,
+    routeEnabled: false,
+    indexable: false,
+    verificationStatus: "verified",
+  },
+  {
+    id: "geo_jayhun",
+    number: 22,
+    type: "district",
+    parentGeoId: "Хатлонская область",
+    parentGeoNameRu: "Хатлонская область",
+    name: {
+      ru: "Джайхун",
+      tg: "Ҷайҳун",
+      en: "Jayhun",
+    },
+    h1GeoName: {
+      ru: "районе Джайхун",
+      tg: "Ҷайҳун",
+      en: "Jayhun District",
+    },
+    slug: {
+      ru: "jayhun",
+      tg: "jayhun",
+      en: "jayhun",
+    },
+    aliases: ["Кумсангир", "Қумсангир", "Qumsangir"],
+    selectorEnabled: true,
+    routeEnabled: false,
+    indexable: false,
+    verificationStatus: "verified",
+  },
+  {
+    id: "geo_balkhi",
+    number: 23,
+    type: "district",
+    parentGeoId: "Хатлонская область",
+    parentGeoNameRu: "Хатлонская область",
+    name: {
+      ru: "Джалолиддин Балхи",
+      tg: "Ҷалолиддини Балхӣ",
+      en: "Jaloliddin Balkhi",
+    },
+    h1GeoName: {
+      ru: "районе Джалолиддин Балхи",
+      tg: "Ҷалолиддини Балхӣ",
+      en: "Jaloliddin Balkhi District",
+    },
+    slug: {
+      ru: "balkhi",
+      tg: "balkhi",
+      en: "balkhi",
+    },
+    aliases: ["Руми", "Колхозабад", "Колхозобод"],
+    selectorEnabled: true,
+    routeEnabled: false,
+    indexable: false,
+    verificationStatus: "verified",
+  },
+  {
+    id: "geo_jomi",
+    number: 24,
+    type: "alias",
+    parentGeoId: "Хатлонская область",
+    parentGeoNameRu: "Хатлонская область",
+    name: {
+      ru: "Джами",
+      tg: "Ҷомӣ",
+      en: "Jomi",
+    },
+    h1GeoName: {
+      ru: "—",
+      tg: "Ҷомӣ",
+      en: "Jomi",
+    },
+    slug: {
+      ru: "jomi",
+      tg: "jomi",
+      en: "jomi",
+    },
+    aliases: ["Сокращение от Абдурахмони Джоми"],
+    selectorEnabled: false,
+    routeEnabled: false,
+    indexable: false,
+    verificationStatus: "alias",
+  },
+  {
+    id: "geo_dusti",
+    number: 25,
+    type: "district",
+    parentGeoId: "Хатлонская область",
+    parentGeoNameRu: "Хатлонская область",
+    name: {
+      ru: "Дусти",
+      tg: "Дӯстӣ",
+      en: "Dusti",
+    },
+    h1GeoName: {
+      ru: "районе Дусти",
+      tg: "Дӯстӣ",
+      en: "Dusti District",
+    },
+    slug: {
+      ru: "dusti",
+      tg: "dusti",
+      en: "dusti",
+    },
+    aliases: ["Джиликуль", "Ҷиликӯл", "Jilikul"],
+    selectorEnabled: true,
+    routeEnabled: false,
+    indexable: false,
+    verificationStatus: "verified",
+  },
+  {
+    id: "geo_zafarobod",
+    number: 26,
+    legacyCityId: "zafarobod",
+    type: "district",
+    parentGeoId: "Согдийская область",
+    parentGeoNameRu: "Согдийская область",
+    name: {
+      ru: "Зафарабад",
+      tg: "Зафаробод",
+      en: "Zafarobod",
+    },
+    h1GeoName: {
+      ru: "Зафарабадском районе",
+      tg: "Зафаробод",
+      en: "Zafarobod District",
+    },
+    slug: {
+      ru: "zafarobod",
+      tg: "zafarobod",
+      en: "zafarobod",
+    },
+    aliases: ["Зафаробод", "пгт Зафарабад"],
+    selectorEnabled: true,
+    routeEnabled: false,
+    indexable: false,
+    verificationStatus: "verified",
+  },
+  {
+    id: "geo_istaravshan",
+    number: 27,
+    legacyCityId: "istaravshan",
+    type: "city",
+    parentGeoId: "Согдийская область",
+    parentGeoNameRu: "Согдийская область",
+    name: {
+      ru: "Истаравшан",
+      tg: "Истаравшан",
+      en: "Istaravshan",
+    },
+    h1GeoName: {
+      ru: "Истаравшане",
+      tg: "Истаравшан",
+      en: "Istaravshan",
+    },
+    slug: {
+      ru: "istaravshan",
+      tg: "istaravshan",
+      en: "istaravshan",
+    },
+    aliases: ["Ура-Тюбе", "Уротеппа", "Urateppa"],
+    selectorEnabled: true,
+    routeEnabled: true,
+    indexable: true,
+    verificationStatus: "verified",
+  },
+  {
+    id: "geo_istiklol",
+    number: 28,
+    legacyCityId: "istiklol",
+    type: "city",
+    parentGeoId: "Согдийская область",
+    parentGeoNameRu: "Согдийская область",
+    name: {
+      ru: "Истиклол",
+      tg: "Истиқлол",
+      en: "Istiklol",
+    },
+    h1GeoName: {
+      ru: "Истиклоле",
+      tg: "Истиқлол",
+      en: "Istiklol",
+    },
+    slug: {
+      ru: "istiklol",
+      tg: "istiklol",
+      en: "istiklol",
+    },
+    aliases: ["Табошар", "Taboshar"],
+    selectorEnabled: true,
+    routeEnabled: true,
+    indexable: true,
+    verificationStatus: "verified",
+  },
+  {
+    id: "geo_isfara",
+    number: 29,
+    legacyCityId: "isfara",
+    type: "city",
+    parentGeoId: "Согдийская область",
+    parentGeoNameRu: "Согдийская область",
+    name: {
+      ru: "Исфара",
+      tg: "Исфара",
+      en: "Isfara",
+    },
+    h1GeoName: {
+      ru: "Исфаре",
+      tg: "Исфара",
+      en: "Isfara",
+    },
+    slug: {
+      ru: "isfara",
+      tg: "isfara",
+      en: "isfara",
+    },
+    aliases: ["Исфара"],
+    selectorEnabled: true,
+    routeEnabled: true,
+    indexable: true,
+    verificationStatus: "verified",
+  },
+  {
+    id: "geo_ishkoshim",
+    number: 30,
+    type: "district",
+    parentGeoId: "ГБАО",
+    parentGeoNameRu: "ГБАО",
+    name: {
+      ru: "Ишкашим",
+      tg: "Ишкошим",
+      en: "Ishkoshim",
+    },
+    h1GeoName: {
+      ru: "Ишкашимском районе",
+      tg: "Ишкошим",
+      en: "Ishkoshim District",
+    },
+    slug: {
+      ru: "ishkoshim",
+      tg: "ishkoshim",
+      en: "ishkoshim",
+    },
+    aliases: ["Ишкошим"],
+    selectorEnabled: true,
+    routeEnabled: false,
+    indexable: false,
+    verificationStatus: "verified",
+  },
+  {
+    id: "geo_qabodiyon",
+    number: 31,
+    type: "district",
+    parentGeoId: "Хатлонская область",
+    parentGeoNameRu: "Хатлонская область",
+    name: {
+      ru: "Кабодиён",
+      tg: "Қабодиён",
+      en: "Qabodiyon",
+    },
+    h1GeoName: {
+      ru: "районе Кабодиён",
+      tg: "Қабодиён",
+      en: "Qabodiyon District",
+    },
+    slug: {
+      ru: "qabodiyon",
+      tg: "qabodiyon",
+      en: "qabodiyon",
+    },
+    aliases: ["Кабадиян", "Кубодиён", "Kabadiyan"],
+    selectorEnabled: true,
+    routeEnabled: false,
+    indexable: false,
+    verificationStatus: "verified",
+  },
+  {
+    id: "geo_konibodom",
+    number: 32,
+    legacyCityId: "konibodom",
+    type: "city",
+    parentGeoId: "Согдийская область",
+    parentGeoNameRu: "Согдийская область",
+    name: {
+      ru: "Канибадам",
+      tg: "Конибодом",
+      en: "Konibodom",
+    },
+    h1GeoName: {
+      ru: "Канибадаме",
+      tg: "Конибодом",
+      en: "Konibodom",
+    },
+    slug: {
+      ru: "konibodom",
+      tg: "konibodom",
+      en: "konibodom",
+    },
+    aliases: ["Конибодом", "Kanibadam"],
+    selectorEnabled: true,
+    routeEnabled: true,
+    indexable: true,
+    verificationStatus: "verified",
+  },
+  {
+    id: "geo_kulob",
+    number: 33,
+    type: "city",
+    parentGeoId: "Хатлонская область",
+    parentGeoNameRu: "Хатлонская область",
+    name: {
+      ru: "Куляб",
+      tg: "Кӯлоб",
+      en: "Kulob",
+    },
+    h1GeoName: {
+      ru: "Кулябе",
+      tg: "Кӯлоб",
+      en: "Kulob",
+    },
+    slug: {
+      ru: "kulob",
+      tg: "kulob",
+      en: "kulob",
+    },
+    aliases: ["Кӯлоб", "Kulyab"],
+    selectorEnabled: true,
+    routeEnabled: true,
+    indexable: true,
+    verificationStatus: "verified",
+  },
+  {
+    id: "geo_kushoniyon",
+    number: 34,
+    type: "district",
+    parentGeoId: "Хатлонская область",
+    parentGeoNameRu: "Хатлонская область",
+    name: {
+      ru: "Кушониён",
+      tg: "Кӯшониён",
+      en: "Kushoniyon",
+    },
+    h1GeoName: {
+      ru: "районе Кушониён",
+      tg: "Кӯшониён",
+      en: "Kushoniyon District",
+    },
+    slug: {
+      ru: "kushoniyon",
+      tg: "kushoniyon",
+      en: "kushoniyon",
+    },
+    aliases: ["Бохтарский р-н", "Коммунистический р-н"],
+    selectorEnabled: true,
+    routeEnabled: false,
+    indexable: false,
+    verificationStatus: "verified",
+  },
+  {
+    id: "geo_lakhsh",
+    number: 35,
+    type: "district",
+    parentGeoId: "РРП",
+    parentGeoNameRu: "РРП",
+    name: {
+      ru: "Лахш",
+      tg: "Лахш",
+      en: "Lakhsh",
+    },
+    h1GeoName: {
+      ru: "районе Лахш",
+      tg: "Лахш",
+      en: "Lakhsh District",
+    },
+    slug: {
+      ru: "lakhsh",
+      tg: "lakhsh",
+      en: "lakhsh",
+    },
+    aliases: ["Джиргиталь", "Ҷиргатол", "Jirgatol"],
+    selectorEnabled: true,
+    routeEnabled: false,
+    indexable: false,
+    verificationStatus: "verified",
+  },
+  {
+    id: "geo_levakand",
+    number: 36,
+    type: "city",
+    parentGeoId: "Хатлонская область",
+    parentGeoNameRu: "Хатлонская область",
+    name: {
+      ru: "Леваканд",
+      tg: "Леваканд",
+      en: "Levakand",
+    },
+    h1GeoName: {
+      ru: "Леваканде",
+      tg: "Леваканд",
+      en: "Levakand",
+    },
+    slug: {
+      ru: "levakand",
+      tg: "levakand",
+      en: "levakand",
+    },
+    aliases: ["Сарбанд", "Калининабад", "Калининобод"],
+    selectorEnabled: true,
+    routeEnabled: true,
+    indexable: true,
+    verificationStatus: "verified",
+  },
+  {
+    id: "geo_mastchoh",
+    number: 37,
+    legacyCityId: "mastchoh",
+    type: "district",
+    parentGeoId: "Согдийская область",
+    parentGeoNameRu: "Согдийская область",
+    name: {
+      ru: "Матча",
+      tg: "Мастчоҳ",
+      en: "Mastchoh",
+    },
+    h1GeoName: {
+      ru: "Матчинском районе",
+      tg: "Мастчоҳ",
+      en: "Mastchoh District",
+    },
+    slug: {
+      ru: "mastchoh",
+      tg: "mastchoh",
+      en: "mastchoh",
+    },
+    aliases: ["Мастчох", "пгт Бустон", "Matcha"],
+    selectorEnabled: true,
+    routeEnabled: false,
+    indexable: false,
+    verificationStatus: "verified",
+  },
+  {
+    id: "geo_mehnatobod",
+    number: 38,
+    type: "town",
+    parentGeoId: "Зафарабадский район",
+    parentGeoNameRu: "Зафарабадский район",
+    name: {
+      ru: "Мехнатобод",
+      tg: "Меҳнатобод",
+      en: "Mehnatobod",
+    },
+    h1GeoName: {
+      ru: "посёлке Мехнатобод",
+      tg: "Меҳнатобод",
+      en: "Mehnatobod Town",
+    },
+    slug: {
+      ru: "mehnatobod",
+      tg: "mehnatobod",
+      en: "mehnatobod",
+    },
+    aliases: ["Мехнатабад", "пгт Мехнатобод"],
+    selectorEnabled: true,
+    routeEnabled: false,
+    indexable: false,
+    verificationStatus: "verified",
+  },
+  {
+    id: "geo_muminobod",
+    number: 39,
+    type: "district",
+    parentGeoId: "Хатлонская область",
+    parentGeoNameRu: "Хатлонская область",
+    name: {
+      ru: "Муминабад",
+      tg: "Муъминобод",
+      en: "Muminobod",
+    },
+    h1GeoName: {
+      ru: "Муминабадском районе",
+      tg: "Муъминобод",
+      en: "Muminobod District",
+    },
+    slug: {
+      ru: "muminobod",
+      tg: "muminobod",
+      en: "muminobod",
+    },
+    aliases: ["Ленинградский", "Муминобод"],
+    selectorEnabled: true,
+    routeEnabled: false,
+    indexable: false,
+    verificationStatus: "verified",
+  },
+  {
+    id: "geo_murghob",
+    number: 40,
+    type: "district",
+    parentGeoId: "ГБАО",
+    parentGeoNameRu: "ГБАО",
+    name: {
+      ru: "Мургаб",
+      tg: "Мурғоб",
+      en: "Murghob",
+    },
+    h1GeoName: {
+      ru: "Мургабском районе",
+      tg: "Мурғоб",
+      en: "Murghob District",
+    },
+    slug: {
+      ru: "murghob",
+      tg: "murghob",
+      en: "murghob",
+    },
+    aliases: ["Мургаб", "Murghab"],
+    selectorEnabled: true,
+    routeEnabled: false,
+    indexable: false,
+    verificationStatus: "verified",
+  },
+  {
+    id: "geo_nosiri_khusrav",
+    number: 41,
+    type: "district",
+    parentGeoId: "Хатлонская область",
+    parentGeoNameRu: "Хатлонская область",
+    name: {
+      ru: "Носири Хусрав",
+      tg: "Носири Хусрав",
+      en: "Nosiri Khusrav",
+    },
+    h1GeoName: {
+      ru: "районе Носири Хусрав",
+      tg: "Носири Хусрав",
+      en: "Nosiri Khusrav District",
+    },
+    slug: {
+      ru: "nosiri-khusrav",
+      tg: "nosiri-khusrav",
+      en: "nosiri-khusrav",
+    },
+    aliases: ["Бешкент", "Beshkent"],
+    selectorEnabled: true,
+    routeEnabled: false,
+    indexable: false,
+    verificationStatus: "verified",
+  },
+  {
+    id: "geo_nurobod",
+    number: 42,
+    type: "district",
+    parentGeoId: "РРП",
+    parentGeoNameRu: "РРП",
+    name: {
+      ru: "Нурабад",
+      tg: "Нуробод",
+      en: "Nurobod",
+    },
+    h1GeoName: {
+      ru: "Нурабадском районе",
+      tg: "Нуробод",
+      en: "Nurobod District",
+    },
+    slug: {
+      ru: "nurobod",
+      tg: "nurobod",
+      en: "nurobod",
+    },
+    aliases: ["Дарбанд", "Комсомолабад", "Darband"],
+    selectorEnabled: true,
+    routeEnabled: false,
+    indexable: false,
+    verificationStatus: "verified",
+  },
+  {
+    id: "geo_norak",
+    number: 43,
+    type: "city",
+    parentGeoId: "Хатлонская область",
+    parentGeoNameRu: "Хатлонская область",
+    name: {
+      ru: "Нурек",
+      tg: "Норак",
+      en: "Norak",
+    },
+    h1GeoName: {
+      ru: "Нуреке",
+      tg: "Норак",
+      en: "Norak",
+    },
+    slug: {
+      ru: "norak",
+      tg: "norak",
+      en: "norak",
+    },
+    aliases: ["Норак", "Nurek"],
+    selectorEnabled: true,
+    routeEnabled: true,
+    indexable: true,
+    verificationStatus: "verified",
+  },
+  {
+    id: "geo_panjakent",
+    number: 44,
+    legacyCityId: "panjakent",
+    type: "city",
+    parentGeoId: "Согдийская область",
+    parentGeoNameRu: "Согдийская область",
+    name: {
+      ru: "Пенджикент",
+      tg: "Панҷакент",
+      en: "Panjakent",
+    },
+    h1GeoName: {
+      ru: "Пенджикенте",
+      tg: "Панҷакент",
+      en: "Panjakent",
+    },
+    slug: {
+      ru: "panjakent",
+      tg: "panjakent",
+      en: "panjakent",
+    },
+    aliases: ["Панчакент", "Panjikent"],
+    selectorEnabled: true,
+    routeEnabled: true,
+    indexable: true,
+    verificationStatus: "verified",
+  },
+  {
+    id: "geo_panj",
+    number: 45,
+    type: "district",
+    parentGeoId: "Хатлонская область",
+    parentGeoNameRu: "Хатлонская область",
+    name: {
+      ru: "Пяндж",
+      tg: "Панҷ",
+      en: "Panj",
+    },
+    h1GeoName: {
+      ru: "Пянджском районе",
+      tg: "Панҷ",
+      en: "Panj District",
+    },
+    slug: {
+      ru: "panj",
+      tg: "panj",
+      en: "panj",
+    },
+    aliases: ["Кировабад", "Бауманабад", "Сарай-Комар"],
+    selectorEnabled: true,
+    routeEnabled: false,
+    indexable: false,
+    verificationStatus: "verified",
+  },
+  {
+    id: "geo_rasht",
+    number: 46,
+    type: "district",
+    parentGeoId: "РРП",
+    parentGeoNameRu: "РРП",
+    name: {
+      ru: "Рашт",
+      tg: "Рашт",
+      en: "Rasht",
+    },
+    h1GeoName: {
+      ru: "Раштском районе",
+      tg: "Рашт",
+      en: "Rasht District",
+    },
+    slug: {
+      ru: "rasht",
+      tg: "rasht",
+      en: "rasht",
+    },
+    aliases: ["Гарм", "Garm", "Гармский район"],
+    selectorEnabled: true,
+    routeEnabled: false,
+    indexable: false,
+    verificationStatus: "verified",
+  },
+  {
+    id: "geo_roghun",
+    number: 47,
+    type: "city",
+    parentGeoId: "РРП",
+    parentGeoNameRu: "РРП",
+    name: {
+      ru: "Рогун",
+      tg: "Роғун",
+      en: "Roghun",
+    },
+    h1GeoName: {
+      ru: "Рогуне",
+      tg: "Роғун",
+      en: "Roghun",
+    },
+    slug: {
+      ru: "roghun",
+      tg: "roghun",
+      en: "roghun",
+    },
+    aliases: ["Роғун", "Rogun"],
+    selectorEnabled: true,
+    routeEnabled: true,
+    indexable: true,
+    verificationStatus: "verified",
+  },
+  {
+    id: "geo_roshtqala",
+    number: 48,
+    type: "district",
+    parentGeoId: "ГБАО",
+    parentGeoNameRu: "ГБАО",
+    name: {
+      ru: "Рошткала",
+      tg: "Роштқалъа",
+      en: "Roshtqala",
+    },
+    h1GeoName: {
+      ru: "Рошткалинском районе",
+      tg: "Роштқалъа",
+      en: "Roshtqala District",
+    },
+    slug: {
+      ru: "roshtqala",
+      tg: "roshtqala",
+      en: "roshtqala",
+    },
+    aliases: ["Рошткалинский"],
+    selectorEnabled: true,
+    routeEnabled: false,
+    indexable: false,
+    verificationStatus: "verified",
+  },
+  {
+    id: "geo_rudaki",
+    number: 49,
+    type: "district",
+    parentGeoId: "РРП",
+    parentGeoNameRu: "РРП",
+    name: {
+      ru: "Рудаки",
+      tg: "Рӯдакӣ",
+      en: "Rudaki",
+    },
+    h1GeoName: {
+      ru: "районе Рудаки",
+      tg: "Рӯдакӣ",
+      en: "Rudaki District",
+    },
+    slug: {
+      ru: "rudaki",
+      tg: "rudaki",
+      en: "rudaki",
+    },
+    aliases: ["Ленинский район", "пгт Сомониён"],
+    selectorEnabled: true,
+    routeEnabled: true,
+    indexable: true,
+    verificationStatus: "verified",
+  },
+  {
+    id: "geo_rushon",
+    number: 50,
+    type: "district",
+    parentGeoId: "ГБАО",
+    parentGeoNameRu: "ГБАО",
+    name: {
+      ru: "Рушан",
+      tg: "Рӯшон",
+      en: "Rushon",
+    },
+    h1GeoName: {
+      ru: "Рушанском районе",
+      tg: "Рӯшон",
+      en: "Rushon District",
+    },
+    slug: {
+      ru: "rushon",
+      tg: "rushon",
+      en: "rushon",
+    },
+    aliases: ["Рушан"],
+    selectorEnabled: true,
+    routeEnabled: false,
+    indexable: false,
+    verificationStatus: "verified",
+  },
+  {
+    id: "geo_sangvor",
+    number: 51,
+    type: "district",
+    parentGeoId: "РРП",
+    parentGeoNameRu: "РРП",
+    name: {
+      ru: "Сангвор",
+      tg: "Сангвор",
+      en: "Sangvor",
+    },
+    h1GeoName: {
+      ru: "районе Сангвор",
+      tg: "Сангвор",
+      en: "Sangvor District",
+    },
+    slug: {
+      ru: "sangvor",
+      tg: "sangvor",
+      en: "sangvor",
+    },
+    aliases: ["Тавильдара", "Тавилдара", "Tavildara"],
+    selectorEnabled: true,
+    routeEnabled: false,
+    indexable: false,
+    verificationStatus: "verified",
+  },
+  {
+    id: "geo_spitamen",
+    number: 52,
+    legacyCityId: "spitamen",
+    type: "district",
+    parentGeoId: "Согдийская область",
+    parentGeoNameRu: "Согдийская область",
+    name: {
+      ru: "Спитамен",
+      tg: "Спитамен",
+      en: "Spitamen",
+    },
+    h1GeoName: {
+      ru: "районе Спитамен",
+      tg: "Спитамен",
+      en: "Spitamen District",
+    },
+    slug: {
+      ru: "spitamen",
+      tg: "spitamen",
+      en: "spitamen",
+    },
+    aliases: ["пгт Нав", "Нов", "Науский район"],
+    selectorEnabled: true,
+    routeEnabled: false,
+    indexable: false,
+    verificationStatus: "verified",
+  },
+  {
+    id: "geo_tojikobod",
+    number: 53,
+    type: "district",
+    parentGeoId: "РРП",
+    parentGeoNameRu: "РРП",
+    name: {
+      ru: "Таджикабад",
+      tg: "Тоҷикобод",
+      en: "Tojikobod",
+    },
+    h1GeoName: {
+      ru: "Таджикабадском районе",
+      tg: "Тоҷикобод",
+      en: "Tojikobod District",
+    },
+    slug: {
+      ru: "tojikobod",
+      tg: "tojikobod",
+      en: "tojikobod",
+    },
+    aliases: ["Тоджикабад", "Калаи-Лабиоб"],
+    selectorEnabled: true,
+    routeEnabled: false,
+    indexable: false,
+    verificationStatus: "verified",
+  },
+  {
+    id: "geo_temurmalik",
+    number: 54,
+    type: "district",
+    parentGeoId: "Хатлонская область",
+    parentGeoNameRu: "Хатлонская область",
+    name: {
+      ru: "Темурмалик",
+      tg: "Темурмалик",
+      en: "Temurmalik",
+    },
+    h1GeoName: {
+      ru: "районе Темурмалик",
+      tg: "Темурмалик",
+      en: "Temurmalik District",
+    },
+    slug: {
+      ru: "temurmalik",
+      tg: "temurmalik",
+      en: "temurmalik",
+    },
+    aliases: ["Советский район", "Кзыл-Мазар"],
+    selectorEnabled: true,
+    routeEnabled: false,
+    indexable: false,
+    verificationStatus: "verified",
+  },
+  {
+    id: "geo_tursunzoda",
+    number: 55,
+    type: "city",
+    parentGeoId: "РРП",
+    parentGeoNameRu: "РРП",
+    name: {
+      ru: "Турсунзаде",
+      tg: "Турсунзода",
+      en: "Tursunzoda",
+    },
+    h1GeoName: {
+      ru: "Турсунзаде",
+      tg: "Турсунзода",
+      en: "Tursunzoda",
+    },
+    slug: {
+      ru: "tursunzoda",
+      tg: "tursunzoda",
+      en: "tursunzoda",
+    },
+    aliases: ["Регар", "Regar", "Турсунзода"],
+    selectorEnabled: true,
+    routeEnabled: true,
+    indexable: true,
+    verificationStatus: "verified",
+  },
+  {
+    id: "geo_fayzobod",
+    number: 56,
+    type: "district",
+    parentGeoId: "РРП",
+    parentGeoNameRu: "РРП",
+    name: {
+      ru: "Файзабад",
+      tg: "Файзобод",
+      en: "Fayzobod",
+    },
+    h1GeoName: {
+      ru: "Файзабадском районе",
+      tg: "Файзобод",
+      en: "Fayzobod District",
+    },
+    slug: {
+      ru: "fayzobod",
+      tg: "fayzobod",
+      en: "fayzobod",
+    },
+    aliases: ["Файзобод"],
+    selectorEnabled: true,
+    routeEnabled: false,
+    indexable: false,
+    verificationStatus: "verified",
+  },
+  {
+    id: "geo_farkhor",
+    number: 57,
+    type: "district",
+    parentGeoId: "Хатлонская область",
+    parentGeoNameRu: "Хатлонская область",
+    name: {
+      ru: "Фархор",
+      tg: "Фархор",
+      en: "Farkhor",
+    },
+    h1GeoName: {
+      ru: "Фархорском районе",
+      tg: "Фархор",
+      en: "Farkhor District",
+    },
+    slug: {
+      ru: "farkhor",
+      tg: "farkhor",
+      en: "farkhor",
+    },
+    aliases: ["Пархар", "Parkhar"],
+    selectorEnabled: true,
+    routeEnabled: false,
+    indexable: false,
+    verificationStatus: "verified",
+  },
+  {
+    id: "geo_hamadoni",
+    number: 58,
+    type: "district",
+    parentGeoId: "Хатлонская область",
+    parentGeoNameRu: "Хатлонская область",
+    name: {
+      ru: "Хамадани",
+      tg: "Ҳамадонӣ",
+      en: "Hamadoni",
+    },
+    h1GeoName: {
+      ru: "районе Хамадани",
+      tg: "Ҳамадонӣ",
+      en: "Hamadoni District",
+    },
+    slug: {
+      ru: "hamadoni",
+      tg: "hamadoni",
+      en: "hamadoni",
+    },
+    aliases: ["Московский р-н", "Мир Сайид Алии Ҳамадонӣ"],
+    selectorEnabled: true,
+    routeEnabled: false,
+    indexable: false,
+    verificationStatus: "verified",
+  },
+  {
+    id: "geo_khovaling",
+    number: 59,
+    type: "district",
+    parentGeoId: "Хатлонская область",
+    parentGeoNameRu: "Хатлонская область",
+    name: {
+      ru: "Ховалинг",
+      tg: "Ховалинг",
+      en: "Khovaling",
+    },
+    h1GeoName: {
+      ru: "Ховалингском районе",
+      tg: "Ховалинг",
+      en: "Khovaling District",
+    },
+    slug: {
+      ru: "khovaling",
+      tg: "khovaling",
+      en: "khovaling",
+    },
+    aliases: ["Ховалинг"],
+    selectorEnabled: true,
+    routeEnabled: false,
+    indexable: false,
+    verificationStatus: "verified",
+  },
+  {
+    id: "geo_khorugh",
+    number: 60,
+    type: "city",
+    parentGeoId: "ГБАО",
+    parentGeoNameRu: "ГБАО",
+    name: {
+      ru: "Хорог",
+      tg: "Хоруғ",
+      en: "Khorugh",
+    },
+    h1GeoName: {
+      ru: "Хороге",
+      tg: "Хоруғ",
+      en: "Khorugh",
+    },
+    slug: {
+      ru: "khorugh",
+      tg: "khorugh",
+      en: "khorugh",
+    },
+    aliases: ["Хоруг", "Khorog"],
+    selectorEnabled: true,
+    routeEnabled: true,
+    indexable: true,
+    verificationStatus: "verified",
+  },
+  {
+    id: "geo_khuroson",
+    number: 61,
+    type: "district",
+    parentGeoId: "Хатлонская область",
+    parentGeoNameRu: "Хатлонская область",
+    name: {
+      ru: "Хуросон",
+      tg: "Хуросон",
+      en: "Khuroson",
+    },
+    h1GeoName: {
+      ru: "Хуросонском районе",
+      tg: "Хуросон",
+      en: "Khuroson District",
+    },
+    slug: {
+      ru: "khuroson",
+      tg: "khuroson",
+      en: "khuroson",
+    },
+    aliases: ["Газималик", "Кривой", "Обикиик"],
+    selectorEnabled: true,
+    routeEnabled: false,
+    indexable: false,
+    verificationStatus: "verified",
+  },
+  {
+    id: "geo_shamsiddin_shohin",
+    number: 62,
+    type: "district",
+    parentGeoId: "Хатлонская область",
+    parentGeoNameRu: "Хатлонская область",
+    name: {
+      ru: "Шамсиддин Шохин",
+      tg: "Шамсиддин Шоҳин",
+      en: "Shamsiddin Shohin",
+    },
+    h1GeoName: {
+      ru: "районе Шамсиддин Шохин",
+      tg: "Шамсиддин Шоҳин",
+      en: "Shamsiddin Shohin District",
+    },
+    slug: {
+      ru: "shamsiddin-shohin",
+      tg: "shamsiddin-shohin",
+      en: "shamsiddin-shohin",
+    },
+    aliases: ["Шуроабад", "Шӯрообод", "Shuroobod"],
+    selectorEnabled: true,
+    routeEnabled: false,
+    indexable: false,
+    verificationStatus: "verified",
+  },
+  {
+    id: "geo_shahrinav",
+    number: 63,
+    type: "district",
+    parentGeoId: "РРП",
+    parentGeoNameRu: "РРП",
+    name: {
+      ru: "Шахринав",
+      tg: "Шаҳринав",
+      en: "Shahrinav",
+    },
+    h1GeoName: {
+      ru: "Шахринавском районе",
+      tg: "Шаҳринав",
+      en: "Shahrinav District",
+    },
+    slug: {
+      ru: "shahrinav",
+      tg: "shahrinav",
+      en: "shahrinav",
+    },
+    aliases: ["Шахринау", "Shahrinav"],
+    selectorEnabled: true,
+    routeEnabled: false,
+    indexable: false,
+    verificationStatus: "verified",
+  },
+  {
+    id: "geo_shahriston",
+    number: 64,
+    legacyCityId: "shahriston",
+    type: "district",
+    parentGeoId: "Согдийская область",
+    parentGeoNameRu: "Согдийская область",
+    name: {
+      ru: "Шахристон",
+      tg: "Шаҳристон",
+      en: "Shahriston",
+    },
+    h1GeoName: {
+      ru: "Шахристонском районе",
+      tg: "Шаҳристон",
+      en: "Shahriston District",
+    },
+    slug: {
+      ru: "shahriston",
+      tg: "shahriston",
+      en: "shahriston",
+    },
+    aliases: ["Шахристан", "Shahristan"],
+    selectorEnabled: true,
+    routeEnabled: false,
+    indexable: false,
+    verificationStatus: "verified",
+  },
+  {
+    id: "geo_shahritus",
+    number: 65,
+    type: "district",
+    parentGeoId: "Хатлонская область",
+    parentGeoNameRu: "Хатлонская область",
+    name: {
+      ru: "Шахритус",
+      tg: "Шаҳритус",
+      en: "Shahritus",
+    },
+    h1GeoName: {
+      ru: "Шахритусском районе",
+      tg: "Шаҳритус",
+      en: "Shahritus District",
+    },
+    slug: {
+      ru: "shahritus",
+      tg: "shahritus",
+      en: "shahritus",
+    },
+    aliases: ["Шаартуз", "Shaartuz"],
+    selectorEnabled: true,
+    routeEnabled: false,
+    indexable: false,
+    verificationStatus: "verified",
+  },
+  {
+    id: "geo_shughnon",
+    number: 66,
+    type: "district",
+    parentGeoId: "ГБАО",
+    parentGeoNameRu: "ГБАО",
+    name: {
+      ru: "Шугнан",
+      tg: "Шуғнон",
+      en: "Shughnon",
+    },
+    h1GeoName: {
+      ru: "Шугнанском районе",
+      tg: "Шуғнон",
+      en: "Shughnon District",
+    },
+    slug: {
+      ru: "shughnon",
+      tg: "shughnon",
+      en: "shughnon",
+    },
+    aliases: ["Шугнанский"],
+    selectorEnabled: true,
+    routeEnabled: false,
+    indexable: false,
+    verificationStatus: "verified",
+  },
+  {
+    id: "geo_yovon",
+    number: 67,
+    type: "district",
+    parentGeoId: "Хатлонская область",
+    parentGeoNameRu: "Хатлонская область",
+    name: {
+      ru: "Яван",
+      tg: "Ёвон",
+      en: "Yovon",
+    },
+    h1GeoName: {
+      ru: "Яванском районе",
+      tg: "Ёвон",
+      en: "Yovon District",
+    },
+    slug: {
+      ru: "yovon",
+      tg: "yovon",
+      en: "yovon",
+    },
+    aliases: ["Ёвон", "Yavan"],
+    selectorEnabled: true,
+    routeEnabled: false,
+    indexable: false,
+    verificationStatus: "verified",
+  },
+];
+
+// Quick Lookup Maps
+const ENTITY_BY_ID = new Map<string, GeoEntity>();
+const ENTITY_BY_SLUG = new Map<string, GeoEntity>();
+const ENTITY_BY_LEGACY = new Map<string, GeoEntity>();
+
+for (const entity of TAJIKISTAN_GEO_ENTITIES) {
+  ENTITY_BY_ID.set(entity.id, entity);
+  ENTITY_BY_SLUG.set(entity.slug.ru.toLowerCase(), entity);
+  ENTITY_BY_SLUG.set(entity.slug.tg.toLowerCase(), entity);
+  ENTITY_BY_SLUG.set(entity.slug.en.toLowerCase(), entity);
+  if (entity.legacyCityId) {
+    ENTITY_BY_LEGACY.set(entity.legacyCityId.toLowerCase(), entity);
+  }
+  for (const alias of entity.aliases) {
+    ENTITY_BY_SLUG.set(alias.toLowerCase(), entity);
+  }
+}
+
+/**
+ * Get GeoEntity by its stable internal ID (e.g. "geo_khujand")
+ */
+export function getGeoEntityById(id: string): GeoEntity | undefined {
+  return ENTITY_BY_ID.get(id);
+}
+
+/**
+ * Find GeoEntity by slug or alias (case-insensitive)
+ */
+export function getGeoEntityBySlug(slug: string): GeoEntity | undefined {
+  if (!slug) return undefined;
+  const s = slug.toLowerCase().trim();
+  return ENTITY_BY_SLUG.get(s) || ENTITY_BY_LEGACY.get(s);
+}
+
+/**
+ * Resolve entity by legacy city id or name string
+ */
+export function resolveGeoEntity(cityOrSlug: string): GeoEntity | undefined {
+  if (!cityOrSlug) return undefined;
+  const norm = cityOrSlug.toLowerCase().trim();
+  return (
+    ENTITY_BY_LEGACY.get(norm) ||
+    ENTITY_BY_SLUG.get(norm) ||
+    ENTITY_BY_ID.get(norm) ||
+    TAJIKISTAN_GEO_ENTITIES.find(
+      (e) =>
+        e.name.ru.toLowerCase() === norm ||
+        e.name.tg.toLowerCase() === norm ||
+        e.name.en.toLowerCase() === norm
+    )
+  );
+}
+
+/**
+ * Return all 67 entities from the store
+ */
+export function getAllGeoEntities(): GeoEntity[] {
+  return TAJIKISTAN_GEO_ENTITIES;
+}
+
+/**
+ * Entities enabled for the UI Geographic Selector
+ */
+export function getSelectorGeoEntities(): GeoEntity[] {
+  return TAJIKISTAN_GEO_ENTITIES.filter((e) => e.selectorEnabled);
+}
+
+/**
+ * Cities with dedicated City Hub routes (/{city}/)
+ */
+export function getRouteEnabledCities(): GeoEntity[] {
+  return TAJIKISTAN_GEO_ENTITIES.filter((e) => e.routeEnabled);
+}
+
+/**
+ * Indexable cities for SEO Sitemap
+ */
+export function getIndexableGeoCities(): GeoEntity[] {
+  return TAJIKISTAN_GEO_ENTITIES.filter((e) => e.indexable && e.routeEnabled);
+}
+
+/**
+ * Resolve grammatical locative form for H1 heading (e.g. "Худжанде", "Душанбе")
+ */
+export function resolveH1GeoName(citySlug: string, locale: Locale = "ru"): string {
+  const entity = getGeoEntityBySlug(citySlug);
+  if (!entity) return citySlug;
+  return entity.h1GeoName[locale] || entity.name[locale] || citySlug;
+}

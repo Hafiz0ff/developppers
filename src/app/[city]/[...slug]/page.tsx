@@ -57,8 +57,10 @@ import {
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { getRouteEnabledCities, resolveH1GeoName } from "@/lib/geo/geo-store";
 
 const VALID_CITY_SLUGS = new Set([
+  ...getRouteEnabledCities().flatMap((c) => [c.slug.ru, c.slug.tg, c.slug.en]),
   "khujand",
   "dushanbe",
   "gafurov",
