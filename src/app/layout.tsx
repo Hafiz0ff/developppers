@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { Header } from "@/components/layout/header";
+import { AmbientAuroraBackground } from "@/components/layout/ambient-background";
 import { CurrencyProvider } from "@/context/currency-context";
 import { LanguageProvider } from "@/context/language-context";
 import { CompareProvider } from "@/context/compare-context";
@@ -50,7 +51,8 @@ export default function RootLayout({
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
         <meta name="apple-mobile-web-app-title" content="Maskani" />
       </head>
-      <body className="min-h-full flex flex-col bg-background text-foreground font-sans">
+      <body className="min-h-full flex flex-col text-foreground font-sans relative selection:bg-emerald-500 selection:text-white">
+        <AmbientAuroraBackground />
         <LanguageProvider>
           <CurrencyProvider>
             <CompareProvider>

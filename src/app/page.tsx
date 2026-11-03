@@ -383,7 +383,7 @@ export default function HomePage() {
   ];
 
   return (
-    <div className="flex flex-col gap-6 sm:gap-8 pb-24 bg-[#F8FAFC]">
+    <div className="flex flex-col gap-6 sm:gap-8 pb-24 relative">
       {/* 1. PANORAMIC HERO SECTION STARTING FROM TOP OF SCREEN (Covering Header, Search Card & Marquee at bottom) */}
       <section className="relative pt-24 sm:pt-28 pb-0 border-b border-white/20 bg-slate-900 overflow-hidden">
         {/* Background Layer: Panoramic Landscape with Soft Contrast Overlay */}
@@ -717,7 +717,7 @@ export default function HomePage() {
       <HomepageShowcaseSections activeCity={selectedCity === "all" ? "khujand" : selectedCity} />
 
       {/* 7. STRUCTURED SEO FOOTER */}
-      <footer className="border-t border-slate-200/80 pt-12 mt-4 text-xs text-slate-500 bg-white">
+      <footer className="border-t border-white/60 dark:border-white/10 pt-12 mt-4 text-xs text-slate-600 dark:text-slate-400 bg-white/75 dark:bg-slate-900/80 backdrop-blur-xl">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
           {/* SEO Grid on 4 Columns */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
