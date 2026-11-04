@@ -44,25 +44,24 @@ function postLead(item: ClassifiedCardData, source: "phone_click" | "whatsapp_cl
 }
 
 const FALLBACK_APARTMENT_IMAGES = [
-  "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=1200&h=800&fit=crop",
-  "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=1200&h=800&fit=crop",
-  "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=1200&h=800&fit=crop",
-  "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=1200&h=800&fit=crop",
-  "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=1200&h=800&fit=crop",
+  "/images/properties/apt-1.jpg",
+  "/images/properties/apt-2.jpg",
+  "/images/properties/apt-3.jpg",
+  "/images/properties/apt-4.jpg",
+  "/images/projects/qayroqum.jpg",
 ];
 
 const FALLBACK_HOUSE_IMAGES = [
-  "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1200&h=800&fit=crop",
-  "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1200&h=800&fit=crop",
-  "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=1200&h=800&fit=crop",
-  "https://images.unsplash.com/photo-1513694203232-719a280e022f?w=1200&h=800&fit=crop",
-  "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1200&h=800&fit=crop",
+  "/images/properties/house-1.jpg",
+  "/images/properties/house-2.jpg",
+  "/images/properties/house-3.jpg",
+  "/images/properties/house-4.jpg",
 ];
 
 const FALLBACK_COMMERCIAL_IMAGES = [
-  "https://images.unsplash.com/photo-1497215842964-222b430dc094?auto=format&fit=crop&w=1200&q=80",
-  "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=1200&h=800&fit=crop",
-  "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1200&q=80",
+  "/images/properties/comm-1.jpg",
+  "/images/properties/comm-2.jpg",
+  "/images/properties/apt-1.jpg",
 ];
 
 export function ClassifiedCard({ item, formatPrice, onPromote }: Props) {
@@ -204,7 +203,7 @@ export function ClassifiedCard({ item, formatPrice, onPromote }: Props) {
     >
       <div>
         <div
-          className="relative h-48 sm:h-52 w-full overflow-hidden bg-slate-900 block rounded-t-2xl group/photo select-none"
+          className="relative h-48 sm:h-52 w-full overflow-hidden bg-gradient-to-br from-emerald-50/70 via-teal-50/50 to-slate-100 dark:from-slate-800 dark:via-slate-850 dark:to-slate-900 block rounded-t-2xl group/photo select-none"
           onTouchStart={handleTouchStart}
           onTouchMove={handleTouchMove}
           onTouchEnd={handleTouchEnd}
@@ -217,6 +216,7 @@ export function ClassifiedCard({ item, formatPrice, onPromote }: Props) {
             <img
               src={photos[activePhotoIdx] || item.image || getFallbackImage(activePhotoIdx)}
               alt={item.title}
+              referrerPolicy="no-referrer"
               onError={(e) => {
                 const target = e.currentTarget;
                 const fallback = getFallbackImage(activePhotoIdx);
@@ -253,8 +253,8 @@ export function ClassifiedCard({ item, formatPrice, onPromote }: Props) {
 
           {/* Top Overlay: Left Status Badges & Right Action Cluster (Collision-Free) */}
           <div className="absolute top-2.5 inset-x-2.5 z-20 flex items-center justify-between gap-1.5 pointer-events-none">
-            {/* Left: Status Badges (Top, Urgent, Deal Type, Property Type) */}
-            <div className="flex items-center gap-1 min-w-0 shrink overflow-hidden pointer-events-auto">
+            {/* Left: Status Badges (Top, Urgent, Deal Type) */}
+            <div className="flex items-center gap-1 min-w-0 shrink pointer-events-auto">
               {isTop && (
                 <Badge variant="gold" className="rounded-lg px-2 py-0.5 text-[10px] font-black shrink-0 shadow-xs">
                   👑 {isTg ? "ТОП" : "ТОП"}
@@ -268,11 +268,6 @@ export function ClassifiedCard({ item, formatPrice, onPromote }: Props) {
               <Badge variant="emerald" className="rounded-lg px-2 py-0.5 text-[10px] font-bold shrink-0 shadow-xs">
                 {dealTypeDisplay}
               </Badge>
-              {!isTop && !isUrgent && (
-                <Badge variant="frostedLight" className="rounded-lg px-2 py-0.5 text-[10px] font-bold truncate max-w-[75px] shadow-xs">
-                  {propertyTypeDisplay}
-                </Badge>
-              )}
             </div>
 
             {/* Right: Compare Toggle & Metrics Cluster (Matching Height h-7) */}
@@ -287,8 +282,8 @@ export function ClassifiedCard({ item, formatPrice, onPromote }: Props) {
                 title={
                   isCompared
                     ? isTg
-                      ? "Аз муқоиса тоза кардан"
-                      : "Удалить из сравнения"
+                    ? "Аз муқоиса тоза кардан"
+                    : "Удалить из сравнения"
                     : isTg
                     ? "Ба муқоиса илова кардан"
                     : "Добавить в сравнение"
@@ -296,8 +291,8 @@ export function ClassifiedCard({ item, formatPrice, onPromote }: Props) {
                 aria-label={
                   isCompared
                     ? isTg
-                      ? "Аз муқоиса тоза кардан"
-                      : "Удалить из сравнения"
+                    ? "Аз муқоиса тоза кардан"
+                    : "Удалить из сравнения"
                     : isTg
                     ? "Ба муқоиса илова кардан"
                     : "Добавить в сравнение"
@@ -314,11 +309,10 @@ export function ClassifiedCard({ item, formatPrice, onPromote }: Props) {
             </div>
           </div>
 
-          {/* Bottom Overlay: Photo Pagination Dots (Left) & Negotiable Tag (Right) (Collision-Free) */}
-          <div className="absolute bottom-2.5 inset-x-2.5 z-20 flex items-center justify-between gap-1.5 pointer-events-none">
-            {/* Left: Photos Indicator */}
-            {photos.length > 1 ? (
-              <div className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-black/55 backdrop-blur-md border border-white/15 pointer-events-auto shadow-xs">
+          {/* Bottom Overlay: Photo Pagination Dots (Left-aligned, Collision-Free) */}
+          {photos.length > 1 && (
+            <div className="absolute bottom-2.5 left-2.5 z-20 pointer-events-none">
+              <div className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-black/60 backdrop-blur-md border border-white/20 pointer-events-auto shadow-xs">
                 {photos.slice(0, 5).map((_, idx) => (
                   <span
                     key={idx}
@@ -330,29 +324,27 @@ export function ClassifiedCard({ item, formatPrice, onPromote }: Props) {
                   />
                 ))}
                 {photos.length > 5 && (
-                  <span className="text-[9px] font-bold text-white/90 ml-0.5 font-mono">
+                  <span className="text-[9px] font-bold text-white/95 ml-1 font-mono">
                     {activePhotoIdx + 1}/{photos.length}
                   </span>
                 )}
               </div>
-            ) : (
-              <div />
-            )}
-
-            {/* Right: Торг уместен (Negotiable Pill) */}
-            {item.isNegotiable && (
-              <div className="flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-black/55 backdrop-blur-md border border-white/15 text-[10px] font-bold text-white/95 shadow-xs shrink-0 pointer-events-auto select-none">
-                <span>🤝</span>
-                <span>{isTg ? "Савдо" : "Торг уместен"}</span>
-              </div>
-            )}
-          </div>
+            </div>
+          )}
         </div>
 
         <CardContent className="p-4 sm:p-5 space-y-3">
           <div>
-            <div className="text-xl font-black text-emerald-600 dark:text-emerald-400 tracking-tight">
-              {formatPrice(item.priceTjs, item.priceUsd)}
+            <div className="flex items-baseline justify-between gap-2">
+              <div className="text-xl font-black text-emerald-600 dark:text-emerald-400 tracking-tight">
+                {formatPrice(item.priceTjs, item.priceUsd)}
+              </div>
+              {item.isNegotiable && (
+                <span className="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-700 dark:text-emerald-300 bg-emerald-500/15 border border-emerald-400/30 px-2.5 py-0.5 rounded-full select-none shrink-0 shadow-xs">
+                  <span>🤝</span>
+                  <span>{isTg ? "Савдо" : "Торг уместен"}</span>
+                </span>
+              )}
             </div>
             <Link href={href}>
               <h4 className="font-bold text-base text-slate-900 dark:text-slate-100 line-clamp-1 mt-0.5 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">

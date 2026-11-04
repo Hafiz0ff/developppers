@@ -53,6 +53,7 @@ export function DeveloperAvatar({
         <img
           src={logoUrl}
           alt={name}
+          referrerPolicy="no-referrer"
           onError={() => setHasError(true)}
           className="w-full h-full object-contain p-1.5 transition-transform duration-300 hover:scale-105"
         />

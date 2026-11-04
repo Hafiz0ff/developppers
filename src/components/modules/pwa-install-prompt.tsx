@@ -16,6 +16,7 @@ export function PwaInstallPrompt() {
       navigator.serviceWorker
         .register("/sw.js")
         .then((reg) => {
+          reg.update();
           console.log("[PWA] Service Worker зарегистрирован успешно:", reg.scope);
         })
         .catch((err) => {

@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120">
+  <defs>
+    <linearGradient id="qaGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#059669" />
+      <stop offset="50%" stop-color="#0d9488" />
+      <stop offset="100%" stop-color="#06b6d4" />
+    </linearGradient>
+  </defs>
+  <rect width="120" height="120" rx="28" fill="url(#qaGrad)" />
+  <circle cx="60" cy="60" r="46" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="2" />
+  <path d="M42 42 L60 30 L78 42 L78 82 L42 82 Z" fill="none" stroke="white" stroke-width="3.5" stroke-linejoin="round" />
+  <path d="M52 82 L52 64 L68 64 L68 82" fill="white" opacity="0.3" />
+  <text x="60" y="76" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="900" fill="white" text-anchor="middle" letter-spacing="1">QA</text>
+</svg>

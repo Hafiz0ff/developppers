@@ -6,8 +6,8 @@ export const ISTIQLOL_DEVELOPER: DeveloperData = {
   name: "«Истиқлол Гурӯҳ» (Istiqlol Group)",
   nameTg: "«Истиқлол Гурӯҳ» (Istiqlol Group)",
   slug: "istiqlol-group",
-  logoUrl: "https://cdntj.somon.tj/media/cache1/cd/17/cd17b24841b420e071c15b51c676ffe5.webp",
-  coverUrl: "https://cdntj.somon.tj/media/cache1/2e/47/2e479a7d3a2ddb48e87426f65faa73c8.webp",
+  logoUrl: "/images/developers/istiqlol.svg",
+  coverUrl: "/images/projects/kohi-munavvar.jpg",
   description:
     "«Истиқлол Гурӯҳ» (Istiqlol Group) — одна из крупнейших девелоперских компаний Согдийской области, работающая с 2014 года. В портфеле девелопера более 20 масштабных жилых комплексов в Худжанде и Гулистоне, отличающихся монолитным качеством строительства, сейсмостойкостью до 9 баллов, скоростными лифтами и современной инфраструктурой.",
   descriptionTg:

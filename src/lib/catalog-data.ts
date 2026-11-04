@@ -87,9 +87,9 @@ export const CATALOG_PROPERTIES: CatalogProperty[] = [
     "description": "Продается светлая, теплая 1-комнатная квартира со свежим евроремонтом в районе Шёлкокомбината. 5-этажный теплый дом, натяжные потолки, стильные люстры, кухонный гарнитур под мрамор с новой техникой. Санузел в кафеле с чистой сантехникой. Пластиковые окна с видом на зеленый двор. Вся инфраструктура в шаговой доступности: школы, детсады, супермаркеты, парки.",
     "descriptionTg": "Хонадони равшан ва гарми 1-ҳуҷрагӣ бо таъмири тозаи аврупоӣ дар маҳаллаи Комбинати абрешим ба фурӯш гузошта мешавад. Бинои 5-ошёнаи гарм, шифтҳои кашида, мебелу асбобҳои нави ошхона, ҳаммоми замонавӣ бо сафолҳо. Ҳамаи инфрасохтор дар наздикӣ: мактаб, боғча, мағозаҳо ва боғ.",
     "originalSomonUrl": "https://somon.tj/adv/17034738_1-komn-kvartira-4-etazh-40-m2-sholkombinat/",
-    "image": "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=1200&q=80",
+    "image": "/images/properties/apt-1.jpg",
     "images": [
-      "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=1200&q=80",
+      "/images/properties/apt-1.jpg",
       "https://cdntj.somon.tj/media/cache1/fb/81/fb81cda5c2fb62b9aaaa9dc028684203.webp",
       "https://cdntj.somon.tj/media/cache1/df/d6/dfd689f5f77a733af491c2049430e643.webp",
       "https://cdntj.somon.tj/media/cache1/9d/eb/9deb6c0cfc4f86352a9fcb972c4bcb39.webp",
@@ -149,9 +149,9 @@ export const CATALOG_PROPERTIES: CatalogProperty[] = [
     "description": "Дом полностью готов и заселен! Свет, вода, современный лифт работают бесперебойно. Отличная локация в 8 микрорайоне. В квартире выполнен качественный ремонт: теплый пол по всей площади, ровные стены под маяк, качественные потолки. Рядом детская площадка и парковка. Торг уместен при осмотре квартиры.",
     "descriptionTg": "Бино пурра тайёр ва одамон зиндагӣ доранд! Барқ, об ва лифт доимӣ фаъоланд. Мавқеи хеле хуб дар микрорайони 8. Дар хона таъмири сифатнок анҷом ёфтааст: фарши гарм, деворҳои ҳамвор, шифтҳои гипсокартонӣ. Савдо дар пеши хона.",
     "originalSomonUrl": "https://somon.tj/adv/16766211_2-komn-kvartira-4-etazh-52-m2-8mkr/",
-    "image": "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=1200&q=80",
+    "image": "/images/properties/apt-2.jpg",
     "images": [
-      "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=1200&q=80",
+      "/images/properties/apt-2.jpg",
       "https://cdntj.somon.tj/media/cache1/0c/06/0c0649a1e353ebed09d618483c815ea4.webp",
       "https://cdntj.somon.tj/media/cache1/6d/c1/6dc194d753f28739bc18e8a5f2989f99.webp",
       "https://cdntj.somon.tj/media/cache1/24/80/248057eeb71bb12a2e1a9d22ff9cdb35.webp",
@@ -215,9 +215,9 @@ export const CATALOG_PROPERTIES: CatalogProperty[] = [
     "description": "Отличное предложение в 13 микрорайоне Худжанда! Продается просторная 3-комнатная квартира площадью 68 м² на 3 этаже готового 5-этажного дома. Район с отличной инфраструктурой: школы, клиники, кафе, детские сады, удобный выезд во все стороны города. Продажа от конкретных покупателей без обмена.",
     "descriptionTg": "Пешниҳоди олӣ дар микрорайони 13-уми Хуҷанд! Хонадони барҳавои 3-ҳуҷрагӣ бо масоҳати 68 м² дар ошёнаи 3-юми бинои 5-ошёна фурӯхта мешавад. Ноҳия бо тамоми шароитҳо ва нақлиёти қулай.",
     "originalSomonUrl": "https://somon.tj/adv/17260830_3-komn-kvartira-3-etazh-68-m2-13/",
-    "image": "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=1200&q=80",
+    "image": "/images/properties/apt-3.jpg",
     "images": [
-      "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=1200&q=80",
+      "/images/properties/apt-3.jpg",
       "https://cdntj.somon.tj/media/cache1/0d/d1/0dd1bc4041e6c188b783c2c9f2e00bd0.webp",
       "https://cdntj.somon.tj/media/cache1/e7/b3/e7b3df389ed1e5b8053ddb38f891826a.webp",
       "https://cdntj.somon.tj/media/cache1/8e/ed/8eed554bbf8343f9649e496d4197e8e5.webp",
@@ -272,9 +272,9 @@ export const CATALOG_PROPERTIES: CatalogProperty[] = [
     "description": "Продается 3-комнатная квартира на 3 этаже в 13 микрорайоне. Квартира в среднем жилом состоянии, чистая, светлая. Все необходимое для жизни находится в шаговой доступности: школа, детский сад, магазины и остановки общественного транспорта.",
     "descriptionTg": "Хонадони 3-ҳуҷрагӣ дар ошёнаи 3 дар микрорайони 13 ба фурӯш гузошта мешавад. Ҳолати миёнаи зист, тоза ва равшан. Мактаб, боғча ва нақлиёт дар наздикии хона.",
     "originalSomonUrl": "https://somon.tj/adv/17342045_3-komn-kvartira-3-etazh-68-m2-13-mkr/",
-    "image": "https://images.unsplash.com/photo-1556912172-45b7abe8b7e1?auto=format&fit=crop&w=1200&q=80",
+    "image": "/images/properties/apt-4.jpg",
     "images": [
-      "https://images.unsplash.com/photo-1556912172-45b7abe8b7e1?auto=format&fit=crop&w=1200&q=80",
+      "/images/properties/apt-4.jpg",
       "https://cdntj.somon.tj/media/cache1/ef/3c/ef3c00d4dcfc0ce3b0f4ef11a259f4c5.webp",
       "https://cdntj.somon.tj/media/cache1/77/59/7759062ff0df035fb0cc80bb5e3c95e8.webp",
       "https://cdntj.somon.tj/media/cache1/79/8d/798d200d85563c2dca2d93c8891f9e73.webp",
@@ -587,9 +587,9 @@ export const CATALOG_PROPERTIES: CatalogProperty[] = [
     "description": "Продается капитальный 2-этажный частный дом (ҳавлӣ) на участке 6 соток по ул. Гагарина в Худжанде. Просторный двор, 5 комнат, свет и вода без перебоев, удобный подъезд с широкой улицы, гараж для автомобиля.",
     "descriptionTg": "Ҳавлии 2-ошёнаи обод дар қитъаи 6 сотих замин дар кӯчаи Гагарини ш. Хуҷанд ба фурӯш гузошта мешавад. Ҳавлии калон, 5 ҳуҷра, барқ ва об доимӣ, даромади қулайи мошин ва гараж.",
     "originalSomonUrl": "https://somon.tj/adv/16419531_2-etazhn-5-komn-dom-6-sotok-ul-gagarina/",
-    "image": "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1200&q=80",
+    "image": "/images/properties/house-1.jpg",
     "images": [
-      "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1200&q=80",
+      "/images/properties/house-1.jpg",
       "https://cdntj.somon.tj/media/cache1/71/8a/718a9396ae0d828acca2a8d8c0388047.webp",
       "https://cdntj.somon.tj/media/cache1/52/82/52820d528b43a86684735ee43d076ad0.webp",
       "https://cdntj.somon.tj/media/cache1/a9/15/a91569231b4b87e6f65e60d818bc53c9.webp",
@@ -641,9 +641,9 @@ export const CATALOG_PROPERTIES: CatalogProperty[] = [
     "description": "Продается добротный частный дом (ҳавлӣ) из 6 комнат на участке 4.7 соток. Улица Мир, ориентир — Поёни оптика, всего 100-120 метров от главной дороги. Дом в хорошем жилом состоянии, все документы в полном порядке (техпаспорт готов). Удобное, ровное и престижное место.",
     "descriptionTg": "Ҳавлии фурӯшӣ иборат аз 6 ҳуҷра дар қитъаи 4.7 сотих. Ҳуҷҷатҳо пурра тайёр (техпаспорт ҳаст). Таъмир шудааст, омода барои зиндагӣ. Кӯчаи Мир, нишона Поёни оптика, аз сари роҳ 100-120 метр. Ҷойи хеле хуб.",
     "originalSomonUrl": "https://somon.tj/adv/17254763_1-etazhn-6-komn-dom-5-sotok-kuchai-mir-orientir-poioni-optika-choi-ung/",
-    "image": "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=1200&q=80",
+    "image": "/images/properties/house-2.jpg",
     "images": [
-      "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=1200&q=80",
+      "/images/properties/house-2.jpg",
       "https://cdntj.somon.tj/media/cache1/52/99/52999a9fbd07d6fae0f1c10e193528b9.webp",
       "https://cdntj.somon.tj/media/cache1/b0/ec/b0ecd9165842ac1fcb3dc9d2e44f28e3.webp",
       "https://cdntj.somon.tj/media/cache1/20/7a/207a6c2afb3d5c7bd9dd1cb380b3c2b1.webp",
@@ -704,9 +704,9 @@ export const CATALOG_PROPERTIES: CatalogProperty[] = [
     "description": "Продаётся плановый дом на просторном участке 10.5 соток в экологически чистом районе Оби тоза по улице Машъал. Построено 5 комнат коробки, постоянный свет и питьевая вода подведены. Идеально для большой семьи или возведения усадьбы с садом.",
     "descriptionTg": "Ҳавлии нақшавӣ дар қитъаи 10.5 сотих замин дар ноҳияи Оби тоза, кӯчаи Машъал. 5 хонаи сохташуда, барқ ва об дорад. Барои оилаи калон ё бунёди боғи шахсӣ беҳтарин интихоб аст.",
     "originalSomonUrl": "https://somon.tj/adv/17161805_1-etazhn-5-komn-dom-10-sotok-obi-toza/",
-    "image": "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1200&q=80",
+    "image": "/images/properties/house-3.jpg",
     "images": [
-      "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1200&q=80"
+      "/images/properties/house-3.jpg"
     ]
   },
   {
@@ -754,9 +754,9 @@ export const CATALOG_PROPERTIES: CatalogProperty[] = [
     "description": "Двухэтажный дом со всеми удобствами в самом сердце Худжанда, рядом с исторической мечетью Шейх Муслихиддин! 7 комнат, 2 санузла, ванная с джакузи, автономное отопление, полный теплый пол, деревянные полы, ковры и кондиционеры во всех комнатах, скоростной Wi-Fi, отдельная столовая, русская сауна, традиционный шипанг, подвал и навес для автомобилей.",
     "descriptionTg": "Ҳавлии 2-ошёна бо тамоми шароитҳо дар маркази Хуҷанд, назди масҷиди таърихии Шайх Муслиҳиддин! 7 ҳуҷра, 2 ҳаммом, ҷакузи, фарши гарм, кондитсионер дар ҳамаи хонаҳо, сауна, шипанг, таҳхона ва соябон барои мошинҳо.",
     "originalSomonUrl": "https://somon.tj/adv/15811188_2-etazhn-7-komn-dom-3-sotok-panchshanbe/",
-    "image": "https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1200&q=80",
+    "image": "/images/properties/house-4.jpg",
     "images": [
-      "https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1200&q=80",
+      "/images/properties/house-4.jpg",
       "https://cdntj.somon.tj/media/cache1/a2/4e/a24e47cad853e76946727fd30fd0f0a1.webp",
       "https://cdntj.somon.tj/media/cache1/13/50/1350e804e8578e01c2d0229c38f89b26.webp",
       "https://cdntj.somon.tj/media/cache1/fb/fe/fbfeb17c3ca892b84d0bea584f07d4eb.webp",
@@ -1049,9 +1049,9 @@ export const COMMERCIAL_PROPERTIES: CatalogProperty[] = [
     "phone": "+992 92 555 4433",
     "whatsapp": "992925554433",
     "isNegotiable": true,
-    "image": "https://images.unsplash.com/photo-1497215842964-222b430dc094?auto=format&fit=crop&w=1200&q=80",
+    "image": "/images/properties/comm-1.jpg",
     "images": [
-      "https://images.unsplash.com/photo-1497215842964-222b430dc094?auto=format&fit=crop&w=1200&q=80"
+      "/images/properties/comm-1.jpg"
     ],
     "features": ["Кондиционеры", "Интернет оптоволокно", "Свежий ремонт", "Кухонная зона"],
     "featuresTg": ["Кондитсионерҳо", "Интернети тез", "Таъмири тоза"],
@@ -1087,9 +1087,9 @@ export const COMMERCIAL_PROPERTIES: CatalogProperty[] = [
     "phone": "+992 92 666 7788",
     "whatsapp": "992926667788",
     "isNegotiable": true,
-    "image": "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=1200&q=80",
+    "image": "/images/properties/comm-2.jpg",
     "images": [
-      "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=1200&q=80"
+      "/images/properties/comm-2.jpg"
     ],
     "features": ["Высокие потолки 6м", "Удобный подъезд фур", "Охрана", "Электричество 100 кВт"],
     "featuresTg": ["Шифти баланд", "Роҳ барои мошинҳои калон", "Нерӯи барқ"],

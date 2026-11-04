@@ -6,8 +6,8 @@ export const TOJ_SOHTMON_DEVELOPER: DeveloperData = {
   name: "«Тоҷ Сохтмон» (Toj Sohtmon)",
   nameTg: "«Тоҷ Сохтмон» (Toj Sohtmon)",
   slug: "toch-sohtmon",
-  logoUrl: "https://cdntj.somon.tj/media/cache1/0e/1f/0e1f8b6cdf50746a7f83a6899a2ad6a0.webp",
-  coverUrl: "https://cdntj.somon.tj/media/cache1/11/aa/11aa128e44140ae41d3b074ebca6fb6c.webp",
+  logoUrl: "/images/developers/toj-sohtmon.svg",
+  coverUrl: "/images/projects/kohi-azim.jpg",
   description:
     "Строительная компания «Тоҷ Сохтмон» (Toj Sohtmon) — одна из ведущих компаний Согдийской области, успешно работающая на рынке более 7 лет (с 2017 года). За это время компанией было реализовано несколько значимых проектов в Худжанде (включая «Рудаки Плаза») и ведется строительство в 17 локациях. Компания специализируется на монолитном строительстве с повышенной сейсмостойкостью до 9 баллов.",
   descriptionTg:

@@ -1,7 +1,6 @@
-// Maskani PWA Service Worker
-const CACHE_NAME = "maskani-v1";
+// Maskani PWA Service Worker v2 - Instant update & offline fallback
+const CACHE_NAME = "maskani-v2";
 const STATIC_ASSETS = [
-  "/",
   "/manifest.webmanifest",
   "/icons/icon-192x192.png",
   "/icons/icon-512x512.png",
@@ -9,18 +8,18 @@ const STATIC_ASSETS = [
   "/favicon.png",
 ];
 
-// Install: pre-cache static assets
+// Install: pre-cache essential icons & immediately activate
 self.addEventListener("install", (event) => {
+  self.skipWaiting();
   event.waitUntil(
     caches
       .open(CACHE_NAME)
       .then((cache) => cache.addAll(STATIC_ASSETS))
-      .then(() => self.skipWaiting())
       .catch((err) => console.warn("[SW] Cache addAll warning:", err))
   );
 });
 
-// Activate: clean up old caches
+// Activate: clean up ALL old caches (including maskani-v1) immediately
 self.addEventListener("activate", (event) => {
   event.waitUntil(
     caches
@@ -29,6 +28,7 @@ self.addEventListener("activate", (event) => {
         Promise.all(
           keys.map((key) => {
             if (key !== CACHE_NAME) {
+              console.log("[SW] Deleting stale cache:", key);
               return caches.delete(key);
             }
           })
@@ -38,7 +38,7 @@ self.addEventListener("activate", (event) => {
   );
 });
 
-// Fetch: Network-first for navigation, Stale-while-revalidate for assets
+// Fetch: Strict Network-First for navigation & API, Cache-first only for icons
 self.addEventListener("fetch", (event) => {
   const { request } = event;
 
@@ -47,7 +47,7 @@ self.addEventListener("fetch", (event) => {
     return;
   }
 
-  // Handle navigation requests (HTML pages)
+  // Handle navigation requests (HTML pages) - ALWAYS NETWORK FIRST
   if (request.mode === "navigate") {
     event.respondWith(
       fetch(request).catch(() => {
@@ -64,26 +64,22 @@ self.addEventListener("fetch", (event) => {
     return;
   }
 
-  // Handle static assets
+  // For next static chunks and images - Network first with fallback to cache
   event.respondWith(
-    caches.match(request).then((cachedResponse) => {
-      const fetchPromise = fetch(request)
-        .then((networkResponse) => {
-          if (
-            networkResponse &&
-            networkResponse.status === 200 &&
-            networkResponse.type === "basic"
-          ) {
-            const responseToCache = networkResponse.clone();
-            caches.open(CACHE_NAME).then((cache) => {
-              cache.put(request, responseToCache);
-            });
-          }
-          return networkResponse;
-        })
-        .catch(() => cachedResponse);
-
-      return cachedResponse || fetchPromise;
-    })
+    fetch(request)
+      .then((networkResponse) => {
+        if (
+          networkResponse &&
+          networkResponse.status === 200 &&
+          networkResponse.type === "basic"
+        ) {
+          const responseToCache = networkResponse.clone();
+          caches.open(CACHE_NAME).then((cache) => {
+            cache.put(request, responseToCache);
+          });
+        }
+        return networkResponse;
+      })
+      .catch(() => caches.match(request))
   );
 });

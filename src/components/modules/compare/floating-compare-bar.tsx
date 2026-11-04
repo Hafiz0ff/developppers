@@ -22,7 +22,7 @@ export function FloatingCompareBar() {
 
   return (
     <div className="fixed bottom-5 left-1/2 -translate-x-1/2 z-45 w-[94%] max-w-2xl animate-in slide-in-from-bottom-5 duration-300">
-      <div className="bg-white/80 dark:bg-slate-900/85 backdrop-blur-2xl backdrop-saturate-180 text-slate-900 dark:text-white rounded-3xl p-3 sm:p-4 border border-white/80 dark:border-white/15 shadow-[0_24px_60px_-12px_rgba(15,23,42,0.18),0_12px_24px_-6px_rgba(16,185,129,0.12),inset_0_1.5px_1.5px_0_rgba(255,255,255,0.95)] flex flex-col sm:flex-row items-center justify-between gap-3">
+      <div className="glass-card text-slate-900 dark:text-white rounded-3xl p-3 sm:p-4 flex flex-col sm:flex-row items-center justify-between gap-3">
         {/* Left: Emerald Icon & Title */}
         <div className="flex items-center gap-3 w-full sm:w-auto">
           <div className="h-10 w-10 rounded-2xl bg-gradient-to-tr from-emerald-600 via-teal-500 to-emerald-400 text-white flex items-center justify-center shrink-0 shadow-md shadow-emerald-500/25">

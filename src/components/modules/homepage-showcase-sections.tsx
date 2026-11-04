@@ -131,16 +131,16 @@ export function HomepageShowcaseSections({ activeCity = "khujand" }: Props) {
                   const dev = INITIAL_DEVELOPERS.find((d) => d.id === project.developerId);
                   const projectHeroImage =
                     project.slug === "qayroqum-avenue"
-                      ? "/images/qayroqum/qayroqum-9.jpg"
+                      ? "/images/projects/qayroqum.jpg"
                       : project.slug === "zhk-kohi-munavvar"
-                      ? "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=1200&h=800&fit=crop"
+                      ? "/images/projects/kohi-munavvar.jpg"
                       : project.slug === "zhk-kohi-azim"
-                      ? "https://images.unsplash.com/photo-1590674899484-d5640e854abe?w=1200&h=800&fit=crop"
+                      ? "/images/projects/kohi-azim.jpg"
                       : project.slug === "zhk-istiqlol-royal-towers"
-                      ? "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=1200&h=800&fit=crop"
+                      ? "/images/projects/istiqlol-royal.jpg"
                       : project.images && project.images.length > 0 && !project.images[0].includes("somon.tj")
                       ? project.images[0]
-                      : "/images/qayroqum/qayroqum-9.jpg";
+                      : "/images/projects/qayroqum.jpg";
 
                   return (
                     <div
@@ -151,13 +151,14 @@ export function HomepageShowcaseSections({ activeCity = "khujand" }: Props) {
                         {/* Project Hero Image */}
                         <Link
                           href={`/projects/${project.slug}`}
-                          className="relative h-48 w-full block overflow-hidden bg-slate-900"
+                          className="relative h-48 w-full block overflow-hidden bg-gradient-to-br from-emerald-50/70 via-teal-50/50 to-slate-100 dark:from-slate-800 dark:to-slate-900"
                         >
                           <img
                             src={projectHeroImage}
                             alt={project.name}
+                            referrerPolicy="no-referrer"
                             onError={(e) => {
-                              e.currentTarget.src = "/images/qayroqum/qayroqum-9.jpg";
+                              e.currentTarget.src = "/images/projects/qayroqum.jpg";
                             }}
                             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                           />
@@ -388,7 +389,7 @@ export function HomepageShowcaseSections({ activeCity = "khujand" }: Props) {
                           <Button
                             variant="outline"
                             size="sm"
-                            className="w-full rounded-xl text-xs font-bold border-slate-200 hover:border-emerald-500 hover:text-emerald-700"
+                            className="w-full rounded-xl text-xs font-bold bg-white/60 dark:bg-slate-800/60 hover:bg-emerald-600 hover:text-white border-slate-200/80 dark:border-white/10 transition-all shadow-2xs hover:shadow-emerald-500/20"
                           >
                             {isTg ? "Профили ширкат" : "Профиль застройщика"}
                           </Button>

@@ -159,8 +159,8 @@ export const INITIAL_DEVELOPERS: DeveloperData[] = [
     name: "«Qayroqum Avenue» Development",
     nameTg: "«Qayroqum Avenue» Development",
     slug: "qayroqum-avenue-dev",
-    logoUrl: "/images/qayroqum/qayroqum-9.jpg",
-    coverUrl: "/images/qayroqum/qayroqum-10.jpg",
+    logoUrl: "/images/developers/qayroqum.svg",
+    coverUrl: "/images/projects/qayroqum.jpg",
     description:
       "«Qayroqum Avenue» Development — ведущая девелоперская компания Согдийской области. Реализует масштабный курортный жилой комплекс на первой береговой линии «Таджикского моря» с собственной общеобразовательной школой, детсадом, бассейном, фитнес-центром и 2-уровневым подземным паркингом.",
     descriptionTg:
