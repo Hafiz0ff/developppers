@@ -383,7 +383,7 @@ export default function HomePage() {
   ];
 
   return (
-    <div className="flex flex-col gap-6 sm:gap-8 pb-24 relative">
+    <div className="flex flex-col gap-6 sm:gap-8 relative">
       {/* 1. PANORAMIC HERO SECTION STARTING FROM TOP OF SCREEN (Covering Header, Search Card & Marquee at bottom) */}
       <section className="relative pt-24 sm:pt-28 pb-0 border-b border-white/20 bg-slate-900 overflow-hidden">
         {/* Background Layer: Panoramic Landscape with Soft Contrast Overlay */}
@@ -717,93 +717,93 @@ export default function HomePage() {
       <HomepageShowcaseSections activeCity={selectedCity === "all" ? "khujand" : selectedCity} />
 
       {/* 7. STRUCTURED SEO FOOTER */}
-      <footer className="border-t border-white/60 dark:border-white/10 pt-12 mt-4 text-xs text-slate-600 dark:text-slate-400 bg-white/75 dark:bg-slate-900/80 backdrop-blur-xl">
+      <footer className="glass-footer rounded-t-[32px] sm:rounded-t-[40px] pt-14 pb-20 sm:pb-24 mt-16 text-xs text-slate-600 dark:text-slate-300 relative z-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
           {/* SEO Grid on 4 Columns */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {/* By Cities */}
             <div>
-              <h5 className="font-bold text-slate-900 mb-3 uppercase tracking-wider text-[11px]">
+              <h5 className="font-bold text-slate-900 dark:text-white mb-3.5 uppercase tracking-wider text-[11px]">
                 {isTg ? "Шаҳру ноҳияҳои вилояти Суғд" : "Города Согдийской области"}
               </h5>
               <ul className="space-y-2 text-xs">
-                <li><Link href="/classifieds?city=khujand" className="hover:text-emerald-700 transition-colors">{isTg ? "Амвол дар ш. Хуҷанд" : "Недвижимость в Худжанде (Хуҷанд)"}</Link></li>
-                <li><Link href="/classifieds?city=gafurov" className="hover:text-emerald-700 transition-colors">{isTg ? "Хонаҳо дар н. Б. Ғафуров" : "Дома в Б. Гафурове (Бобоҷон Ғафуров)"}</Link></li>
-                <li><Link href="/classifieds?city=isfara" className="hover:text-emerald-700 transition-colors">{isTg ? "Хонадонҳо дар ш. Исфара" : "Квартиры в Исфаре (Исфара)"}</Link></li>
-                <li><Link href="/classifieds?city=istaravshan" className="hover:text-emerald-700 transition-colors">{isTg ? "Амвол дар ш. Истаравшан" : "Недвижимость в Истаравшане"}</Link></li>
-                <li><Link href="/classifieds?city=guliston" className="hover:text-emerald-700 transition-colors">{isTg ? "Хонадонҳо дар ш. Гулистон" : "Квартиры в Гулистоне (Қайроққум)"}</Link></li>
-                <li><Link href="/classifieds?city=konibodom" className="hover:text-emerald-700 transition-colors">{isTg ? "Қитъаҳои замин дар ш. Конибодом" : "Участки в Канибадаме (Конибодом)"}</Link></li>
-                <li><Link href="/classifieds?city=panjakent" className="hover:text-emerald-700 transition-colors">{isTg ? "Хонаҳо дар ш. Панҷакент" : "Дома в Пенджикенте (Панҷакент)"}</Link></li>
+                <li><Link href="/classifieds?city=khujand" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">{isTg ? "Амвол дар ш. Хуҷанд" : "Недвижимость в Худжанде (Хуҷанд)"}</Link></li>
+                <li><Link href="/classifieds?city=gafurov" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">{isTg ? "Хонаҳо дар н. Б. Ғафуров" : "Дома в Б. Гафурове (Бобоҷон Ғафуров)"}</Link></li>
+                <li><Link href="/classifieds?city=isfara" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">{isTg ? "Хонадонҳо дар ш. Исфара" : "Квартиры в Исфаре (Исфара)"}</Link></li>
+                <li><Link href="/classifieds?city=istaravshan" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">{isTg ? "Амвол дар ш. Истаравшан" : "Недвижимость в Истаравшане"}</Link></li>
+                <li><Link href="/classifieds?city=guliston" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">{isTg ? "Хонадонҳо дар ш. Гулистон" : "Квартиры в Гулистоне (Қайроққум)"}</Link></li>
+                <li><Link href="/classifieds?city=konibodom" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">{isTg ? "Қитъаҳои замин дар ш. Конибодом" : "Участки в Канибадаме (Конибодом)"}</Link></li>
+                <li><Link href="/classifieds?city=panjakent" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">{isTg ? "Хонаҳо дар ш. Панҷакент" : "Дома в Пенджикенте (Панҷакент)"}</Link></li>
               </ul>
             </div>
 
             {/* By Districts of Khujand */}
             <div>
-              <h5 className="font-bold text-slate-900 mb-3 uppercase tracking-wider text-[11px]">
+              <h5 className="font-bold text-slate-900 dark:text-white mb-3.5 uppercase tracking-wider text-[11px]">
                 {isTg ? "Маҳаллаҳои шаҳри Хуҷанд" : "Микрорайоны Худжанда"}
               </h5>
               <ul className="space-y-2 text-xs">
-                <li><Link href="/classifieds?q=19" className="hover:text-emerald-700 transition-colors">{isTg ? "Биноҳои нав дар микрорайони 19" : "Новостройки в 19 микрорайоне"}</Link></li>
-                <li><Link href="/classifieds?q=18" className="hover:text-emerald-700 transition-colors">{isTg ? "Хонадонҳо дар микрорайони 18" : "Квартиры в 18 микрорайоне"}</Link></li>
-                <li><Link href="/classifieds?q=набережная" className="hover:text-emerald-700 transition-colors">{isTg ? "Манзил дар соҳили Сирдарё" : "Жилье на Набережной Сырдарьи"}</Link></li>
-                <li><Link href="/classifieds?q=20" className="hover:text-emerald-700 transition-colors">{isTg ? "Хонадонҳо дар мкр 20 ва 34" : "Квартиры в 20 и 34 мкр"}</Link></li>
-                <li><Link href="/classifieds?q=панчшанбе" className="hover:text-emerald-700 transition-colors">{isTg ? "Атрофи бозори «Панҷшанбе»" : "Район рынка «Панчшанбе»"}</Link></li>
-                <li><Link href="/classifieds?q=абрешим" className="hover:text-emerald-700 transition-colors">{isTg ? "Комбинати абрешим ва Соҳили рост" : "Шелкокомбинат и Правый берег"}</Link></li>
-                <li><Link href="/classifieds?q=раззок" className="hover:text-emerald-700 transition-colors">{isTg ? "Маҳаллаи Раззоқ ва Марказ" : "Махалля Раззок и Центр"}</Link></li>
+                <li><Link href="/classifieds?q=19" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">{isTg ? "Биноҳои нав дар микрорайони 19" : "Новостройки в 19 микрорайоне"}</Link></li>
+                <li><Link href="/classifieds?q=18" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">{isTg ? "Хонадонҳо дар микрорайони 18" : "Квартиры в 18 микрорайоне"}</Link></li>
+                <li><Link href="/classifieds?q=набережная" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">{isTg ? "Манзил дар соҳили Сирдарё" : "Жилье на Набережной Сырдарьи"}</Link></li>
+                <li><Link href="/classifieds?q=20" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">{isTg ? "Хонадонҳо дар мкр 20 ва 34" : "Квартиры в 20 и 34 мкр"}</Link></li>
+                <li><Link href="/classifieds?q=панчшанбе" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">{isTg ? "Атрофи бозори «Панҷшанбе»" : "Район рынка «Панчшанбе»"}</Link></li>
+                <li><Link href="/classifieds?q=абрешим" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">{isTg ? "Комбинати абрешим ва Соҳили рост" : "Шелкокомбинат и Правый берег"}</Link></li>
+                <li><Link href="/classifieds?q=раззок" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">{isTg ? "Маҳаллаи Раззоқ ва Марказ" : "Махалля Раззок и Центр"}</Link></li>
               </ul>
             </div>
 
             {/* By Property Categories */}
             <div>
-              <h5 className="font-bold text-slate-900 mb-3 uppercase tracking-wider text-[11px]">
+              <h5 className="font-bold text-slate-900 dark:text-white mb-3.5 uppercase tracking-wider text-[11px]">
                 {isTg ? "Гурӯҳҳои амволи ғайриманқул" : "Категории недвижимости"}
               </h5>
               <ul className="space-y-2 text-xs">
-                <li><Link href="#new-buildings" className="hover:text-emerald-700 transition-colors">{isTg ? "Феҳристи МИ бо ҷадвали шоҳмотӣ" : "Каталог ЖК с поэтажной шахматкой"}</Link></li>
-                <li><Link href="/classifieds?rooms=1" className="hover:text-emerald-700 transition-colors">{isTg ? "Хонадонҳои 1-ҳуҷрагӣ дар Хуҷанд" : "1-комнатные квартиры в Худжанде"}</Link></li>
-                <li><Link href="/classifieds?rooms=2" className="hover:text-emerald-700 transition-colors">{isTg ? "Хонадонҳои 2-ҳуҷрагӣ бо таъмир" : "2-комнатные квартиры с евроремонтом"}</Link></li>
-                <li><Link href="/classifieds?propertyType=house" className="hover:text-emerald-700 transition-colors">{isTg ? "Ҳавлиҳои анъанавӣ бо боғ" : "Традиционные дома (Ҳавлӣ) с садом"}</Link></li>
-                <li><Link href="/classifieds?propertyType=land" className="hover:text-emerald-700 transition-colors">{isTg ? "Қитъаҳои замин барои сохтмон" : "Земельные участки под застройку"}</Link></li>
-                <li><Link href="/classifieds?propertyType=commercial" className="hover:text-emerald-700 transition-colors">{isTg ? "Биноҳои тиҷоратӣ ва мағозаҳо" : "Коммерческие помещения и магазины"}</Link></li>
-                <li><Link href="/profile/analytics" className="hover:text-emerald-700 transition-colors">{isTg ? "B2B Open API барои даллалҳо ва шарикон" : "B2B Open API для риелторов"}</Link></li>
+                <li><Link href="#new-buildings" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">{isTg ? "Феҳристи МИ бо ҷадвали шоҳмотӣ" : "Каталог ЖК с поэтажной шахматкой"}</Link></li>
+                <li><Link href="/classifieds?rooms=1" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">{isTg ? "Хонадонҳои 1-ҳуҷрагӣ дар Хуҷанд" : "1-комнатные квартиры в Худжанде"}</Link></li>
+                <li><Link href="/classifieds?rooms=2" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">{isTg ? "Хонадонҳои 2-ҳуҷрагӣ бо таъмир" : "2-комнатные квартиры с евроремонтом"}</Link></li>
+                <li><Link href="/classifieds?propertyType=house" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">{isTg ? "Ҳавлиҳои анъанавӣ бо боғ" : "Традиционные дома (Ҳавлӣ) с садом"}</Link></li>
+                <li><Link href="/classifieds?propertyType=land" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">{isTg ? "Қитъаҳои замин барои сохтмон" : "Земельные участки под застройку"}</Link></li>
+                <li><Link href="/classifieds?propertyType=commercial" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">{isTg ? "Биноҳои тиҷоратӣ ва мағозаҳо" : "Коммерческие помещения и магазины"}</Link></li>
+                <li><Link href="/profile/analytics" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">{isTg ? "B2B Open API барои даллалҳо ва шарикон" : "B2B Open API для риелторов"}</Link></li>
               </ul>
             </div>
 
             {/* Contacts & Support */}
             <div>
-              <h5 className="font-bold text-slate-900 mb-3 uppercase tracking-wider text-[11px]">
+              <h5 className="font-bold text-slate-900 dark:text-white mb-3.5 uppercase tracking-wider text-[11px]">
                 {isTg ? "Тамос ва шуъбаи марказӣ" : "Контакты и офис"}
               </h5>
-              <p className="text-xs mb-2 leading-relaxed text-slate-600">
+              <p className="text-xs mb-2 leading-relaxed text-slate-600 dark:text-slate-300">
                 {isTg ? "Шуъбаи марказӣ дар вилояти Суғд:" : "Центральный офис по Согдийской области:"}
               </p>
-              <p className="font-semibold text-slate-900">
+              <p className="font-semibold text-slate-900 dark:text-white">
                 {isTg ? "ш. Хуҷанд, хиёбони И. Сомонӣ 142" : "г. Худжанд, пр. И. Сомони 142"}
               </p>
-              <p className="font-mono font-bold text-emerald-700 text-sm mt-2">+992 92 777 0001</p>
-              <p className="font-mono text-slate-500 mt-0.5">support@sogd-realty.tj</p>
+              <p className="font-mono font-bold text-emerald-600 dark:text-emerald-400 text-sm mt-2">+992 92 777 0001</p>
+              <p className="font-mono text-slate-500 dark:text-slate-400 mt-0.5">support@sogd-realty.tj</p>
               <div className="pt-3">
-                <Badge variant="outline" className="text-[10px] bg-slate-50 text-slate-700 border-slate-200">
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-semibold glass-pill border-slate-200/80 dark:border-white/15">
                   🇹🇯 Хуҷанд • Суғд • Тоҷикистон
-                </Badge>
+                </span>
               </div>
             </div>
           </div>
 
-          <div className="pt-6 border-t border-slate-200/80 flex flex-col sm:flex-row items-center justify-between gap-3 text-[11px] text-slate-400">
+          <div className="pt-6 border-t border-slate-200/60 dark:border-white/10 flex flex-col sm:flex-row items-center justify-between gap-3 text-[11px] text-slate-500 dark:text-slate-400">
             <div>
               {isTg
                 ? "© 2026 Maskani.tj. Ҳамаи ҳуқуқҳо маҳфузанд."
                 : "© 2026 Maskani.tj. Все права защищены."}
             </div>
-            <div className="flex items-center gap-4 text-slate-500">
-              <Link href="/developer-admin" className="hover:text-emerald-700">
+            <div className="flex items-center gap-4 text-slate-600 dark:text-slate-400">
+              <Link href="/developer-admin" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">
                 {isTg ? "Кабинети сохтмончӣ" : "Кабинет застройщика"}
               </Link>
-              <Link href="/profile/analytics" className="hover:text-emerald-700">
+              <Link href="/profile/analytics" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">
                 {isTg ? "Таҳлил ва Open API" : "Аналитика & Open API"}
               </Link>
-              <Link href="/profile/crm" className="hover:text-emerald-700 font-medium text-emerald-700/70">
+              <Link href="/profile/crm" className="hover:text-emerald-600 dark:hover:text-emerald-400 font-semibold text-emerald-700 dark:text-emerald-400 transition-colors">
                 {isTg ? "Барои даллалҳо ва агентиҳо (B2B CRM)" : "Маклерам и Агентствам (B2B CRM)"}
               </Link>
             </div>
