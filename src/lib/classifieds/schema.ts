@@ -54,6 +54,7 @@ export const classifiedInputSchema = z.object({
   contactTelegram: z.string().trim().max(64).nullable().optional(),
   photos: z.array(z.string().min(1)).min(1).max(10),
   website: z.string().optional(),
+  attributes: z.record(z.string(), z.unknown()).optional().default({}),
 });
 
 export type ClassifiedInput = z.infer<typeof classifiedInputSchema>;

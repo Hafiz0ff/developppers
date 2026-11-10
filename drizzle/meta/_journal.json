@@ -15,6 +15,13 @@
       "when": 1792004473141,
       "tag": "0001_hesitant_hannibal_king",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1794335162619,
+      "tag": "0002_outgoing_living_tribunal",
+      "breakpoints": true
     }
   ]
 }

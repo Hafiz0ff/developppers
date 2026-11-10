@@ -79,6 +79,9 @@ export const classifieds = pgTable("classifieds", {
   isPromoted: boolean("is_promoted").default(false).notNull(),
   promotedUntil: timestamp("promoted_until"),
 
+  // Структурированные характеристики (ТЗ SPEC_CLASSIFIEDS_AD_PLACEMENT v1.0)
+  attributes: jsonb("attributes").$type<Record<string, unknown>>().default({}),
+
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });

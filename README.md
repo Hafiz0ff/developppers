@@ -94,6 +94,7 @@
 sogd-realty/
 ├── docs/
 │   └── specs/
+│       ├── SPEC_CLASSIFIEDS_AD_PLACEMENT.md       # ТЗ: размещение жилых и коммерческих объявлений
 │       ├── SPEC_BOOKING_CALL_REQUESTS_CRM.md     # ТЗ: Заявки на бронирование и звонки
 │       └── SPEC_SEO_URL_ARCHITECTURE.md          # ТЗ v1.7: URL-архитектура и автоматизация SEO
 ├── src/
