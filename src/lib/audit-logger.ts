@@ -23,7 +23,8 @@ export type AuditEntityType =
   | "unit"
   | "user"
   | "config"
-  | "lead";
+  | "lead"
+  | "listing_attribute";
 
 export interface AuditLogEntry {
   userId: string;

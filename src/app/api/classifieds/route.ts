@@ -9,6 +9,8 @@ import {
   canPostClassified,
   initialClassifiedStatus,
 } from "@/lib/classifieds/access";
+import { hasPermission } from "@/lib/auth/rbac";
+import { validateAttributeValues } from "@/lib/classifieds/attributes";
 import { classifiedInputSchema } from "@/lib/classifieds/schema";
 import { filterPublicClassifieds, parseClassifiedListQuery } from "@/lib/classifieds/filters";
 import { mapClassifiedToCard, toFilterable, type ClassifiedCard } from "@/lib/classifieds/map-card";
@@ -126,7 +128,18 @@ export async function POST(req: NextRequest) {
     if (!actor) {
       return NextResponse.json({ success: false, error: "unauthorized" }, { status: 401 });
     }
-    if (!canPostClassified(actor.role)) {
+    // Developers post through projects & units in developer-admin (TZ Section 5.3)
+    if (actor.role === "developer") {
+      return NextResponse.json(
+        {
+          success: false,
+          error: "developer_primary_market_only",
+          message: "Застройщики публикуют объекты первичного рынка через проекты и шахматку лотов в кабинете застройщика",
+        },
+        { status: 403 }
+      );
+    }
+    if (!canPostClassified(actor.role) && !hasPermission(actor.role, "classified:create")) {
       return NextResponse.json({ success: false, error: "citizens_only" }, { status: 403 });
     }
     if (CLASSIFIEDS_REQUIRE_PHONE && !actor.phoneVerified) {
@@ -158,6 +171,19 @@ export async function POST(req: NextRequest) {
     const slug = makeClassifiedSlug(parsed.data.title, id);
     const status = initialClassifiedStatus({ autoApprove: CLASSIFIEDS_AUTO_APPROVE });
     const input = parsed.data;
+
+    // Validate and sanitize structured attributes if provided (TZ SPEC_CLASSIFIEDS_AD_PLACEMENT Stage 2)
+    let sanitizedAttributes: Record<string, unknown> = {};
+    if (input.attributes && Object.keys(input.attributes).length > 0) {
+      const validation = validateAttributeValues(input.dealType, input.propertyType, input.attributes);
+      if (!validation.valid) {
+        return NextResponse.json(
+          { success: false, error: "invalid_attributes", details: validation.errors },
+          { status: 400 }
+        );
+      }
+      sanitizedAttributes = validation.sanitizedValues;
+    }
 
     const values: NewClassified = {
       id,
@@ -199,6 +225,7 @@ export async function POST(req: NextRequest) {
       contactTelegram: input.contactTelegram ?? null,
       photos: input.photos,
       viewsCount: 0,
+      attributes: sanitizedAttributes,
     };
 
     await db.insert(classifieds).values(values);

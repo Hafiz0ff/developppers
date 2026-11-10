@@ -30,6 +30,7 @@ export type ClassifiedCard = CatalogProperty & {
   isUrgent?: boolean;
   urgentExpiresAt?: string | Date;
   vasPlan?: "top" | "highlight" | "urgent" | "turbo";
+  attributes?: Record<string, unknown>;
 };
 
 export function toNumber(value: string | number | null | undefined): number {
@@ -102,5 +103,6 @@ export function mapClassifiedToCard(row: Classified): ClassifiedCard {
     viewsCount: row.viewsCount,
     userId: row.userId,
     createdAt: row.createdAt ? row.createdAt.toISOString() : undefined,
+    attributes: (row.attributes as Record<string, unknown>) || {},
   };
 }

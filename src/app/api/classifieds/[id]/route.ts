@@ -3,6 +3,8 @@ import { eq, or } from "drizzle-orm";
 import { db } from "@/db";
 import { classifieds } from "@/db/schema";
 import { canMutateClassified } from "@/lib/classifieds/access";
+import { canModifyEntity, type UserContext } from "@/lib/auth/rbac";
+import { validateAttributeValues } from "@/lib/classifieds/attributes";
 import { classifiedInputSchema } from "@/lib/classifieds/schema";
 import { mapClassifiedToCard, type ClassifiedCard } from "@/lib/classifieds/map-card";
 import { getClassifiedsActor } from "@/lib/classifieds/session";
@@ -80,7 +82,11 @@ export async function PATCH(
     if (!row) {
       return NextResponse.json({ success: false, error: "not_found" }, { status: 404 });
     }
-    if (!canMutateClassified({ actorId: actor.id, actorRole: actor.role, ownerId: row.userId })) {
+    const userCtx: UserContext = { id: actor.id, role: actor.role as any };
+    if (
+      !canMutateClassified({ actorId: actor.id, actorRole: actor.role, ownerId: row.userId }) &&
+      !canModifyEntity(userCtx, { userId: row.userId })
+    ) {
       return NextResponse.json({ success: false, error: "forbidden" }, { status: 403 });
     }
 
@@ -94,6 +100,26 @@ export async function PATCH(
     }
 
     const input = parsed.data;
+
+    // Validate structured attributes if included in PATCH payload
+    let sanitizedAttributes: Record<string, unknown> | undefined;
+    if (input.attributes !== undefined && input.attributes !== null) {
+      const effectiveDealType = input.dealType ?? row.dealType;
+      const effectivePropertyType = input.propertyType ?? row.propertyType;
+      const validation = validateAttributeValues(
+        effectiveDealType,
+        effectivePropertyType,
+        input.attributes
+      );
+      if (!validation.valid) {
+        return NextResponse.json(
+          { success: false, error: "invalid_attributes", details: validation.errors },
+          { status: 400 }
+        );
+      }
+      sanitizedAttributes = validation.sanitizedValues;
+    }
+
     const oldUrl = resolveListingUrl(
       {
         id: row.id,
@@ -129,6 +155,7 @@ export async function PATCH(
         ...(input.contactPhone !== undefined && { contactPhone: input.contactPhone }),
         ...(input.contactWhatsapp !== undefined && { contactWhatsapp: input.contactWhatsapp ?? null }),
         ...(input.photos !== undefined && { photos: input.photos }),
+        ...(sanitizedAttributes !== undefined && { attributes: sanitizedAttributes }),
         updatedAt: new Date(),
       })
       .where(eq(classifieds.id, id));
