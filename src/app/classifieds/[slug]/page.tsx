@@ -49,6 +49,8 @@ import { useEntityMetrics } from "@/hooks/use-entity-metrics";
 import { formatPublicationDate, formatPricePerSquareMeter } from "@/lib/classifieds/format-utils";
 import { useCompare } from "@/context/compare-context";
 import { classifiedToCompareProperty } from "@/lib/compare/compare-store";
+import { ListingAttributesView } from "@/components/classifieds/listing-attributes-view";
+import { mergeLegacyClassifiedAttributes } from "@/lib/classifieds/attributes";
 
 export default function ClassifiedDetailPage() {
   const params = useParams();
@@ -540,6 +542,22 @@ export default function ClassifiedDetailPage() {
                 </div>
               )}
             </div>
+
+            {/* Structured Attributes from SPEC_CLASSIFIEDS_AD_PLACEMENT */}
+            <ListingAttributesView
+              attributes={mergeLegacyClassifiedAttributes({
+                hasHeating: (item as any).hasHeating,
+                isFurnished: (item as any).isFurnished,
+                floor: item.floor ? parseInt(item.floor, 10) : undefined,
+                floorsCount: (item as any).floorsCount,
+                buildingType: (item as any).buildingType,
+                renovation: (item as any).renovation,
+                attributes: item.attributes,
+              })}
+              dealType={item.dealType === "Аренда" ? "rent_long" : "sale"}
+              category={item.propertyType.toLowerCase().includes("коммерц") ? "commercial" : "apartment"}
+              language={language}
+            />
 
             {/* Sughd Infrastructure & Communications Box */}
             <div className="bg-white border border-slate-200/80 rounded-2xl p-6 sm:p-7 shadow-sm space-y-4">
