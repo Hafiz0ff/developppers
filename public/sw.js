@@ -1,5 +1,5 @@
-// Maskani PWA Service Worker v2 - Instant update & offline fallback
-const CACHE_NAME = "maskani-v2";
+// Maskani PWA Service Worker v3 - Instant update & offline fallback
+const CACHE_NAME = "maskani-v3";
 const STATIC_ASSETS = [
   "/manifest.webmanifest",
   "/icons/icon-192x192.png",

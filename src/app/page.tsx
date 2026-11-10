@@ -385,7 +385,7 @@ export default function HomePage() {
   return (
     <div className="flex flex-col gap-6 sm:gap-8 relative">
       {/* 1. PANORAMIC HERO SECTION STARTING FROM TOP OF SCREEN (Covering Header, Search Card & Marquee at bottom) */}
-      <section className="relative pt-24 sm:pt-28 pb-0 border-b border-white/20 bg-slate-900 overflow-hidden">
+      <section className="relative pt-24 sm:pt-28 pb-0 border-b border-white/20 bg-transparent overflow-hidden">
         {/* Background Layer: Panoramic Landscape with Soft Contrast Overlay */}
         <div className="absolute inset-0 z-0 h-full w-full pointer-events-none overflow-hidden">
           <img

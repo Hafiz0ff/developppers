@@ -9,6 +9,8 @@ import {
   canMutateClassified,
   canOwnerSetStatus,
 } from "@/lib/classifieds/access";
+import { hasPermission } from "@/lib/auth/rbac";
+import { logAuditEvent } from "@/lib/audit-logger";
 import { mapClassifiedToCard } from "@/lib/classifieds/map-card";
 import { getClassifiedsActor } from "@/lib/classifieds/session";
 
@@ -45,7 +47,7 @@ export async function POST(
       actorRole: actor.role,
       ownerId: row.userId,
     });
-    const isAdmin = canModerateClassifieds(actor.role);
+    const isAdmin = canModerateClassifieds(actor.role) || hasPermission(actor.role, "classified:moderate");
 
     if (isOwner && canOwnerSetStatus(status)) {
       await db
@@ -53,6 +55,14 @@ export async function POST(
         .set({ status, updatedAt: new Date() })
         .where(eq(classifieds.id, id));
     } else if (isAdmin && canAdminSetStatus(status)) {
+      // Rejection requires a mandatory reason per TZ Section 9
+      if (status === "rejected" && (!moderationNote || moderationNote.trim() === "")) {
+        return NextResponse.json(
+          { success: false, error: "moderation_note_required", message: "Причина отклонения обязательна" },
+          { status: 400 }
+        );
+      }
+
       await db
         .update(classifieds)
         .set({
@@ -61,6 +71,17 @@ export async function POST(
           updatedAt: new Date(),
         })
         .where(eq(classifieds.id, id));
+
+      // Record audit log for moderation decision
+      await logAuditEvent({
+        userId: actor.id,
+        userRole: actor.role,
+        action: "moderate",
+        entityType: "classified",
+        entityId: id,
+        status: "success",
+        details: { status, moderationNote },
+      });
     } else {
       return NextResponse.json({ success: false, error: "forbidden" }, { status: 403 });
     }

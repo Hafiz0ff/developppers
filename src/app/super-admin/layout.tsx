@@ -72,6 +72,12 @@ export default function SuperAdminLayout({
       badge: "Этап 2",
     },
     {
+      title: "Справочник характеристик",
+      href: "/super-admin/listing-attributes",
+      icon: Sparkles,
+      badge: "ТЗ v1.0",
+    },
+    {
       title: "Кабинет рекламодателя",
       href: "/advertiser",
       icon: ExternalLink,

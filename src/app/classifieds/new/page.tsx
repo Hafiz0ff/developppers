@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useLanguage } from "@/lib/i18n/language-context";
@@ -29,7 +29,18 @@ import {
   ShieldCheck,
   Send,
   Sparkles,
+  Eye,
+  Save,
+  FileText,
+  X,
+  Layers,
 } from "lucide-react";
+import {
+  AttributesManager,
+  sanitizeIncompatibleAttributes,
+} from "@/components/classifieds/attributes-manager";
+import { ListingAttributesView } from "@/components/classifieds/listing-attributes-view";
+import type { Language } from "@/lib/i18n/translations";
 
 export default function NewClassifiedPage() {
   const router = useRouter();
@@ -56,6 +67,78 @@ export default function NewClassifiedPage() {
   const [photos, setPhotos] = useState<string[]>([
     "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=1000&auto=format&fit=crop&q=80",
   ]);
+
+  // Dynamic Attributes (Stage 1-4)
+  const [attributes, setAttributes] = useState<Record<string, unknown>>({});
+  const [showPreview, setShowPreview] = useState(false);
+  const [draftSavedAt, setDraftSavedAt] = useState<string | null>(null);
+
+  // Restore draft on mount
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem("maskani_classified_draft");
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (parsed.dealType) setDealType(parsed.dealType);
+        if (parsed.propertyType) setPropertyType(parsed.propertyType);
+        if (parsed.title) setTitle(parsed.title);
+        if (parsed.description) setDescription(parsed.description);
+        if (parsed.city) setCity(parsed.city);
+        if (parsed.district) setDistrict(parsed.district);
+        if (parsed.address) setAddress(parsed.address);
+        if (parsed.landmark) setLandmark(parsed.landmark);
+        if (parsed.roomsCount) setRoomsCount(parsed.roomsCount);
+        if (parsed.totalArea) setTotalArea(parsed.totalArea);
+        if (parsed.floor) setFloor(parsed.floor);
+        if (parsed.floorsCount) setFloorsCount(parsed.floorsCount);
+        if (parsed.buildingType) setBuildingType(parsed.buildingType);
+        if (parsed.renovation) setRenovation(parsed.renovation);
+        if (parsed.priceUsd) setPriceUsd(parsed.priceUsd);
+        if (parsed.priceTjs) setPriceTjs(parsed.priceTjs);
+        if (parsed.attributes && typeof parsed.attributes === "object") setAttributes(parsed.attributes);
+        if (parsed.photos && Array.isArray(parsed.photos)) setPhotos(parsed.photos);
+        if (parsed.contactName) setContactName(parsed.contactName);
+        if (parsed.contactPhone) setContactPhone(parsed.contactPhone);
+        if (parsed.contactWhatsapp) setContactWhatsapp(parsed.contactWhatsapp);
+        if (parsed.savedAt) setDraftSavedAt(new Date(parsed.savedAt).toLocaleTimeString());
+      }
+    } catch {
+      // ignore
+    }
+  }, []);
+
+  const handleSaveDraft = () => {
+    const draft = {
+      dealType,
+      propertyType,
+      title,
+      description,
+      city,
+      district,
+      address,
+      landmark,
+      roomsCount,
+      totalArea,
+      floor,
+      floorsCount,
+      buildingType,
+      renovation,
+      priceUsd,
+      priceTjs,
+      attributes,
+      photos,
+      contactName,
+      contactPhone,
+      contactWhatsapp,
+      savedAt: new Date().toISOString(),
+    };
+    try {
+      localStorage.setItem("maskani_classified_draft", JSON.stringify(draft));
+      setDraftSavedAt(new Date().toLocaleTimeString());
+    } catch {
+      // ignore
+    }
+  };
 
   // Pricing
   const [originalCurrency, setOriginalCurrency] = useState<"USD" | "TJS">("USD");
@@ -148,6 +231,12 @@ export default function NewClassifiedPage() {
     setSubmitting(true);
 
     try {
+      const sanitizedAttrs = sanitizeIncompatibleAttributes(
+        dealType,
+        propertyType,
+        attributes
+      );
+
       const payload = {
         title: title || (isTg ? "Хонадон бо шароити мусоид" : "Квартира с удобствами"),
         description:
@@ -172,6 +261,7 @@ export default function NewClassifiedPage() {
         priceUsd: parseFloat(priceUsd) || 0,
         priceTjs: parseFloat(priceTjs) || 0,
         isNegotiable,
+        attributes: sanitizedAttrs,
         contactName: contactName || (isTg ? "Соҳибмулк" : "Собственник"),
         contactPhone,
         contactWhatsapp: contactWhatsapp || contactPhone,
@@ -186,6 +276,11 @@ export default function NewClassifiedPage() {
 
       const data = await res.json();
       if (data.success || data.classified) {
+        try {
+          localStorage.removeItem("maskani_classified_draft");
+        } catch {
+          // ignore
+        }
         setSuccess(true);
         setTimeout(() => {
           router.push("/classifieds");
@@ -219,21 +314,53 @@ export default function NewClassifiedPage() {
       {/* Top Breadcrumb */}
       <div className="bg-white border-b border-slate-200/80">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 py-5">
-          <Link
-            href="/classifieds"
-            className="text-xs text-slate-500 hover:text-emerald-700 flex items-center gap-1.5 font-medium mb-2"
-          >
-            <ArrowLeft className="h-3.5 w-3.5" />
-            {isTg ? "Бозгашт ба эълонҳо" : "Назад к объявлениям"}
-          </Link>
-          <h1 className="text-2xl font-extrabold text-slate-900 tracking-tight">
-            {isTg ? "Гузоштани эълони нав" : "Подать новое объявление"}
-          </h1>
-          <p className="text-xs text-slate-500 mt-0.5">
-            {isTg
-              ? "Эълони шумо дарҳол пас аз тасдиқ дар феҳристи умумии Суғд нашр карда мешавад"
-              : "Объявление публикуется в общем каталоге Согда сразу после проверки"}
-          </p>
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div>
+              <Link
+                href="/classifieds"
+                className="text-xs text-slate-500 hover:text-emerald-700 flex items-center gap-1.5 font-medium mb-2"
+              >
+                <ArrowLeft className="h-3.5 w-3.5" />
+                {isTg ? "Бозгашт ба эълонҳо" : "Назад к объявлениям"}
+              </Link>
+              <h1 className="text-2xl font-extrabold text-slate-900 tracking-tight">
+                {isTg ? "Гузоштани эълони нав" : "Подать новое объявление"}
+              </h1>
+              <p className="text-xs text-slate-500 mt-0.5">
+                {isTg
+                  ? "Эълони шумо дарҳол пас аз тасдиқ дар феҳристи умумии Суғд нашр карда мешавад"
+                  : "Объявление публикуется в общем каталоге Согда сразу после проверки"}
+              </p>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={handleSaveDraft}
+                className="text-xs gap-1.5 rounded-xl border-slate-300 hover:bg-slate-50 cursor-pointer"
+              >
+                <Save className="h-3.5 w-3.5 text-slate-600" />
+                <span>{isTg ? "Сабти сиёҳнавис" : "Сохранить черновик"}</span>
+              </Button>
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={() => setShowPreview(true)}
+                className="text-xs gap-1.5 rounded-xl border-emerald-300 text-emerald-700 hover:bg-emerald-50 cursor-pointer"
+              >
+                <Eye className="h-3.5 w-3.5 text-emerald-600" />
+                <span>{isTg ? "Пешнамоиш" : "Предпросмотр"}</span>
+              </Button>
+            </div>
+          </div>
+          {draftSavedAt && (
+            <p className="text-[11px] text-emerald-700 mt-2 font-medium">
+              ✓ {isTg ? `Сиёҳнавис сабт шуд дар ${draftSavedAt}` : `Черновик сохранён в ${draftSavedAt}`}
+            </p>
+          )}
         </div>
       </div>
 
@@ -458,7 +585,30 @@ export default function NewClassifiedPage() {
               </CardContent>
             </Card>
 
-            {/* Step 3: Photos */}
+            {/* Step 3: Domain Attributes (7 sections: amenities, building, unit, legal, etc.) */}
+            <div className="bg-white rounded-2xl border border-slate-200/80 p-5 shadow-xs">
+              <div className="mb-4">
+                <h3 className="text-sm font-bold flex items-center gap-2 text-slate-900">
+                  <Layers className="h-4 w-4 text-emerald-600" />
+                  {isTg ? "Хусусиятҳо ва параметрҳои муфассал" : "Характеристики и параметры"}
+                </h3>
+                <p className="text-xs text-slate-500 mt-0.5">
+                  {isTg
+                    ? "Бахшҳои мувофиқ мувофиқи намуди муомила ва категория ба таври худкор танзим мешаванд"
+                    : "Секции автоматически адаптируются под выбранную сделку и категорию"}
+                </p>
+              </div>
+
+              <AttributesManager
+                dealType={dealType}
+                category={propertyType}
+                values={attributes}
+                onChange={setAttributes}
+                language={language as Language}
+              />
+            </div>
+
+            {/* Step 4: Photos */}
             <Card>
               <CardHeader className="p-4 pb-2">
                 <CardTitle className="text-sm font-bold flex items-center gap-2">
@@ -636,30 +786,152 @@ export default function NewClassifiedPage() {
               </CardContent>
             </Card>
 
-            {/* Submit */}
-            <div className="flex justify-end gap-3 pt-2">
-              <Link href="/classifieds">
-                <Button variant="outline" type="button" className="text-xs">
-                  {isTg ? "Бекор кардан" : "Отмена"}
+            {/* Submit & Action Buttons */}
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 pt-2">
+              <div className="flex items-center gap-2">
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={handleSaveDraft}
+                  className="text-xs gap-1.5 rounded-xl border-slate-300 hover:bg-slate-50 cursor-pointer"
+                >
+                  <Save className="h-3.5 w-3.5 text-slate-600" />
+                  <span>{isTg ? "Сабти сиёҳнавис" : "Сохранить черновик"}</span>
                 </Button>
-              </Link>
-              <Button
-                type="submit"
-                disabled={submitting}
-                className="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs px-8 shadow-xs cursor-pointer"
-              >
-                {submitting
-                  ? isTg
-                    ? "Дар ҳоли нашр..."
-                    : "Публикация..."
-                  : isTg
-                  ? "Интишори эълон"
-                  : "Опубликовать объявление"}
-              </Button>
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => setShowPreview(true)}
+                  className="text-xs gap-1.5 rounded-xl border-emerald-300 text-emerald-700 hover:bg-emerald-50 cursor-pointer"
+                >
+                  <Eye className="h-3.5 w-3.5 text-emerald-600" />
+                  <span>{isTg ? "Пешнамоиш" : "Предпросмотр"}</span>
+                </Button>
+              </div>
+
+              <div className="flex items-center justify-end gap-3">
+                <Link href="/classifieds">
+                  <Button variant="outline" type="button" className="text-xs rounded-xl">
+                    {isTg ? "Бекор кардан" : "Отмена"}
+                  </Button>
+                </Link>
+                <Button
+                  type="submit"
+                  disabled={submitting}
+                  className="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs px-8 rounded-xl shadow-xs cursor-pointer"
+                >
+                  {submitting
+                    ? isTg
+                      ? "Дар ҳоли нашр..."
+                      : "Публикация..."
+                    : isTg
+                    ? "Интишори эълон"
+                    : "Опубликовать объявление"}
+                </Button>
+              </div>
             </div>
           </form>
         )}
       </div>
+
+      {/* Preview Modal */}
+      {showPreview && (
+        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 overflow-y-auto animate-in fade-in duration-200">
+          <div className="bg-white rounded-3xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl border border-slate-200 p-6 space-y-6">
+            <div className="flex items-start justify-between gap-4 border-b border-slate-100 pb-4">
+              <div>
+                <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-md">
+                  {isTg ? "Ҳолати пешнамоиш" : "Режим предпросмотра"}
+                </span>
+                <h2 className="text-xl font-black text-slate-900 mt-1">
+                  {title || (isTg ? "Бе сарлавҳа" : "Без заголовка")}
+                </h2>
+                <p className="text-xs text-slate-500 mt-0.5">
+                  {city}, {district || address}
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => setShowPreview(false)}
+                className="h-8 w-8 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-500 hover:text-slate-900 transition-colors cursor-pointer"
+                aria-label="Close"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            </div>
+
+            {/* Price & Specs */}
+            <div className="flex items-baseline justify-between gap-4 bg-emerald-50/60 rounded-2xl p-4 border border-emerald-100">
+              <div>
+                <div className="text-2xl font-black text-emerald-700">
+                  {priceTjs ? `${Number(priceTjs).toLocaleString()} TJS` : "—"}
+                </div>
+                <div className="text-xs text-slate-500">
+                  ~ {priceUsd ? `$${Number(priceUsd).toLocaleString()}` : "—"}
+                </div>
+              </div>
+              <div className="flex items-center gap-3 text-xs font-semibold text-slate-700">
+                <span>{roomsCount} комн.</span>
+                <span>•</span>
+                <span>{totalArea} м²</span>
+                <span>•</span>
+                <span>{floor}/{floorsCount} эт.</span>
+              </div>
+            </div>
+
+            {/* Photos Preview */}
+            {photos.length > 0 && (
+              <div className="space-y-2">
+                <h4 className="text-xs font-bold text-slate-500 uppercase tracking-wider">
+                  {isTg ? "Аксҳо" : "Фотографии"} ({photos.length})
+                </h4>
+                <div className="grid grid-cols-3 gap-2">
+                  {photos.slice(0, 3).map((url, i) => (
+                    <div key={i} className="aspect-4/3 rounded-xl overflow-hidden bg-slate-100 border border-slate-200">
+                      <img src={url} alt={`preview-${i}`} className="w-full h-full object-cover" />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Rendered Domain Attributes */}
+            <div className="space-y-2 border-t border-slate-100 pt-4">
+              <h4 className="text-xs font-bold text-slate-500 uppercase tracking-wider">
+                {isTg ? "Хусусиятҳои интихобшуда" : "Выбранные характеристики"}
+              </h4>
+              <ListingAttributesView
+                attributes={sanitizeIncompatibleAttributes(dealType, propertyType, attributes)}
+                dealType={dealType}
+                category={propertyType}
+                language={language as Language}
+              />
+            </div>
+
+            {/* Description */}
+            {description && (
+              <div className="space-y-2 border-t border-slate-100 pt-4">
+                <h4 className="text-xs font-bold text-slate-500 uppercase tracking-wider">
+                  {isTg ? "Тавсиф" : "Описание"}
+                </h4>
+                <p className="text-xs text-slate-700 whitespace-pre-wrap leading-relaxed">
+                  {description}
+                </p>
+              </div>
+            )}
+
+            <div className="flex justify-end pt-2 border-t border-slate-100">
+              <Button
+                type="button"
+                onClick={() => setShowPreview(false)}
+                className="bg-slate-900 hover:bg-slate-800 text-white text-xs rounded-xl px-6 cursor-pointer"
+              >
+                {isTg ? "Пӯшидан" : "Закрыть"}
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
