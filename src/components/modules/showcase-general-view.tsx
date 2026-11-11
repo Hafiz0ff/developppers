@@ -242,7 +242,7 @@ export function ShowcaseGeneralView({
         <div className="text-xs sm:text-sm font-extrabold text-white drop-shadow-md mt-1">
           {projectName}
         </div>
-        <div className="text-[10px] text-emerald-200 font-medium hidden sm:block">
+        <div className="text-xs text-emerald-200 font-medium hidden sm:block">
           {tDual("Нажмите для перехода к срезу здания →", "Барои гузариш ба буриши бино пахш кунед →")}
         </div>
       </div>
@@ -273,7 +273,7 @@ export function ShowcaseGeneralView({
             {/* Tooltip Card on Marker Click/Hover */}
             {isSelected && (
               <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-56 sm:w-64 p-3 rounded-xl bg-slate-900/95 text-white border border-white/20 shadow-2xl backdrop-blur-md z-30 space-y-1 animate-in fade-in zoom-in-95 duration-150">
-                <div className="flex items-center justify-between text-[11px] font-bold text-emerald-400">
+                <div className="flex items-center justify-between text-xs font-bold text-emerald-400">
                   <span>{poi.distance}</span>
                   <button
                     type="button"
@@ -288,7 +288,7 @@ export function ShowcaseGeneralView({
                 </div>
                 <div className="text-xs font-bold leading-tight text-white">{poi.name}</div>
                 {poi.description && (
-                  <p className="text-[10px] text-slate-300 leading-relaxed pt-0.5">
+                  <p className="text-xs text-slate-300 leading-relaxed pt-0.5">
                     {poi.description}
                   </p>
                 )}
@@ -301,7 +301,7 @@ export function ShowcaseGeneralView({
       {/* 4. COMPACT BOTTOM INFRASTRUCTURE STRIP */}
       <div className="absolute bottom-3 left-3 right-3 sm:left-4 sm:right-auto bg-slate-900/90 backdrop-blur-md border border-white/10 p-2.5 rounded-xl text-white text-xs shadow-lg flex items-center gap-3">
         <Navigation className="h-4 w-4 text-emerald-400 shrink-0" />
-        <span className="text-[11px] text-slate-200">
+        <span className="text-xs text-slate-200">
           {tDual(
             "Нажмите на здание ЖК для выбора секции или на цветные точки для просмотра инфраструктуры.",
             "Барои интихоби бахш ба бинои МИ ё ба нуқтаҳои ранга барои дидани инфрасохтор пахш кунед."

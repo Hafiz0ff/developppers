@@ -116,12 +116,12 @@ export default function ComparePage() {
           </span>
         </nav>
 
-        <Card className="rounded-3xl border border-slate-200/80 bg-white p-8 sm:p-14 text-center shadow-sm">
-          <div className="h-20 w-20 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center mx-auto mb-5 border border-blue-100 shadow-inner">
-            <ArrowLeftRight className="h-10 w-10 text-blue-600" />
+        <Card className="rounded-3xl border border-border/80 bg-card p-8 sm:p-14 text-center shadow-xs">
+          <div className="h-16 w-16 rounded-2xl bg-muted text-muted-foreground flex items-center justify-center mx-auto mb-4 border border-border/60">
+            <ArrowLeftRight className="h-8 w-8 text-foreground" />
           </div>
 
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 mb-2">
+          <h1 className="text-2xl sm:text-3xl font-bold text-foreground mb-2">
             {isTg ? "Рӯйхати муқоиса холӣ аст" : "В сравнении пока ничего нет"}
           </h1>
 
@@ -306,10 +306,10 @@ export default function ComparePage() {
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                     />
                     <div className="absolute top-2 left-2 flex flex-wrap gap-1">
-                      <Badge className="bg-emerald-600 text-white text-[10px] font-semibold">
+                      <Badge className="bg-emerald-600 text-white text-xs font-semibold">
                         {isTg ? item.dealTypeTg || "Фурӯш" : item.dealType}
                       </Badge>
-                      <Badge variant="secondary" className="bg-white/90 text-slate-900 text-[10px] font-medium backdrop-blur-xs">
+                      <Badge variant="secondary" className="bg-white/90 text-slate-900 text-xs font-medium backdrop-blur-xs">
                         {isTg ? item.propertyTypeTg || "Хонадон" : item.propertyType}
                       </Badge>
                     </div>
@@ -354,7 +354,7 @@ export default function ComparePage() {
                     <div className="text-lg font-extrabold text-emerald-600">
                       {formatPrice(item.priceTjs, item.priceUsd)}
                     </div>
-                    <div className="text-[11px] text-slate-500 font-mono mt-0.5">
+                    <div className="text-xs text-slate-500 font-mono mt-0.5">
                       {currency === "TJS" ? formatUSD(item.priceUsd) : formatTJS(item.priceTjs)}
                     </div>
                   </div>
@@ -364,16 +364,16 @@ export default function ComparePage() {
                 <div className="mt-3 pt-3 border-t border-slate-100 flex items-center gap-1.5">
                   <a
                     href={`tel:${item.phone.replace(/\s+/g, "")}`}
-                    className="flex-1 h-8 rounded-lg bg-emerald-50 text-emerald-700 hover:bg-emerald-100 font-bold text-xs flex items-center justify-center gap-1 transition-colors border border-emerald-200/60"
+                    className="flex-1 h-8 rounded-lg bg-muted hover:bg-muted/80 text-foreground font-medium text-xs flex items-center justify-center gap-1 transition-colors border border-border/60"
                   >
-                    <Phone className="h-3.5 w-3.5 text-emerald-600" />
+                    <Phone className="h-3.5 w-3.5 text-muted-foreground" />
                     <span>{isTg ? "Занг" : "Звонок"}</span>
                   </a>
                   <a
                     href={`https://wa.me/${item.whatsapp.replace(/\D/g, "")}`}
                     target="_blank"
                     rel="noreferrer"
-                    className="h-8 w-8 rounded-lg bg-emerald-600 text-white hover:bg-emerald-700 flex items-center justify-center transition-colors shrink-0 shadow-xs"
+                    className="h-8 w-8 rounded-lg bg-[#25D366] hover:bg-[#20bd5a] text-white flex items-center justify-center transition-colors shrink-0 shadow-2xs"
                     title="WhatsApp"
                   >
                     <MessageCircle className="h-4 w-4" />
@@ -387,12 +387,12 @@ export default function ComparePage() {
           {compareCount < maxItems && (
             <Link
               href="/classifieds"
-              className="border-2 border-dashed border-slate-200 hover:border-emerald-400 bg-slate-50/50 hover:bg-emerald-50/30 rounded-2xl p-6 flex flex-col items-center justify-center text-center transition-all group cursor-pointer"
+              className="border-2 border-dashed border-border hover:border-foreground/40 bg-muted/20 hover:bg-muted/50 rounded-2xl p-6 flex flex-col items-center justify-center text-center transition-all group cursor-pointer"
             >
-              <div className="h-12 w-12 rounded-full bg-white group-hover:bg-emerald-100 text-slate-400 group-hover:text-emerald-600 border border-slate-200 flex items-center justify-center mb-3 transition-colors shadow-xs">
+              <div className="h-12 w-12 rounded-full bg-card group-hover:bg-accent text-muted-foreground group-hover:text-foreground border border-border/80 flex items-center justify-center mb-3 transition-colors shadow-2xs">
                 <Plus className="h-6 w-6" />
               </div>
-              <span className="font-bold text-sm text-slate-700 group-hover:text-emerald-700 mb-1">
+              <span className="font-semibold text-sm text-foreground mb-1">
                 {isTg ? "Амволи дигарро илова кунед" : "Добавить объект"}
               </span>
               <span className="text-xs text-slate-400 max-w-[150px]">
@@ -418,7 +418,7 @@ export default function ComparePage() {
               render={(item) => (
                 <div className="font-bold text-slate-900 text-sm">
                   {formatPrice(item.priceTjs, item.priceUsd)}
-                  <span className="block text-[11px] text-slate-400 font-normal font-mono">
+                  <span className="block text-xs text-slate-400 font-normal font-mono">
                     {currency === "TJS" ? formatUSD(item.priceUsd) : formatTJS(item.priceTjs)}
                   </span>
                 </div>
@@ -436,7 +436,7 @@ export default function ComparePage() {
                     ? `${formatUSD(item.pricePerMeterUsd)} / м²`
                     : `${formatTJS(item.pricePerMeterTjs)} / м²`}
                   {bestMetrics.lowestPricePerMeterId === item.id && (
-                    <span className="block text-[10px] text-blue-600 font-semibold">
+                    <span className="block text-xs text-blue-600 font-semibold">
                       ★ {isTg ? "Аз ҳама мусоид" : "Выгоднее всего"}
                     </span>
                   )}
@@ -497,7 +497,7 @@ export default function ComparePage() {
                 <div className="font-extrabold text-slate-900 text-sm">
                   {item.area} м²
                   {bestMetrics.largestAreaId === item.id && (
-                    <span className="block text-[10px] text-purple-600 font-semibold">
+                    <span className="block text-xs text-purple-600 font-semibold">
                       ★ {isTg ? "Бузургтарин" : "Наибольшая"}
                     </span>
                   )}
@@ -730,7 +730,7 @@ export default function ComparePage() {
                   href={`https://wa.me/${item.whatsapp.replace(/\D/g, "")}`}
                   target="_blank"
                   rel="noreferrer"
-                  className="text-emerald-700 hover:text-emerald-800 text-[11px] font-medium flex items-center gap-1"
+                  className="text-emerald-700 hover:text-emerald-800 text-xs font-medium flex items-center gap-1"
                 >
                   <MessageCircle className="h-3 w-3 text-emerald-600" />
                   <span>Написать в WhatsApp</span>

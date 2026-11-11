@@ -303,7 +303,7 @@ export default function SuperAdminNavigationPage() {
                       variant="ghost"
                       size="sm"
                       onClick={() => handleOpenAdd(topItem.id, 1)}
-                      className="text-xs text-emerald-700 hover:text-emerald-800 hover:bg-emerald-50 gap-1"
+                      className="text-xs text-foreground hover:bg-muted gap-1"
                     >
                       <Plus className="h-3.5 w-3.5" />
                       <span>В Колонку 1</span>
@@ -313,7 +313,7 @@ export default function SuperAdminNavigationPage() {
                       variant="ghost"
                       size="sm"
                       onClick={() => handleOpenAdd(topItem.id, 2)}
-                      className="text-xs text-blue-700 hover:text-blue-800 hover:bg-blue-50 gap-1"
+                      className="text-xs text-foreground hover:bg-muted gap-1"
                     >
                       <Plus className="h-3.5 w-3.5" />
                       <span>В Колонку 2</span>
@@ -335,9 +335,9 @@ export default function SuperAdminNavigationPage() {
                   <div className="p-4 grid grid-cols-1 md:grid-cols-2 gap-6 bg-white">
                     {/* Column 1 */}
                     <div className="space-y-2">
-                      <div className="text-[11px] font-bold uppercase tracking-wider text-slate-400 pb-1 border-b border-slate-100 flex items-center justify-between">
+                      <div className="text-xs font-bold uppercase tracking-wider text-slate-400 pb-1 border-b border-slate-100 flex items-center justify-between">
                         <span>Колонка 1</span>
-                        <span className="text-slate-300 font-mono text-[10px]">{col1Items.length} элементов</span>
+                        <span className="text-slate-300 font-mono text-xs">{col1Items.length} элементов</span>
                       </div>
                       <div className="space-y-1">
                         {col1Items.map((child) => (
@@ -345,17 +345,17 @@ export default function SuperAdminNavigationPage() {
                             key={child.id}
                             className={`p-2.5 rounded-lg flex items-center justify-between text-xs transition-colors ${
                               child.type === "group-header"
-                                ? "bg-amber-50/70 border border-amber-200/80 font-bold text-amber-900 mt-2"
-                                : "hover:bg-slate-50 text-slate-700 pl-4 border border-transparent"
+                                ? "bg-muted border border-border/80 font-bold text-foreground mt-2"
+                                : "hover:bg-muted/50 text-foreground pl-4 border border-transparent"
                             }`}
                           >
                             <div className="flex items-center gap-2">
                               {child.type === "group-header" && (
-                                <Tag className="h-3.5 w-3.5 text-amber-600" />
+                                <Tag className="h-3.5 w-3.5 text-muted-foreground" />
                               )}
                               <span>{child.label.ru}</span>
                               {child.targetId && (
-                                <span className="font-mono text-[10px] text-slate-400">
+                                <span className="font-mono text-xs text-slate-400">
                                   ({child.targetId})
                                 </span>
                               )}
@@ -386,9 +386,9 @@ export default function SuperAdminNavigationPage() {
 
                     {/* Column 2 */}
                     <div className="space-y-2 border-t md:border-t-0 md:border-l border-slate-100 md:pl-6 pt-4 md:pt-0">
-                      <div className="text-[11px] font-bold uppercase tracking-wider text-slate-400 pb-1 border-b border-slate-100 flex items-center justify-between">
+                      <div className="text-xs font-bold uppercase tracking-wider text-slate-400 pb-1 border-b border-slate-100 flex items-center justify-between">
                         <span>Колонка 2</span>
-                        <span className="text-slate-300 font-mono text-[10px]">{col2Items.length} элементов</span>
+                        <span className="text-slate-300 font-mono text-xs">{col2Items.length} элементов</span>
                       </div>
                       <div className="space-y-1">
                         {col2Items.map((child) => (
@@ -396,17 +396,17 @@ export default function SuperAdminNavigationPage() {
                             key={child.id}
                             className={`p-2.5 rounded-lg flex items-center justify-between text-xs transition-colors ${
                               child.type === "group-header"
-                                ? "bg-amber-50/70 border border-amber-200/80 font-bold text-amber-900 mt-2"
-                                : "hover:bg-slate-50 text-slate-700 pl-4 border border-transparent"
+                                ? "bg-muted border border-border/80 font-bold text-foreground mt-2"
+                                : "hover:bg-muted/50 text-foreground pl-4 border border-transparent"
                             }`}
                           >
                             <div className="flex items-center gap-2">
                               {child.type === "group-header" && (
-                                <Tag className="h-3.5 w-3.5 text-amber-600" />
+                                <Tag className="h-3.5 w-3.5 text-muted-foreground" />
                               )}
                               <span>{child.label.ru}</span>
                               {child.targetId && (
-                                <span className="font-mono text-[10px] text-slate-400">
+                                <span className="font-mono text-xs text-slate-400">
                                   ({child.targetId})
                                 </span>
                               )}
@@ -489,7 +489,7 @@ export default function SuperAdminNavigationPage() {
               </p>
               <div className="grid grid-cols-3 gap-2">
                 <div>
-                  <Label className="text-[11px] text-slate-600">На русском (RU)</Label>
+                  <Label className="text-xs text-slate-600">На русском (RU)</Label>
                   <Input
                     value={labelRu}
                     onChange={(e) => setLabelRu(e.target.value)}
@@ -498,7 +498,7 @@ export default function SuperAdminNavigationPage() {
                   />
                 </div>
                 <div>
-                  <Label className="text-[11px] text-slate-600">На таджикском (TG)</Label>
+                  <Label className="text-xs text-slate-600">На таджикском (TG)</Label>
                   <Input
                     value={labelTg}
                     onChange={(e) => setLabelTg(e.target.value)}
@@ -507,7 +507,7 @@ export default function SuperAdminNavigationPage() {
                   />
                 </div>
                 <div>
-                  <Label className="text-[11px] text-slate-600">На английском (EN)</Label>
+                  <Label className="text-xs text-slate-600">На английском (EN)</Label>
                   <Input
                     value={labelEn}
                     onChange={(e) => setLabelEn(e.target.value)}

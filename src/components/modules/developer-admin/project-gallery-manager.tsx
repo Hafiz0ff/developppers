@@ -131,7 +131,7 @@ export function ProjectGalleryManager({
 
         {/* Quick sample photos */}
         <div className="flex items-center gap-2 text-xs text-muted-foreground flex-wrap">
-          <span className="text-[11px]">{isTg ? "Намунаҳои омода:" : "Готовые ракурсы:"}</span>
+          <span className="text-xs">{isTg ? "Намунаҳои омода:" : "Готовые ракурсы:"}</span>
           {[
             {
               label: isTg ? "+ Намои шабона" : "+ Ночной фасад",
@@ -150,7 +150,7 @@ export function ProjectGalleryManager({
               key={sample.label}
               type="button"
               onClick={() => handleAddSample(sample.url)}
-              className="text-[11px] px-2 py-0.5 rounded-md bg-muted hover:bg-muted/80 text-foreground transition-colors cursor-pointer"
+              className="text-xs px-2 py-0.5 rounded-md bg-muted hover:bg-muted/80 text-foreground transition-colors cursor-pointer"
             >
               {sample.label}
             </button>
@@ -179,11 +179,11 @@ export function ProjectGalleryManager({
                     className="w-full h-full object-cover"
                   />
                   <div className="absolute top-2 left-2 flex items-center gap-1.5">
-                    <span className="bg-black/60 backdrop-blur-md text-white text-[10px] font-mono font-bold px-2 py-0.5 rounded-md">
+                    <span className="bg-black/60 backdrop-blur-md text-white text-xs font-mono font-bold px-2 py-0.5 rounded-md">
                       #{idx + 1}
                     </span>
                     {isCover && (
-                      <Badge className="bg-emerald-600 text-white text-[10px] gap-1 font-semibold">
+                      <Badge className="bg-emerald-600 text-white text-xs gap-1 font-semibold">
                         <Star className="h-2.5 w-2.5 fill-white" />
                         {isTg ? "Муқова" : "Обложка"}
                       </Badge>
@@ -200,7 +200,7 @@ export function ProjectGalleryManager({
                         variant="outline"
                         size="sm"
                         onClick={() => handleMakeCover(idx)}
-                        className="h-7 px-2 text-[11px] font-semibold text-emerald-600 hover:bg-emerald-50 dark:hover:bg-emerald-950/30 gap-1 cursor-pointer"
+                        className="h-7 px-2 text-xs font-medium text-foreground hover:bg-muted gap-1 cursor-pointer"
                         title={
                           isTg
                             ? "Ҳамчун муқоваи асосии лоиҳа таъйин кардан"

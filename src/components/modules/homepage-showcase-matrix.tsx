@@ -86,7 +86,7 @@ export function HomepageShowcaseMatrix({ activeCity = "khujand" }: ShowcaseSecti
 
                 {/* Count Badge Inside Card (Purely numerical with +, larger & bolder, AC-12..15) */}
                 <div className="w-full relative z-10 flex justify-center pb-1.5">
-                  <span className="inline-flex items-center justify-center min-w-[70px] px-3.5 py-1 rounded-full text-sm font-extrabold tracking-wide text-slate-800 dark:text-slate-100 bg-slate-100/90 dark:bg-slate-800/90 border border-slate-200/90 dark:border-white/15 shadow-xs group-hover:border-emerald-500/50 group-hover:bg-emerald-50/90 dark:group-hover:bg-emerald-950/60 group-hover:text-emerald-700 dark:group-hover:text-emerald-300 transition-all select-none">
+                  <span className="inline-flex items-center justify-center min-w-[70px] px-3.5 py-1 rounded-full text-sm font-bold tracking-wide text-foreground bg-muted border border-border/80 shadow-2xs group-hover:border-foreground/30 group-hover:bg-accent transition-all select-none">
                     {item.badge}
                   </span>
                 </div>

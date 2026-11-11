@@ -86,16 +86,16 @@ export function PdfViewerModal({
         <div className="p-4 sm:p-5 border-b border-border bg-card flex flex-col sm:flex-row sm:items-center justify-between gap-3 shrink-0">
           <div className="space-y-1 min-w-0">
             <div className="flex items-center gap-2 flex-wrap">
-              <Badge variant="outline" className="bg-rose-500/10 text-rose-600 border-rose-200 text-[10px] font-mono py-0">
+              <Badge variant="outline" className="bg-rose-500/10 text-rose-600 border-rose-200 text-xs font-mono py-0">
                 PDF • {sizeFormatted}
               </Badge>
               {doc.documentNumber && (
-                <span className="text-[11px] font-mono text-muted-foreground">
+                <span className="text-xs font-mono text-muted-foreground">
                   № {doc.documentNumber}
                 </span>
               )}
               <span className="text-xs text-muted-foreground">•</span>
-              <span className="text-[11px] text-muted-foreground flex items-center gap-1">
+              <span className="text-xs text-muted-foreground flex items-center gap-1">
                 <Calendar className="h-3 w-3" />
                 {tDual("Размещён:", "Нашр:")} {publishedDateFormatted}
               </span>
@@ -195,7 +195,7 @@ export function PdfViewerModal({
         </div>
 
         {/* Footer Notification */}
-        <div className="px-4 py-2.5 bg-muted/30 border-t border-border flex items-center justify-between text-[11px] text-muted-foreground shrink-0">
+        <div className="px-4 py-2.5 bg-muted/30 border-t border-border flex items-center justify-between text-xs text-muted-foreground shrink-0">
           <div className="flex items-center gap-1.5">
             <ShieldCheck className="h-3.5 w-3.5 text-emerald-600 shrink-0" />
             <span>
@@ -207,7 +207,7 @@ export function PdfViewerModal({
           </div>
 
           {isWatermarkEnabled && (
-            <span className="text-[10px] text-muted-foreground hidden sm:inline font-mono">
+            <span className="text-xs text-muted-foreground hidden sm:inline font-mono">
               {tDual("Защищено водяным знаком", "Бо нишонаи обӣ ҳифзшуда")}
             </span>
           )}

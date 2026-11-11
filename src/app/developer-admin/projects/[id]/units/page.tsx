@@ -99,22 +99,22 @@ export default function DeveloperProjectUnitsPage() {
       </div>
 
       {lastUpdated && (
-        <div className="p-3 rounded-lg bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-300 text-emerald-800 dark:text-emerald-300 text-xs font-semibold flex items-center gap-2">
-          <CheckCircle2 className="h-4 w-4 shrink-0" />
+        <div className="p-3 rounded-lg border-l-2 border-l-emerald-600 bg-muted/60 border border-border/60 text-xs text-foreground flex items-center gap-2">
+          <CheckCircle2 className="h-4 w-4 shrink-0 text-emerald-600" />
           <span>{lastUpdated}</span>
         </div>
       )}
 
       {/* Info notice about backoffice mode */}
-      <div className="bg-card border rounded-xl p-3.5 flex items-start gap-3 text-xs">
-        <div className="h-7 w-7 rounded-lg bg-emerald-600/10 text-emerald-700 dark:text-emerald-300 flex items-center justify-center shrink-0">
+      <div className="bg-card border border-border/80 rounded-xl p-3.5 flex items-start gap-3 text-xs">
+        <div className="h-7 w-7 rounded-lg bg-muted text-foreground flex items-center justify-center shrink-0">
           <Building2 className="h-4 w-4" />
         </div>
         <div className="space-y-0.5">
           <p className="font-bold text-foreground">
             {tDual("Режим управления шахматкой активен:", "Реҷаи идоракунии ҷадвал фаъол аст:")}
           </p>
-          <p className="text-muted-foreground text-[11px]">
+          <p className="text-muted-foreground text-xs">
             {tDual(
               "Кликните на любую квартиру на сетке или в таблице, чтобы мгновенно сменить ее статус (Свободно / Бронь / Продано). Изменения отобразятся покупателям в реальном времени.",
               "Ба дилхоҳ хонадон дар ҷадвал ё рӯйхат клик намоед, то ҳолати онро зуд тағйир диҳед (Озод / Брон / Фурӯхта шуд). Тағйирот дар реҷаи вақти воқеӣ ба харидорон нишон дода мешавад."

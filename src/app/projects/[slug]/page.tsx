@@ -465,7 +465,7 @@ export default function PublicProjectPage() {
                       key={idx}
                       className="p-3 rounded-xl bg-card border space-y-1"
                     >
-                      <span className="text-muted-foreground text-[11px] block truncate" title={spec.label}>
+                      <span className="text-muted-foreground text-xs block truncate" title={spec.label}>
                         {spec.label}:
                       </span>
                       <strong
@@ -603,7 +603,7 @@ export default function PublicProjectPage() {
                     </a>
                     <Link
                       href={`/map?city=${project.city}`}
-                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200/60 text-xs font-semibold transition-colors"
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-muted/60 hover:bg-muted text-foreground border border-border/60 text-xs font-medium transition-colors"
                     >
                       <ExternalLink className="w-3.5 h-3.5" />
                       <span>{tDual("На карте Согда", "Дар харитаи Суғд")}</span>
@@ -666,14 +666,14 @@ export default function PublicProjectPage() {
                   <h4 className="font-bold text-sm text-foreground">
                     {developer.name}
                   </h4>
-                  <p className="text-[11px] text-muted-foreground">
+                  <p className="text-xs text-muted-foreground">
                     {tDual("Официальный застройщик в Согдийской области", "Сохтмончии расмӣ дар вилояти Суғд")}
                   </p>
                 </div>
               </div>
 
               <div className="space-y-2 text-xs border-t pt-3">
-                <div className="text-[11px] text-muted-foreground">
+                <div className="text-xs text-muted-foreground">
                   {tDual("Адрес офиса продаж:", "Суроғаи дафтари фурӯш:")}
                 </div>
                 <div className="font-medium text-foreground">
@@ -711,7 +711,7 @@ export default function PublicProjectPage() {
                       </Button>
                     </div>
 
-                    <div className="text-[11px] text-center text-muted-foreground pt-0.5">
+                    <div className="text-xs text-center text-muted-foreground pt-0.5">
                       {tDual(
                         `Принимаем звонки с ${crmSettings.workHoursStart} до ${crmSettings.workHoursEnd}`,
                         `Қабули зангҳо аз ${crmSettings.workHoursStart} то ${crmSettings.workHoursEnd}`
@@ -776,7 +776,7 @@ export default function PublicProjectPage() {
                   <Percent className="h-4 w-4 text-emerald-600" />
                   {tDual("Беспроцентная рассрочка", "Пардохти қисм-қисми бефоиз")}
                 </div>
-                <p className="text-muted-foreground text-[11px] leading-relaxed">
+                <p className="text-muted-foreground text-xs leading-relaxed">
                   {language === "tg" ? (
                     <>
                       Сохтмончӣ пардохти қисм-қисми бефоизро то{" "}

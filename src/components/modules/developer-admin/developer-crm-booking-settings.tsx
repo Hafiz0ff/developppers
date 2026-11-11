@@ -240,7 +240,7 @@ export function DeveloperCrmBookingSettings({
     <div className="space-y-4">
       {/* Toast Notice */}
       {successBanner && (
-        <div className="flex items-center gap-2 text-xs font-semibold text-emerald-800 bg-emerald-50 dark:bg-emerald-950/40 p-3.5 rounded-xl border border-emerald-300 dark:border-emerald-800 animate-in fade-in">
+        <div className="flex items-center gap-2 text-xs font-medium text-foreground border-l-2 border-l-emerald-600 bg-muted/60 p-3.5 rounded-xl border border-border/60 animate-in fade-in">
           <CheckCircle2 className="h-4 w-4 text-emerald-600 shrink-0" />
           <span>{successBanner}</span>
         </div>
@@ -252,7 +252,7 @@ export function DeveloperCrmBookingSettings({
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div className="space-y-1">
               <CardTitle className="text-base font-bold text-foreground flex items-center gap-2">
-                <PhoneCall className="h-4 w-4 text-emerald-600 shrink-0" />
+                <PhoneCall className="h-4 w-4 text-primary shrink-0" />
                 <span>
                   {tDual(
                     "Заявки на бронирование и звонки",
@@ -272,21 +272,17 @@ export function DeveloperCrmBookingSettings({
             {/* Right Controls: CRM Badge + Question Icon (to the left of Switch) + Switch */}
             <div className="flex items-center gap-3 self-start sm:self-center">
               <Badge
-                variant="outline"
-                className={`text-[11px] px-2.5 py-1 font-semibold flex items-center gap-1.5 ${
-                  settings.crmConnected
-                    ? "bg-emerald-50 text-emerald-700 border-emerald-300 dark:bg-emerald-950/40 dark:text-emerald-300"
-                    : "bg-slate-100 text-slate-600 border-slate-300 dark:bg-slate-800 dark:text-slate-400"
-                }`}
+                variant="secondary"
+                className="text-xs px-2.5 py-1 font-normal flex items-center gap-1.5"
               >
                 {settings.crmConnected ? (
                   <>
-                    <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
+                    <span className="h-2 w-2 rounded-full bg-emerald-500" />
                     <span>{tDual("CRM подключена", "CRM васл шуд")}</span>
                   </>
                 ) : (
                   <>
-                    <span className="h-2 w-2 rounded-full bg-slate-400" />
+                    <span className="h-2 w-2 rounded-full bg-muted-foreground" />
                     <span>{tDual("CRM не подключена", "CRM васл нест")}</span>
                   </>
                 )}
@@ -460,7 +456,7 @@ export function DeveloperCrmBookingSettings({
 
           {/* STATE 2 (Section 3.3): CRM CONNECTED, SCENARIO OFF */}
           {settings.crmConnected && !settings.bookingScenarioEnabled && (
-            <div className="p-5 rounded-2xl bg-amber-500/10 border border-amber-500/20 space-y-4">
+            <div className="p-5 rounded-2xl bg-card border border-border/80 shadow-xs space-y-4">
               <div className="space-y-1.5">
                 <h3 className="text-sm font-bold text-foreground">
                   {tDual(
@@ -514,10 +510,10 @@ export function DeveloperCrmBookingSettings({
 
           {/* STATE 3 (Section 3.4): CRM CONNECTED & SCENARIO ON (Promotional texts hidden) */}
           {settings.crmConnected && settings.bookingScenarioEnabled && (
-            <div className="p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div className="p-4 rounded-2xl bg-card border border-border/80 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div className="flex flex-wrap items-center gap-3 text-xs">
-                <div className="inline-flex items-center gap-1.5 font-bold text-emerald-700 dark:text-emerald-400">
-                  <CheckCircle2 className="h-4 w-4" />
+                <div className="inline-flex items-center gap-1.5 font-bold text-foreground">
+                  <CheckCircle2 className="h-4 w-4 text-primary" />
                   <span>
                     {tDual(
                       "Сценарий бронирования и звонков активен",
@@ -527,7 +523,7 @@ export function DeveloperCrmBookingSettings({
                 </div>
                 <span className="text-muted-foreground hidden sm:inline">•</span>
                 <div className="flex items-center gap-1.5 text-muted-foreground">
-                  <Clock className="h-3.5 w-3.5 text-emerald-600" />
+                  <Clock className="h-3.5 w-3.5 text-muted-foreground" />
                   <span>
                     {tDual("Принимаем звонки с", "Қабули зангҳо аз")}{" "}
                     <strong className="text-foreground">

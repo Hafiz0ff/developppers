@@ -89,7 +89,7 @@ export function ProjectInsolationSettings({
 
       <CardContent className="p-4 space-y-4">
         {saved && (
-          <div className="p-2.5 rounded-lg bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-300 text-emerald-800 dark:text-emerald-300 text-xs font-semibold flex items-center gap-2">
+          <div className="p-2.5 rounded-lg border-l-2 border-l-emerald-600 bg-muted/60 border border-border/60 text-xs text-foreground flex items-center gap-2">
             <CheckCircle2 className="h-4 w-4 shrink-0" />
             {isTg ? "Самти намои бино сабт шуд!" : "Ориентация фасада сохранена!"}
           </div>
@@ -116,7 +116,7 @@ export function ProjectInsolationSettings({
                 onChange={(e) => handleAngleChange(parseInt(e.target.value, 10))}
                 className="w-full h-2 bg-slate-200 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer accent-emerald-600"
               />
-              <div className="flex justify-between text-[10px] text-muted-foreground font-mono">
+              <div className="flex justify-between text-xs text-muted-foreground font-mono">
                 <span>0° ({isTg ? "Шимол" : "Север"})</span>
                 <span>90° ({isTg ? "Шарқ" : "Восток"})</span>
                 <span>180° ({isTg ? "Ҷануб" : "Юг"})</span>
@@ -127,7 +127,7 @@ export function ProjectInsolationSettings({
 
             {/* Quick Presets */}
             <div className="flex items-center gap-1.5 flex-wrap text-xs">
-              <span className="text-[11px] text-muted-foreground">
+              <span className="text-xs text-muted-foreground">
                 {isTg ? "Шаблонҳо:" : "Пресеты:"}
               </span>
               {[
@@ -140,7 +140,7 @@ export function ProjectInsolationSettings({
                   key={p.label}
                   type="button"
                   onClick={() => handleAngleChange(p.val)}
-                  className={`text-[11px] px-2 py-1 rounded-md border transition-colors cursor-pointer ${
+                  className={`text-xs px-2 py-1 rounded-md border transition-colors cursor-pointer ${
                     angle === p.val
                       ? "bg-emerald-600 text-white border-emerald-600 font-semibold"
                       : "bg-muted/40 hover:bg-muted text-foreground border-border/60"
@@ -157,7 +157,7 @@ export function ProjectInsolationSettings({
                 <Sun className="h-3.5 w-3.5 text-amber-500 fill-amber-500" />
                 {isTg ? "Арзёбии инсолятсия:" : "Оценка инсоляции:"}
               </div>
-              <p className="text-[11px] leading-relaxed opacity-90">
+              <p className="text-xs leading-relaxed opacity-90">
                 {getInsolationAdvice(angle)}
               </p>
             </div>
@@ -173,7 +173,7 @@ export function ProjectInsolationSettings({
               <div className="text-xs font-bold text-foreground">
                 {isTg ? "Қутбнамои витрина ҳамоҳанг шуд" : "Компас витрины синхронизирован"}
               </div>
-              <div className="text-[11px] text-muted-foreground">
+              <div className="text-xs text-muted-foreground">
                 {isTg
                   ? `Траекторияи офтоб бо назардошти самти намои ${angle}° ҳисоб карда мешавад`
                   : `Траектория солнца рассчитывается с учётом ориентации фасада ${angle}°`}

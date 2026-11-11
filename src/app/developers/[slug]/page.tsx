@@ -306,11 +306,11 @@ export default function PublicDeveloperPage() {
               </div>
 
               {leadSuccess ? (
-                <div className="p-4 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-300 text-emerald-800 dark:text-emerald-300 text-xs font-semibold flex items-start gap-2.5">
+                <div className="p-4 rounded-xl border-l-2 border-l-emerald-600 bg-muted/60 border border-border/60 text-xs text-foreground flex items-start gap-2.5">
                   <CheckCircle2 className="h-5 w-5 shrink-0 text-emerald-600 mt-0.5" />
                   <div>
                     <p className="font-bold">{tDual("Заявка успешно отправлена!", "Дархост бомуваффақият қабул шуд!")}</p>
-                    <p className="font-normal text-[11px] mt-0.5">
+                    <p className="font-normal text-xs mt-0.5">
                       {tDual(
                         "Отдел продаж «" + developer.name + "» уже получил ваше обращение.",
                         "Шуъбаи фурӯши «" + displayName + "» муроҷиати шуморо қабул намуд."
@@ -321,7 +321,7 @@ export default function PublicDeveloperPage() {
               ) : (
                 <form onSubmit={handleLeadSubmit} className="space-y-3">
                   <div>
-                    <label className="text-[11px] font-medium text-muted-foreground block mb-1">
+                    <label className="text-xs font-medium text-muted-foreground block mb-1">
                       {tDual("Ваше имя", "Номи шумо")}
                     </label>
                     <Input
@@ -333,7 +333,7 @@ export default function PublicDeveloperPage() {
                   </div>
 
                   <div>
-                    <label className="text-[11px] font-medium text-muted-foreground block mb-1">
+                    <label className="text-xs font-medium text-muted-foreground block mb-1">
                       {tDual("Номер телефона (WhatsApp) *", "Рақами телефон (WhatsApp) *")}
                     </label>
                     <Input
@@ -347,7 +347,7 @@ export default function PublicDeveloperPage() {
 
                   {projects.length > 1 && (
                     <div>
-                      <label className="text-[11px] font-medium text-muted-foreground block mb-1">
+                      <label className="text-xs font-medium text-muted-foreground block mb-1">
                         {tDual("Интересующий жилой комплекс", "Маҷмааи истиқоматии мавриди таваҷҷуҳ")}
                       </label>
                       <select
@@ -381,7 +381,7 @@ export default function PublicDeveloperPage() {
                 </form>
               )}
 
-              <div className="pt-2 border-t text-[11px] text-muted-foreground flex items-center gap-1.5">
+              <div className="pt-2 border-t text-xs text-muted-foreground flex items-center gap-1.5">
                 <Clock className="h-3.5 w-3.5 text-emerald-600 shrink-0" />
                 <span>{tDual("Отдел продаж: Пн–Сб 08:30–18:00", "Шуъбаи фурӯш: Дш–Шб 08:30–18:00")}</span>
               </div>
@@ -481,22 +481,22 @@ export default function PublicDeveloperPage() {
                       {/* Amenities Chips */}
                       <div className="flex flex-wrap gap-1.5 pt-1">
                         {proj.hasUndergroundParking && (
-                          <span className="text-[11px] px-2 py-0.5 rounded-md bg-muted text-muted-foreground">
+                          <span className="text-xs px-2 py-0.5 rounded-md bg-muted text-muted-foreground">
                             🚗 {tDual("Паркинг", "Таваққуфгоҳ")}
                           </span>
                         )}
                         {proj.hasAutonomousHeating && (
-                          <span className="text-[11px] px-2 py-0.5 rounded-md bg-muted text-muted-foreground">
+                          <span className="text-xs px-2 py-0.5 rounded-md bg-muted text-muted-foreground">
                             🔥 {tDual("Отопление", "Гармидиҳӣ")}
                           </span>
                         )}
                         {proj.hasElevator && (
-                          <span className="text-[11px] px-2 py-0.5 rounded-md bg-muted text-muted-foreground">
+                          <span className="text-xs px-2 py-0.5 rounded-md bg-muted text-muted-foreground">
                             ⚡ {tDual("Лифт", "Лифт")}
                           </span>
                         )}
                         {proj.floorsCount && (
-                          <span className="text-[11px] px-2 py-0.5 rounded-md bg-muted text-muted-foreground">
+                          <span className="text-xs px-2 py-0.5 rounded-md bg-muted text-muted-foreground">
                             🏢 {proj.floorsCount} {tDual("эт.", "ош.")}
                           </span>
                         )}

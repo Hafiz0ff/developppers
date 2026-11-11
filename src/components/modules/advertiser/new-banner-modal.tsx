@@ -5,7 +5,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { Sparkles, Layers, ArrowRight, UploadCloud, CheckCircle2 } from "lucide-react";
+import { Layers, ArrowRight, Upload, UploadCloud, CheckCircle2 } from "lucide-react";
 
 interface NewBannerModalProps {
   open: boolean;
@@ -76,8 +76,8 @@ export function NewBannerModal({ open, onOpenChange, advertiserId, onSuccess }: 
       <DialogContent className="max-w-xl p-6 sm:p-7 bg-white text-slate-900 border border-slate-200 rounded-2xl shadow-2xl">
         <DialogHeader className="border-b border-slate-100 pb-3">
           <div className="flex items-center gap-2">
-            <div className="h-9 w-9 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center border border-emerald-100">
-              <Sparkles className="h-4 w-4" />
+            <div className="h-9 w-9 rounded-xl bg-muted text-foreground flex items-center justify-center border border-border/60">
+              <Upload className="h-4 w-4" />
             </div>
             <div>
               <DialogTitle className="text-base font-bold text-slate-900">
@@ -177,12 +177,12 @@ export function NewBannerModal({ open, onOpenChange, advertiserId, onSuccess }: 
                   onClick={() => setSlot(s.id as any)}
                   className={`p-2.5 rounded-xl border text-left transition-all cursor-pointer ${
                     slot === s.id
-                      ? "border-emerald-600 bg-emerald-50/70 text-emerald-950 font-bold"
-                      : "border-slate-200 hover:bg-slate-50 text-slate-700"
+                      ? "border-foreground/40 bg-accent/20 text-foreground font-semibold"
+                      : "border-border hover:bg-muted text-muted-foreground"
                   }`}
                 >
                   <div className="text-xs">{s.name}</div>
-                  <div className="text-[10px] text-slate-500 font-normal mt-0.5">{s.desc}</div>
+                  <div className="text-xs text-slate-500 font-normal mt-0.5">{s.desc}</div>
                 </button>
               ))}
             </div>

@@ -54,13 +54,13 @@ export function ProjectEngagementHeaderPill({ slug, autoRecordView = true }: Pro
           <div
             className={`h-7 w-7 rounded-lg flex items-center justify-center transition-colors shrink-0 ${
               isFavorite
-                ? "bg-rose-100 text-rose-600 dark:bg-rose-950/60"
-                : "bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-300 group-hover:bg-rose-50 group-hover:text-rose-500"
+                ? "bg-accent/20 text-foreground"
+                : "bg-muted text-muted-foreground group-hover:bg-accent group-hover:text-foreground"
             }`}
           >
             <Heart
               className={`h-3.5 w-3.5 transition-transform group-hover:scale-110 ${
-                isFavorite ? "fill-rose-600 text-rose-600" : ""
+                isFavorite ? "fill-primary text-primary" : ""
               }`}
             />
           </div>
@@ -94,7 +94,7 @@ export function ProjectCatalogCardBadge({ slug }: { slug: string }) {
         e.preventDefault();
         e.stopPropagation();
       }}
-      className="inline-flex items-center gap-2 bg-black/25 hover:bg-black/35 backdrop-blur-xl border border-white/25 px-2.5 py-1.5 rounded-xl text-white text-xs font-semibold shadow-[0_4px_16px_rgba(0,0,0,0.25),inset_0_1px_1.5px_rgba(255,255,255,0.35)] drop-shadow-[0_1px_2px_rgba(0,0,0,0.7)] select-none transition-all"
+      className="inline-flex items-center gap-2 bg-black/40 hover:bg-black/55 backdrop-blur-md border border-white/20 px-2.5 py-1.5 rounded-xl text-white text-xs font-semibold shadow-xs select-none transition-all"
     >
       <button
         type="button"
@@ -106,8 +106,8 @@ export function ProjectCatalogCardBadge({ slug }: { slug: string }) {
             : tDual("Добавить в избранное", "Ба баргузидаҳо илова кардан")
         }
       >
-        <Heart className={`h-3.5 w-3.5 transition-colors ${isFavorite ? "fill-rose-500 text-rose-400 drop-shadow-[0_0_8px_rgba(244,63,94,0.9)]" : "text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.7)]"}`} />
-        <span className="drop-shadow-[0_1px_2px_rgba(0,0,0,0.7)]">{stats.favoritesCount}</span>
+        <Heart className={`h-3.5 w-3.5 transition-colors ${isFavorite ? "fill-rose-500 text-rose-400" : "text-white"}`} />
+        <span>{stats.favoritesCount}</span>
       </button>
 
       <span className="text-white/40">•</span>
@@ -116,8 +116,8 @@ export function ProjectCatalogCardBadge({ slug }: { slug: string }) {
         className="inline-flex items-center gap-1"
         title={tDual("Уникальных просмотров", "Шумораи боздидҳои беназир")}
       >
-        <Eye className="h-3.5 w-3.5 text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.7)]" />
-        <span className="drop-shadow-[0_1px_2px_rgba(0,0,0,0.7)]">{stats.viewsCount}</span>
+        <Eye className="h-3.5 w-3.5 text-white" />
+        <span>{stats.viewsCount}</span>
       </div>
     </div>
   );

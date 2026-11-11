@@ -308,12 +308,12 @@ export function ProjectConstructionTimeline({
             <div className="space-y-1">
               <div className="flex items-center gap-1.5">
                 {isCompleted ? (
-                  <Badge variant="emerald" className="rounded-xl px-2.5 py-0.5 text-[11px] font-bold">
+                  <Badge variant="emerald" className="rounded-xl px-2.5 py-0.5 text-xs font-bold">
                     <CheckCircle2 className="h-3 w-3 mr-1" />
                     {tDual("Сдан в эксплуатацию", "Ба истифода дода шуд")}
                   </Badge>
                 ) : (
-                  <Badge variant="emerald" className="rounded-xl px-2.5 py-0.5 text-[11px] font-bold animate-pulse">
+                  <Badge variant="emerald" className="rounded-xl px-2.5 py-0.5 text-xs font-bold animate-pulse">
                     <Clock className="h-3 w-3 mr-1" />
                     {tDual("Активное строительство", "Сохтмони фаъол")}
                   </Badge>
@@ -333,7 +333,7 @@ export function ProjectConstructionTimeline({
                 )}
               </div>
               {developerName && (
-                <div className="text-[11px] text-slate-400">
+                <div className="text-xs text-slate-400">
                   {tDual("Застройщик:", "Сохтмончӣ:")} {developerName}
                 </div>
               )}
@@ -353,28 +353,26 @@ export function ProjectConstructionTimeline({
             </span>
           </div>
 
-          <div className="h-3.5 w-full rounded-full bg-slate-200/80 dark:bg-slate-800/80 p-0.5 overflow-hidden backdrop-blur-md shadow-inner">
+          <div className="h-3.5 w-full rounded-full bg-muted p-0.5 overflow-hidden shadow-inner">
             <motion.div
               initial={{ width: 0 }}
               animate={{ width: `${readinessPercent}%` }}
               transition={{ duration: 1.2, ease: "easeOut" }}
-              className="h-full rounded-full bg-gradient-to-r from-emerald-600 via-teal-400 to-emerald-400 shadow-[0_0_16px_rgba(16,185,129,0.6)] relative"
-            >
-              <div className="absolute inset-0 bg-white/20 animate-pulse" />
-            </motion.div>
+              className="h-full rounded-full bg-primary shadow-xs relative"
+            />
           </div>
         </div>
 
         {/* VIEW TOGGLE TABS */}
         <div className="flex items-center justify-between flex-wrap gap-3">
-          <div className="inline-flex p-1 rounded-2xl glass-card border border-slate-200/80 dark:border-white/10 shadow-xs">
+          <div className="inline-flex p-1 rounded-2xl bg-muted/60 border border-border/60 shadow-xs">
             <button
               type="button"
               onClick={() => setActiveTab("stages")}
               className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${
                 activeTab === "stages"
-                  ? "bg-emerald-600 text-white shadow-md shadow-emerald-600/30"
-                  : "text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white"
+                  ? "bg-background text-foreground shadow-xs"
+                  : "text-muted-foreground hover:text-foreground"
               }`}
             >
               {tDual("6 Этапов строительства", "6 Марҳилаи сохтмон")}
@@ -384,8 +382,8 @@ export function ProjectConstructionTimeline({
               onClick={() => setActiveTab("chronology")}
               className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${
                 activeTab === "chronology"
-                  ? "bg-emerald-600 text-white shadow-md shadow-emerald-600/30"
-                  : "text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white"
+                  ? "bg-background text-foreground shadow-xs"
+                  : "text-muted-foreground hover:text-foreground"
               }`}
             >
               {tDual(
@@ -395,7 +393,7 @@ export function ProjectConstructionTimeline({
             </button>
           </div>
 
-          <div className="text-xs text-slate-500 hidden sm:block">
+          <div className="text-xs text-muted-foreground hidden sm:block">
             {tDual(
               "Данные обновляются инженерами технадзора",
               "Маълумот аз ҷониби муҳандисони назорат нав карда мешавад"
@@ -422,10 +420,10 @@ export function ProjectConstructionTimeline({
                   key={stage.id}
                   className={`p-5 rounded-2xl transition-all duration-300 flex flex-col justify-between border ${
                     stage.status === "completed"
-                      ? "bg-emerald-500/[0.04] border-emerald-500/30 hover:border-emerald-500/50"
+                      ? "bg-primary/5 border-primary/30 hover:border-primary/50"
                       : stage.status === "in_progress"
-                      ? "glass-card border-emerald-500/50 shadow-[0_12px_28px_-8px_rgba(16,185,129,0.2)] ring-2 ring-emerald-400/25"
-                      : "bg-slate-50/50 dark:bg-slate-900/40 border-slate-200/70 dark:border-white/10 opacity-75"
+                      ? "bg-card border-border/80 shadow-xs ring-2 ring-primary/20"
+                      : "bg-muted/30 border-border/60 opacity-75"
                   }`}
                 >
                   <div className="space-y-3">
@@ -434,31 +432,31 @@ export function ProjectConstructionTimeline({
                         <div
                           className={`h-9 w-9 rounded-xl flex items-center justify-center ${
                             stage.status === "completed"
-                              ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300"
+                              ? "bg-primary/10 text-primary"
                               : stage.status === "in_progress"
-                              ? "bg-emerald-600 text-white shadow-md shadow-emerald-500/30 animate-pulse"
-                              : "bg-slate-200 text-slate-500 dark:bg-slate-800 dark:text-slate-400"
+                              ? "bg-primary text-primary-foreground shadow-xs"
+                              : "bg-muted text-muted-foreground"
                           }`}
                         >
                           <StageIcon className="h-4 w-4" />
                         </div>
-                        <span className="text-[11px] font-bold text-slate-400 font-mono">
+                        <span className="text-xs font-bold text-muted-foreground font-mono">
                           {idx + 1} / 6
                         </span>
                       </div>
 
                       {stage.status === "completed" ? (
-                        <Badge variant="emerald" className="rounded-xl text-[10px] px-2 py-0.5 font-bold">
+                        <Badge variant="emerald" className="rounded-xl text-xs px-2 py-0.5 font-bold">
                           <CheckCircle2 className="h-3 w-3 mr-1" />
                           {tDual("Завершено", "Анҷом ёфт")}
                         </Badge>
                       ) : stage.status === "in_progress" ? (
-                        <Badge variant="emerald" className="rounded-xl text-[10px] px-2 py-0.5 font-bold">
+                        <Badge variant="emerald" className="rounded-xl text-xs px-2 py-0.5 font-bold">
                           <Clock className="h-3 w-3 mr-1" />
                           {stage.percentage}% • {tDual("В процессе", "Дар ҳоли иҷро")}
                         </Badge>
                       ) : (
-                        <Badge variant="frostedLight" className="rounded-xl text-[10px] px-2 py-0.5 font-semibold text-slate-500">
+                        <Badge variant="frostedLight" className="rounded-xl text-xs px-2 py-0.5 font-semibold text-slate-500">
                           {tDual("В плане", "Дар нақша")}
                         </Badge>
                       )}
@@ -476,7 +474,7 @@ export function ProjectConstructionTimeline({
 
                   {/* Individual Stage Mini Progress */}
                   <div className="pt-4 mt-3 border-t border-slate-200/60 dark:border-white/10 space-y-1.5">
-                    <div className="flex items-center justify-between text-[11px] text-slate-500 font-medium">
+                    <div className="flex items-center justify-between text-xs text-slate-500 font-medium">
                       <span>{tDual("Готовность этапа", "Омодагии марҳила")}</span>
                       <span className="font-mono font-bold text-slate-900 dark:text-white">
                         {stage.percentage}%
@@ -486,10 +484,10 @@ export function ProjectConstructionTimeline({
                       <div
                         className={`h-full rounded-full transition-all duration-700 ${
                           stage.status === "completed"
-                            ? "bg-emerald-500"
+                            ? "bg-primary"
                             : stage.status === "in_progress"
-                            ? "bg-gradient-to-r from-emerald-500 to-teal-400"
-                            : "bg-slate-300 dark:bg-slate-700"
+                            ? "bg-primary"
+                            : "bg-muted-foreground/30"
                         }`}
                         style={{ width: `${stage.percentage}%` }}
                       />
@@ -536,7 +534,7 @@ export function ProjectConstructionTimeline({
                         )}
                       </div>
 
-                      <div className="text-[11px] text-slate-400 flex items-center gap-1">
+                      <div className="text-xs text-slate-400 flex items-center gap-1">
                         <Camera className="h-3 w-3 text-emerald-600" />
                         <span>
                           {report.photos.length}{" "}
@@ -622,7 +620,7 @@ export function ConstructionMiniBadge({
 
   if (isCompleted) {
     return (
-      <Badge variant="emerald" className="rounded-xl px-2 py-0.5 text-[10px] font-bold shadow-xs">
+      <Badge variant="emerald" className="rounded-xl px-2 py-0.5 text-xs font-bold shadow-xs">
         <CheckCircle2 className="h-3 w-3 mr-1" />
         {tDual("Сдан", "Супоридашуда")}
       </Badge>
@@ -634,7 +632,7 @@ export function ConstructionMiniBadge({
     : "2027";
 
   return (
-    <Badge variant="frosted" className="rounded-xl px-2 py-0.5 text-[10px] font-bold shadow-xs gap-1">
+    <Badge variant="frosted" className="rounded-xl px-2 py-0.5 text-xs font-bold shadow-xs gap-1">
       <HardHat className="h-3 w-3 text-emerald-400" />
       <span>{deadline}</span>
     </Badge>

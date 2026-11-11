@@ -55,7 +55,7 @@ export default async function BlogArticlePage({ params, searchParams }: Props) {
   const otherArticles = BLOG_ARTICLES.filter((a) => a.slug !== slug).slice(0, 3);
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] dark:bg-slate-950 pb-20">
+    <div className="min-h-screen bg-background dark:bg-slate-950 pb-20">
       {/* Top Breadcrumb Bar */}
       <div className="bg-white/80 dark:bg-slate-900/80 border-b border-slate-200/80 dark:border-slate-800 sticky top-0 z-30 backdrop-blur-md">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 py-3.5 flex items-center justify-between">
@@ -145,7 +145,7 @@ export default async function BlogArticlePage({ params, searchParams }: Props) {
         </div>
 
         {/* Bottom CTA / Consultation Card */}
-        <div className="mt-12 p-6 sm:p-8 rounded-2xl bg-gradient-to-br from-emerald-950 via-slate-900 to-slate-950 text-white border border-emerald-500/30 shadow-xl flex flex-col sm:flex-row items-center justify-between gap-6">
+        <div className="mt-12 p-6 sm:p-8 rounded-2xl bg-slate-900 text-white border border-slate-800 shadow-xs flex flex-col sm:flex-row items-center justify-between gap-6">
           <div className="space-y-1.5 text-center sm:text-left">
             <div className="inline-flex items-center gap-1.5 text-xs text-emerald-400 font-bold uppercase tracking-wider">
               <Sparkles className="h-3.5 w-3.5" />
@@ -190,7 +190,7 @@ export default async function BlogArticlePage({ params, searchParams }: Props) {
                   <h4 className="font-bold text-xs text-slate-900 dark:text-white line-clamp-2 group-hover:text-emerald-600 transition-colors">
                     {isTg ? rel.titleTg : rel.title}
                   </h4>
-                  <p className="text-[11px] text-slate-400">
+                  <p className="text-xs text-slate-400">
                     {rel.publishedAt}
                   </p>
                 </div>

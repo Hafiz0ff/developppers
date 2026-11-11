@@ -83,7 +83,7 @@ export function NewBuildingPriceBlock({
     <div className={`pt-3 border-t border-slate-100 space-y-1.5 ${className}`}>
       {/* 1. Стоимость объекта */}
       <div className="flex items-baseline justify-between gap-2">
-        <span className="text-[11px] font-medium text-slate-500">
+        <span className="text-xs font-medium text-slate-500">
           {tDual("Стоимость квартир:", "Нархи хонадонҳо:")}
         </span>
         <span className="text-lg font-bold text-emerald-600 tracking-tight">

@@ -53,7 +53,7 @@ export function PhotoUploader({ urls, onChange, disabled }: Props) {
     <div className="space-y-3">
       <label
         className={`block border-2 border-dashed rounded-xl p-6 text-center text-sm ${
-          disabled ? "opacity-50" : "border-emerald-200 bg-emerald-50/40 cursor-pointer"
+          disabled ? "opacity-50" : "border-border/80 bg-muted/20 hover:bg-muted/40 cursor-pointer"
         }`}
       >
         <input
@@ -80,7 +80,7 @@ export function PhotoUploader({ urls, onChange, disabled }: Props) {
           <div key={url} className="relative aspect-video rounded-lg overflow-hidden bg-slate-100">
             <img src={url} alt="" className="w-full h-full object-cover" />
             {index === 0 ? (
-              <span className="absolute bottom-1 left-1 text-[10px] bg-black/60 text-white px-1.5 py-0.5 rounded">
+              <span className="absolute bottom-1 left-1 text-xs bg-black/60 text-white px-1.5 py-0.5 rounded">
                 {isTg ? "Муқова" : "Обложка"}
               </span>
             ) : null}

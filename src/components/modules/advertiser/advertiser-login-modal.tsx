@@ -132,7 +132,7 @@ export function AdvertiserLoginModal({
       <DialogContent className="max-w-md p-6 bg-white text-slate-900 border border-slate-200 rounded-2xl shadow-2xl">
         <DialogHeader className="border-b border-slate-100 pb-3">
           <div className="flex items-center gap-2">
-            <div className="h-9 w-9 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center border border-emerald-100">
+            <div className="h-9 w-9 rounded-xl bg-muted text-foreground flex items-center justify-center border border-border/60">
               <ShieldCheck className="h-5 w-5" />
             </div>
             <div>
@@ -176,7 +176,7 @@ export function AdvertiserLoginModal({
 
         {tab === "quick" ? (
           <div className="space-y-2.5 pt-2 max-h-[360px] overflow-y-auto">
-            <span className="text-[11px] text-slate-400 font-medium block">
+            <span className="text-xs text-slate-400 font-medium block">
               Выберите верифицированный аккаунт для мгновенного входа:
             </span>
 
@@ -186,22 +186,22 @@ export function AdvertiserLoginModal({
                 type="button"
                 disabled={loading}
                 onClick={() => handleQuickLogin(acc.id)}
-                className="w-full p-3 rounded-xl border border-slate-200 hover:border-emerald-300 hover:bg-emerald-50/30 text-left transition-all flex items-center justify-between group cursor-pointer"
+                className="w-full p-3 rounded-xl border border-border/80 hover:bg-muted/50 text-left transition-all flex items-center justify-between group cursor-pointer"
               >
                 <div>
-                  <div className="font-bold text-xs text-slate-900 group-hover:text-emerald-700">
+                  <div className="font-bold text-xs text-foreground group-hover:text-primary">
                     {acc.name}
                   </div>
-                  <div className="text-[11px] text-slate-500 mt-0.5">
+                  <div className="text-xs text-muted-foreground mt-0.5">
                     {acc.contact} • {acc.role}
                   </div>
                 </div>
 
                 <div className="text-right shrink-0">
-                  <span className="text-xs font-mono font-bold text-emerald-600 block">
+                  <span className="text-xs font-mono font-bold text-foreground block">
                     {acc.balance}
                   </span>
-                  <span className="text-[10px] text-slate-400 group-hover:text-emerald-600 flex items-center gap-0.5 justify-end">
+                  <span className="text-xs text-muted-foreground group-hover:text-foreground flex items-center gap-0.5 justify-end">
                     Войти →
                   </span>
                 </div>
@@ -248,7 +248,7 @@ export function AdvertiserLoginModal({
                     className="h-10 text-center text-sm font-mono font-bold tracking-widest rounded-xl"
                     required
                   />
-                  <Badge className="bg-emerald-50 text-emerald-700 border-emerald-200 text-[10px] shrink-0">
+                  <Badge variant="secondary" className="text-xs shrink-0 font-normal">
                     Тестовый код: 1234
                   </Badge>
                 </div>

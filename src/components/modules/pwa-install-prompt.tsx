@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { Download, X, Share, PlusSquare, Sparkles } from "lucide-react";
 
 export function PwaInstallPrompt() {
@@ -101,25 +102,25 @@ export function PwaInstallPrompt() {
       aria-label="Установка приложения Maskani"
       className="fixed bottom-4 left-4 right-4 sm:left-auto sm:right-6 sm:bottom-6 sm:max-w-md z-50 animate-in fade-in slide-in-from-bottom-5 duration-300"
     >
-      <div className="bg-white/95 backdrop-blur-xl border border-emerald-500/30 rounded-2xl p-4 sm:p-5 shadow-2xl shadow-emerald-950/15 flex flex-col gap-3">
+      <div className="bg-background/90 backdrop-blur-xl border border-border/80 rounded-2xl p-4 sm:p-5 shadow-xl text-foreground flex flex-col gap-3">
         {/* Top: Icon + Title + Close */}
         <div className="flex items-start justify-between gap-3">
           <div className="flex items-center gap-3">
             <img
               src="/icons/icon-192x192.png"
               alt="Maskani"
-              className="h-11 w-11 rounded-xl shadow-md border border-emerald-200 object-cover shrink-0"
+              className="h-11 w-11 rounded-xl shadow-xs border border-border/80 object-cover shrink-0"
             />
             <div>
               <div className="flex items-center gap-1.5">
-                <h4 className="font-bold text-sm text-slate-900">
+                <h4 className="font-semibold text-sm text-foreground">
                   Установить Maskani
                 </h4>
-                <span className="text-[10px] font-bold uppercase tracking-wider bg-emerald-100 text-emerald-800 px-1.5 py-0.5 rounded">
+                <Badge variant="secondary" className="text-xs font-semibold px-1.5 py-0.5 rounded">
                   PWA
-                </span>
+                </Badge>
               </div>
-              <p className="text-xs text-slate-500 mt-0.5 leading-snug">
+              <p className="text-xs text-muted-foreground mt-0.5 leading-snug">
                 Быстрый доступ к каталогу новостроек, шахматке и CRM без браузера
               </p>
             </div>
@@ -129,7 +130,7 @@ export function PwaInstallPrompt() {
             type="button"
             onClick={handleDismiss}
             aria-label="Закрыть уведомление"
-            className="text-slate-400 hover:text-slate-600 p-1 -mr-1 -mt-1 rounded-lg hover:bg-slate-100 transition-colors"
+            className="text-muted-foreground hover:text-foreground p-1 -mr-1 -mt-1 rounded-lg hover:bg-muted transition-colors cursor-pointer"
           >
             <X className="h-4 w-4" />
           </button>
@@ -137,19 +138,18 @@ export function PwaInstallPrompt() {
 
         {/* iOS Instruction Modal / Accordion */}
         {showIosGuide && (
-          <div className="p-3 bg-emerald-50/80 rounded-xl border border-emerald-200 text-xs text-slate-700 space-y-2 animate-in fade-in">
-            <p className="font-bold text-emerald-900 flex items-center gap-1">
-              <Sparkles className="h-3.5 w-3.5 text-emerald-600" />
+          <div className="p-3 bg-muted/40 rounded-xl border border-border/60 text-xs text-foreground space-y-2 animate-in fade-in">
+            <p className="font-semibold text-foreground flex items-center gap-1">
               Для установки на iPhone / iPad:
             </p>
-            <ol className="list-decimal list-inside space-y-1 text-[11px] leading-relaxed">
+            <ol className="list-decimal list-inside space-y-1 text-xs leading-relaxed text-muted-foreground">
               <li>
                 Нажмите кнопку <strong>«Поделиться»</strong>{" "}
-                <Share className="h-3.5 w-3.5 inline mx-0.5 text-sky-600" /> внизу Safari
+                <Share className="h-3.5 w-3.5 inline mx-0.5 text-primary" /> внизу Safari
               </li>
               <li>
                 Прокрутите меню и выберите <strong>«На экран "Домой"»</strong>{" "}
-                <PlusSquare className="h-3.5 w-3.5 inline mx-0.5 text-slate-700" />
+                <PlusSquare className="h-3.5 w-3.5 inline mx-0.5 text-foreground" />
               </li>
               <li>Нажмите «Добавить» в правом верхнем углу</li>
             </ol>
@@ -161,7 +161,7 @@ export function PwaInstallPrompt() {
           <Button
             size="sm"
             onClick={handleInstallClick}
-            className="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs h-9 rounded-xl shadow-xs gap-1.5"
+            className="flex-1 font-semibold text-xs h-9 rounded-xl shadow-xs gap-1.5"
           >
             <Download className="h-3.5 w-3.5" />
             {isIos ? "Как установить на экран" : "Установить на экран"}
@@ -171,7 +171,7 @@ export function PwaInstallPrompt() {
             size="sm"
             variant="ghost"
             onClick={handleDismiss}
-            className="text-xs text-slate-500 hover:text-slate-700 h-9 px-3 rounded-xl"
+            className="text-xs text-muted-foreground hover:text-foreground h-9 px-3 rounded-xl"
           >
             Позже
           </Button>

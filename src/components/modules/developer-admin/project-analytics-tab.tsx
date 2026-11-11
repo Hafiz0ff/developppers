@@ -86,13 +86,13 @@ export function ProjectAnalyticsTab({
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         <Card className="border shadow-xs p-3.5 space-y-1">
           <div className="flex items-center justify-between text-muted-foreground">
-            <span className="text-[11px] font-semibold">
+            <span className="text-xs font-semibold">
               {isTg ? "Тамошоҳо дар 30 рӯз" : "Просмотры за 30 дней"}
             </span>
             <Eye className="h-4 w-4 text-emerald-600" />
           </div>
           <div className="text-2xl font-black text-foreground">{viewsMonth}</div>
-          <div className="text-[10px] text-emerald-600 font-semibold flex items-center gap-1">
+          <div className="text-xs text-emerald-600 font-semibold flex items-center gap-1">
             <TrendingUp className="h-3 w-3" />
             <span>{isTg ? "+18% нисбат ба моҳи гузашта" : "+18% к прошлому мес."}</span>
           </div>
@@ -100,26 +100,26 @@ export function ProjectAnalyticsTab({
 
         <Card className="border shadow-xs p-3.5 space-y-1">
           <div className="flex items-center justify-between text-muted-foreground">
-            <span className="text-[11px] font-semibold">
+            <span className="text-xs font-semibold">
               {isTg ? "Ҳамагӣ тамошоҳо" : "Всего просмотров"}
             </span>
             <Eye className="h-4 w-4 text-slate-500" />
           </div>
           <div className="text-2xl font-black text-foreground">{viewsTotal}</div>
-          <div className="text-[10px] text-muted-foreground">
+          <div className="text-xs text-muted-foreground">
             {isTg ? "Боздидкунандагони нодир" : "Уникальные посетители"}
           </div>
         </Card>
 
         <Card className="border shadow-xs p-3.5 space-y-1">
           <div className="flex items-center justify-between text-muted-foreground">
-            <span className="text-[11px] font-semibold">
+            <span className="text-xs font-semibold">
               {isTg ? "Дар баргузидаҳо (30 рӯз)" : "В избранном (30 дней)"}
             </span>
             <Heart className="h-4 w-4 text-rose-500 fill-rose-500" />
           </div>
           <div className="text-2xl font-black text-foreground">{favsMonth}</div>
-          <div className="text-[10px] text-rose-600 font-semibold flex items-center gap-1">
+          <div className="text-xs text-rose-600 font-semibold flex items-center gap-1">
             <TrendingUp className="h-3 w-3" />
             <span>{isTg ? "+8 иловакунии нав" : "+8 новых добавлений"}</span>
           </div>
@@ -127,13 +127,13 @@ export function ProjectAnalyticsTab({
 
         <Card className="border shadow-xs p-3.5 space-y-1">
           <div className="flex items-center justify-between text-muted-foreground">
-            <span className="text-[11px] font-semibold">
+            <span className="text-xs font-semibold">
               {isTg ? "Конверсия ба мизоҷон" : "Конверсия в лиды"}
             </span>
             <PhoneCall className="h-4 w-4 text-amber-500" />
           </div>
           <div className="text-2xl font-black text-foreground">8.4%</div>
-          <div className="text-[10px] text-muted-foreground">
+          <div className="text-xs text-muted-foreground">
             {isTg ? "Зангҳо ва дархостҳои WhatsApp" : "Звонки и WhatsApp заявки"}
           </div>
         </Card>
@@ -171,7 +171,7 @@ export function ProjectAnalyticsTab({
                     <Icon className="h-3.5 w-3.5 text-muted-foreground" />
                     {item.name}
                   </span>
-                  <div className="flex items-center gap-2 font-mono text-[11px]">
+                  <div className="flex items-center gap-2 font-mono text-xs">
                     <span className="text-muted-foreground">{item.count}</span>
                     <strong className="text-foreground">{item.percent}%</strong>
                   </div>

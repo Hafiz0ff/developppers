@@ -148,7 +148,7 @@ export default async function CityHubPage({ params, searchParams }: PageProps) {
   const resaleSlug = locale === "tg" ? "bozori-duyumdaraja" : locale === "en" ? "resale" : "vtorichka";
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] pb-24">
+    <div className="min-h-screen bg-background pb-24">
       {/* Schema.org Breadcrumbs */}
       <script
         type="application/ld+json"
@@ -169,7 +169,7 @@ export default async function CityHubPage({ params, searchParams }: PageProps) {
             <span className="text-slate-800 font-semibold truncate">{cityName}</span>
           </div>
 
-          <Badge variant="outline" className="border-emerald-200 text-emerald-800 bg-emerald-50 text-xs">
+          <Badge variant="secondary" className="text-xs font-normal">
             {cityName}
           </Badge>
         </div>
@@ -177,7 +177,7 @@ export default async function CityHubPage({ params, searchParams }: PageProps) {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 space-y-8">
         {/* Hero City Header */}
-        <div className="bg-gradient-to-br from-slate-900 via-slate-800 to-emerald-950 text-white rounded-3xl p-6 sm:p-10 shadow-xl relative overflow-hidden">
+        <div className="bg-slate-900 text-white rounded-3xl p-6 sm:p-10 border border-slate-800 shadow-xs relative overflow-hidden">
           <div className="absolute right-0 bottom-0 opacity-10 pointer-events-none translate-x-12 translate-y-12">
             <Building2 className="w-96 h-96" />
           </div>
@@ -371,12 +371,12 @@ export default async function CityHubPage({ params, searchParams }: PageProps) {
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     />
                     <div className="absolute top-2.5 left-2.5 flex items-center gap-1.5">
-                      <Badge className="bg-slate-900/80 backdrop-blur-md text-white text-[11px] font-semibold border-none">
+                      <Badge className="bg-slate-900/80 backdrop-blur-md text-white text-xs font-semibold border-none">
                         {locale === "tg"
                           ? item.dealType === "Аренда" ? "Иҷора" : "Фурӯш"
                           : item.dealType}
                       </Badge>
-                      <Badge className="bg-emerald-600 text-white text-[11px] font-semibold border-none">
+                      <Badge className="bg-emerald-600 text-white text-xs font-semibold border-none">
                         {locale === "tg"
                           ? item.propertyType === "Квартира" ? "Хонадон" : item.propertyType
                           : item.propertyType}

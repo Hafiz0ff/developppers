@@ -49,7 +49,7 @@ export function AdBlock1({ seed, className = "" }: AdBlock1Props) {
         <div className="absolute top-2.5 right-2.5 z-20">
           <Badge
             variant="secondary"
-            className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 backdrop-blur-md bg-black/40 text-white border-0 shadow-xs"
+            className="text-xs uppercase font-bold tracking-wider px-2 py-0.5 backdrop-blur-md bg-black/40 text-white border-0 shadow-xs"
           >
             {tDual("Реклама", "Реклама")}
           </Badge>
@@ -73,7 +73,7 @@ export function AdBlock1({ seed, className = "" }: AdBlock1Props) {
 
             {/* Top Brand Tagline */}
             <div className="relative z-10 p-5 text-white">
-              <span className="text-[11px] font-bold uppercase tracking-widest text-emerald-300 block">
+              <span className="text-xs font-bold uppercase tracking-widest text-emerald-300 block">
                 MASKANI.TJ
               </span>
               <h4 className="text-xl font-extrabold tracking-tight leading-tight mt-1 drop-shadow-md">
@@ -88,7 +88,7 @@ export function AdBlock1({ seed, className = "" }: AdBlock1Props) {
             <div className="relative z-10 p-4 pt-0">
               <Button
                 size="sm"
-                className="w-full bg-white hover:bg-emerald-50 text-emerald-950 font-bold text-xs h-10 rounded-[10px] shadow-lg gap-2 cursor-pointer transition-all"
+                className="w-full bg-white hover:bg-slate-100 text-slate-900 font-bold text-xs h-10 rounded-xl shadow-md gap-2 cursor-pointer transition-all"
                 onClick={(e) => {
                   e.stopPropagation();
                   setModalOpen(true);
@@ -188,10 +188,10 @@ export function AdBlock1({ seed, className = "" }: AdBlock1Props) {
                   <ShieldCheck className="w-5 h-5" />
                 </div>
                 <div>
-                  <h4 className="font-extrabold text-[#0277BD] text-sm tracking-tight leading-none">
+                  <h4 className="font-extrabold text-sky-700 text-sm tracking-tight leading-none">
                     ЭСХАТА СТРАХОВАНИЕ
                   </h4>
-                  <span className="text-[10px] text-slate-500 font-medium">
+                  <span className="text-xs text-slate-500 font-medium">
                     {tDual("Защита имущества и семьи", "Ҳимояи амвол ва оила")}
                   </span>
                 </div>
@@ -213,19 +213,19 @@ export function AdBlock1({ seed, className = "" }: AdBlock1Props) {
               {/* Tariff Card */}
               <div className="p-3 rounded-xl bg-white border border-sky-100 shadow-2xs space-y-2 text-xs">
                 <div className="flex items-center gap-1.5 font-bold text-sky-900">
-                  <Shield className="w-4 h-4 text-[#0277BD]" />
+                  <Shield className="w-4 h-4 text-sky-700" />
                   <span>{tDual("Годовой страховой тариф:", "Тарофаи солонаи суғурта:")}</span>
                 </div>
-                <div className="text-base font-extrabold text-[#0277BD]">
+                <div className="text-base font-extrabold text-sky-700">
                   от 0,3% до 10%
                 </div>
-                <div className="text-[11px] text-slate-500">
+                <div className="text-xs text-slate-500">
                   {tDual("от страховой суммы объекта недвижимости", "аз маблағи суғуртаи амвол")}
                 </div>
               </div>
 
               {/* Quick Perks */}
-              <div className="flex items-center gap-2 text-[11px] text-slate-600 font-medium">
+              <div className="flex items-center gap-2 text-xs text-slate-600 font-medium">
                 <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
                 <span>{tDual("Оформление онлайн за 15 минут", "Барасмиятдарорӣ дар 15 дақиқа")}</span>
               </div>
@@ -239,7 +239,7 @@ export function AdBlock1({ seed, className = "" }: AdBlock1Props) {
                 rel="noreferrer"
                 className="block"
               >
-                <Button className="w-full bg-[#0277BD] hover:bg-[#01579B] text-white font-bold text-xs h-10 rounded-[10px] shadow-sm gap-2">
+                <Button className="w-full bg-sky-700 hover:bg-sky-800 text-white font-bold text-xs h-10 rounded-[10px] shadow-sm gap-2">
                   <span>{tDual("Оформить полис", "Гирифтани суғуртанома")}</span>
                   <ArrowRight className="w-3.5 h-3.5" />
                 </Button>

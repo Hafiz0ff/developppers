@@ -184,11 +184,11 @@ export function ProjectPoiManager({
                 <div>
                   <div className="text-xs font-bold text-foreground flex items-center gap-2">
                     <span>{poi.name}</span>
-                    <span className="text-[10px] text-emerald-600 font-normal">
+                    <span className="text-xs text-emerald-600 font-normal">
                       • {poi.distance}
                     </span>
                   </div>
-                  <div className="text-[11px] text-muted-foreground line-clamp-1">
+                  <div className="text-xs text-muted-foreground line-clamp-1">
                     {poi.description || (isTg ? "Бе тавсиф" : "Без описания")} (X: {poi.xPercent}%, Y: {poi.yPercent}%)
                   </div>
                 </div>
@@ -219,7 +219,7 @@ export function ProjectPoiManager({
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             <div className="space-y-1 sm:col-span-2">
-              <Label className="text-[11px] font-semibold">
+              <Label className="text-xs font-semibold">
                 {isTg ? "Номи иншоот" : "Название объекта"}
               </Label>
               <Input
@@ -231,7 +231,7 @@ export function ProjectPoiManager({
             </div>
 
             <div className="space-y-1">
-              <Label className="text-[11px] font-semibold">
+              <Label className="text-xs font-semibold">
                 {isTg ? "Гурӯҳ" : "Категория"}
               </Label>
               <select
@@ -249,7 +249,7 @@ export function ProjectPoiManager({
             </div>
 
             <div className="space-y-1">
-              <Label className="text-[11px] font-semibold">
+              <Label className="text-xs font-semibold">
                 {isTg ? "Масофа / Вақт" : "Удаленность / Время"}
               </Label>
               <Input
@@ -261,7 +261,7 @@ export function ProjectPoiManager({
             </div>
 
             <div className="space-y-1">
-              <Label className="text-[11px] font-semibold">
+              <Label className="text-xs font-semibold">
                 {isTg ? `Координатаи X (${newX}%)` : `Координата X (${newX}%)`}
               </Label>
               <input
@@ -275,7 +275,7 @@ export function ProjectPoiManager({
             </div>
 
             <div className="space-y-1">
-              <Label className="text-[11px] font-semibold">
+              <Label className="text-xs font-semibold">
                 {isTg ? `Координатаи Y (${newY}%)` : `Координата Y (${newY}%)`}
               </Label>
               <input
@@ -289,7 +289,7 @@ export function ProjectPoiManager({
             </div>
 
             <div className="space-y-1 sm:col-span-3">
-              <Label className="text-[11px] font-semibold">
+              <Label className="text-xs font-semibold">
                 {isTg
                   ? "Тавсифи мухтасар (барои маслиҳат ҳангоми пахш)"
                   : "Краткое описание (для подсказки при клике)"}

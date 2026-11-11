@@ -208,7 +208,7 @@ export function UnitDataTable({
   return (
     <div className="w-full glass-card rounded-2xl md:rounded-3xl border border-white/60 dark:border-white/10 shadow-xl overflow-hidden backdrop-blur-2xl">
       {/* TOOLBAR CONTROLS (TAHOE CHIPS & SEARCH) */}
-      <div className="p-4 sm:p-5 border-b border-border/60 bg-gradient-to-b from-white/40 to-transparent dark:from-white/5 space-y-4">
+      <div className="p-4 sm:p-5 border-b border-border/60 bg-muted/20 space-y-4">
         {/* Top line: Search and counts */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div className="relative flex-1 max-w-sm">
@@ -249,7 +249,7 @@ export function UnitDataTable({
         <div className="flex flex-wrap items-center justify-between gap-3 pt-1">
           {/* Room count chips */}
           <div className="flex flex-wrap items-center gap-1.5">
-            <span className="text-[11px] font-semibold text-muted-foreground mr-1 flex items-center gap-1">
+            <span className="text-xs font-semibold text-muted-foreground mr-1 flex items-center gap-1">
               <Building className="h-3.5 w-3.5" />
               {tDual("Комнаты:", "Ҳуҷраҳо:")}
             </span>
@@ -277,7 +277,7 @@ export function UnitDataTable({
 
           {/* Status chips */}
           <div className="flex flex-wrap items-center gap-1.5">
-            <span className="text-[11px] font-semibold text-muted-foreground mr-1 flex items-center gap-1">
+            <span className="text-xs font-semibold text-muted-foreground mr-1 flex items-center gap-1">
               <Filter className="h-3.5 w-3.5" />
               {tDual("Статус:", "Ҳолат:")}
             </span>
@@ -308,7 +308,7 @@ export function UnitDataTable({
       {/* TABLE VIEW WITH INTERACTIVE SORTABLE HEADERS */}
       <div className="overflow-x-auto [scrollbar-width:thin]">
         <table className="w-full text-left text-xs min-w-[840px]">
-          <thead className="bg-muted/40 backdrop-blur-md text-muted-foreground font-bold uppercase tracking-wider text-[11px] border-b border-border/70 select-none">
+          <thead className="bg-muted/40 backdrop-blur-md text-muted-foreground font-bold uppercase tracking-wider text-xs border-b border-border/70 select-none">
             <tr>
               <th className="px-4 py-3.5 w-24 text-center">
                 {tDual("Схема", "Нақша")}
@@ -441,7 +441,7 @@ export function UnitDataTable({
                         ) : (
                           <Layers className="h-5 w-5 text-muted-foreground/60" />
                         )}
-                        <span className="absolute bottom-0 right-0 bg-background/85 backdrop-blur-xs text-[9px] font-extrabold px-1 rounded-tl">
+                        <span className="absolute bottom-0 right-0 bg-background/85 backdrop-blur-xs text-xs font-extrabold px-1 rounded-tl">
                           {unit.roomsCount}к
                         </span>
                       </div>
@@ -453,7 +453,7 @@ export function UnitDataTable({
                         <span className="font-extrabold text-foreground text-sm group-hover:text-emerald-600 transition-colors">
                           № {unit.unitNumber.replace(/^(?:№|Кв\.\s*)/i, "").trim()}
                         </span>
-                        <span className="text-[11px] text-muted-foreground flex items-center gap-1">
+                        <span className="text-xs text-muted-foreground flex items-center gap-1">
                           {unit.section.replace(/Секция/gi, tDual("Секция", "Бахши"))}
                         </span>
                       </div>
@@ -463,7 +463,7 @@ export function UnitDataTable({
                     <td className="px-4 py-3">
                       <div className="flex items-center gap-1 font-semibold text-foreground">
                         <span>{unit.floor}</span>
-                        <span className="text-[10px] text-muted-foreground font-normal">
+                        <span className="text-xs text-muted-foreground font-normal">
                           {language === "tg" ? "ошёна" : "эт."}
                         </span>
                       </div>
@@ -471,7 +471,7 @@ export function UnitDataTable({
 
                     {/* Room count badge */}
                     <td className="px-4 py-3">
-                      <Badge variant="frostedLight" className="font-bold text-[11px]">
+                      <Badge variant="frostedLight" className="font-bold text-xs">
                         {unit.roomsCount}-{tDual("комнатная", "ҳуҷрагӣ")}
                       </Badge>
                     </td>
@@ -483,7 +483,7 @@ export function UnitDataTable({
                           {unit.totalArea} м²
                         </span>
                         {unit.livingArea && (
-                          <span className="text-[10px] text-muted-foreground">
+                          <span className="text-xs text-muted-foreground">
                             {tDual("жил.", "истиқ.")} {unit.livingArea} м²
                           </span>
                         )}
@@ -509,7 +509,7 @@ export function UnitDataTable({
                           {formatPrice(unit.priceTjs, unit.priceUsd)}
                         </span>
                         {isAvailable && (
-                          <span className="text-[10px] text-emerald-700/70 dark:text-emerald-300/70 font-semibold">
+                          <span className="text-xs text-emerald-700/70 dark:text-emerald-300/70 font-semibold">
                             {tDual("0% рассрочка", "0% қисм-қисм")}
                           </span>
                         )}
@@ -558,7 +558,7 @@ export function UnitDataTable({
           </span>
 
           <div className="flex items-center gap-1.5 ml-2">
-            <span className="text-[11px]">{tDual("Показывать по:", "Дар саҳифа:")}</span>
+            <span className="text-xs">{tDual("Показывать по:", "Дар саҳифа:")}</span>
             <select
               value={pageSize}
               onChange={(e) => {

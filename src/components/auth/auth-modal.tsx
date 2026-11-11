@@ -69,13 +69,13 @@ export function AuthModal({ isOpen, onClose, defaultTab = "login" }: AuthModalPr
           >
             {/* Top Mode Switcher Bar + Close Button */}
             <div className="mb-3 flex w-full items-center justify-between px-1">
-              <div className="inline-flex items-center gap-1 rounded-full border border-white/10 bg-[#12121A]/90 p-1 backdrop-blur-md">
+              <div className="inline-flex items-center gap-1 rounded-full border border-white/10 bg-slate-950/90 p-1 backdrop-blur-md">
                 <button
                   type="button"
                   onClick={() => setStep("auth")}
-                  className={`inline-flex cursor-pointer items-center gap-1.5 rounded-full px-3 py-1 text-[11px] font-semibold transition-all ${
+                  className={`inline-flex cursor-pointer items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold transition-all ${
                     step === "auth"
-                      ? "bg-[#FACC15] text-slate-950 shadow-sm"
+                      ? "bg-amber-400 text-slate-950 shadow-sm"
                       : "text-slate-400 hover:text-white"
                   }`}
                 >
@@ -85,7 +85,7 @@ export function AuthModal({ isOpen, onClose, defaultTab = "login" }: AuthModalPr
                 <button
                   type="button"
                   onClick={() => setStep("otp")}
-                  className={`inline-flex cursor-pointer items-center gap-1.5 rounded-full px-3 py-1 text-[11px] font-semibold transition-all ${
+                  className={`inline-flex cursor-pointer items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold transition-all ${
                     step === "otp"
                       ? "bg-emerald-500 text-white shadow-sm"
                       : "text-slate-400 hover:text-white"
@@ -100,7 +100,7 @@ export function AuthModal({ isOpen, onClose, defaultTab = "login" }: AuthModalPr
                 type="button"
                 onClick={onClose}
                 aria-label="Close modal"
-                className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full border border-white/12 bg-[#12121A]/90 text-slate-400 transition-colors hover:border-white/25 hover:text-white"
+                className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full border border-white/12 bg-slate-950/90 text-slate-400 transition-colors hover:border-white/25 hover:text-white"
               >
                 <X className="h-4 w-4" />
               </button>

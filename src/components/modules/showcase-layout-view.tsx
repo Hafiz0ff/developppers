@@ -161,7 +161,7 @@ export function ShowcaseLayoutView({
               }`}
             >
               <span>{lay.rooms}</span>
-              <span className="opacity-80 text-[11px] font-normal">({lay.area} м²)</span>
+              <span className="opacity-80 text-xs font-normal">({lay.area} м²)</span>
             </button>
           );
         })}
@@ -193,7 +193,7 @@ export function ShowcaseLayoutView({
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-background/80 backdrop-blur-md border border-border/60 p-3 sm:p-4 rounded-2xl z-10 shadow-sm">
         <div className="flex flex-wrap items-center gap-3 text-xs">
           <div>
-            <span className="text-muted-foreground text-[11px] block font-medium">
+            <span className="text-muted-foreground text-xs block font-medium">
               {tDual("Общая площадь:", "Масоҳати умумӣ:")}
             </span>
             <strong className="text-emerald-600 dark:text-emerald-400 font-black text-sm">
@@ -202,7 +202,7 @@ export function ShowcaseLayoutView({
           </div>
           <div className="h-6 w-px bg-border/60 hidden sm:block" />
           <div>
-            <span className="text-muted-foreground text-[11px] block font-medium">
+            <span className="text-muted-foreground text-xs block font-medium">
               {tDual("Жилая:", "Истиқоматӣ:")}
             </span>
             <strong className="text-foreground font-bold">
@@ -211,7 +211,7 @@ export function ShowcaseLayoutView({
           </div>
           <div className="h-6 w-px bg-border/60 hidden sm:block" />
           <div>
-            <span className="text-muted-foreground text-[11px] block font-medium">
+            <span className="text-muted-foreground text-xs block font-medium">
               {tDual("Кухня:", "Ошхона:")}
             </span>
             <strong className="text-foreground font-bold">

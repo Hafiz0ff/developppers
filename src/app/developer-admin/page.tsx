@@ -140,7 +140,7 @@ export default function DeveloperAdminDashboard() {
               {activeProjects.length}{" "}
               {tDual("объект", "маҷмаа")}
             </div>
-            <p className="text-[11px] text-muted-foreground mt-1 truncate">
+            <p className="text-xs text-muted-foreground mt-1 truncate">
               {activeProjects.map((p) => p.name).join(", ")}
             </p>
           </CardContent>
@@ -157,7 +157,7 @@ export default function DeveloperAdminDashboard() {
             <div className="text-2xl font-extrabold text-emerald-600">
               {availableUnits.length} {tDual("кв.", "хона")}
             </div>
-            <p className="text-[11px] text-muted-foreground mt-1">
+            <p className="text-xs text-muted-foreground mt-1">
               {tDual(
                 "В активной продаже через шахматку",
                 "Дар фурӯши фаъол тавассути ҷадвал"
@@ -177,7 +177,7 @@ export default function DeveloperAdminDashboard() {
             <div className="text-2xl font-extrabold text-amber-600">
               {reservedUnits.length} {tDual("кв.", "хона")}
             </div>
-            <p className="text-[11px] text-muted-foreground mt-1">
+            <p className="text-xs text-muted-foreground mt-1">
               {tDual("Ожидают заключения договоров", "Интизори имзои шартнома")}
             </p>
           </CardContent>
@@ -194,7 +194,7 @@ export default function DeveloperAdminDashboard() {
             <div className="text-xl font-extrabold text-foreground">
               {formatPrice(totalSalesPotentialTjs, totalSalesPotentialUsd)}
             </div>
-            <p className="text-[11px] text-muted-foreground mt-1">
+            <p className="text-xs text-muted-foreground mt-1">
               {tDual("По свободным юнитам", "Аз рӯи хонадонҳои озод")}
             </p>
           </CardContent>
@@ -240,7 +240,7 @@ export default function DeveloperAdminDashboard() {
                       alt={displayName}
                       className="w-full h-full object-cover"
                     />
-                    <Badge className="absolute top-2 left-2 bg-emerald-600 text-white text-[10px]">
+                    <Badge className="absolute top-2 left-2 bg-emerald-600 text-white text-xs">
                       {proj.status === "under_construction"
                         ? tDual("Строится", "Дар ҳоли сохтмон")
                         : proj.status === "ready"
@@ -255,7 +255,7 @@ export default function DeveloperAdminDashboard() {
                         <h3 className="font-bold text-base text-foreground">
                           {displayName}
                         </h3>
-                        <Badge variant="outline" className="text-[10px]">
+                        <Badge variant="outline" className="text-xs">
                           {proj.buildingClass === "premium"
                             ? tDual("Премиум-класс", "Синфи олӣ (Премиум)")
                             : proj.buildingClass === "business"
@@ -355,19 +355,16 @@ export default function DeveloperAdminDashboard() {
                 return (
                   <div
                     key={lead.leadId}
-                    className="p-3 rounded-lg bg-emerald-500/5 border border-emerald-500/30 text-xs space-y-1.5"
+                    className="p-3 rounded-lg bg-card border border-border/80 shadow-xs text-xs space-y-1.5"
                   >
                     <div className="flex items-center justify-between gap-2">
                       <Badge
-                        className={`text-[10px] px-2 py-0.5 font-bold ${
-                          isBookingLead
-                            ? "bg-emerald-600 text-white"
-                            : "bg-slate-900 dark:bg-blue-600 text-white"
-                        }`}
+                        variant={isBookingLead ? "secondary" : "outline"}
+                        className="text-xs px-2 py-0.5 font-medium"
                       >
                         {isBookingLead ? (
                           <span className="inline-flex items-center gap-1">
-                            <Bookmark className="h-2.5 w-2.5" />
+                            <Bookmark className="h-2.5 w-2.5 text-primary" />
                             {tDual("Бронирование", "Бандкунӣ")}
                           </span>
                         ) : (
@@ -377,7 +374,7 @@ export default function DeveloperAdminDashboard() {
                           </span>
                         )}
                       </Badge>
-                      <span className="text-[10px] text-muted-foreground">
+                      <span className="text-xs text-muted-foreground">
                         {lead.contactMode === "instant_15min"
                           ? tDual("Связаться: 15 мин", "Тамос: 15 дақ")
                           : `${lead.scheduledDate || ""} ${lead.scheduledTime || ""}`}
@@ -389,7 +386,7 @@ export default function DeveloperAdminDashboard() {
                     </div>
 
                     {(lead.unitNumber || lead.parkingNumber || lead.storageNumber) && (
-                      <div className="text-muted-foreground text-[11px] space-y-0.5">
+                      <div className="text-muted-foreground text-xs space-y-0.5">
                         {lead.unitNumber && (
                           <div>
                             • {tDual("Квартира", "Хонадон")} № {lead.unitNumber}
@@ -425,7 +422,7 @@ export default function DeveloperAdminDashboard() {
                     <div className="pt-1 flex items-center gap-2">
                       <a
                         href={`tel:${lead.phone}`}
-                        className="inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-600 hover:underline"
+                        className="inline-flex items-center gap-1 text-xs font-semibold text-emerald-600 hover:underline"
                       >
                         <Phone className="h-3 w-3" />
                         {tDual("Позвонить клиенту", "Занг задан")}
@@ -440,11 +437,11 @@ export default function DeveloperAdminDashboard() {
                   <span className="font-bold text-foreground">
                     {tDual("Фаррух (Худжанд)", "Фаррух (Хуҷанд)")}
                   </span>
-                  <span className="text-[10px] text-muted-foreground">
+                  <span className="text-xs text-muted-foreground">
                     {tDual("Сегодня, 11:20", "Имрӯз, 11:20")}
                   </span>
                 </div>
-                <p className="text-muted-foreground text-[11px]">
+                <p className="text-muted-foreground text-xs">
                   {tDual(
                     "Запрос на бронь: Кв. 14-A (Секция 2, 74.5 м²) в ЖК «Qayroqum Avenue» с видом на Таджикское море.",
                     "Дархости брон: Хонадони 14-A (Бахши 2, 74.5 м²) дар МҶ «Qayroqum Avenue» бо манзара ба «Баҳри Тоҷик»."
@@ -455,7 +452,7 @@ export default function DeveloperAdminDashboard() {
                     href="https://wa.me/992928881234"
                     target="_blank"
                     rel="noreferrer"
-                    className="inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-600 hover:underline"
+                    className="inline-flex items-center gap-1 text-xs font-semibold text-emerald-600 hover:underline"
                   >
                     <MessageCircle className="h-3 w-3" />
                     {tDual("Написать в WhatsApp", "Навиштан дар WhatsApp")}
@@ -463,7 +460,7 @@ export default function DeveloperAdminDashboard() {
                   <span className="text-muted-foreground">•</span>
                   <a
                     href="tel:+992928881234"
-                    className="inline-flex items-center gap-1 text-[11px] font-semibold text-foreground hover:underline"
+                    className="inline-flex items-center gap-1 text-xs font-semibold text-foreground hover:underline"
                   >
                     <Phone className="h-3 w-3" />
                     {tDual("Позвонить", "Занг задан")}
@@ -476,11 +473,11 @@ export default function DeveloperAdminDashboard() {
                   <span className="font-bold text-foreground">
                     {tDual("Нозима (Гулистон)", "Нозима (Гулистон)")}
                   </span>
-                  <span className="text-[10px] text-muted-foreground">
+                  <span className="text-xs text-muted-foreground">
                     {tDual("Вчера, 17:45", "Дирӯз, 17:45")}
                   </span>
                 </div>
-                <p className="text-muted-foreground text-[11px]">
+                <p className="text-muted-foreground text-xs">
                   {tDual(
                     "Консультация по акции: беспроцентная рассрочка на 60 месяцев (0% первый взнос) и 3-комнатная квартира с террасой.",
                     "Машварат оид ба аксия: пардохти бефоизи қисм-қисм то 60 моҳ (0% пешпардохт) ва хонаи 3-ҳуҷрагӣ бо айвон."
@@ -491,7 +488,7 @@ export default function DeveloperAdminDashboard() {
                     href="https://wa.me/992927771122"
                     target="_blank"
                     rel="noreferrer"
-                    className="inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-600 hover:underline"
+                    className="inline-flex items-center gap-1 text-xs font-semibold text-emerald-600 hover:underline"
                   >
                     <MessageCircle className="h-3 w-3" />
                     {tDual("WhatsApp диалог", "Гуфтугӯ дар WhatsApp")}
@@ -504,11 +501,11 @@ export default function DeveloperAdminDashboard() {
                   <span className="font-bold text-foreground">
                     {tDual("Дилшод (Б. Гафуров)", "Дилшод (Б. Ғафуров)")}
                   </span>
-                  <span className="text-[10px] text-muted-foreground">
+                  <span className="text-xs text-muted-foreground">
                     {tDual("2 дня назад", "2 рӯз пеш")}
                   </span>
                 </div>
-                <p className="text-muted-foreground text-[11px]">
+                <p className="text-muted-foreground text-xs">
                   {tDual(
                     "Запрос на покупку: 3-комн. 108 м² и семейное парковочное место в подземном 2-уровневом паркинге с электрозарядкой.",
                     "Дархост барои харид: 3-ҳуҷр. 108 м² ва ҷойи таваққуфгоҳи оилавии зеризаминӣ бо нуқтаи пуркунии электромобил."
@@ -519,7 +516,7 @@ export default function DeveloperAdminDashboard() {
                     href="https://wa.me/992920000000"
                     target="_blank"
                     rel="noreferrer"
-                    className="inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-600 hover:underline"
+                    className="inline-flex items-center gap-1 text-xs font-semibold text-emerald-600 hover:underline"
                   >
                     <MessageCircle className="h-3 w-3" />
                     {tDual("WhatsApp диалог", "Гуфтугӯ дар WhatsApp")}
@@ -527,7 +524,7 @@ export default function DeveloperAdminDashboard() {
                   <span className="text-muted-foreground">•</span>
                   <a
                     href="tel:+992920000000"
-                    className="inline-flex items-center gap-1 text-[11px] font-semibold text-foreground hover:underline"
+                    className="inline-flex items-center gap-1 text-xs font-semibold text-foreground hover:underline"
                   >
                     <Phone className="h-3 w-3" />
                     {tDual("Позвонить", "Занг задан")}
@@ -537,7 +534,7 @@ export default function DeveloperAdminDashboard() {
             </div>
 
             <div className="pt-2 text-center">
-              <span className="text-[11px] text-muted-foreground">
+              <span className="text-xs text-muted-foreground">
                 {tDual(
                   "Уведомления также автоматически дублируются в Telegram-бот отдела продаж.",
                   "Огоҳиномаҳо инчунин ба таври худкор ба Telegram-боти шуъбаи фурӯш фиристода мешаванд."

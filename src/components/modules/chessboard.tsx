@@ -538,27 +538,27 @@ export function Chessboard({
                 {/* Specs Grid */}
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5 text-xs bg-muted/30 p-3.5 rounded-2xl border border-border/60">
                   <div className="p-2 rounded-xl bg-background/60">
-                    <span className="text-muted-foreground block text-[11px] font-medium">{tDual("Общая площадь:", "Масоҳати умумӣ:")}</span>
+                    <span className="text-muted-foreground block text-xs font-medium">{tDual("Общая площадь:", "Масоҳати умумӣ:")}</span>
                     <span className="font-extrabold text-foreground text-sm">{selectedUnit.totalArea} м²</span>
                   </div>
                   <div className="p-2 rounded-xl bg-background/60">
-                    <span className="text-muted-foreground block text-[11px] font-medium">{tDual("Жилая площадь:", "Масоҳати истиқоматӣ:")}</span>
+                    <span className="text-muted-foreground block text-xs font-medium">{tDual("Жилая площадь:", "Масоҳати истиқоматӣ:")}</span>
                     <span className="font-extrabold text-foreground text-sm">
                       {selectedUnit.livingArea || Math.round(selectedUnit.totalArea * 0.65)} м²
                     </span>
                   </div>
                   <div className="p-2 rounded-xl bg-background/60">
-                    <span className="text-muted-foreground block text-[11px] font-medium">{tDual("Кухня:", "Ошхона:")}</span>
+                    <span className="text-muted-foreground block text-xs font-medium">{tDual("Кухня:", "Ошхона:")}</span>
                     <span className="font-extrabold text-foreground text-sm">
                       {selectedUnit.kitchenArea || Math.round(selectedUnit.totalArea * 0.18)} м²
                     </span>
                   </div>
                   <div className="p-2 rounded-xl bg-background/60">
-                    <span className="text-muted-foreground block text-[11px] font-medium">{tDual("Отделка:", "Пардоз:")}</span>
+                    <span className="text-muted-foreground block text-xs font-medium">{tDual("Отделка:", "Пардоз:")}</span>
                     <span className="font-bold text-foreground">{tDual("Черновая (коробка)", "Аввалия (қуттӣ)")}</span>
                   </div>
                   <div className="p-2 rounded-xl bg-background/60">
-                    <span className="text-muted-foreground block text-[11px] font-medium">{tDual("Балкон / Лоджия:", "Балкон / Айвон:")}</span>
+                    <span className="text-muted-foreground block text-xs font-medium">{tDual("Балкон / Лоджия:", "Балкон / Айвон:")}</span>
                     <span className="font-bold text-foreground">
                       {selectedUnit.hasTerrace
                         ? tDual("Терраса + Балкон", "Айвони кушод + Балкон")
@@ -566,7 +566,7 @@ export function Chessboard({
                     </span>
                   </div>
                   <div className="p-2 rounded-xl bg-background/60">
-                    <span className="text-muted-foreground block text-[11px] font-medium">{tDual("Потолки:", "Баландии шифт:")}</span>
+                    <span className="text-muted-foreground block text-xs font-medium">{tDual("Потолки:", "Баландии шифт:")}</span>
                     <span className="font-bold text-foreground">3.20 м</span>
                   </div>
                 </div>

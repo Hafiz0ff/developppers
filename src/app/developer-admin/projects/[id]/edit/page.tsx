@@ -33,7 +33,7 @@ import {
   Eye,
   Edit3,
   Paintbrush,
-  Sparkles,
+  Sliders,
   Layers,
   BarChart3,
   ExternalLink,
@@ -228,21 +228,21 @@ export default function EditProjectPage() {
             variant="outline"
             size="sm"
             onClick={() => setPreviewOpen(true)}
-            className="h-8 text-xs font-semibold gap-1.5 border-emerald-500/40 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-50 dark:hover:bg-emerald-950/20 cursor-pointer shadow-xs"
+            className="h-8 text-xs font-medium gap-1.5 border-border hover:bg-muted text-foreground cursor-pointer shadow-xs"
           >
-            <Eye className="h-3.5 w-3.5 text-emerald-600" />
+            <Eye className="h-3.5 w-3.5 text-muted-foreground" />
             {isTg ? "Пешнамоиш дар витрина" : "Предпросмотр на витрине"}
           </Button>
 
           <Link href={`/developer-admin/projects/${proj.id}/units`}>
             <Button variant="outline" size="sm" className="h-8 text-xs gap-1.5 cursor-pointer">
-              <Grid3X3 className="h-3.5 w-3.5 text-emerald-600" />
+              <Grid3X3 className="h-3.5 w-3.5 text-muted-foreground" />
               {isTg ? "Ҷадвали шоҳмотии хонаҳо" : "Шахматка квартир"}
             </Button>
           </Link>
 
           {success && (
-            <div className="flex items-center gap-1.5 text-xs font-semibold text-emerald-600 bg-emerald-50 dark:bg-emerald-950/40 px-3 py-1.5 rounded-lg border border-emerald-300">
+            <div className="flex items-center gap-1.5 text-xs font-medium text-foreground bg-muted/60 px-3 py-1.5 rounded-lg border border-border/60">
               <CheckCircle2 className="h-4 w-4" />
               {isTg ? "Бомуваффақият сабт шуд!" : "Сохранено!"}
             </div>
@@ -308,7 +308,7 @@ export default function EditProjectPage() {
               <span>{tab.label}</span>
               {tab.badge && (
                 <span
-                  className={`text-[10px] px-1.5 py-0.2 rounded-full ${
+                  className={`text-xs px-1.5 py-0.2 rounded-full ${
                     isActive ? "bg-white/20 text-white" : "bg-muted text-foreground"
                   }`}
                 >
@@ -669,7 +669,7 @@ export default function EditProjectPage() {
                     </span>
                   </ResponsiveTooltip>
                 </div>
-                <span className="text-[11px] text-muted-foreground">
+                <span className="text-xs text-muted-foreground">
                   {isTg
                     ? `Илова шуд ${customBuildingFeatures.filter((f) => f.title.trim()).length} аз 3`
                     : `Добавлено ${customBuildingFeatures.filter((f) => f.title.trim()).length} из 3`}
@@ -687,7 +687,7 @@ export default function EditProjectPage() {
                       <div className="space-y-1">
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-1">
-                            <Label className="text-[11px] font-semibold text-foreground">
+                            <Label className="text-xs font-semibold text-foreground">
                               {isTg ? "Сарлавҳаи шумо" : "Ваш заголовок"}
                             </Label>
                             <ResponsiveTooltip
@@ -704,7 +704,7 @@ export default function EditProjectPage() {
                             </ResponsiveTooltip>
                           </div>
                           <span
-                            className={`text-[10px] ${
+                            className={`text-xs ${
                               feat.title.length >= 40
                                 ? "text-amber-600 font-bold"
                                 : "text-muted-foreground"
@@ -731,11 +731,11 @@ export default function EditProjectPage() {
                       {/* Value field */}
                       <div className="space-y-1">
                         <div className="flex items-center justify-between">
-                          <Label className="text-[11px] font-semibold text-foreground">
+                          <Label className="text-xs font-semibold text-foreground">
                             {isTg ? "Қимати нишондиҳанда" : "Значение характеристики"}
                           </Label>
                           <span
-                            className={`text-[10px] ${
+                            className={`text-xs ${
                               feat.value.length >= 40
                                 ? "text-amber-600 font-bold"
                                 : "text-muted-foreground"
@@ -802,7 +802,7 @@ export default function EditProjectPage() {
                           customBuildingFeatures.length - 1
                         ]?.title.trim()
                       }
-                      className="h-8 px-3 text-xs gap-1.5 border-dashed border-emerald-600/40 text-emerald-700 hover:border-emerald-600 hover:bg-emerald-50 dark:hover:bg-emerald-950/20 rounded-lg cursor-pointer"
+                      className="h-8 px-3 text-xs gap-1.5 border-dashed border-border hover:bg-muted text-foreground rounded-lg cursor-pointer"
                     >
                       <Plus className="h-3.5 w-3.5" />
                       {isTg
@@ -851,10 +851,10 @@ export default function EditProjectPage() {
           <CardHeader className="p-4 pb-2">
             <div className="flex items-center justify-between">
               <CardTitle className="text-sm font-bold flex items-center gap-2">
-                <Paintbrush className="h-4 w-4 text-emerald-600" />
+                <Paintbrush className="h-4 w-4 text-foreground" />
                 {isTg ? "Пардоз ва таҷҳизонидан" : "Отделка и комплектация"}
               </CardTitle>
-              <div className="text-[11px] font-semibold px-2.5 py-1 rounded-md bg-emerald-50 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-300 border border-emerald-200">
+              <div className="text-xs font-medium px-2.5 py-1 rounded-md bg-muted text-foreground border border-border/60">
                 {isTg ? "Намуди асосӣ: " : "Базовый тип: "}
                 {finishing === "rough"
                   ? isTg ? "Пардози аввалия (қуттӣ)" : "Черновая"
@@ -883,11 +883,11 @@ export default function EditProjectPage() {
                         <h5 className="text-xs font-bold text-foreground line-clamp-1">
                           {feat.title}
                         </h5>
-                        <span className="text-[10px] text-muted-foreground font-mono">
+                        <span className="text-xs text-muted-foreground font-mono">
                           {feat.description.length}/400
                         </span>
                       </div>
-                      <p className="text-[11px] text-muted-foreground line-clamp-2 mt-1 leading-relaxed">
+                      <p className="text-xs text-muted-foreground line-clamp-2 mt-1 leading-relaxed">
                         {feat.description || (isTg ? "Бе тавсиф" : "Без описания")}
                       </p>
                     </div>
@@ -899,7 +899,7 @@ export default function EditProjectPage() {
                         size="sm"
                         onClick={() => handleOpenViewFinishingDialog(feat)}
                         title={isTg ? "Дидани тавсифи пурра" : "Посмотреть полное описание"}
-                        className="h-7 px-2 text-[11px] text-muted-foreground hover:text-emerald-600 rounded-md gap-1 cursor-pointer"
+                        className="h-7 px-2 text-xs text-muted-foreground hover:text-emerald-600 rounded-md gap-1 cursor-pointer"
                       >
                         <Eye className="h-3 w-3" />
                         {isTg ? "Муоина" : "Просмотр"}
@@ -930,15 +930,15 @@ export default function EditProjectPage() {
               </div>
             ) : (
               <div className="p-5 rounded-xl border border-dashed text-center space-y-2 bg-muted/10">
-                <div className="h-9 w-9 rounded-full bg-emerald-500/10 text-emerald-600 flex items-center justify-center mx-auto">
-                  <Sparkles className="h-4 w-4" />
+                <div className="h-9 w-9 rounded-full bg-muted text-muted-foreground flex items-center justify-center mx-auto">
+                  <Sliders className="h-4 w-4" />
                 </div>
                 <p className="text-xs font-medium text-foreground">
                   {isTg
                     ? "Хусусиятҳои инфиродии пардоз ҳоло илова нашудаанд"
                     : "Индивидуальные характеристики отделки еще не добавлены"}
                 </p>
-                <p className="text-[11px] text-muted-foreground max-w-md mx-auto">
+                <p className="text-xs text-muted-foreground max-w-md mx-auto">
                   {isTg
                     ? "Шумо метавонед то 3 нишондиҳандаи хосро (домофон, дари даромадгоҳ, садоизолятсия, ҳамворкунии фарш) бо тавсифи муфассал илова намоед."
                     : "Вы можете добавить до 3 уникальных параметров (домофон, входная дверь, звукоизоляция, стяжка) с подробным описанием."}
@@ -955,7 +955,7 @@ export default function EditProjectPage() {
                     variant="outline"
                     size="sm"
                     onClick={handleOpenAddFinishingDialog}
-                    className="h-9 px-4 text-xs font-semibold bg-white dark:bg-card border-emerald-600/40 text-emerald-700 hover:border-emerald-600 hover:bg-emerald-50 dark:hover:bg-emerald-950/20 rounded-xl gap-1.5 shadow-xs cursor-pointer"
+                    className="h-9 px-4 text-xs font-medium bg-card border-border hover:bg-muted text-foreground rounded-xl gap-1.5 shadow-xs cursor-pointer"
                   >
                     <Plus className="h-3.5 w-3.5" />
                     {isTg
@@ -977,8 +977,8 @@ export default function EditProjectPage() {
                   </ResponsiveTooltip>
                 </div>
               ) : (
-                <div className="text-xs text-emerald-700 dark:text-emerald-300 font-medium flex items-center gap-1.5 bg-emerald-50 dark:bg-emerald-950/40 px-3 py-1.5 rounded-lg border border-emerald-200">
-                  <CheckCircle2 className="h-3.5 w-3.5" />
+                <div className="text-xs text-muted-foreground font-medium flex items-center gap-1.5 bg-muted/60 px-3 py-1.5 rounded-lg border border-border/60">
+                  <CheckCircle2 className="h-3.5 w-3.5 text-emerald-600" />
                   {isTg
                     ? "Шумораи ниҳоии хусусиятҳо илова шуд (3 аз 3)"
                     : "Добавлено максимальное количество характеристик (3 из 3)"}

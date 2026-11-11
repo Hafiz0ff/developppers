@@ -386,16 +386,16 @@ export default function MapPage() {
             {/* Advanced Filters Modal Button */}
             <button
               onClick={() => setShowFiltersModal(true)}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all shrink-0 cursor-pointer border ${
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-medium transition-all shrink-0 cursor-pointer border ${
                 activeFiltersCount > 0
-                  ? "bg-emerald-50 border-emerald-300 text-emerald-800"
-                  : "border-slate-200 hover:bg-slate-50 text-slate-700 bg-white"
+                  ? "bg-accent/20 border-foreground/30 text-foreground"
+                  : "border-border hover:bg-muted text-foreground bg-card"
               }`}
             >
-              <SlidersHorizontal className="w-3.5 h-3.5 text-emerald-600" />
+              <SlidersHorizontal className="w-3.5 h-3.5 text-foreground" />
               <span>{isTg ? "Филтрҳо" : "Фильтры"}</span>
               {activeFiltersCount > 0 && (
-                <span className="w-4 h-4 rounded-full bg-emerald-600 text-white text-[10px] font-black flex items-center justify-center">
+                <span className="w-4 h-4 rounded-full bg-primary text-primary-foreground text-xs font-semibold flex items-center justify-center">
                   {activeFiltersCount}
                 </span>
               )}
@@ -516,7 +516,7 @@ export default function MapPage() {
               {(selectedPropertyId || activeFiltersCount > 0) && (
                 <button
                   onClick={resetAllFilters}
-                  className="text-emerald-600 hover:underline text-[11px] font-bold cursor-pointer"
+                  className="text-emerald-600 hover:underline text-xs font-bold cursor-pointer"
                 >
                   {isTg ? "Тоза кардани ҳама" : "Сбросить фильтры"}
                 </button>
@@ -586,10 +586,10 @@ export default function MapPage() {
                     }}
                     className={`pt-2.5 first:pt-0 cursor-pointer rounded-xl transition-all ${
                       isSelected
-                        ? "bg-emerald-50/90 ring-2 ring-emerald-500 p-2.5 shadow-sm"
+                        ? "bg-accent/20 ring-2 ring-primary p-2.5 shadow-xs"
                         : isHovered
-                        ? "bg-slate-50 p-2.5"
-                        : "p-2 hover:bg-slate-50/70"
+                        ? "bg-muted/60 p-2.5"
+                        : "p-2 hover:bg-muted/40"
                     }`}
                   >
                     <div className="flex gap-3">
@@ -602,7 +602,7 @@ export default function MapPage() {
                         />
                         <div className="absolute top-1 left-1">
                           <span
-                            className={`px-1.5 py-0.5 rounded text-[9px] font-extrabold uppercase text-white ${categoryBg}`}
+                            className={`px-1.5 py-0.5 rounded text-xs font-extrabold uppercase text-white ${categoryBg}`}
                           >
                             {categoryBadge}
                           </span>
@@ -612,13 +612,13 @@ export default function MapPage() {
                       {/* Info Details */}
                       <div className="flex-1 min-w-0 flex flex-col justify-between">
                         <div>
-                          <div className="text-[11px] text-slate-500 font-medium truncate">
+                          <div className="text-xs text-slate-500 font-medium truncate">
                             📍 {district}
                           </div>
                           <h4 className="text-xs font-bold text-slate-900 line-clamp-1 mt-0.5">
                             {title}
                           </h4>
-                          <div className="text-[11px] text-slate-500 font-medium mt-0.5">
+                          <div className="text-xs text-slate-500 font-medium mt-0.5">
                             {prop.category === "house"
                               ? `${prop.rooms || 0} комн. · ${
                                   prop.landAreaSotki || "6"
@@ -631,7 +631,7 @@ export default function MapPage() {
                           <span className="text-sm font-extrabold text-emerald-600">
                             {primaryPrice}
                           </span>
-                          <span className="text-[10px] text-slate-400 font-medium">
+                          <span className="text-xs text-slate-400 font-medium">
                             {secondaryPrice}
                           </span>
                         </div>
@@ -677,7 +677,7 @@ export default function MapPage() {
                       className="w-20 h-20 rounded-xl object-cover shrink-0"
                     />
                     <div className="min-w-0">
-                      <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-600">
+                      <span className="text-xs font-bold uppercase tracking-wider text-emerald-600">
                         {selectedProperty.city} · {selectedProperty.district}
                       </span>
                       <h4 className="text-sm font-bold text-slate-900 truncate mt-0.5">
@@ -727,7 +727,7 @@ export default function MapPage() {
               // Swipeable Horizontal Bottom Carousel
               <div className="bg-white/95 backdrop-blur-md rounded-2xl shadow-xl border border-slate-200/90 p-2.5">
                 <div className="flex items-center justify-between px-1.5 mb-2">
-                  <span className="text-[11px] font-bold text-slate-600">
+                  <span className="text-xs font-bold text-slate-600">
                     📍{" "}
                     {isTg
                       ? `${sortedProperties.length} объект дар харита`
@@ -757,7 +757,7 @@ export default function MapPage() {
                         key={prop.id}
                         id={`carousel-card-${prop.id}`}
                         onClick={() => setSelectedPropertyId(prop.id)}
-                        className="w-56 shrink-0 snap-start bg-slate-50 hover:bg-emerald-50/50 p-2 rounded-xl border border-slate-200/80 cursor-pointer transition-all"
+                        className="w-56 shrink-0 snap-start bg-card hover:bg-muted/50 p-2 rounded-xl border border-border/80 cursor-pointer transition-all"
                       >
                         <div className="flex gap-2 items-center">
                           <img
@@ -769,7 +769,7 @@ export default function MapPage() {
                             <h5 className="text-xs font-bold text-slate-900 truncate">
                               {title}
                             </h5>
-                            <div className="text-[10px] text-slate-500 truncate mt-0.5">
+                            <div className="text-xs text-slate-500 truncate mt-0.5">
                               {prop.district}
                             </div>
                             <div className="text-xs font-black text-emerald-600 mt-1">
@@ -951,7 +951,7 @@ export default function MapPage() {
                     {isTg ? "Ҷустуҷӯ аз рӯи радиус" : "Поиск по радиусу от меня"}
                   </label>
                   {userLocation && (
-                    <span className="text-[11px] font-semibold text-emerald-600">
+                    <span className="text-xs font-semibold text-emerald-600">
                       📍 {isTg ? "Макон фаъол" : "Геопозиция определена"}
                     </span>
                   )}
@@ -982,7 +982,7 @@ export default function MapPage() {
                 </div>
 
                 {!userLocation && (
-                  <p className="text-[11px] text-slate-400 mt-1.5">
+                  <p className="text-xs text-slate-400 mt-1.5">
                     {isTg
                       ? "Барои филтр аз рӯи радиус тугмаи геолокатсияро дар харита пахш кунед"
                       : "Для радиуса включите кнопку геолокации 📍 на карте"}

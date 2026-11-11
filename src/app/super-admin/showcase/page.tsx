@@ -198,7 +198,7 @@ export default function SuperAdminShowcasePage() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 dark:border-slate-800 pb-5">
         <div>
           <div className="flex items-center gap-2 mb-1">
-            <Badge className="bg-emerald-600 text-white font-bold text-[10px] uppercase">
+            <Badge className="bg-emerald-600 text-white font-bold text-xs uppercase">
               ТЗ Этап 2 • Витрина
             </Badge>
             <span className="text-xs text-slate-400 font-mono">
@@ -236,18 +236,18 @@ export default function SuperAdminShowcasePage() {
       </div>
 
       {saveStatus && (
-        <div className="p-3 bg-emerald-50 border border-emerald-200 text-emerald-800 rounded-xl text-xs font-semibold flex items-center gap-2 animate-in fade-in">
+        <div className="p-3 border-l-2 border-l-emerald-600 bg-muted/60 border border-border/60 text-foreground rounded-xl text-xs font-medium flex items-center gap-2 animate-in fade-in">
           <CheckCircle2 className="h-4 w-4 text-emerald-600" />
           <span>{saveStatus}</span>
         </div>
       )}
 
       {/* Security Rule Alert (AC-40, AC-35) */}
-      <div className="p-4 rounded-2xl bg-amber-50/80 dark:bg-amber-950/40 border border-amber-200/90 dark:border-amber-800/60 text-xs text-amber-900 dark:text-amber-200 flex items-start gap-3">
-        <ShieldAlert className="h-5 w-5 text-amber-600 shrink-0 mt-0.5" />
+      <div className="p-4 rounded-2xl border-l-2 border-l-amber-500 bg-muted/50 border border-border/60 text-xs text-foreground flex items-start gap-3">
+        <ShieldAlert className="h-5 w-5 text-amber-500 shrink-0 mt-0.5" />
         <div className="space-y-1">
           <p className="font-bold">Правила безопасности витрины (ТЗ Разделы 8.5 и 15):</p>
-          <p className="text-[11px] leading-relaxed text-amber-800 dark:text-amber-300">
+          <p className="text-xs leading-relaxed text-muted-foreground">
             1. <strong>Счётчики не редактируются вручную:</strong> количество объектов (например, «25+», «30+», «5+») рассчитывается автоматически из актуальной базы данных.<br />
             2. <strong>Свободный ввод URL запрещен:</strong> цели мини-карточек и секций выбираются строго из реестра таксономии и каталогов. Скрытие карточки не удаляет целевую сущность (AC-38).
           </p>
@@ -288,7 +288,7 @@ export default function SuperAdminShowcasePage() {
               <h3 className="font-bold text-sm text-slate-900 dark:text-white">
                 7 утверждённых мини-карточек (156 × 213 px, Apple Tahoe)
               </h3>
-              <Badge variant="outline" className="text-[10px] font-mono">
+              <Badge variant="outline" className="text-xs font-mono">
                 {miniCards.filter((c) => c.visible).length} из {miniCards.length} активно
               </Badge>
             </div>
@@ -325,7 +325,7 @@ export default function SuperAdminShowcasePage() {
                         </div>
 
                         <div className="flex items-center gap-3 text-xs text-slate-500">
-                          <span className="font-mono text-[11px] bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-md">
+                          <span className="font-mono text-xs bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-md">
                             Цель: {card.targetId}
                           </span>
                           <span>•</span>
@@ -365,10 +365,10 @@ export default function SuperAdminShowcasePage() {
                         variant={card.visible ? "outline" : "secondary"}
                         size="sm"
                         onClick={() => handleToggleMiniCard(card)}
-                        className={`text-xs font-bold rounded-xl h-8 px-3 gap-1.5 ${
+                        className={`text-xs font-medium rounded-xl h-8 px-3 gap-1.5 ${
                           card.visible
-                            ? "border-emerald-200 text-emerald-800 bg-emerald-50/70"
-                            : "text-slate-400 bg-slate-100"
+                            ? "border-border text-foreground bg-muted"
+                            : "text-muted-foreground bg-muted/40"
                         }`}
                       >
                         {card.visible ? (
@@ -400,7 +400,7 @@ export default function SuperAdminShowcasePage() {
               <h3 className="font-bold text-sm text-slate-900 dark:text-white">
                 8 витринных секций на главной (4 × 1 карточки на десктопе)
               </h3>
-              <Badge variant="outline" className="text-[10px] font-mono">
+              <Badge variant="outline" className="text-xs font-mono">
                 {sections.filter((s) => s.visible).length} из {sections.length} активно
               </Badge>
             </div>
@@ -424,7 +424,7 @@ export default function SuperAdminShowcasePage() {
 
                     <p className="text-xs text-slate-500 line-clamp-1">{section.subtitle.ru}</p>
 
-                    <div className="flex items-center gap-3 text-[11px] text-slate-400">
+                    <div className="flex items-center gap-3 text-xs text-slate-400">
                       <span className="font-mono bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded">
                         Целевой переход: {section.targetCatalogId}
                       </span>
@@ -463,10 +463,10 @@ export default function SuperAdminShowcasePage() {
                       variant={section.visible ? "outline" : "secondary"}
                       size="sm"
                       onClick={() => handleToggleSection(section)}
-                      className={`text-xs font-bold rounded-xl h-8 px-3 gap-1.5 ${
+                      className={`text-xs font-medium rounded-xl h-8 px-3 gap-1.5 ${
                         section.visible
-                          ? "border-emerald-200 text-emerald-800 bg-emerald-50/70"
-                          : "text-slate-400 bg-slate-100"
+                          ? "border-border text-foreground bg-muted"
+                          : "text-muted-foreground bg-muted/40"
                       }`}
                     >
                       {section.visible ? (

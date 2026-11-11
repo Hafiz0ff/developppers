@@ -328,8 +328,8 @@ export function LeadRequestDrawer({
         <div className="flex-1 overflow-y-auto p-5 space-y-5">
           {isSubmittedSuccess ? (
             <div className="py-10 text-center space-y-4 my-auto">
-              <div className="h-16 w-16 rounded-full bg-emerald-50 dark:bg-emerald-950/50 text-emerald-600 flex items-center justify-center mx-auto border border-emerald-300 shadow-sm animate-in zoom-in">
-                <CheckCircle2 className="h-9 w-9" />
+              <div className="h-16 w-16 rounded-full bg-muted text-foreground flex items-center justify-center mx-auto border border-border/80 shadow-xs animate-in zoom-in">
+                <CheckCircle2 className="h-9 w-9 text-primary" />
               </div>
 
               <div className="space-y-1">
@@ -355,7 +355,7 @@ export function LeadRequestDrawer({
                 </p>
               </div>
 
-              <div className="p-3.5 bg-muted/40 border rounded-xl text-left text-[11px] text-muted-foreground space-y-1">
+              <div className="p-3.5 bg-muted/40 border rounded-xl text-left text-xs text-muted-foreground space-y-1">
                 <span className="font-semibold text-foreground block">
                   {tDual("Важная информация:", "Маълумоти муҳим:")}
                 </span>
@@ -382,7 +382,7 @@ export function LeadRequestDrawer({
               {/* Selected Bundle Summary (Cart Context) */}
               {(bundle.unit || bundle.parking || bundle.storage) && (
                 <div className="p-3.5 rounded-xl bg-muted/30 border space-y-2 text-xs">
-                  <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider block">
+                  <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider block">
                     {tDual("Выбранный комплект объектов:", "Маҷмӯи объектҳои интихобшуда:")}
                   </span>
                   <div className="space-y-1.5">
@@ -505,11 +505,11 @@ export function LeadRequestDrawer({
                   required
                 />
                 {phoneError ? (
-                  <span className="text-[11px] text-rose-600 font-medium block">
+                  <span className="text-xs text-rose-600 font-medium block">
                     {phoneError}
                   </span>
                 ) : (
-                  <span className="text-[11px] text-muted-foreground block">
+                  <span className="text-xs text-muted-foreground block">
                     {tDual("Например: +992 92 700 00 00", "Намуна: +992 92 700 00 00")}
                   </span>
                 )}
@@ -520,7 +520,7 @@ export function LeadRequestDrawer({
                 <div className="p-3.5 rounded-xl bg-muted/40 border space-y-3 animate-in fade-in">
                   <div className="grid grid-cols-2 gap-3">
                     <div className="space-y-1.5">
-                      <Label className="text-[11px] text-muted-foreground">
+                      <Label className="text-xs text-muted-foreground">
                         {tDual("День", "Рӯз")}
                       </Label>
                       <Select
@@ -547,7 +547,7 @@ export function LeadRequestDrawer({
                     </div>
 
                     <div className="space-y-1.5">
-                      <Label className="text-[11px] text-muted-foreground">
+                      <Label className="text-xs text-muted-foreground">
                         {tDual("Время", "Вақт")}
                       </Label>
                       <Select
@@ -577,7 +577,7 @@ export function LeadRequestDrawer({
                     </div>
                   </div>
                   {scheduleError && (
-                    <span className="text-[11px] text-rose-600 font-medium block">
+                    <span className="text-xs text-rose-600 font-medium block">
                       {scheduleError}
                     </span>
                   )}
@@ -625,7 +625,7 @@ export function LeadRequestDrawer({
                   />
                   <label
                     htmlFor="consent-checkbox"
-                    className="text-[11px] text-muted-foreground leading-relaxed cursor-pointer select-none"
+                    className="text-xs text-muted-foreground leading-relaxed cursor-pointer select-none"
                   >
                     {tDual(
                       "Я согласен на обработку моих персональных данных. С ",
@@ -647,7 +647,7 @@ export function LeadRequestDrawer({
                   </label>
                 </div>
                 {consentError && (
-                  <span className="text-[11px] text-rose-600 font-medium block pl-6">
+                  <span className="text-xs text-rose-600 font-medium block pl-6">
                     {consentError}
                   </span>
                 )}
@@ -655,7 +655,7 @@ export function LeadRequestDrawer({
 
               {/* Server / Submission Error Message */}
               {errorMsg && (
-                <div className="p-3 rounded-xl bg-rose-50 dark:bg-rose-950/40 border border-rose-300 text-rose-800 dark:text-rose-200 text-xs flex items-start gap-2">
+                <div className="p-3 rounded-xl border-l-2 border-l-destructive bg-destructive/10 border border-destructive/20 text-xs text-destructive flex items-start gap-2">
                   <AlertCircle className="h-4 w-4 shrink-0 mt-0.5" />
                   <span>{errorMsg}</span>
                 </div>

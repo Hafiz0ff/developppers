@@ -251,7 +251,7 @@ export function LoginFormV7({
   };
 
   const accentTextClass =
-    accentTheme === "gold" ? "text-[#FACC15]" : "text-emerald-400";
+    accentTheme === "gold" ? "text-amber-400" : "text-emerald-400";
   const ctaButtonStyle =
     accentTheme === "gold"
       ? {
@@ -315,9 +315,9 @@ export function LoginFormV7({
             <button
               type="button"
               onClick={() => setLoginMethod("otp")}
-              className={`cursor-pointer rounded-lg py-1.5 text-[11px] font-bold transition-all flex items-center justify-center gap-1.5 ${
+              className={`cursor-pointer rounded-lg py-1.5 text-xs font-bold transition-all flex items-center justify-center gap-1.5 ${
                 loginMethod === "otp"
-                  ? "bg-[#FACC15] text-slate-950 shadow-sm"
+                  ? "bg-amber-400 text-slate-950 shadow-sm"
                   : "text-slate-400 hover:text-white"
               }`}
             >
@@ -327,9 +327,9 @@ export function LoginFormV7({
             <button
               type="button"
               onClick={() => setLoginMethod("password")}
-              className={`cursor-pointer rounded-lg py-1.5 text-[11px] font-bold transition-all flex items-center justify-center gap-1.5 ${
+              className={`cursor-pointer rounded-lg py-1.5 text-xs font-bold transition-all flex items-center justify-center gap-1.5 ${
                 loginMethod === "password"
-                  ? "bg-[#FACC15] text-slate-950 shadow-sm"
+                  ? "bg-amber-400 text-slate-950 shadow-sm"
                   : "text-slate-400 hover:text-white"
               }`}
             >
@@ -342,7 +342,7 @@ export function LoginFormV7({
           <div className="space-y-1.5">
             <label
               htmlFor="v7-login-phone"
-              className="block text-[11px] font-semibold tracking-wide text-slate-300"
+              className="block text-xs font-semibold tracking-wide text-slate-300"
             >
               {tr("Номер мобильного телефона", "Рақами телефони мобилӣ", "Mobile Phone Number")}
             </label>
@@ -355,10 +355,10 @@ export function LoginFormV7({
                 placeholder="+992 92 700 0000"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
-                className="h-11 w-full rounded-xl border border-white/10 bg-white/[0.04] pr-4 pl-10 text-xs text-white placeholder:text-slate-500 transition-all outline-none focus:border-[#FACC15]/70 focus:bg-white/[0.07] focus:ring-2 focus:ring-[#FACC15]/20 font-mono"
+                className="h-11 w-full rounded-xl border border-white/10 bg-white/[0.04] pr-4 pl-10 text-xs text-white placeholder:text-slate-500 transition-all outline-none focus:border-amber-400/70 focus:bg-white/[0.07] focus:ring-2 focus:ring-amber-400/20 font-mono"
               />
             </div>
-            <p className="text-[10px] text-slate-400">
+            <p className="text-xs text-slate-400">
               {loginMethod === "otp"
                 ? tr("На этот номер поступит SMS с кодом подтверждения", "Ба ин рақам SMS бо рамзи тасдиқ фиристода мешавад", "A verification SMS code will be sent to this number")
                 : tr("Введите пароль от подтверждённого профиля", "Рамзи ҳуҷраи тасдиқшударо ворид кунед", "Enter password for your verified account")}
@@ -370,7 +370,7 @@ export function LoginFormV7({
             <div className="space-y-1.5">
               <label
                 htmlFor="v7-login-password"
-                className="block text-[11px] font-semibold tracking-wide text-slate-300"
+                className="block text-xs font-semibold tracking-wide text-slate-300"
               >
                 {tr("Пароль", "Рамз", "Password")}
               </label>
@@ -383,7 +383,7 @@ export function LoginFormV7({
                   placeholder="••••••••"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="h-11 w-full rounded-xl border border-white/10 bg-white/[0.04] pr-10 pl-10 text-xs text-white placeholder:text-slate-500 transition-all outline-none focus:border-[#FACC15]/70 focus:bg-white/[0.07] focus:ring-2 focus:ring-[#FACC15]/20"
+                  className="h-11 w-full rounded-xl border border-white/10 bg-white/[0.04] pr-10 pl-10 text-xs text-white placeholder:text-slate-500 transition-all outline-none focus:border-amber-400/70 focus:bg-white/[0.07] focus:ring-2 focus:ring-amber-400/20"
                 />
                 <button
                   type="button"
@@ -407,13 +407,13 @@ export function LoginFormV7({
                 onClick={() => setRememberMe((v) => !v)}
                 className={`flex h-4 w-4 items-center justify-center rounded-[5px] border transition-colors ${
                   rememberMe
-                    ? "border-[#FACC15] bg-[#FACC15] text-slate-950"
+                    ? "border-amber-400 bg-amber-400 text-slate-950"
                     : "border-white/20 bg-white/5 text-transparent"
                 }`}
               >
                 <Check className="h-3 w-3 stroke-[3]" />
               </button>
-              <span className="text-[11px] text-slate-300">
+              <span className="text-xs text-slate-300">
                 {tr("Запомнить меня", "Маро дар хотир гир", "Remember me")}
               </span>
             </label>
@@ -425,7 +425,7 @@ export function LoginFormV7({
                   setLoginMethod("otp");
                   requestPhoneOtp(phone);
                 }}
-                className="cursor-pointer text-[11px] font-medium text-slate-400 transition-colors hover:text-[#FACC15]"
+                className="cursor-pointer text-xs font-medium text-slate-400 transition-colors hover:text-amber-400"
               >
                 {tr("Войти по коду из SMS", "Бо рамзи SMS ворид шудан", "Sign in via SMS code")}
               </button>
@@ -433,7 +433,7 @@ export function LoginFormV7({
               <button
                 type="button"
                 onClick={() => setLoginMethod("password")}
-                className="cursor-pointer text-[11px] font-medium text-slate-400 transition-colors hover:text-[#FACC15]"
+                className="cursor-pointer text-xs font-medium text-slate-400 transition-colors hover:text-amber-400"
               >
                 {tr("Войти с паролем", "Бо рамз ворид шудан", "Use password")}
               </button>
@@ -467,7 +467,7 @@ export function LoginFormV7({
           </button>
 
           {/* Tahoe Frosted Trust & Anti-Fraud Notice */}
-          <div className="rounded-xl border border-emerald-500/20 bg-emerald-500/[0.06] p-2.5 text-[11px] text-emerald-300 flex items-start gap-2 leading-relaxed">
+          <div className="rounded-xl border border-emerald-500/20 bg-emerald-500/[0.06] p-2.5 text-xs text-emerald-300 flex items-start gap-2 leading-relaxed">
             <ShieldCheck className="h-4 w-4 text-emerald-400 shrink-0 mt-0.5" />
             <span>
               {tr(
@@ -508,9 +508,9 @@ export function LoginFormV7({
                   key={r.id}
                   type="button"
                   onClick={() => setRole(r.id)}
-                  className={`cursor-pointer rounded-lg py-1.5 text-[11px] font-bold transition-all ${
+                  className={`cursor-pointer rounded-lg py-1.5 text-xs font-bold transition-all ${
                     active
-                      ? "bg-[#FACC15] text-slate-950 shadow-sm"
+                      ? "bg-amber-400 text-slate-950 shadow-sm"
                       : "text-slate-400 hover:text-white"
                   }`}
                 >
@@ -524,7 +524,7 @@ export function LoginFormV7({
           <div className="space-y-1">
             <label
               htmlFor="v7-reg-name"
-              className="block text-[11px] font-semibold tracking-wide text-slate-300"
+              className="block text-xs font-semibold tracking-wide text-slate-300"
             >
               {tr("Имя и фамилия", "Ном ва насаб", "Full Name")}
             </label>
@@ -537,7 +537,7 @@ export function LoginFormV7({
                 placeholder={tr("Дилшод Назаров", "Дилшод Назаров", "Alex Johnson")}
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="h-10 w-full rounded-xl border border-white/10 bg-white/[0.04] pr-4 pl-10 text-xs text-white placeholder:text-slate-500 transition-all outline-none focus:border-[#FACC15]/70 focus:bg-white/[0.07]"
+                className="h-10 w-full rounded-xl border border-white/10 bg-white/[0.04] pr-4 pl-10 text-xs text-white placeholder:text-slate-500 transition-all outline-none focus:border-amber-400/70 focus:bg-white/[0.07]"
               />
             </div>
           </div>
@@ -547,7 +547,7 @@ export function LoginFormV7({
             <div className="space-y-1">
               <label
                 htmlFor="v7-reg-agency"
-                className="block text-[11px] font-semibold tracking-wide text-slate-300"
+                className="block text-xs font-semibold tracking-wide text-slate-300"
               >
                 {tr("Агентство недвижимости", "Агентии амвол", "Agency Name")}
               </label>
@@ -559,7 +559,7 @@ export function LoginFormV7({
                   placeholder={tr("Сугд-Инвест Недвижимость", "Суғд-Инвест", "Sughd Realty Agency")}
                   value={agencyName}
                   onChange={(e) => setAgencyName(e.target.value)}
-                  className="h-10 w-full rounded-xl border border-white/10 bg-white/[0.04] pr-4 pl-10 text-xs text-white placeholder:text-slate-500 transition-all outline-none focus:border-[#FACC15]/70 focus:bg-white/[0.07]"
+                  className="h-10 w-full rounded-xl border border-white/10 bg-white/[0.04] pr-4 pl-10 text-xs text-white placeholder:text-slate-500 transition-all outline-none focus:border-amber-400/70 focus:bg-white/[0.07]"
                 />
               </div>
             </div>
@@ -570,7 +570,7 @@ export function LoginFormV7({
             <div className="space-y-1">
               <label
                 htmlFor="v7-reg-email"
-                className="block text-[11px] font-semibold tracking-wide text-slate-300"
+                className="block text-xs font-semibold tracking-wide text-slate-300"
               >
                 {tr("Email адрес", "Email суроға", "Email Address")}
               </label>
@@ -583,7 +583,7 @@ export function LoginFormV7({
                   placeholder="name@domain.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="h-10 w-full rounded-xl border border-white/10 bg-white/[0.04] pr-3 pl-9 text-xs text-white placeholder:text-slate-500 transition-all outline-none focus:border-[#FACC15]/70 focus:bg-white/[0.07]"
+                  className="h-10 w-full rounded-xl border border-white/10 bg-white/[0.04] pr-3 pl-9 text-xs text-white placeholder:text-slate-500 transition-all outline-none focus:border-amber-400/70 focus:bg-white/[0.07]"
                 />
               </div>
             </div>
@@ -591,7 +591,7 @@ export function LoginFormV7({
             <div className="space-y-1">
               <label
                 htmlFor="v7-reg-phone"
-                className="block text-[11px] font-semibold tracking-wide text-slate-300"
+                className="block text-xs font-semibold tracking-wide text-slate-300"
               >
                 {tr("Телефон (SMS)", "Телефон (SMS)", "Phone Number")}
               </label>
@@ -604,7 +604,7 @@ export function LoginFormV7({
                   placeholder="+992 92 700 0000"
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
-                  className="h-10 w-full rounded-xl border border-white/10 bg-white/[0.04] pr-3 pl-9 text-xs text-white placeholder:text-slate-500 transition-all outline-none focus:border-[#FACC15]/70 focus:bg-white/[0.07]"
+                  className="h-10 w-full rounded-xl border border-white/10 bg-white/[0.04] pr-3 pl-9 text-xs text-white placeholder:text-slate-500 transition-all outline-none focus:border-amber-400/70 focus:bg-white/[0.07]"
                 />
               </div>
             </div>
@@ -614,7 +614,7 @@ export function LoginFormV7({
           <div className="space-y-1">
             <label
               htmlFor="v7-reg-city"
-              className="block text-[11px] font-semibold tracking-wide text-slate-300"
+              className="block text-xs font-semibold tracking-wide text-slate-300"
             >
               {tr("Город / Регион", "Шаҳр / Минтақа", "City / Region")}
             </label>
@@ -624,10 +624,10 @@ export function LoginFormV7({
                 id="v7-reg-city"
                 value={city}
                 onChange={(e) => setCity(e.target.value)}
-                className="h-10 w-full appearance-none rounded-xl border border-white/10 bg-[#171721] pr-8 pl-9 text-xs text-white transition-all outline-none focus:border-[#FACC15]/70"
+                className="h-10 w-full appearance-none rounded-xl border border-white/10 bg-slate-900 pr-8 pl-9 text-xs text-white transition-all outline-none focus:border-amber-400/70"
               >
                 {SOGD_CITIES.map((c) => (
-                  <option key={c.value} value={c.value} className="bg-[#14141D] text-white">
+                  <option key={c.value} value={c.value} className="bg-slate-950 text-white">
                     {language === "tg"
                       ? c.nameTj
                       : language === "en"
@@ -644,7 +644,7 @@ export function LoginFormV7({
             <div className="space-y-1">
               <label
                 htmlFor="v7-reg-pass"
-                className="block text-[11px] font-semibold tracking-wide text-slate-300"
+                className="block text-xs font-semibold tracking-wide text-slate-300"
               >
                 {tr("Пароль", "Рамз", "Password")}
               </label>
@@ -658,7 +658,7 @@ export function LoginFormV7({
                   placeholder="••••••••"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="h-10 w-full rounded-xl border border-white/10 bg-white/[0.04] pr-8 pl-8 text-xs text-white placeholder:text-slate-500 transition-all outline-none focus:border-[#FACC15]/70 focus:bg-white/[0.07]"
+                  className="h-10 w-full rounded-xl border border-white/10 bg-white/[0.04] pr-8 pl-8 text-xs text-white placeholder:text-slate-500 transition-all outline-none focus:border-amber-400/70 focus:bg-white/[0.07]"
                 />
                 <button
                   type="button"
@@ -673,7 +673,7 @@ export function LoginFormV7({
             <div className="space-y-1">
               <label
                 htmlFor="v7-reg-confirm"
-                className="block text-[11px] font-semibold tracking-wide text-slate-300"
+                className="block text-xs font-semibold tracking-wide text-slate-300"
               >
                 {tr("Повтор пароля", "Такрори рамз", "Confirm Password")}
               </label>
@@ -687,7 +687,7 @@ export function LoginFormV7({
                   placeholder="••••••••"
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
-                  className="h-10 w-full rounded-xl border border-white/10 bg-white/[0.04] pr-8 pl-8 text-xs text-white placeholder:text-slate-500 transition-all outline-none focus:border-[#FACC15]/70 focus:bg-white/[0.07]"
+                  className="h-10 w-full rounded-xl border border-white/10 bg-white/[0.04] pr-8 pl-8 text-xs text-white placeholder:text-slate-500 transition-all outline-none focus:border-amber-400/70 focus:bg-white/[0.07]"
                 />
                 <button
                   type="button"
@@ -713,13 +713,13 @@ export function LoginFormV7({
               onClick={() => setAgreeTerms((v) => !v)}
               className={`flex h-4 w-4 shrink-0 items-center justify-center rounded-[5px] border transition-colors ${
                 agreeTerms
-                  ? "border-[#FACC15] bg-[#FACC15] text-slate-950"
+                  ? "border-amber-400 bg-amber-400 text-slate-950"
                   : "border-white/20 bg-white/5 text-transparent"
               }`}
             >
               <Check className="h-3 w-3 stroke-[3]" />
             </button>
-            <span className="text-[11px] text-slate-300">
+            <span className="text-xs text-slate-300">
               {tr(
                 "Я согласен с Условиями и Политикой конфиденциальности",
                 "Ман бо Шартҳо ва Сиёсати махфият розӣ ҳастам",
@@ -749,7 +749,7 @@ export function LoginFormV7({
           </button>
 
           {/* Tahoe Frosted Anti-Fraud Notice */}
-          <div className="rounded-xl border border-emerald-500/20 bg-emerald-500/[0.06] p-2.5 text-[11px] text-emerald-300 flex items-start gap-2 leading-relaxed">
+          <div className="rounded-xl border border-emerald-500/20 bg-emerald-500/[0.06] p-2.5 text-xs text-emerald-300 flex items-start gap-2 leading-relaxed">
             <ShieldCheck className="h-4 w-4 text-emerald-400 shrink-0 mt-0.5" />
             <span>
               {tr(

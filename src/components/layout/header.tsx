@@ -388,7 +388,7 @@ export function Header() {
               >
                 <ArrowLeftRight className="h-3.5 w-3.5 text-foreground" />
                 {compareCount > 0 && (
-                  <span className="absolute -top-1 -right-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-primary px-1 text-[11px] font-semibold text-primary-foreground leading-none shadow-2xs">
+                  <span className="absolute -top-1 -right-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-primary px-1 text-xs font-semibold text-primary-foreground leading-none shadow-2xs">
                     {compareCount}
                   </span>
                 )}
@@ -449,7 +449,7 @@ export function Header() {
                     <span className="font-semibold leading-tight line-clamp-1 max-w-[120px] text-foreground">
                       {session.user.name}
                     </span>
-                    <span className="text-[11px] text-muted-foreground">
+                    <span className="text-xs text-muted-foreground">
                       {roleInfo.label}
                     </span>
                   </div>
@@ -611,7 +611,7 @@ export function Header() {
                   title="Переключить валюту"
                 >
                   <span className="text-primary font-bold">{currency}</span>
-                  <span className="text-[11px] text-muted-foreground">{currency === "TJS" ? "⇄ USD" : "⇄ TJS"}</span>
+                  <span className="text-xs text-muted-foreground">{currency === "TJS" ? "⇄ USD" : "⇄ TJS"}</span>
                 </button>
 
                 <Link
@@ -622,7 +622,7 @@ export function Header() {
                   <ArrowLeftRight className="h-3.5 w-3.5 text-primary" />
                   <span>{t.nav.compare}</span>
                   {compareCount > 0 && (
-                    <span className="bg-primary text-primary-foreground font-bold text-[11px] px-1.5 py-0.5 rounded-full">
+                    <span className="bg-primary text-primary-foreground font-bold text-xs px-1.5 py-0.5 rounded-full">
                       {compareCount}
                     </span>
                   )}

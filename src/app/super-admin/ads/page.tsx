@@ -136,10 +136,10 @@ export default function SuperAdminAdsManagementPage() {
 
         <button
           onClick={() => setActiveTab("create")}
-          className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${
+          className={`px-4 py-2 rounded-xl text-xs font-semibold transition-all ${
             activeTab === "create"
-              ? "bg-emerald-600 text-white shadow-2xs"
-              : "text-emerald-700 hover:bg-emerald-50"
+              ? "bg-primary text-primary-foreground shadow-2xs"
+              : "text-muted-foreground hover:bg-muted"
           }`}
         >
           + Новый рекламодатель
@@ -155,7 +155,7 @@ export default function SuperAdminAdsManagementPage() {
               <div className="text-2xl font-black text-emerald-600 mt-1">
                 {advertisers.filter((a) => a.tier === "sponsor_annual").length} компании
               </div>
-              <p className="text-[11px] text-slate-400 mt-0.5">
+              <p className="text-xs text-slate-400 mt-0.5">
                 Гарантированный показ 365 дней во всех категориях
               </p>
             </Card>
@@ -165,7 +165,7 @@ export default function SuperAdminAdsManagementPage() {
               <div className="text-2xl font-black text-blue-600 mt-1">
                 {advertisers.filter((a) => a.tier === "auction_bidder").length} компаний
               </div>
-              <p className="text-[11px] text-slate-400 mt-0.5">
+              <p className="text-xs text-slate-400 mt-0.5">
                 Конкурируют за показы по ставке CPM / CPC
               </p>
             </Card>
@@ -175,7 +175,7 @@ export default function SuperAdminAdsManagementPage() {
               <div className="text-2xl font-black text-slate-900 mt-1">
                 305 000 сомони
               </div>
-              <p className="text-[11px] text-slate-400 mt-0.5">
+              <p className="text-xs text-slate-400 mt-0.5">
                 ≈ $27 980 годовой доход платформы
               </p>
             </Card>
@@ -185,7 +185,7 @@ export default function SuperAdminAdsManagementPage() {
             <div className="overflow-x-auto">
               <table className="w-full text-left text-xs">
                 <thead>
-                  <tr className="border-b border-slate-100 text-slate-400 font-semibold uppercase text-[10px] tracking-wider">
+                  <tr className="border-b border-slate-100 text-slate-400 font-semibold uppercase text-xs tracking-wider">
                     <th className="py-3 px-3">Бренд / Юрлицо</th>
                     <th className="py-3 px-3">Контакты</th>
                     <th className="py-3 px-3">Тип пакета</th>
@@ -198,8 +198,8 @@ export default function SuperAdminAdsManagementPage() {
                     <tr key={adv.id} className="hover:bg-slate-50/70 transition-colors">
                       <td className="py-3.5 px-3">
                         <div className="font-bold text-slate-900 text-sm">{adv.brandName}</div>
-                        <div className="text-[11px] text-slate-400">{adv.companyName}</div>
-                        {adv.tin && <div className="text-[10px] text-slate-400 font-mono">ИНН: {adv.tin}</div>}
+                        <div className="text-xs text-slate-400">{adv.companyName}</div>
+                        {adv.tin && <div className="text-xs text-slate-400 font-mono">ИНН: {adv.tin}</div>}
                       </td>
                       <td className="py-3.5 px-3">
                         <div className="text-slate-800">{adv.contactPerson}</div>
@@ -208,11 +208,11 @@ export default function SuperAdminAdsManagementPage() {
                       </td>
                       <td className="py-3.5 px-3">
                         {adv.tier === "sponsor_annual" ? (
-                          <Badge className="bg-emerald-100 text-emerald-800 border-emerald-200 text-[10px] font-bold">
+                          <Badge className="bg-emerald-100 text-emerald-800 border-emerald-200 text-xs font-bold">
                             Годовой спонсор
                           </Badge>
                         ) : (
-                          <Badge variant="outline" className="text-slate-600 border-slate-300 text-[10px]">
+                          <Badge variant="outline" className="text-slate-600 border-slate-300 text-xs">
                             Аукцион ставок
                           </Badge>
                         )}
@@ -223,7 +223,7 @@ export default function SuperAdminAdsManagementPage() {
                             ? `${adv.annualContractValueTjs.toLocaleString()} сомони / год`
                             : `${adv.balanceTjs.toLocaleString()} сомони`}
                         </div>
-                        <div className="text-[11px] text-slate-400">
+                        <div className="text-xs text-slate-400">
                           Израсходовано: {adv.totalSpentTjs.toLocaleString()} сомони
                         </div>
                       </td>
@@ -263,8 +263,8 @@ export default function SuperAdminAdsManagementPage() {
                         <Badge
                           className={
                             camp.billingModel === "annual_sponsorship"
-                              ? "bg-emerald-600 text-white text-[10px]"
-                              : "bg-blue-600 text-white text-[10px]"
+                              ? "bg-emerald-600 text-white text-xs"
+                              : "bg-blue-600 text-white text-xs"
                           }
                         >
                           {camp.billingModel === "annual_sponsorship"
@@ -279,15 +279,15 @@ export default function SuperAdminAdsManagementPage() {
 
                     <div className="flex items-center gap-4 text-xs font-mono">
                       <div>
-                        <span className="text-slate-400 block text-[10px]">Показы</span>
+                        <span className="text-slate-400 block text-xs">Показы</span>
                         <strong className="text-slate-900 font-bold">{camp.impressionsCount.toLocaleString()}</strong>
                       </div>
                       <div>
-                        <span className="text-slate-400 block text-[10px]">Клики</span>
+                        <span className="text-slate-400 block text-xs">Клики</span>
                         <strong className="text-emerald-600 font-bold">{camp.clicksCount.toLocaleString()}</strong>
                       </div>
                       <div>
-                        <span className="text-slate-400 block text-[10px]">CTR</span>
+                        <span className="text-slate-400 block text-xs">CTR</span>
                         <strong className="text-slate-800 font-bold">
                           {camp.impressionsCount > 0
                             ? ((camp.clicksCount / camp.impressionsCount) * 100).toFixed(2)
@@ -297,15 +297,15 @@ export default function SuperAdminAdsManagementPage() {
                     </div>
                   </div>
 
-                  <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-slate-100 text-[11px] text-slate-600">
+                  <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-slate-100 text-xs text-slate-600">
                     <span className="font-medium text-slate-400">Таргетинг:</span>
-                    <Badge variant="secondary" className="text-[10px]">
+                    <Badge variant="secondary" className="text-xs">
                       Гео: {camp.geoTargeting.join(", ")}
                     </Badge>
-                    <Badge variant="secondary" className="text-[10px]">
+                    <Badge variant="secondary" className="text-xs">
                       Категории: {camp.categoryTargeting.join(", ")}
                     </Badge>
-                    <Badge variant="secondary" className="text-[10px]">
+                    <Badge variant="secondary" className="text-xs">
                       Слот: {camp.placementSlots.join(", ")}
                     </Badge>
                   </div>
@@ -330,7 +330,7 @@ export default function SuperAdminAdsManagementPage() {
             </div>
 
             {isSuccess && (
-              <div className="p-4 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-bold flex items-center gap-2">
+              <div className="p-4 rounded-xl border-l-2 border-l-emerald-600 bg-muted/60 border border-border/60 text-foreground text-xs font-semibold flex items-center gap-2">
                 <CheckCircle2 className="h-4 w-4 text-emerald-600" />
                 <span>Рекламодатель успешно добавлен в систему!</span>
               </div>
@@ -339,7 +339,7 @@ export default function SuperAdminAdsManagementPage() {
             <form onSubmit={handleCreateAdvertiser} className="space-y-4">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="text-[11px] font-semibold text-slate-600 block mb-1">
+                  <label className="text-xs font-semibold text-slate-600 block mb-1">
                     Название бренда (например, «Фаровон», «Байзо»)
                   </label>
                   <Input
@@ -351,7 +351,7 @@ export default function SuperAdminAdsManagementPage() {
                 </div>
 
                 <div>
-                  <label className="text-[11px] font-semibold text-slate-600 block mb-1">
+                  <label className="text-xs font-semibold text-slate-600 block mb-1">
                     Юридическое название компании
                   </label>
                   <Input
@@ -365,7 +365,7 @@ export default function SuperAdminAdsManagementPage() {
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="text-[11px] font-semibold text-slate-600 block mb-1">
+                  <label className="text-xs font-semibold text-slate-600 block mb-1">
                     Отрасль / Сфера деятельности
                   </label>
                   <select
@@ -382,7 +382,7 @@ export default function SuperAdminAdsManagementPage() {
                 </div>
 
                 <div>
-                  <label className="text-[11px] font-semibold text-slate-600 block mb-1">
+                  <label className="text-xs font-semibold text-slate-600 block mb-1">
                     Тип рекламного пакета
                   </label>
                   <select
@@ -398,7 +398,7 @@ export default function SuperAdminAdsManagementPage() {
 
               {tier === "sponsor_annual" && (
                 <div>
-                  <label className="text-[11px] font-semibold text-slate-600 block mb-1">
+                  <label className="text-xs font-semibold text-slate-600 block mb-1">
                     Стоимость годового контракта (в сомони)
                   </label>
                   <Input
@@ -413,7 +413,7 @@ export default function SuperAdminAdsManagementPage() {
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="text-[11px] font-semibold text-slate-600 block mb-1">
+                  <label className="text-xs font-semibold text-slate-600 block mb-1">
                     Контактное лицо (ФИО / Должность)
                   </label>
                   <Input
@@ -425,7 +425,7 @@ export default function SuperAdminAdsManagementPage() {
                 </div>
 
                 <div>
-                  <label className="text-[11px] font-semibold text-slate-600 block mb-1">
+                  <label className="text-xs font-semibold text-slate-600 block mb-1">
                     Телефон для связи
                   </label>
                   <Input
@@ -438,7 +438,7 @@ export default function SuperAdminAdsManagementPage() {
               </div>
 
               <div>
-                <label className="text-[11px] font-semibold text-slate-600 block mb-1">
+                <label className="text-xs font-semibold text-slate-600 block mb-1">
                   Email для отчетов
                 </label>
                 <Input

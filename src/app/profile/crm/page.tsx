@@ -352,7 +352,7 @@ export default function BrokerCrmPage() {
   }, [leads, searchQuery]);
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] pb-24 text-slate-900">
+    <div className="min-h-screen bg-background pb-24 text-slate-900">
       {/* 1. TOP HEADER & NAVIGATION */}
       <div className="bg-white border-b border-slate-200/80 px-4 sm:px-6 lg:px-8 py-5">
         <div className="max-w-7xl mx-auto">
@@ -366,7 +366,7 @@ export default function BrokerCrmPage() {
               </div>
               <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight flex items-center gap-3">
                 {isTg ? "Воронкаи канбании мизоҷон ва муомилаҳо" : "Канбан-воронка лидов & Сделок"}
-                <Badge className="bg-emerald-50 text-emerald-800 border-emerald-200 text-xs font-semibold">
+                <Badge variant="secondary" className="text-xs font-normal">
                   Maskani CRM Lite
                 </Badge>
               </h2>
@@ -384,9 +384,9 @@ export default function BrokerCrmPage() {
                   setGeneratedShareUrl(null);
                   setIsCreateCollectionOpen(true);
                 }}
-                className="h-9 px-3 text-xs font-semibold gap-1.5 border-emerald-300 text-emerald-700 bg-emerald-50/50 hover:bg-emerald-100/50 cursor-pointer"
+                className="h-9 px-3 text-xs font-medium gap-1.5 cursor-pointer"
               >
-                <Share2 className="h-3.5 w-3.5 text-emerald-600" />
+                <Share2 className="h-3.5 w-3.5 text-muted-foreground" />
                 {isTg ? "Маҷмӯа ба WhatsApp" : "Подборка в WhatsApp"}
               </Button>
 
@@ -580,7 +580,7 @@ export default function BrokerCrmPage() {
                     {/* Leads Cards Container */}
                     <div className="space-y-2.5 flex-1">
                       {columnLeads.length === 0 ? (
-                        <div className="h-28 rounded-xl border border-dashed border-slate-200/80 flex items-center justify-center text-[11px] text-slate-400 text-center p-3">
+                        <div className="h-28 rounded-xl border border-dashed border-slate-200/80 flex items-center justify-center text-xs text-slate-400 text-center p-3">
                           {isTg ? "Мизоҷро ба ин ҷо кашед" : "Перетащите лид сюда"}
                         </div>
                       ) : (
@@ -609,14 +609,14 @@ export default function BrokerCrmPage() {
                                   <h4 className="font-bold text-sm text-slate-900 group-hover:text-emerald-700 transition-colors">
                                     {lead.clientName}
                                   </h4>
-                                  <p className="text-[11px] text-slate-500 font-mono mt-0.5">
+                                  <p className="text-xs text-slate-500 font-mono mt-0.5">
                                     {lead.clientPhone}
                                   </p>
                                 </div>
 
                                 <Badge
                                   variant="secondary"
-                                  className="text-[9px] px-1.5 py-0 bg-slate-100 text-slate-600 font-medium"
+                                  className="text-xs px-1.5 py-0 bg-slate-100 text-slate-600 font-medium"
                                 >
                                   {lead.source === "whatsapp_click"
                                     ? "WhatsApp"
@@ -628,7 +628,7 @@ export default function BrokerCrmPage() {
 
                               {/* Attached property */}
                               {lead.classifiedTitle && (
-                                <div className="text-[11px] text-slate-600 bg-slate-50 p-2 rounded-lg line-clamp-2 border border-slate-100 leading-tight">
+                                <div className="text-xs text-slate-600 bg-slate-50 p-2 rounded-lg line-clamp-2 border border-slate-100 leading-tight">
                                   🏢 {lead.classifiedTitle}
                                 </div>
                               )}
@@ -636,7 +636,7 @@ export default function BrokerCrmPage() {
                               {/* Finance bar */}
                               <div className="flex items-center justify-between text-xs pt-1 border-t border-slate-100">
                                 <div>
-                                  <span className="text-[10px] text-slate-400 block font-semibold">
+                                  <span className="text-xs text-slate-400 block font-semibold">
                                     {isTg ? "Буҷет" : "Бюджет"}
                                   </span>
                                   <span className="font-extrabold text-slate-900 font-mono">
@@ -645,7 +645,7 @@ export default function BrokerCrmPage() {
                                 </div>
 
                                 <div className="text-right">
-                                  <span className="text-[10px] text-emerald-600 block font-semibold">
+                                  <span className="text-xs text-emerald-600 block font-semibold">
                                     {isTg ? `Ҳаққи хизмат (${lead.commissionPercent}%)` : `Комиссия (${lead.commissionPercent}%)`}
                                   </span>
                                   <span className="font-extrabold text-emerald-600 font-mono">
@@ -678,7 +678,7 @@ export default function BrokerCrmPage() {
                                     }
                                   }}
                                   onClick={(e) => e.stopPropagation()}
-                                  className="h-7 text-[10px] rounded-lg border border-slate-200 bg-slate-50 font-semibold px-1.5 text-slate-700 cursor-pointer max-w-[130px] truncate"
+                                  className="h-7 text-xs rounded-lg border border-slate-200 bg-slate-50 font-semibold px-1.5 text-slate-700 cursor-pointer max-w-[130px] truncate"
                                 >
                                   {COLUMNS.map((c) => (
                                     <option key={c.id} value={c.id}>
@@ -700,7 +700,7 @@ export default function BrokerCrmPage() {
                                     href={`https://wa.me/${cleanPhone}?text=${waText}`}
                                     target="_blank"
                                     rel="noreferrer"
-                                    className="h-7 w-7 rounded-lg bg-emerald-50 text-emerald-600 hover:bg-emerald-600 hover:text-white flex items-center justify-center transition-colors border border-emerald-100"
+                                    className="h-7 w-7 rounded-lg bg-muted text-muted-foreground hover:bg-emerald-600 hover:text-white flex items-center justify-center transition-colors border border-border/60"
                                     title={isTg ? "Ба WhatsApp навиштан" : "Написать в WhatsApp"}
                                   >
                                     <MessageCircle className="h-3.5 w-3.5" />
@@ -760,7 +760,7 @@ export default function BrokerCrmPage() {
                     <CardHeader className="p-4 pb-2">
                       <div className="flex items-start justify-between gap-3">
                         <div>
-                          <Badge className="bg-emerald-50 text-emerald-700 border-emerald-200 text-[10px] font-semibold mb-1">
+                          <Badge variant="outline" className="text-xs font-mono font-normal mb-1">
                             /{col.shareCode}
                           </Badge>
                           <CardTitle className="text-base font-bold text-slate-900">
@@ -908,11 +908,11 @@ export default function BrokerCrmPage() {
               </div>
             </div>
 
-            <div className="p-2.5 rounded-lg bg-emerald-50 border border-emerald-100 flex items-center justify-between text-xs">
-              <span className="text-emerald-800 font-medium">
+            <div className="p-2.5 rounded-lg bg-muted/60 border border-border/60 flex items-center justify-between text-xs">
+              <span className="text-muted-foreground font-medium">
                 {isTg ? "Пардохти пешбинишуда:" : "Ожидаемая выплата:"}
               </span>
-              <strong className="text-emerald-700 font-mono text-sm">
+              <strong className="text-foreground font-mono text-sm">
                 ${Math.round((newLeadForm.budget * newLeadForm.commissionPercent) / 100)}
               </strong>
             </div>
@@ -1032,7 +1032,7 @@ export default function BrokerCrmPage() {
                       onClick={() =>
                         setSelectedLead((prev) => prev && { ...prev, status: col.id })
                       }
-                      className={`text-[10px] font-semibold py-1.5 rounded-lg border transition-all ${
+                      className={`text-xs font-semibold py-1.5 rounded-lg border transition-all ${
                         selectedLead.status === col.id
                           ? "bg-emerald-600 text-white border-emerald-600 shadow-xs"
                           : "bg-slate-50 text-slate-600 border-slate-200 hover:bg-slate-100"
@@ -1173,19 +1173,19 @@ export default function BrokerCrmPage() {
 
           {generatedShareUrl ? (
             <div className="space-y-4 py-3">
-              <div className="p-4 rounded-xl bg-emerald-50 border border-emerald-200 text-center space-y-2">
+              <div className="p-4 rounded-xl bg-card border border-border/80 text-center space-y-2">
                 <div className="h-10 w-10 rounded-full bg-emerald-600 text-white flex items-center justify-center mx-auto shadow-sm">
                   <Check className="h-5 w-5" />
                 </div>
-                <h3 className="font-bold text-base text-slate-900">
+                <h3 className="font-bold text-base text-foreground">
                   {isTg ? "Маҷмӯа бомуваффақият омода шуд!" : "Подборка успешно создана!"}
                 </h3>
-                <p className="text-xs text-slate-600">
+                <p className="text-xs text-muted-foreground">
                   {isTg
                     ? "Мизоҷ саҳифаро бо ном, телефон ва иншооти интихобкардаи Шумо мебинад."
                     : "Клиент увидит чистую страницу с вашим именем, телефоном и выбранными объектами."}
                 </p>
-                <div className="p-2.5 bg-white rounded-lg border border-emerald-200 font-mono text-xs text-slate-800 break-all select-all">
+                <div className="p-2.5 bg-muted rounded-lg border border-border/60 font-mono text-xs text-foreground break-all select-all">
                   {generatedShareUrl}
                 </div>
               </div>
@@ -1297,7 +1297,7 @@ export default function BrokerCrmPage() {
                   <Label className="text-xs font-semibold text-slate-700">
                     {isTg ? "Иншоотҳоро барои маҷмӯа интихоб намоед:" : "Выберите объекты для включения в подборку:"}
                   </Label>
-                  <span className="text-[11px] font-bold text-emerald-600">
+                  <span className="text-xs font-bold text-emerald-600">
                     {isTg ? "Интихобшуда: " : "Выбрано: "}{collectionForm.selectedPropertyIds.length}
                   </span>
                 </div>
@@ -1312,8 +1312,8 @@ export default function BrokerCrmPage() {
                         onClick={() => togglePropertyInCollection(prop.id)}
                         className={`p-2.5 rounded-xl border flex items-center justify-between gap-3 cursor-pointer transition-all ${
                           isSelected
-                            ? "bg-emerald-50/70 border-emerald-300"
-                            : "bg-slate-50 border-slate-200/80 hover:bg-slate-100/70"
+                            ? "bg-accent/15 border-foreground/30 ring-1 ring-foreground/20"
+                            : "bg-card border-border/80 hover:bg-muted/50"
                         }`}
                       >
                         <div className="flex items-center gap-3">
@@ -1326,7 +1326,7 @@ export default function BrokerCrmPage() {
                             <h5 className="font-bold text-xs text-slate-900 line-clamp-1">
                               {prop.title}
                             </h5>
-                            <p className="text-[11px] text-slate-500 font-medium">
+                            <p className="text-xs text-slate-500 font-medium">
                               {prop.city}, {prop.district} • {isTg ? `${prop.rooms} ҳуҷр. (${prop.area} м²)` : `${prop.rooms} комн. (${prop.area} м²)`}
                             </p>
                             <span className="font-extrabold text-xs text-emerald-600 font-mono">

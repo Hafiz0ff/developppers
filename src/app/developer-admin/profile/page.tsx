@@ -69,7 +69,7 @@ export default function DeveloperProfilePage() {
           </p>
         </div>
         {savedSuccess && (
-          <div className="flex items-center gap-1.5 text-xs font-semibold text-emerald-600 bg-emerald-50 dark:bg-emerald-950/40 px-3 py-1.5 rounded-lg border border-emerald-300">
+          <div className="flex items-center gap-1.5 text-xs font-medium text-foreground bg-muted/60 px-3 py-1.5 rounded-lg border border-border/60">
             <CheckCircle2 className="h-4 w-4" />
             {isTg ? "Тағйирот бомуваффақият сабт шуд!" : "Изменения успешно сохранены!"}
           </div>

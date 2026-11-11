@@ -45,7 +45,7 @@ export function AttributeFormSection({
           <h3 className="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
             <span>{sectionTitle}</span>
             {isLegal && (
-              <span className="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-700 dark:text-amber-400 border border-amber-500/20">
+              <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-700 dark:text-amber-400 border border-amber-500/20">
                 {language === "tg" ? "Танҳо фурӯш" : language === "en" ? "Sale only" : "Только продажа"}
               </span>
             )}
@@ -155,9 +155,9 @@ export function AttributeFormSection({
                   />
                 )}
 
-                {hint && <p className="text-[11px] text-slate-400 dark:text-slate-500">{hint}</p>}
+                {hint && <p className="text-xs text-slate-400 dark:text-slate-500">{hint}</p>}
                 {error && (
-                  <p className="text-[11px] text-rose-500 font-medium flex items-center gap-1">
+                  <p className="text-xs text-rose-500 font-medium flex items-center gap-1">
                     <AlertCircle className="h-3 w-3 shrink-0" />
                     <span>{error}</span>
                   </p>
@@ -172,7 +172,7 @@ export function AttributeFormSection({
       {booleanAttrs.length > 0 && (
         <div className="space-y-3 pt-1">
           {complexAttrs.length > 0 && (
-            <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">
+            <span className="text-xs font-bold text-slate-400 uppercase tracking-wider block">
               {language === "tg" ? "Иловагӣ" : language === "en" ? "Options" : "Дополнительные удобства"}
             </span>
           )}

@@ -101,7 +101,7 @@ function DealItemRow({
               <button
                 type="button"
                 onClick={onRemove}
-                className="p-1 rounded-md text-muted-foreground hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/30 transition-colors cursor-pointer shrink-0"
+                className="p-1 rounded-md text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-colors cursor-pointer shrink-0"
                 title={removeTitle}
                 aria-label={removeTitle}
               >
@@ -202,10 +202,10 @@ export function ProjectDealBuilderBlock({
   return (
     <div className="space-y-4">
       {/* 1. БЛОК «СТОИМОСТЬ ВЫБРАННОЙ КВАРТИРЫ» (Section 4: Priority 2, under Installment) */}
-      <Card className="p-4 rounded-2xl bg-card border border-emerald-500/20 shadow-xs space-y-3">
+      <Card className="p-4 rounded-2xl bg-card border border-border/80 shadow-xs space-y-3">
         <div className="flex items-center justify-between gap-2">
           <div className="flex items-center gap-2">
-            <div className="p-1.5 rounded-lg bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 shrink-0">
+            <div className="p-1.5 rounded-lg bg-muted text-foreground shrink-0">
               <Home className="h-4 w-4" />
             </div>
             <span className="text-xs font-bold text-foreground">
@@ -214,11 +214,11 @@ export function ProjectDealBuilderBlock({
           </div>
 
           {unit ? (
-            <Badge className="bg-emerald-600 text-white font-semibold text-[11px] px-2 py-0.5 shrink-0">
+            <Badge variant="secondary" className="font-medium text-xs px-2 py-0.5 shrink-0">
               {tDual(`Квартира № ${unit.number}`, `Хонадон № ${unit.number}`)}
             </Badge>
           ) : (
-            <Badge variant="outline" className="text-[10px] text-muted-foreground border-border shrink-0">
+            <Badge variant="outline" className="text-xs text-muted-foreground border-border shrink-0">
               {tDual("Не выбрана", "Интихоб нашудааст")}
             </Badge>
           )}
@@ -227,22 +227,22 @@ export function ProjectDealBuilderBlock({
         {unit ? (
           <div className="pt-1 border-t border-border/60 flex items-baseline justify-between gap-2">
             <div className="space-y-0.5">
-              <span className="text-[11px] text-muted-foreground block">
+              <span className="text-xs text-muted-foreground block">
                 {tDual("Стоимость квартиры", "Арзиши хонадон")}
               </span>
-              <span className="text-[11px] text-muted-foreground block">
+              <span className="text-xs text-muted-foreground block">
                 {unit.roomsCount}
                 {tDual("-комн.", "-ҳуҷр.")} · {unit.totalArea} м² · {unit.floor}{" "}
                 {tDual("этаж", "ошёна")}
               </span>
             </div>
-            <div className="text-lg sm:text-xl font-extrabold text-emerald-600 tabular-nums text-right">
+            <div className="text-lg sm:text-xl font-bold text-foreground tabular-nums text-right">
               {formatItemPrice(unit.priceTjs, unit.priceUsd)}
             </div>
           </div>
         ) : (
           <div className="p-3 rounded-xl bg-muted/40 border border-dashed border-border flex items-center justify-between gap-2 text-xs">
-            <span className="text-muted-foreground text-[11px]">
+            <span className="text-muted-foreground text-xs">
               {tDual(
                 "Выберите квартиру в «План секции» или в блоке «Интерактивная шахматка»",
                 "Хонадонро дар «Нақшаи бахш» ё «Ҷадвали интерактивӣ» интихоб кунед"
@@ -253,7 +253,7 @@ export function ProjectDealBuilderBlock({
               size="sm"
               variant="outline"
               onClick={onScrollToChessboard}
-              className="h-7 text-[11px] px-2.5 rounded-lg border-emerald-500/40 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-50 gap-1 cursor-pointer shrink-0 tactile-press btn-shimmer"
+              className="h-7 text-xs px-2.5 rounded-lg border-border hover:bg-muted text-foreground gap-1 cursor-pointer shrink-0"
             >
               <span>{tDual("К шахматке", "Ба ҷадвал")}</span>
               <ArrowDown className="h-3 w-3" />
@@ -264,7 +264,7 @@ export function ProjectDealBuilderBlock({
 
       {/* 2. БЛОК «С ПАРКИНГОМ И КЛАДОВОЙ ПОКУПКА ВЫГОДНЕЕ» (Section 5: under Selected Apartment Price) */}
       {showAddonsBlock && (
-        <Card className="p-4 rounded-2xl bg-gradient-to-br from-emerald-500/5 via-card to-card border border-border/80 shadow-xs space-y-3">
+        <Card className="p-4 rounded-2xl bg-card border border-border/80 shadow-xs space-y-3">
           <div className="space-y-1">
             <div className="inline-flex items-center gap-1.5 text-xs font-bold text-foreground">
               <Sparkles className="h-3.5 w-3.5 text-emerald-600 shrink-0" />
@@ -273,7 +273,7 @@ export function ProjectDealBuilderBlock({
           </div>
 
           <div className="space-y-2">
-            <div className="text-[11px] text-muted-foreground font-semibold">
+            <div className="text-xs text-muted-foreground font-semibold">
               {tDual("Добавить", "Илова кардан")}
             </div>
 
@@ -284,14 +284,10 @@ export function ProjectDealBuilderBlock({
                   size="sm"
                   variant={storage ? "secondary" : "outline"}
                   onClick={onOpenStorageModal}
-                  className={`h-8 text-xs font-semibold rounded-xl gap-1.5 cursor-pointer tactile-press btn-shimmer ${
-                    storage
-                      ? "bg-emerald-500/15 text-emerald-800 dark:text-emerald-200 border border-emerald-500/30 shadow-xs"
-                      : "border-emerald-500/30 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-500/10"
-                  }`}
+                  className="h-8 text-xs font-medium rounded-xl gap-1.5 cursor-pointer"
                 >
                   {storage ? (
-                    <CheckCircle2 className="h-3.5 w-3.5 text-emerald-600" />
+                    <CheckCircle2 className="h-3.5 w-3.5 text-primary" />
                   ) : (
                     <Plus className="h-3.5 w-3.5" />
                   )}
@@ -306,14 +302,10 @@ export function ProjectDealBuilderBlock({
                   size="sm"
                   variant={parking ? "secondary" : "outline"}
                   onClick={onOpenParkingModal}
-                  className={`h-8 text-xs font-semibold rounded-xl gap-1.5 cursor-pointer tactile-press btn-shimmer ${
-                    parking
-                      ? "bg-emerald-500/15 text-emerald-800 dark:text-emerald-200 border border-emerald-500/30 shadow-xs"
-                      : "border-emerald-500/30 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-500/10"
-                  }`}
+                  className="h-8 text-xs font-medium rounded-xl gap-1.5 cursor-pointer"
                 >
                   {parking ? (
-                    <CheckCircle2 className="h-3.5 w-3.5 text-emerald-600" />
+                    <CheckCircle2 className="h-3.5 w-3.5 text-primary" />
                   ) : (
                     <Plus className="h-3.5 w-3.5" />
                   )}
@@ -334,7 +326,7 @@ export function ProjectDealBuilderBlock({
             <span>{tDual("Общая стоимость", "Арзиши умумӣ")}</span>
           </span>
           {hasItems && (
-            <Badge variant="secondary" className="text-[10px] font-semibold">
+            <Badge variant="secondary" className="text-xs font-semibold">
               {tDual(`Позиций: ${itemsCount}`, `Мавқеъҳо: ${itemsCount}`)}
             </Badge>
           )}
@@ -357,7 +349,7 @@ export function ProjectDealBuilderBlock({
                 tDual={tDual}
               />
             ) : (
-              <div className="text-[11px] text-amber-700 dark:text-amber-300 bg-amber-500/10 px-2.5 py-1.5 rounded-lg mb-2">
+              <div className="text-xs text-muted-foreground bg-muted/60 border border-border/40 px-2.5 py-1.5 rounded-lg mb-2">
                 {tDual(
                   "Квартира ещё не выбрана. Выберите квартиру на шахматке для полного расчёта.",
                   "Хонадон ҳанӯз интихоб нашудааст. Хонадонро дар ҷадвал интихоб кунед."

@@ -286,13 +286,10 @@ export function ProjectDocumentsManager({
                   {isTg ? "Идоракунии бахши «Ҳуҷҷатҳо»" : "Управление блоком «Документы»"}
                 </CardTitle>
                 <Badge
-                  variant="outline"
-                  className={
-                    isEnabled
-                      ? "bg-emerald-50 text-emerald-700 border-emerald-300 dark:bg-emerald-950/40 dark:text-emerald-300"
-                      : "bg-muted text-muted-foreground"
-                  }
+                  variant="secondary"
+                  className="text-xs font-normal"
                 >
+                  <span className={`w-1.5 h-1.5 rounded-full mr-1.5 ${isEnabled ? "bg-emerald-500" : "bg-muted-foreground"}`} />
                   {isEnabled
                     ? isTg
                       ? "Дар витрина фаъол аст"
@@ -351,8 +348,8 @@ export function ProjectDocumentsManager({
         </CardHeader>
 
         <CardContent className="pt-0">
-          <div className="flex items-start gap-2 p-3 bg-amber-50/70 dark:bg-amber-950/20 border border-amber-200/80 dark:border-amber-900/40 rounded-xl text-xs text-amber-900 dark:text-amber-200">
-            <Info className="h-4 w-4 shrink-0 text-amber-600 mt-0.5" />
+          <div className="flex items-start gap-2 p-3 bg-muted/60 border border-border/60 rounded-xl text-xs text-foreground">
+            <Info className="h-4 w-4 shrink-0 text-muted-foreground mt-0.5" />
             <p className="leading-relaxed">
               {isTg
                 ? "Қоидаи нигоҳдории маълумот: Хомӯш кардани ин бахш ҳуҷҷатҳои пештар боршударо нест намекунад. Онҳо дар пойгоҳи маълумот нигоҳ дошта шуда, пас аз фаъолшавӣ дубора намоиш дода мешаванд."
@@ -385,7 +382,7 @@ export function ProjectDocumentsManager({
                 className={`border transition-all ${
                   doc
                     ? doc.isPublished
-                      ? "border-emerald-500/40 bg-card shadow-xs"
+                      ? "border-primary/40 bg-card shadow-xs"
                       : "border-border/80 bg-muted/20"
                     : "border-dashed border-border bg-card/50"
                 }`}
@@ -398,7 +395,7 @@ export function ProjectDocumentsManager({
                         className={`h-11 w-11 rounded-xl flex items-center justify-center shrink-0 ${
                           doc
                             ? doc.isPublished
-                              ? "bg-emerald-500/10 text-emerald-600 border border-emerald-500/20"
+                              ? "bg-primary/10 text-primary border border-primary/20"
                               : "bg-muted text-muted-foreground border border-border"
                             : "bg-muted/40 text-muted-foreground/60 border border-dashed border-border"
                         }`}
@@ -420,13 +417,10 @@ export function ProjectDocumentsManager({
 
                           {doc ? (
                             <Badge
-                              variant="outline"
-                              className={`text-[10px] px-2 py-0.5 rounded-full ${
-                                doc.isPublished
-                                  ? "bg-emerald-50 text-emerald-700 border-emerald-300 dark:bg-emerald-950/40 dark:text-emerald-300"
-                                  : "bg-amber-50 text-amber-700 border-amber-300 dark:bg-amber-950/40 dark:text-amber-300"
-                              }`}
+                              variant={doc.isPublished ? "secondary" : "outline"}
+                              className="text-xs px-2 py-0.5 rounded-full font-normal"
                             >
+                              <span className={`w-1.5 h-1.5 rounded-full mr-1.5 ${doc.isPublished ? "bg-emerald-500" : "bg-amber-500"}`} />
                               {doc.isPublished
                                 ? isTg
                                   ? "Дар витрина нашр шуд"
@@ -438,7 +432,7 @@ export function ProjectDocumentsManager({
                           ) : (
                             <Badge
                               variant="outline"
-                              className="text-[10px] bg-muted/50 text-muted-foreground"
+                              className="text-xs bg-muted/50 text-muted-foreground"
                             >
                               {isTg ? "Бор нашудааст" : "Не загружен"}
                             </Badge>
@@ -451,7 +445,7 @@ export function ProjectDocumentsManager({
 
                         {/* Metadata if document exists */}
                         {doc && (
-                          <div className="flex items-center gap-3 text-[11px] text-muted-foreground flex-wrap pt-0.5">
+                          <div className="flex items-center gap-3 text-xs text-muted-foreground flex-wrap pt-0.5">
                             {doc.documentNumber && (
                               <span className="font-semibold text-foreground/80">
                                 {doc.documentNumber}
@@ -549,9 +543,9 @@ export function ProjectDocumentsManager({
                           variant="outline"
                           size="sm"
                           onClick={() => fileInputRefs.current[slot.type]?.click()}
-                          className="h-8 text-xs font-semibold gap-1.5 border-emerald-500/40 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-50 dark:hover:bg-emerald-950/20 cursor-pointer"
+                          className="h-8 text-xs font-medium gap-1.5 border-border hover:bg-muted text-foreground cursor-pointer"
                         >
-                          <Upload className="h-3.5 w-3.5 text-emerald-600" />
+                          <Upload className="h-3.5 w-3.5 text-muted-foreground" />
                           {isTg ? "Боргирии PDF" : "Загрузить PDF"}
                         </Button>
                       )}
@@ -562,7 +556,7 @@ export function ProjectDocumentsManager({
                   {doc && (
                     <div className="mt-4 pt-3 border-t border-border/50 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
                       <div>
-                        <Label className="text-[11px] text-muted-foreground">
+                        <Label className="text-xs text-muted-foreground">
                           {isTg ? "Номи расмӣ (RU)" : "Наименование документа (RU)"}
                         </Label>
                         <Input
@@ -572,7 +566,7 @@ export function ProjectDocumentsManager({
                         />
                       </div>
                       <div>
-                        <Label className="text-[11px] text-muted-foreground">
+                        <Label className="text-xs text-muted-foreground">
                           {isTg ? "Номи расмӣ (TG)" : "Наименование документа (TG)"}
                         </Label>
                         <Input
@@ -583,7 +577,7 @@ export function ProjectDocumentsManager({
                         />
                       </div>
                       <div>
-                        <Label className="text-[11px] text-muted-foreground">
+                        <Label className="text-xs text-muted-foreground">
                           {isTg ? "Рақами сабт / қарор" : "Регистрационный номер"}
                         </Label>
                         <Input
@@ -633,7 +627,7 @@ export function ProjectDocumentsManager({
                   ? "Нишонаи обиро ба ҳуҷҷатҳои оммавӣ илова кунед"
                   : "Добавлять водяной знак на публичные документы"}
               </Label>
-              <p className="text-[11px] text-muted-foreground">
+              <p className="text-xs text-muted-foreground">
                 {isTg
                   ? "Нишонаи обӣ матн ва муҳрҳои расмиро намепӯшонад ва нусхабардориро маҳдуд месозад."
                   : "Полупрозрачный текст под углом -25°, не закрывающий печати, подписи и QR-коды."}
@@ -659,7 +653,7 @@ export function ProjectDocumentsManager({
                   className="h-9 text-xs"
                   placeholder={`${projectName} • Только для ознакомления`}
                 />
-                <p className="text-[11px] text-muted-foreground">
+                <p className="text-xs text-muted-foreground">
                   {isTg
                     ? "Тавсия мешавад: Номи иншоот ё ширкати сохтмонӣ."
                     : "Рекомендуется: Название жилого комплекса и указание площадки sogd-realty."}
@@ -683,7 +677,7 @@ export function ProjectDocumentsManager({
                     onChange={(e) => setWatermarkOpacity(parseFloat(e.target.value))}
                     className="w-full accent-emerald-600 cursor-pointer"
                   />
-                  <div className="flex justify-between text-[10px] text-muted-foreground">
+                  <div className="flex justify-between text-xs text-muted-foreground">
                     <span>10% ({isTg ? "Хеле камнамо" : "Тонкий"})</span>
                     <span>18% ({isTg ? "Стандартӣ" : "Стандарт"})</span>
                     <span>35% ({isTg ? "Намоён" : "Заметный"})</span>
@@ -707,7 +701,7 @@ export function ProjectDocumentsManager({
 
                   <div className="flex items-center justify-between pt-4">
                     <div className="h-6 w-16 bg-zinc-200 dark:bg-zinc-800 rounded-sm" />
-                    <div className="h-7 w-7 rounded-full border border-blue-400/40 bg-blue-50/50 dark:bg-blue-950/40 flex items-center justify-center text-[8px] text-blue-600 font-bold">
+                    <div className="h-7 w-7 rounded-full border border-border bg-muted flex items-center justify-center text-xs text-muted-foreground font-semibold">
                       ПЕЧАТЬ
                     </div>
                   </div>
@@ -722,7 +716,7 @@ export function ProjectDocumentsManager({
                     </span>
                   </div>
                 </div>
-                <p className="text-[11px] text-muted-foreground text-center">
+                <p className="text-xs text-muted-foreground text-center">
                   {isTg
                     ? "Матн ва мӯҳри аслӣ таҳти нишона пурра хонда мешаванд."
                     : "Шрифт и печати остаются читаемыми под защитным слоем."}

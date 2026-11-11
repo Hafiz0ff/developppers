@@ -72,17 +72,17 @@ export function SunTrackCompass({ timeHours }: { timeHours: number }) {
 
       {/* Compass Directions */}
       {/* North at Top */}
-      <span className="absolute top-1 text-[10px] font-black text-rose-500 leading-none">
+      <span className="absolute top-1 text-xs font-black text-rose-500 leading-none">
         {language === "tg" ? "Ш" : "С"}
       </span>
 
       {/* East on Right */}
-      <span className="absolute right-1 text-[9px] font-bold text-slate-300 leading-none">
+      <span className="absolute right-1 text-xs font-bold text-slate-300 leading-none">
         {language === "tg" ? "Шқ" : "В"}
       </span>
 
       {/* West on Left */}
-      <span className="absolute left-1.5 text-[9px] font-bold text-slate-300 leading-none">
+      <span className="absolute left-1.5 text-xs font-bold text-slate-300 leading-none">
         {language === "tg" ? "Ғ" : "З"}
       </span>
 
@@ -130,13 +130,13 @@ export function SunTrackBar({
 
       <div className="space-y-1">
         <div className="flex items-center justify-between text-xs gap-3">
-          <span className="text-[11px] font-bold text-amber-400 flex items-center gap-1">
+          <span className="text-xs font-bold text-amber-400 flex items-center gap-1">
             <span>{formatTime(timeHours)}</span>
-            <span className="text-[10px] text-slate-300 font-normal hidden sm:inline">
+            <span className="text-xs text-slate-300 font-normal hidden sm:inline">
               • {getLightingLabel(timeHours)}
             </span>
           </span>
-          <span className="text-[10px] text-slate-400 font-mono">09:00 — 18:00</span>
+          <span className="text-xs text-slate-400 font-mono">09:00 — 18:00</span>
         </div>
 
         {/* Interactive Slider Track (Section 11.1) */}

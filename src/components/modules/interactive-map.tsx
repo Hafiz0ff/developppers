@@ -285,7 +285,7 @@ export function InteractiveMap({
         const clusterHtml = `
           <div class="group relative cursor-pointer transition-all duration-200 hover:scale-110 active:scale-95">
             <div class="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-900/95 hover:bg-slate-900 text-white shadow-xl border-2 border-white text-xs font-bold backdrop-blur-md">
-              <span class="w-5 h-5 rounded-full bg-emerald-500 flex items-center justify-center text-[10px] font-black shadow-sm text-white">
+              <span class="w-5 h-5 rounded-full bg-emerald-500 flex items-center justify-center text-xs font-black shadow-sm text-white">
                 ${item.count}
               </span>
               <span>${isTg ? "аз" : "от"} ${minPriceFormatted}</span>
@@ -321,7 +321,7 @@ export function InteractiveMap({
                 <span>📍</span>
                 <span>${isTg ? "Объектҳо дар ин ҷо" : "Объекты в этой локации"}</span>
               </div>
-              <span class="px-2 py-0.5 rounded-full text-[10px] font-black bg-emerald-500 text-white">
+              <span class="px-2 py-0.5 rounded-full text-xs font-black bg-emerald-500 text-white">
                 ${item.count}
               </span>
             </div>
@@ -340,7 +340,7 @@ export function InteractiveMap({
                         <div class="text-xs font-bold text-slate-800 line-clamp-1 group-hover:text-emerald-600 transition-colors">
                           ${pTitle}
                         </div>
-                        <div class="text-[11px] font-extrabold text-emerald-600">
+                        <div class="text-xs font-extrabold text-emerald-600">
                           ${pPrice}
                         </div>
                       </div>
@@ -404,7 +404,7 @@ export function InteractiveMap({
                 ? "shadow-xl ring-2 ring-white"
                 : ""
             }">
-              <span class="text-[10px] font-extrabold uppercase px-1.5 py-0.5 rounded bg-black/20">
+              <span class="text-xs font-extrabold uppercase px-1.5 py-0.5 rounded bg-black/20">
                 ${badgeLabel}
               </span>
               <span>${priceText}</span>
@@ -450,13 +450,13 @@ export function InteractiveMap({
             <div class="relative h-32 w-full bg-slate-100">
               <img src="${prop.coverImage}" alt="${title}" class="w-full h-full object-cover" />
               <div class="absolute top-2 left-2">
-                <span class="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase text-white ${categoryBg}">
+                <span class="px-2 py-0.5 rounded-full text-xs font-bold uppercase text-white ${categoryBg}">
                   ${badgeLabel}
                 </span>
               </div>
               ${
                 prop.stage
-                  ? `<div class="absolute bottom-2 left-2 bg-black/60 backdrop-blur-md px-2 py-0.5 rounded text-[10px] font-medium text-white">
+                  ? `<div class="absolute bottom-2 left-2 bg-black/60 backdrop-blur-md px-2 py-0.5 rounded text-xs font-medium text-white">
                       ${isTg && prop.stageTg ? prop.stageTg : prop.stage}
                     </div>`
                   : ""
@@ -473,7 +473,7 @@ export function InteractiveMap({
                 <div class="text-base font-extrabold text-emerald-600">
                   ${primaryPrice}
                 </div>
-                <div class="text-[11px] text-slate-400 font-medium">
+                <div class="text-xs text-slate-400 font-medium">
                   ${secondaryPrice}
                 </div>
               </div>
@@ -502,28 +502,28 @@ export function InteractiveMap({
               <div class="flex items-center gap-1.5">
                 <a 
                   href="tel:${cleanPhone}" 
-                  class="flex-1 flex items-center justify-center gap-1 py-1.5 px-2 bg-slate-50 hover:bg-emerald-50 text-slate-700 hover:text-emerald-700 rounded-lg text-[11px] font-semibold border border-slate-200 transition-colors"
+                  class="flex-1 flex items-center justify-center gap-1 py-1.5 px-2 bg-slate-100 hover:bg-slate-200 text-slate-800 rounded-lg text-xs font-medium border border-slate-200 transition-colors"
                 >
-                  <svg class="w-3 h-3 text-emerald-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                  <svg class="w-3 h-3 text-slate-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
                   <span>${isTg ? "Занг" : "Звонок"}</span>
                 </a>
                 <a 
                   href="${googleRouteUrl}" 
                   target="_blank" 
                   rel="noopener noreferrer" 
-                  class="flex items-center justify-center gap-1 py-1.5 px-2 bg-slate-50 hover:bg-blue-50 text-slate-700 hover:text-blue-700 rounded-lg text-[11px] font-semibold border border-slate-200 transition-colors"
+                  class="flex items-center justify-center gap-1 py-1.5 px-2 bg-slate-100 hover:bg-slate-200 text-slate-800 rounded-lg text-xs font-medium border border-slate-200 transition-colors"
                   title="Google Maps"
                 >
-                  <svg class="w-3 h-3 text-blue-500 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2a8 8 0 0 0-8 8c0 5.25 8 12 8 12s8-6.75 8-12a8 8 0 0 0-8-8z"/><circle cx="12" cy="10" r="3"/></svg>
+                  <svg class="w-3 h-3 text-slate-600 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2a8 8 0 0 0-8 8c0 5.25 8 12 8 12s8-6.75 8-12a8 8 0 0 0-8-8z"/><circle cx="12" cy="10" r="3"/></svg>
                   <span>Google</span>
                 </a>
                 <a 
                   href="https://wa.me/${cleanWa}" 
                   target="_blank" 
                   rel="noopener noreferrer" 
-                  class="flex-1 flex items-center justify-center gap-1 py-1.5 px-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 rounded-lg text-[11px] font-semibold border border-emerald-200 transition-colors"
+                  class="flex-1 flex items-center justify-center gap-1 py-1.5 px-2 bg-[#25D366] hover:bg-[#20bd5a] text-white rounded-lg text-xs font-medium transition-colors shadow-2xs"
                 >
-                  <svg class="w-3 h-3 text-emerald-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+                  <svg class="w-3 h-3 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
                   <span>WhatsApp</span>
                 </a>
               </div>

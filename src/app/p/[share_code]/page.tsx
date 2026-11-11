@@ -103,7 +103,7 @@ export default function ClientCollectionPage({
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#F8FAFC] flex flex-col items-center justify-center p-6 text-slate-500">
+      <div className="min-h-screen bg-background flex flex-col items-center justify-center p-6 text-slate-500">
         <div className="h-10 w-10 border-3 border-emerald-600 border-t-transparent rounded-full animate-spin mb-4" />
         <p className="text-sm font-medium">
           {isTg
@@ -116,8 +116,8 @@ export default function ClientCollectionPage({
 
   if (!collection) {
     return (
-      <div className="min-h-screen bg-[#F8FAFC] flex flex-col items-center justify-center p-6 text-center">
-        <div className="h-14 w-14 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center mb-4">
+      <div className="min-h-screen bg-background flex flex-col items-center justify-center p-6 text-center">
+        <div className="h-14 w-14 rounded-2xl bg-muted text-muted-foreground flex items-center justify-center mb-4 border border-border/60">
           <Info className="h-7 w-7" />
         </div>
         <h1 className="text-2xl font-bold text-slate-900 mb-2">
@@ -138,7 +138,7 @@ export default function ClientCollectionPage({
   }
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] text-slate-900 pb-20 print:bg-white print:pb-0">
+    <div className="min-h-screen bg-background text-slate-900 pb-20 print:bg-white print:pb-0">
       {/* 1. TOP UTILITY BAR (CURRENCY + SHARE + PRINT) */}
       <header className="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-slate-200/80 px-4 py-3 print:hidden">
         <div className="max-w-4xl mx-auto flex items-center justify-between gap-3">
@@ -213,36 +213,34 @@ export default function ClientCollectionPage({
 
       {/* 2. BROKER PROFILE HEADER CARD */}
       <main className="max-w-4xl mx-auto px-4 sm:px-6 pt-6 sm:pt-8 space-y-6">
-        <div className="bg-white border border-slate-200/90 rounded-2xl p-5 sm:p-7 shadow-xs relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-48 h-48 bg-gradient-to-bl from-emerald-100/50 to-transparent rounded-bl-full pointer-events-none" />
-
+        <div className="bg-card border border-border/80 rounded-2xl p-5 sm:p-7 shadow-xs relative overflow-hidden">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5 relative z-10">
             <div className="flex items-center gap-4">
-              <Avatar className="h-16 w-16 sm:h-20 sm:w-20 border-2 border-emerald-500/30 shadow-md">
+              <Avatar className="h-16 w-16 sm:h-20 sm:w-20 border border-border/80 shadow-xs">
                 <AvatarImage src={collection.agentAvatar} alt={collection.agentName} />
-                <AvatarFallback className="bg-emerald-600 text-white font-bold text-lg">
+                <AvatarFallback className="bg-primary text-primary-foreground font-bold text-lg">
                   {collection.agentName.slice(0, 2).toUpperCase()}
                 </AvatarFallback>
               </Avatar>
 
               <div>
                 <div className="flex items-center gap-2">
-                  <h1 className="text-lg sm:text-xl font-bold text-slate-900">
+                  <h1 className="text-lg sm:text-xl font-bold text-foreground">
                     {collection.agentName}
                   </h1>
-                  <Badge className="bg-emerald-50 text-emerald-700 border-emerald-200 text-[10px] font-semibold gap-1">
-                    <ShieldCheck className="h-3 w-3 text-emerald-600" />
+                  <Badge variant="secondary" className="text-xs font-medium gap-1">
+                    <ShieldCheck className="h-3 w-3 text-primary" />
                     {isTg ? "Мутахассиси тасдиқшуда" : "Проверенный эксперт"}
                   </Badge>
                 </div>
 
-                <p className="text-xs sm:text-sm text-slate-500 font-medium mt-0.5">
+                <p className="text-xs sm:text-sm text-muted-foreground font-medium mt-0.5">
                   {collection.agentAgency ||
                     (isTg ? "Мутахассиси инфиродии амвол" : "Персональный риелтор по недвижимости")}
                 </p>
 
-                <p className="text-xs text-slate-600 font-mono mt-1 font-semibold flex items-center gap-1.5">
-                  <Phone className="h-3.5 w-3.5 text-emerald-600" />
+                <p className="text-xs text-foreground font-mono mt-1 font-semibold flex items-center gap-1.5">
+                  <Phone className="h-3.5 w-3.5 text-muted-foreground" />
                   {collection.agentPhone}
                 </p>
               </div>
@@ -253,9 +251,9 @@ export default function ClientCollectionPage({
               <a href={`tel:${cleanPhone}`} className="flex-1 sm:flex-none">
                 <Button
                   variant="outline"
-                  className="w-full sm:w-auto h-10 px-4 text-xs font-semibold rounded-xl border-slate-200 gap-1.5 cursor-pointer"
+                  className="w-full sm:w-auto h-10 px-4 text-xs font-semibold rounded-xl border-border/80 gap-1.5 cursor-pointer"
                 >
-                  <Phone className="h-3.5 w-3.5 text-emerald-600" />
+                  <Phone className="h-3.5 w-3.5 text-muted-foreground" />
                   {isTg ? "Занг задан" : "Позвонить"}
                 </Button>
               </a>
@@ -266,7 +264,7 @@ export default function ClientCollectionPage({
                 rel="noreferrer"
                 className="flex-1 sm:flex-none"
               >
-                <Button className="w-full sm:w-auto h-10 px-4 text-xs font-semibold rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white shadow-sm shadow-emerald-600/20 gap-1.5 cursor-pointer">
+                <Button className="w-full sm:w-auto h-10 px-4 text-xs font-semibold rounded-xl bg-primary hover:bg-primary/90 text-primary-foreground shadow-xs gap-1.5 cursor-pointer">
                   <MessageCircle className="h-4 w-4" />
                   {isTg ? "Дар WhatsApp навиштан" : "Написать в WhatsApp"}
                 </Button>
@@ -275,12 +273,12 @@ export default function ClientCollectionPage({
           </div>
 
           {/* Collection Title & Personal Note */}
-          <div className="mt-6 pt-5 border-t border-slate-100">
-            <h2 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">
+          <div className="mt-6 pt-5 border-t border-border/60">
+            <h2 className="text-xl sm:text-2xl font-bold text-foreground tracking-tight">
               {collection.title}
             </h2>
             {collection.notes && (
-              <div className="mt-2.5 p-3.5 rounded-xl bg-slate-50 border border-slate-100 text-xs sm:text-sm text-slate-600 leading-relaxed italic">
+              <div className="mt-2.5 p-3.5 rounded-xl bg-muted/40 border border-border/60 text-xs sm:text-sm text-muted-foreground leading-relaxed italic">
                 «{collection.notes}»
               </div>
             )}
@@ -343,10 +341,10 @@ export default function ClientCollectionPage({
 
                     {/* Badge top-left */}
                     <div className="absolute top-3 left-3 flex gap-1.5">
-                      <Badge className="bg-emerald-600 text-white text-[11px] font-semibold">
+                      <Badge className="bg-emerald-600 text-white text-xs font-semibold">
                         {dealTypeDisplay}
                       </Badge>
-                      <Badge variant="secondary" className="bg-white/95 backdrop-blur-md text-slate-800 text-[11px] font-medium">
+                      <Badge variant="secondary" className="bg-white/95 backdrop-blur-md text-slate-800 text-xs font-medium">
                         {propertyTypeDisplay}
                       </Badge>
                     </div>
@@ -381,7 +379,7 @@ export default function ClientCollectionPage({
                           {formatPrice(prop.priceTjs, prop.priceUsd)}
                         </div>
                         {prop.isNegotiable && (
-                          <span className="text-[11px] font-semibold text-slate-500 bg-slate-100 px-2 py-0.5 rounded">
+                          <span className="text-xs font-semibold text-slate-500 bg-slate-100 px-2 py-0.5 rounded">
                             {isTg ? "Савдо мешавад" : "Торг уместен"}
                           </span>
                         )}
@@ -399,7 +397,7 @@ export default function ClientCollectionPage({
                       {/* Specs bar */}
                       <div className="flex items-center gap-4 text-xs text-slate-700 bg-slate-50 rounded-xl p-2.5 mt-3 font-medium">
                         <div className="flex flex-col">
-                          <span className="text-[10px] text-slate-400 uppercase font-semibold">
+                          <span className="text-xs text-slate-400 uppercase font-semibold">
                             {isTg ? "ҲУҶРАҲО" : "КОМНАТ"}
                           </span>
                           <span className="font-bold text-slate-900">
@@ -408,14 +406,14 @@ export default function ClientCollectionPage({
                         </div>
                         <div className="w-px h-6 bg-slate-200" />
                         <div className="flex flex-col">
-                          <span className="text-[10px] text-slate-400 uppercase font-semibold">
+                          <span className="text-xs text-slate-400 uppercase font-semibold">
                             {isTg ? "МАСОҲАТ" : "ПЛОЩАДЬ"}
                           </span>
                           <span className="font-bold text-slate-900">{prop.area} м²</span>
                         </div>
                         <div className="w-px h-6 bg-slate-200" />
                         <div className="flex flex-col">
-                          <span className="text-[10px] text-slate-400 uppercase font-semibold">
+                          <span className="text-xs text-slate-400 uppercase font-semibold">
                             {isTg ? "ОШЁНА / ЗАМИН" : "ЭТАЖ / УЧАСТОК"}
                           </span>
                           <span className="font-bold text-slate-900">{prop.floor || prop.landArea || "—"}</span>
@@ -427,7 +425,7 @@ export default function ClientCollectionPage({
                         {prop.features.map((f) => (
                           <span
                             key={f}
-                            className="text-[11px] font-medium px-2 py-0.5 rounded-md bg-emerald-50/80 text-emerald-800 border border-emerald-100"
+                            className="text-xs font-medium px-2 py-0.5 rounded-md bg-muted text-muted-foreground border border-border/60"
                           >
                             {f}
                           </span>
@@ -444,7 +442,7 @@ export default function ClientCollectionPage({
 
                     {/* Action Bar for this property */}
                     <div className="pt-3 border-t border-slate-100 flex items-center justify-between gap-3">
-                      <div className="text-[11px] text-slate-400 font-medium">
+                      <div className="text-xs text-slate-400 font-medium">
                         {isTg ? "Амвол тафтиш шудааст" : "Объект проверен маклером"}
                       </div>
 

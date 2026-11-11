@@ -108,19 +108,19 @@ export default function SuperAdminPaymentsPage() {
       {/* 4 FINTECH KPI CARDS */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {/* KPI 1: Gross Volume */}
-        <Card className="rounded-2xl border-slate-200/80 dark:border-slate-800 shadow-xs bg-linear-to-b from-emerald-50/40 via-white to-white">
+        <Card className="rounded-2xl border border-border/80 shadow-xs bg-card">
           <CardContent className="p-5 space-y-2">
             <div className="flex items-center justify-between">
-              <span className="text-xs text-slate-500 font-medium">Общий оборот</span>
-              <div className="h-8 w-8 rounded-lg bg-emerald-500/10 text-emerald-600 flex items-center justify-center font-bold">
+              <span className="text-xs text-muted-foreground font-medium">Общий оборот</span>
+              <div className="h-8 w-8 rounded-lg bg-secondary text-foreground flex items-center justify-center font-bold">
                 <TrendingUp className="h-4 w-4" />
               </div>
             </div>
             <div>
-              <div className="text-2xl font-black text-slate-900 tracking-tight">
-                {analytics?.totalProcessedTjs.toLocaleString("ru-RU") || "142 570"} <span className="text-sm font-semibold text-slate-500">смн</span>
+              <div className="text-2xl font-bold text-foreground tracking-tight">
+                {analytics?.totalProcessedTjs.toLocaleString("ru-RU") || "142 570"} <span className="text-sm font-semibold text-muted-foreground">смн</span>
               </div>
-              <div className="text-xs text-emerald-600 font-semibold mt-0.5">
+              <div className="text-xs text-muted-foreground font-medium mt-0.5">
                 ~ ${analytics?.totalProcessedUsd.toLocaleString("ru-RU") || "13 080"} USD
               </div>
             </div>
@@ -128,19 +128,19 @@ export default function SuperAdminPaymentsPage() {
         </Card>
 
         {/* KPI 2: Completed Transactions */}
-        <Card className="rounded-2xl border-slate-200/80 dark:border-slate-800 shadow-xs bg-white">
+        <Card className="rounded-2xl border border-border/80 shadow-xs bg-card">
           <CardContent className="p-5 space-y-2">
             <div className="flex items-center justify-between">
-              <span className="text-xs text-slate-500 font-medium">Успешных транзакций</span>
-              <div className="h-8 w-8 rounded-lg bg-blue-500/10 text-blue-600 flex items-center justify-center font-bold">
+              <span className="text-xs text-muted-foreground font-medium">Успешных транзакций</span>
+              <div className="h-8 w-8 rounded-lg bg-secondary text-foreground flex items-center justify-center font-bold">
                 <CheckCircle2 className="h-4 w-4" />
               </div>
             </div>
             <div>
-              <div className="text-2xl font-black text-slate-900 tracking-tight">
+              <div className="text-2xl font-bold text-foreground tracking-tight">
                 {analytics?.completedTransactionsCount || 6}
               </div>
-              <div className="text-xs text-blue-600 font-semibold mt-0.5">
+              <div className="text-xs text-muted-foreground font-medium mt-0.5">
                 Конверсия оплат: 96.8%
               </div>
             </div>
@@ -148,19 +148,19 @@ export default function SuperAdminPaymentsPage() {
         </Card>
 
         {/* KPI 3: Average Check */}
-        <Card className="rounded-2xl border-slate-200/80 dark:border-slate-800 shadow-xs bg-white">
+        <Card className="rounded-2xl border border-border/80 shadow-xs bg-card">
           <CardContent className="p-5 space-y-2">
             <div className="flex items-center justify-between">
-              <span className="text-xs text-slate-500 font-medium">Средний чек</span>
-              <div className="h-8 w-8 rounded-lg bg-purple-500/10 text-purple-600 flex items-center justify-center font-bold">
+              <span className="text-xs text-muted-foreground font-medium">Средний чек</span>
+              <div className="h-8 w-8 rounded-lg bg-secondary text-foreground flex items-center justify-center font-bold">
                 <CreditCard className="h-4 w-4" />
               </div>
             </div>
             <div>
-              <div className="text-2xl font-black text-slate-900 tracking-tight">
-                {analytics?.averageCheckTjs.toLocaleString("ru-RU") || "23 760"} <span className="text-sm font-semibold text-slate-500">смн</span>
+              <div className="text-2xl font-bold text-foreground tracking-tight">
+                {analytics?.averageCheckTjs.toLocaleString("ru-RU") || "23 760"} <span className="text-sm font-semibold text-muted-foreground">смн</span>
               </div>
-              <div className="text-xs text-purple-600 font-semibold mt-0.5">
+              <div className="text-xs text-muted-foreground font-medium mt-0.5">
                 B2B спонсорство + B2C услуги
               </div>
             </div>
@@ -168,19 +168,19 @@ export default function SuperAdminPaymentsPage() {
         </Card>
 
         {/* KPI 4: Pending / In Process */}
-        <Card className="rounded-2xl border-slate-200/80 dark:border-slate-800 shadow-xs bg-white">
+        <Card className="rounded-2xl border border-border/80 shadow-xs bg-card">
           <CardContent className="p-5 space-y-2">
             <div className="flex items-center justify-between">
-              <span className="text-xs text-slate-500 font-medium">Платежные шлюзы</span>
-              <div className="h-8 w-8 rounded-lg bg-amber-500/10 text-amber-600 flex items-center justify-center font-bold">
+              <span className="text-xs text-muted-foreground font-medium">Платежные шлюзы</span>
+              <div className="h-8 w-8 rounded-lg bg-secondary text-foreground flex items-center justify-center font-bold">
                 <Wallet className="h-4 w-4" />
               </div>
             </div>
             <div>
-              <div className="text-2xl font-black text-slate-900 tracking-tight">
+              <div className="text-2xl font-bold text-foreground tracking-tight">
                 4 системы
               </div>
-              <div className="text-xs text-amber-600 font-semibold mt-0.5">
+              <div className="text-xs text-muted-foreground font-medium mt-0.5">
                 НПЦ РТ, DC, Alif, Эсхата
               </div>
             </div>
@@ -197,7 +197,6 @@ export default function SuperAdminPaymentsPage() {
             badge: "НПЦ РТ",
             volumeTjs: analytics?.byProvider.korti_milli.volumeTjs || 25,
             count: analytics?.byProvider.korti_milli.count || 1,
-            color: "text-emerald-700 bg-emerald-50 border-emerald-200",
             status: "Онлайн 3D Secure",
           },
           {
@@ -206,7 +205,6 @@ export default function SuperAdminPaymentsPage() {
             badge: "DC Next / QR",
             volumeTjs: analytics?.byProvider.dushanbe_city.volumeTjs || 15000,
             count: analytics?.byProvider.dushanbe_city.count || 1,
-            color: "text-amber-700 bg-amber-50 border-amber-200",
             status: "QR & Кошелек",
           },
           {
@@ -215,7 +213,6 @@ export default function SuperAdminPaymentsPage() {
             badge: "Рассрочка 0%",
             volumeTjs: analytics?.byProvider.alif_mobi.volumeTjs || 5045,
             count: analytics?.byProvider.alif_mobi.count || 2,
-            color: "text-emerald-700 bg-emerald-50 border-emerald-200",
             status: "Alif Mobi QR",
           },
           {
@@ -224,30 +221,29 @@ export default function SuperAdminPaymentsPage() {
             badge: "Партнер Согда",
             volumeTjs: analytics?.byProvider.eskhata_online.volumeTjs || 121000,
             count: analytics?.byProvider.eskhata_online.count || 2,
-            color: "text-blue-700 bg-blue-50 border-blue-200",
             status: "Эсхата Онлайн",
           },
         ].map((rail) => (
           <div
             key={rail.key}
-            className="p-4 rounded-2xl bg-white border border-slate-200/90 shadow-xs flex flex-col justify-between space-y-3"
+            className="p-4 rounded-2xl bg-card border border-border/80 shadow-xs flex flex-col justify-between space-y-3"
           >
             <div className="flex items-center justify-between">
-              <Badge className={`text-[10px] font-bold ${rail.color}`}>
+              <Badge variant="secondary" className="text-xs font-medium">
                 {rail.badge}
               </Badge>
-              <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-600">
-                <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
+              <span className="inline-flex items-center gap-1 text-xs font-medium text-muted-foreground">
+                <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
                 {rail.status}
               </span>
             </div>
 
             <div>
-              <h4 className="text-sm font-extrabold text-slate-900">{rail.name}</h4>
-              <div className="text-lg font-black text-slate-900 mt-1">
+              <h4 className="text-sm font-semibold text-foreground">{rail.name}</h4>
+              <div className="text-lg font-bold text-foreground mt-1">
                 {rail.volumeTjs.toLocaleString("ru-RU")} смн
               </div>
-              <div className="text-[11px] text-slate-500 mt-0.5">
+              <div className="text-xs text-muted-foreground mt-0.5">
                 {rail.count} оплат проведено
               </div>
             </div>
@@ -300,7 +296,7 @@ export default function SuperAdminPaymentsPage() {
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse text-xs">
             <thead>
-              <tr className="bg-slate-50/70 border-b border-slate-200/80 text-slate-500 font-semibold uppercase tracking-wider text-[10px]">
+              <tr className="bg-slate-50/70 border-b border-slate-200/80 text-slate-500 font-semibold uppercase tracking-wider text-xs">
                 <th className="py-3 px-4">ID транзакции</th>
                 <th className="py-3 px-4">Плательщик / Контакт</th>
                 <th className="py-3 px-4">Назначение</th>
@@ -318,7 +314,7 @@ export default function SuperAdminPaymentsPage() {
                   </td>
                   <td className="py-3.5 px-4">
                     <div className="font-bold text-slate-900">{tx.payerName}</div>
-                    <div className="text-[11px] text-slate-500 font-mono mt-0.5">
+                    <div className="text-xs text-slate-500 font-mono mt-0.5">
                       {tx.payerPhone}
                     </div>
                   </td>
@@ -327,14 +323,14 @@ export default function SuperAdminPaymentsPage() {
                       {tx.descriptionRu}
                     </div>
                     {tx.installmentMonths && (
-                      <Badge className="bg-emerald-100 text-emerald-800 text-[9px] mt-1">
+                      <Badge className="bg-emerald-100 text-emerald-800 text-xs mt-1">
                         Рассрочка Салом {tx.installmentMonths} мес
                       </Badge>
                     )}
                   </td>
                   <td className="py-3.5 px-4">
                     <Badge
-                      className={`text-[10px] font-bold ${
+                      className={`text-xs font-bold ${
                         PAYMENT_PROVIDERS[tx.provider]?.accentBg || "bg-slate-100 text-slate-700"
                       }`}
                     >
@@ -343,23 +339,23 @@ export default function SuperAdminPaymentsPage() {
                   </td>
                   <td className="py-3.5 px-4 font-bold text-slate-900">
                     <div>{tx.amountTjs.toLocaleString("ru-RU")} смн</div>
-                    <div className="text-[10px] text-slate-500 font-normal">
+                    <div className="text-xs text-slate-500 font-normal">
                       ~${tx.amountUsd} USD
                     </div>
                   </td>
                   <td className="py-3.5 px-4">
                     {tx.status === "completed" ? (
-                      <Badge className="bg-emerald-100 text-emerald-800 border-emerald-200 text-[10px] font-bold flex items-center gap-1 w-fit">
+                      <Badge className="bg-emerald-100 text-emerald-800 border-emerald-200 text-xs font-bold flex items-center gap-1 w-fit">
                         <CheckCircle2 className="h-3 w-3" />
                         <span>Оплачено</span>
                       </Badge>
                     ) : tx.status === "processing" ? (
-                      <Badge className="bg-blue-100 text-blue-800 border-blue-200 text-[10px] font-bold flex items-center gap-1 w-fit">
+                      <Badge className="bg-blue-100 text-blue-800 border-blue-200 text-xs font-bold flex items-center gap-1 w-fit">
                         <Clock className="h-3 w-3" />
                         <span>3D Secure</span>
                       </Badge>
                     ) : (
-                      <Badge className="bg-amber-100 text-amber-800 border-amber-200 text-[10px] font-bold w-fit">
+                      <Badge className="bg-amber-100 text-amber-800 border-amber-200 text-xs font-bold w-fit">
                         Ожидание
                       </Badge>
                     )}

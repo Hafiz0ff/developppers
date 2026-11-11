@@ -706,7 +706,7 @@ export default function HomePage() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {/* By Cities */}
             <div>
-              <h5 className="font-bold text-slate-900 dark:text-white mb-3.5 uppercase tracking-wider text-[11px]">
+              <h5 className="font-bold text-slate-900 dark:text-white mb-3.5 uppercase tracking-wider text-xs">
                 {isTg ? "Шаҳру ноҳияҳои вилояти Суғд" : "Города Согдийской области"}
               </h5>
               <ul className="space-y-2 text-xs">
@@ -722,7 +722,7 @@ export default function HomePage() {
 
             {/* By Districts of Khujand */}
             <div>
-              <h5 className="font-bold text-slate-900 dark:text-white mb-3.5 uppercase tracking-wider text-[11px]">
+              <h5 className="font-bold text-slate-900 dark:text-white mb-3.5 uppercase tracking-wider text-xs">
                 {isTg ? "Маҳаллаҳои шаҳри Хуҷанд" : "Микрорайоны Худжанда"}
               </h5>
               <ul className="space-y-2 text-xs">
@@ -738,7 +738,7 @@ export default function HomePage() {
 
             {/* By Property Categories */}
             <div>
-              <h5 className="font-bold text-slate-900 dark:text-white mb-3.5 uppercase tracking-wider text-[11px]">
+              <h5 className="font-bold text-slate-900 dark:text-white mb-3.5 uppercase tracking-wider text-xs">
                 {isTg ? "Гурӯҳҳои амволи ғайриманқул" : "Категории недвижимости"}
               </h5>
               <ul className="space-y-2 text-xs">
@@ -754,7 +754,7 @@ export default function HomePage() {
 
             {/* Contacts & Support */}
             <div>
-              <h5 className="font-bold text-slate-900 dark:text-white mb-3.5 uppercase tracking-wider text-[11px]">
+              <h5 className="font-bold text-slate-900 dark:text-white mb-3.5 uppercase tracking-wider text-xs">
                 {isTg ? "Тамос ва шуъбаи марказӣ" : "Контакты и офис"}
               </h5>
               <p className="text-xs mb-2 leading-relaxed text-slate-600 dark:text-slate-300">
@@ -766,14 +766,14 @@ export default function HomePage() {
               <p className="font-mono font-bold text-emerald-600 dark:text-emerald-400 text-sm mt-2">+992 92 777 0001</p>
               <p className="font-mono text-slate-500 dark:text-slate-400 mt-0.5">support@sogd-realty.tj</p>
               <div className="pt-3">
-                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-semibold glass-pill border-slate-200/80 dark:border-white/15">
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold glass-pill border-slate-200/80 dark:border-white/15">
                   🇹🇯 Хуҷанд • Суғд • Тоҷикистон
                 </span>
               </div>
             </div>
           </div>
 
-          <div className="pt-6 border-t border-slate-200/60 dark:border-white/10 flex flex-col sm:flex-row items-center justify-between gap-3 text-[11px] text-slate-500 dark:text-slate-400">
+          <div className="pt-6 border-t border-slate-200/60 dark:border-white/10 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-500 dark:text-slate-400">
             <div>
               {isTg
                 ? "© 2026 Maskani.tj. Ҳамаи ҳуқуқҳо маҳфузанд."

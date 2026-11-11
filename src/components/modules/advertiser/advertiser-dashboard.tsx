@@ -88,21 +88,19 @@ export function AdvertiserDashboard({ advertiser, onLogout }: AdvertiserDashboar
   return (
     <div className="space-y-8 pb-16">
       {/* Top Header Card */}
-      <div className="bg-slate-900 text-white rounded-3xl p-6 sm:p-8 border border-slate-800 shadow-xl relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-80 h-80 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
-
+      <div className="bg-slate-900 text-white rounded-3xl p-6 sm:p-8 border border-slate-800 shadow-xs relative overflow-hidden">
         <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 relative z-10">
           <div className="flex items-center gap-4">
-            <div className="h-16 w-16 rounded-2xl bg-gradient-to-tr from-emerald-600 to-teal-500 text-white flex items-center justify-center font-black text-2xl shadow-lg shadow-emerald-500/20 shrink-0">
+            <div className="h-16 w-16 rounded-2xl bg-primary text-primary-foreground flex items-center justify-center font-bold text-2xl shadow-xs shrink-0">
               {currentAdv.brandName.slice(0, 2).toUpperCase()}
             </div>
 
             <div>
               <div className="flex items-center gap-2">
-                <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+                <h1 className="text-2xl sm:text-3xl font-bold text-white tracking-tight">
                   {currentAdv.brandName}
                 </h1>
-                <Badge className="bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-[11px] font-bold">
+                <Badge variant="secondary" className="text-xs font-semibold">
                   {currentAdv.tier === "sponsor_annual" ? "Генеральный спонсор" : "Аукционный рекламодатель"}
                 </Badge>
               </div>
@@ -120,20 +118,20 @@ export function AdvertiserDashboard({ advertiser, onLogout }: AdvertiserDashboar
           {/* Balance & Actions */}
           <div className="flex flex-wrap items-center gap-3 w-full lg:w-auto justify-start lg:justify-end">
             <div className="bg-slate-800/90 border border-slate-700/80 rounded-2xl px-5 py-3 text-left min-w-[180px]">
-              <span className="text-[11px] text-slate-400 uppercase tracking-wider font-semibold block">
+              <span className="text-xs text-slate-400 uppercase tracking-wider font-semibold block">
                 Рекламный баланс
               </span>
-              <div className="text-2xl font-black text-emerald-400 mt-0.5">
+              <div className="text-2xl font-bold text-emerald-400 mt-0.5">
                 {currentAdv.balanceTjs.toLocaleString("ru-RU")} сомони
               </div>
-              <span className="text-[10px] text-slate-400 font-mono">
+              <span className="text-xs text-slate-400 font-mono">
                 ≈ ${currentAdv.balanceUsd.toLocaleString("en-US")}
               </span>
             </div>
 
             <Button
               onClick={() => setPayModalOpen(true)}
-              className="h-12 px-5 rounded-2xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs gap-2 shadow-lg shadow-emerald-600/20 cursor-pointer"
+              className="h-12 px-5 rounded-2xl font-semibold text-xs gap-2 shadow-xs cursor-pointer"
             >
               <Wallet className="h-4 w-4" />
               <span>Пополнить баланс</span>
@@ -163,7 +161,7 @@ export function AdvertiserDashboard({ advertiser, onLogout }: AdvertiserDashboar
           <div className="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-2">
             {totalImpressions.toLocaleString("ru-RU")}
           </div>
-          <span className="text-[11px] text-emerald-700 font-medium mt-1 block">
+          <span className="text-xs text-emerald-700 font-medium mt-1 block">
             +12.4% за последние 30 дней
           </span>
         </Card>
@@ -176,7 +174,7 @@ export function AdvertiserDashboard({ advertiser, onLogout }: AdvertiserDashboar
           <div className="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-2">
             {totalClicks.toLocaleString("ru-RU")}
           </div>
-          <span className="text-[11px] text-blue-700 font-medium mt-1 block">
+          <span className="text-xs text-blue-700 font-medium mt-1 block">
             Целевые переходы на сайт / WhatsApp
           </span>
         </Card>
@@ -189,7 +187,7 @@ export function AdvertiserDashboard({ advertiser, onLogout }: AdvertiserDashboar
           <div className="text-2xl sm:text-3xl font-extrabold text-purple-600 mt-2">
             {ctr}
           </div>
-          <span className="text-[11px] text-slate-500 font-medium mt-1 block">
+          <span className="text-xs text-slate-500 font-medium mt-1 block">
             Выше рынка по Согду в 2.4 раза
           </span>
         </Card>
@@ -202,7 +200,7 @@ export function AdvertiserDashboard({ advertiser, onLogout }: AdvertiserDashboar
           <div className="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-2 font-mono">
             {currentAdv.totalSpentTjs.toLocaleString("ru-RU")} TJS
           </div>
-          <span className="text-[11px] text-slate-500 font-medium mt-1 block">
+          <span className="text-xs text-slate-500 font-medium mt-1 block">
             ≈ ${currentAdv.totalSpentUsd.toLocaleString("en-US")}
           </span>
         </Card>
@@ -221,7 +219,7 @@ export function AdvertiserDashboard({ advertiser, onLogout }: AdvertiserDashboar
                 Автоматическое распределение по городам с высокой покупательской активностью
               </p>
             </div>
-            <Badge variant="outline" className="text-xs border-emerald-300 text-emerald-800 bg-emerald-50">
+            <Badge variant="secondary" className="text-xs font-medium">
               5 городов Согда
             </Badge>
           </div>
@@ -233,16 +231,16 @@ export function AdvertiserDashboard({ advertiser, onLogout }: AdvertiserDashboar
                   <span className="font-bold text-slate-800">
                     {city.nameRu} <span className="text-slate-400 font-normal font-sans">({city.nameTg})</span>
                   </span>
-                  <div className="flex items-center gap-3 text-slate-600 font-mono text-[11px]">
+                  <div className="flex items-center gap-3 text-slate-600 font-mono text-xs">
                     <span>{city.impressions.toLocaleString("ru-RU")} показов</span>
                     <span className="font-bold text-emerald-600">{city.clicks} кликов</span>
                     <span className="font-bold text-slate-900 w-10 text-right">{city.percent}%</span>
                   </div>
                 </div>
                 {/* Progress Bar */}
-                <div className="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
+                <div className="w-full bg-muted h-2 rounded-full overflow-hidden">
                   <div
-                    className="bg-gradient-to-r from-emerald-600 to-teal-500 h-full rounded-full transition-all duration-500"
+                    className="bg-primary h-full rounded-full transition-all duration-500"
                     style={{ width: `${city.percent}%` }}
                   />
                 </div>
@@ -252,10 +250,10 @@ export function AdvertiserDashboard({ advertiser, onLogout }: AdvertiserDashboar
         </div>
 
         {/* Right Col: Accounting and Closing documents */}
-        <div className="bg-white rounded-2xl border border-slate-200/80 p-6 shadow-sm flex flex-col justify-between">
+        <div className="bg-card rounded-2xl border border-border/80 p-6 shadow-xs flex flex-col justify-between">
           <div>
             <div className="flex items-center gap-2 mb-3">
-              <div className="h-8 w-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center">
+              <div className="h-8 w-8 rounded-lg bg-muted text-muted-foreground flex items-center justify-center">
                 <FileText className="h-4 w-4" />
               </div>
               <h3 className="font-extrabold text-sm text-slate-900">
@@ -343,7 +341,7 @@ export function AdvertiserDashboard({ advertiser, onLogout }: AdvertiserDashboar
                 <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 border-b border-slate-100 pb-3">
                   <div className="flex items-center gap-2.5">
                     <span className="font-extrabold text-sm text-slate-900">{camp.name}</span>
-                    <Badge className="bg-emerald-50 text-emerald-700 border-emerald-200 text-[10px] font-bold">
+                    <Badge variant="secondary" className="text-xs font-medium">
                       {camp.billingModel === "annual_sponsorship" ? "Спонсорский контракт" : "Аукцион показов"}
                     </Badge>
                   </div>
@@ -362,10 +360,10 @@ export function AdvertiserDashboard({ advertiser, onLogout }: AdvertiserDashboar
                     >
                       <div>
                         <div className="flex items-center justify-between gap-2 mb-2">
-                          <Badge variant="outline" className="text-[10px] border-slate-300 text-slate-700 bg-white">
+                          <Badge variant="outline" className="text-xs border-slate-300 text-slate-700 bg-white">
                             {cr.isActive ? "🟢 В ротации" : "⚪ На паузе"}
                           </Badge>
-                          <span className="text-[11px] text-slate-500 font-mono">ID: {cr.id}</span>
+                          <span className="text-xs text-slate-500 font-mono">ID: {cr.id}</span>
                         </div>
 
                         <h4 className="font-bold text-sm text-slate-900 leading-snug line-clamp-1">
@@ -390,7 +388,7 @@ export function AdvertiserDashboard({ advertiser, onLogout }: AdvertiserDashboar
                           href={cr.targetUrl}
                           target="_blank"
                           rel="noreferrer"
-                          className="text-emerald-700 hover:text-emerald-800 font-sans font-semibold flex items-center gap-1 text-[11px]"
+                          className="text-emerald-700 hover:text-emerald-800 font-sans font-semibold flex items-center gap-1 text-xs"
                         >
                           <span>{cr.ctaTextRu}</span>
                           <ExternalLink className="h-3 w-3" />

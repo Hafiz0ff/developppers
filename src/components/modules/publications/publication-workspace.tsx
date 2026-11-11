@@ -296,7 +296,7 @@ export function PublicationWorkspace({ forcedRole }: PublicationWorkspaceProps) 
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-200">
         <div>
           <div className="flex items-center gap-2.5">
-            <div className="h-9 w-9 rounded-xl bg-gradient-to-tr from-sky-500 via-sky-600 to-emerald-500 flex items-center justify-center text-white shadow-md shadow-sky-500/25">
+            <div className="h-9 w-9 rounded-xl bg-primary flex items-center justify-center text-primary-foreground shadow-xs">
               <Send className="h-5 w-5" />
             </div>
             <h1 className="text-2xl font-bold tracking-tight text-slate-900">
@@ -340,7 +340,7 @@ export function PublicationWorkspace({ forcedRole }: PublicationWorkspaceProps) 
                   {tDual("Выберите ваш объект", "Интихоби амволи худ", "Select Your Object")}
                 </h2>
               </div>
-              <Badge variant="secondary" className="text-[10px] font-semibold text-slate-600">
+              <Badge variant="secondary" className="text-xs font-semibold text-slate-600">
                 {objects.length} {tDual("активных", "фаъол", "active")}
               </Badge>
             </div>
@@ -369,7 +369,7 @@ export function PublicationWorkspace({ forcedRole }: PublicationWorkspaceProps) 
                   <p className="font-semibold text-slate-700">
                     {tDual("Нет доступных объектов", "Амволи фаъол ёфт нашуд", "No available listings")}
                   </p>
-                  <p className="text-[11px] text-slate-400 mt-0.5">
+                  <p className="text-xs text-slate-400 mt-0.5">
                     {tDual(
                       "Отображаются только ваши собственные активные объекты",
                       "Танҳо амволи фаъоли худи шумо нишон дода мешавад"
@@ -397,8 +397,8 @@ export function PublicationWorkspace({ forcedRole }: PublicationWorkspaceProps) 
                       }}
                       className={`relative flex items-center gap-3 p-3 rounded-xl border cursor-pointer transition-all ${
                         isSelected
-                          ? "bg-emerald-50/70 border-emerald-500/60 shadow-xs ring-1 ring-emerald-500/30"
-                          : "bg-white hover:bg-slate-50 border-slate-200"
+                          ? "bg-accent/20 border-foreground/30 shadow-xs ring-1 ring-foreground/20"
+                          : "bg-card hover:bg-muted/50 border-border/80"
                       }`}
                     >
                       {/* Image Thumbnail */}
@@ -408,7 +408,7 @@ export function PublicationWorkspace({ forcedRole }: PublicationWorkspaceProps) 
                           alt={displayTitle}
                           className="h-full w-full object-cover"
                         />
-                        <span className="absolute bottom-0 right-0 bg-black/60 text-white text-[9px] font-bold px-1 rounded-tl-md backdrop-blur-xs flex items-center gap-0.5">
+                        <span className="absolute bottom-0 right-0 bg-black/60 text-white text-xs font-bold px-1 rounded-tl-md backdrop-blur-xs flex items-center gap-0.5">
                           <ImageIcon className="h-2.5 w-2.5" />
                           {obj.photosCount}
                         </span>
@@ -419,14 +419,14 @@ export function PublicationWorkspace({ forcedRole }: PublicationWorkspaceProps) 
                         <h4 className="text-xs font-bold text-slate-900 truncate leading-snug">
                           {displayTitle}
                         </h4>
-                        <p className="text-[11px] text-slate-500 truncate mt-0.5">
+                        <p className="text-xs text-slate-500 truncate mt-0.5">
                           {displayLoc}
                         </p>
                         <div className="flex items-center gap-2 mt-1">
                           <span className="text-xs font-extrabold text-emerald-700">
                             {new Intl.NumberFormat(language === "tg" ? "tg-TJ" : "ru-RU").format(obj.priceTjs)} {language === "tg" ? "сомонӣ" : "сомони"}
                           </span>
-                          <span className="text-[10px] text-slate-400 font-medium">
+                          <span className="text-xs text-slate-400 font-medium">
                             • {obj.propertyType}
                           </span>
                         </div>
@@ -466,7 +466,7 @@ export function PublicationWorkspace({ forcedRole }: PublicationWorkspaceProps) 
               <button
                 type="button"
                 onClick={() => setShowChannelHelp(!showChannelHelp)}
-                className="text-[11px] font-semibold text-sky-600 hover:text-sky-700 flex items-center gap-1 cursor-pointer"
+                className="text-xs font-semibold text-sky-600 hover:text-sky-700 flex items-center gap-1 cursor-pointer"
               >
                 <HelpCircle className="h-3.5 w-3.5" />
                 <span>{tDual("Инструкция", "Дастур", "Guide")}</span>
@@ -480,13 +480,13 @@ export function PublicationWorkspace({ forcedRole }: PublicationWorkspaceProps) 
                   initial={{ opacity: 0, height: 0 }}
                   animate={{ opacity: 1, height: "auto" }}
                   exit={{ opacity: 0, height: 0 }}
-                  className="bg-sky-50/70 border border-sky-200/80 rounded-xl p-3 text-[11px] text-sky-950 space-y-1.5"
+                  className="bg-muted/50 border border-border/60 rounded-xl p-3 text-xs text-foreground space-y-1.5"
                 >
-                  <p className="font-bold flex items-center gap-1.5 text-sky-900">
-                    <Bot className="h-3.5 w-3.5 text-sky-600" />
+                  <p className="font-bold flex items-center gap-1.5 text-foreground">
+                    <Bot className="h-3.5 w-3.5 text-primary" />
                     {tDual("Как подключить канал за 3 шага:", "Тарзи пайваст дар 3 қадам:")}
                   </p>
-                  <ol className="list-decimal list-inside space-y-0.5 text-slate-600 pl-1">
+                  <ol className="list-decimal list-inside space-y-0.5 text-muted-foreground pl-1">
                     <li>{tDual("Откройте настройки вашего канала в Telegram → Администраторы.", "Танзимоти канали Telegram-ро кушоед → Мудирон.")}</li>
                     <li>{tDual("Добавьте официального бота платформы (@MaskaniBot) администратором.", "Боти расмии @MaskaniBot-ро мудир таъин намоед.")}</li>
                     <li>{tDual("Включите право «Публикация сообщений» (can_post_messages).", "Ҳуқуқи «Нашри паёмҳо»-ро фаъол созед.")}</li>
@@ -498,17 +498,17 @@ export function PublicationWorkspace({ forcedRole }: PublicationWorkspaceProps) 
 
             {/* Linked Status Banner */}
             {linkedChannel ? (
-              <div className="flex items-center justify-between p-3 rounded-xl bg-emerald-50/80 border border-emerald-200 text-emerald-950 text-xs">
+              <div className="flex items-center justify-between p-3 rounded-xl bg-card border border-border/80 text-foreground text-xs shadow-xs">
                 <div className="flex items-center gap-2.5 min-w-0">
-                  <div className="h-7 w-7 rounded-lg bg-emerald-600 text-white flex items-center justify-center shrink-0">
+                  <div className="h-7 w-7 rounded-lg bg-primary text-primary-foreground flex items-center justify-center shrink-0">
                     <ShieldCheck className="h-4 w-4" />
                   </div>
                   <div className="min-w-0">
                     <p className="font-bold truncate">{linkedChannel.channelTitle}</p>
-                    <p className="text-[11px] text-emerald-700 font-mono truncate">{linkedChannel.channelUsername}</p>
+                    <p className="text-xs text-muted-foreground font-mono truncate">{linkedChannel.channelUsername}</p>
                   </div>
                 </div>
-                <Badge className="bg-emerald-600 text-white text-[10px] shrink-0 font-bold ml-2">
+                <Badge variant="secondary" className="text-xs shrink-0 font-medium ml-2">
                   {tDual("Подключён", "Пайваст шуд", "Connected")}
                 </Badge>
               </div>
@@ -538,7 +538,7 @@ export function PublicationWorkspace({ forcedRole }: PublicationWorkspaceProps) 
               </div>
 
               {channelError && (
-                <p className="text-[11px] text-rose-600 font-medium flex items-center gap-1">
+                <p className="text-xs text-rose-600 font-medium flex items-center gap-1">
                   <AlertCircle className="h-3.5 w-3.5 shrink-0" />
                   <span>{channelError}</span>
                 </p>
@@ -616,7 +616,7 @@ export function PublicationWorkspace({ forcedRole }: PublicationWorkspaceProps) 
                 <p className="text-xs font-bold text-slate-700">
                   {tDual("Материалы публикации пока не сформированы", "Мавод ҳанӯз таҳия нашудааст")}
                 </p>
-                <p className="text-[11px] text-slate-400 mt-1">
+                <p className="text-xs text-slate-400 mt-1">
                   {tDual(
                     "Выберите объект слева и нажмите «Сформировать публикацию». Система создаст текст, подключит контакты и обязательную ссылку.",
                     "Амволро интихоб намуда, тугмаи «Омода кардани нашр»-ро пахш кунед."
@@ -633,14 +633,14 @@ export function PublicationWorkspace({ forcedRole }: PublicationWorkspaceProps) 
               <div className="bg-white rounded-2xl border border-slate-200/90 p-4 sm:p-5 shadow-xs space-y-3">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
-                    <span className="flex h-5 w-5 items-center justify-center rounded-full bg-slate-800 text-white font-bold text-[10px]">
+                    <span className="flex h-5 w-5 items-center justify-center rounded-full bg-slate-800 text-white font-bold text-xs">
                       3
                     </span>
                     <h3 className="text-xs font-bold text-slate-900">
                       {tDual("Выберите одну фотографию для обложки в Telegram", "Интихоби як акс барои муқоваи Telegram")}
                     </h3>
                   </div>
-                  <span className="text-[11px] text-slate-400">
+                  <span className="text-xs text-slate-400">
                     {material.images.length} {tDual("фото", "акс")}
                   </span>
                 </div>
@@ -692,7 +692,7 @@ export function PublicationWorkspace({ forcedRole }: PublicationWorkspaceProps) 
               <div className="bg-white rounded-2xl border border-slate-200/90 p-4 sm:p-5 shadow-xs space-y-4">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
-                    <span className="flex h-5 w-5 items-center justify-center rounded-full bg-slate-800 text-white font-bold text-[10px]">
+                    <span className="flex h-5 w-5 items-center justify-center rounded-full bg-slate-800 text-white font-bold text-xs">
                       4
                     </span>
                     <h3 className="text-xs font-bold text-slate-900">
@@ -734,9 +734,9 @@ export function PublicationWorkspace({ forcedRole }: PublicationWorkspaceProps) 
 
                 {/* Editable Textarea */}
                 <div className="space-y-1.5">
-                  <label className="text-[11px] font-bold text-slate-700 flex items-center justify-between">
+                  <label className="text-xs font-bold text-slate-700 flex items-center justify-between">
                     <span>{tDual("Редактируемая часть (заголовок, цена, описание):", "Қисми таҳриршаванда (ном, нарх, тавсиф):")}</span>
-                    <span className="text-[10px] text-slate-500 font-mono">
+                    <span className="text-xs text-slate-500 font-mono">
                       {tDual(
                         `лимит: ${charCounts.maxAllowedBodyChars} симв.`,
                         `ҳадди аксар: ${charCounts.maxAllowedBodyChars} аломат`,
@@ -767,43 +767,43 @@ export function PublicationWorkspace({ forcedRole }: PublicationWorkspaceProps) 
                   <div className="flex items-center gap-2">
                     <Lock className="h-3.5 w-3.5 text-slate-400 shrink-0" />
                     <div>
-                      <span className="text-slate-500 text-[11px] block">{tDual("Контакты (защищены от изменения):", "Тамос (ҳимояшуда):")}</span>
+                      <span className="text-slate-500 text-xs block">{tDual("Контакты (защищены от изменения):", "Тамос (ҳимояшуда):")}</span>
                       <span className="font-bold text-slate-800 font-mono">
                         {material.protectedContacts || tDual("Не указаны", "Нишон дода нашудааст")}
                       </span>
                     </div>
                   </div>
-                  <Badge variant="outline" className="text-[10px] text-slate-500">
+                  <Badge variant="outline" className="text-xs text-slate-500">
                     {tDual("Защищено", "Ҳимояшуда", "Locked")}
                   </Badge>
                 </div>
 
                 {/* Protected Mandatory CTA Block (Section 5.2, 5.3 & 5.4) */}
-                <div className="p-3.5 rounded-xl bg-sky-50/70 border border-sky-200/90 space-y-2">
+                <div className="p-3.5 rounded-xl bg-card border border-border/80 shadow-xs space-y-2">
                   <div className="flex items-center justify-between">
-                    <span className="text-[11px] font-bold text-sky-950 flex items-center gap-1.5">
-                      <Lock className="h-3.5 w-3.5 text-sky-600" />
+                    <span className="text-xs font-semibold text-foreground flex items-center gap-1.5">
+                      <Lock className="h-3.5 w-3.5 text-muted-foreground" />
                       {tDual("Обязательный призыв к действию (CTA):", "Даъват ба амал (CTA):")}
                     </span>
-                    <Badge className="bg-sky-600 text-white text-[10px] font-bold">
+                    <Badge variant="secondary" className="text-xs font-medium">
                       {tDual("Неизменяемый", "Тағйирнопазир", "Mandatory")}
                     </Badge>
                   </div>
 
-                  <div className="p-2.5 rounded-lg bg-white border border-sky-100 text-xs">
+                  <div className="p-2.5 rounded-lg bg-muted border border-border/60 text-xs">
                     <a
                       href={material.canonicalUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-sky-700 font-bold hover:underline flex items-center gap-1"
+                      className="text-foreground font-semibold hover:underline flex items-center gap-1"
                     >
                       <span>{material.mandatoryCtaText}</span>
-                      <ExternalLink className="h-3 w-3 shrink-0" />
+                      <ExternalLink className="h-3 w-3 shrink-0 text-muted-foreground" />
                     </a>
                   </div>
 
                   {/* Section 5.4 Explanation */}
-                  <p className="text-[11px] text-sky-900/80 leading-relaxed">
+                  <p className="text-xs text-muted-foreground leading-relaxed">
                     {tDual(
                       "Обязательная ссылка на Maskani.tj привлекает потенциальных клиентов на страницу вашего объекта и помогает находить покупателей.",
                       "Пайванди ҳатмӣ ба Maskani.tj муштариёнро ба саҳифаи амволи шумо ҷалб намуда, ба ёфтани харидорон кумак мерасонад.",
@@ -824,7 +824,7 @@ export function PublicationWorkspace({ forcedRole }: PublicationWorkspaceProps) 
                       {tDual("Предпросмотр сообщения в Telegram", "Пешнамоиши паём дар Telegram", "Telegram Post Preview")}
                     </span>
                   </div>
-                  <span className="text-[10px] text-slate-400 font-mono">
+                  <span className="text-xs text-slate-400 font-mono">
                     {linkedChannel?.channelUsername || "@channel"}
                   </span>
                 </div>
@@ -863,7 +863,7 @@ export function PublicationWorkspace({ forcedRole }: PublicationWorkspaceProps) 
                       </a>
                     </div>
 
-                    <div className="flex items-center justify-end gap-1 text-[10px] text-slate-400 pt-1">
+                    <div className="flex items-center justify-end gap-1 text-xs text-slate-400 pt-1">
                       <Eye className="h-3 w-3" />
                       <span>1</span>
                       <span className="ml-1">11:00</span>
@@ -875,14 +875,14 @@ export function PublicationWorkspace({ forcedRole }: PublicationWorkspaceProps) 
 
               {/* Success Result Banner (Section 9.4) */}
               {publishSuccess && (
-                <div className="p-4 rounded-xl bg-emerald-50 border border-emerald-300 text-emerald-950 text-xs space-y-2">
+                <div className="p-4 rounded-xl border-l-2 border-l-emerald-600 bg-muted/60 border border-border/60 text-xs text-foreground space-y-2">
                   <div className="flex items-center gap-2">
                     <CheckCircle2 className="h-5 w-5 text-emerald-600 shrink-0" />
                     <span className="font-bold text-sm">
                       {tDual("Публикация успешно отправлена в Telegram!", "Нашр бомуваффақият ба Telegram фиристода шуд!")}
                     </span>
                   </div>
-                  <p className="text-emerald-800 text-[11px]">
+                  <p className="text-muted-foreground text-xs">
                     {tDual(
                       `Сообщение с фотографией и ссылкой опубликовано в канале ${publishSuccess.channelUsername}.`,
                       `Паём бо акс ва пайванд дар канали ${publishSuccess.channelUsername} нашр гардид.`
@@ -968,8 +968,8 @@ export function PublicationWorkspace({ forcedRole }: PublicationWorkspaceProps) 
                   onClick={handleCopyUrl}
                   className={`sm:col-span-3 h-11 text-xs font-bold rounded-xl gap-1.5 cursor-pointer transition-all ${
                     copiedUrl
-                      ? "border-emerald-500 bg-emerald-50 text-emerald-800"
-                      : "border-slate-300 text-slate-800 hover:bg-slate-50"
+                      ? "border-foreground/40 bg-accent/20 text-foreground"
+                      : "border-border text-foreground hover:bg-muted"
                   }`}
                 >
                   {copiedUrl ? (

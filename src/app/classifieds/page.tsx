@@ -97,14 +97,14 @@ function ClassifiedsCatalogContent() {
                   setPromoteModalOpen(true);
                 }}
                 variant="outline"
-                className="border-amber-300 bg-amber-50/80 hover:bg-amber-100/90 text-amber-900 font-bold text-xs h-10 px-3.5 rounded-xl gap-1.5 cursor-pointer shadow-xs"
+                className="border-border hover:bg-muted text-foreground font-medium text-xs h-10 px-3.5 rounded-xl gap-1.5 cursor-pointer shadow-xs"
               >
-                <Zap className="h-4 w-4 text-amber-600 fill-amber-500" />
+                <Zap className="h-4 w-4 text-foreground" />
                 <span>{isTg ? "Пешбарӣ (ТОП)" : "Продвижение (ТОП)"}</span>
               </Button>
               <Link href="/map?type=apartment">
-                <Button variant="outline" className="border-slate-300 hover:bg-slate-100 font-semibold text-xs h-10 px-4 rounded-xl gap-2 cursor-pointer text-slate-700">
-                  <MapPin className="h-4 w-4 text-emerald-600" />
+                <Button variant="outline" className="border-border hover:bg-muted font-medium text-xs h-10 px-4 rounded-xl gap-2 cursor-pointer text-foreground">
+                  <MapPin className="h-4 w-4 text-muted-foreground" />
                   {isTg ? "Дар харита" : "На карте"}
                 </Button>
               </Link>
@@ -203,7 +203,7 @@ export default function ClassifiedsCatalogPage() {
   return (
     <Suspense
       fallback={
-        <div className="min-h-screen bg-[#F8FAFC] py-16 flex items-center justify-center">
+        <div className="min-h-screen bg-background py-16 flex items-center justify-center">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-emerald-600" />
         </div>
       }

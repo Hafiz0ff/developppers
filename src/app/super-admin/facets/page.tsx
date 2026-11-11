@@ -269,26 +269,26 @@ export default function SuperAdminFacetsPage() {
         <Card className="border-slate-200 shadow-xs">
           <CardContent className="p-4 flex items-center justify-between">
             <div>
-              <p className="text-xs font-semibold uppercase tracking-wider text-slate-500">
+              <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                 Собственные URL (has_own_page)
               </p>
-              <p className="text-2xl font-extrabold text-emerald-600 mt-1">{ownPageCount}</p>
+              <p className="text-2xl font-bold text-foreground mt-1">{ownPageCount}</p>
             </div>
-            <div className="h-10 w-10 rounded-xl bg-emerald-50 flex items-center justify-center text-emerald-600">
+            <div className="h-10 w-10 rounded-xl bg-muted flex items-center justify-center text-foreground">
               <Globe className="h-5 w-5" />
             </div>
           </CardContent>
         </Card>
 
-        <Card className="border-slate-200 shadow-xs">
+        <Card className="border border-border/80 shadow-xs">
           <CardContent className="p-4 flex items-center justify-between">
             <div>
-              <p className="text-xs font-semibold uppercase tracking-wider text-slate-500">
+              <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                 Индексируемые (allowlist)
               </p>
-              <p className="text-2xl font-extrabold text-blue-600 mt-1">{indexableCount}</p>
+              <p className="text-2xl font-bold text-foreground mt-1">{indexableCount}</p>
             </div>
-            <div className="h-10 w-10 rounded-xl bg-blue-50 flex items-center justify-center text-blue-600">
+            <div className="h-10 w-10 rounded-xl bg-muted flex items-center justify-center text-foreground">
               <ShieldCheck className="h-5 w-5" />
             </div>
           </CardContent>
@@ -328,7 +328,7 @@ export default function SuperAdminFacetsPage() {
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse text-xs">
             <thead>
-              <tr className="bg-slate-50/80 border-b border-slate-200 text-slate-600 font-bold uppercase tracking-wider text-[11px]">
+              <tr className="bg-slate-50/80 border-b border-slate-200 text-slate-600 font-bold uppercase tracking-wider text-xs">
                 <th className="py-3 px-4">Название (RU / TG / EN)</th>
                 <th className="py-3 px-4">Ключ и Значение</th>
                 <th className="py-3 px-4">Категория</th>
@@ -358,19 +358,19 @@ export default function SuperAdminFacetsPage() {
                   <tr key={facet.id} className="hover:bg-slate-50/60 transition-colors">
                     <td className="py-3.5 px-4 font-semibold text-slate-900">
                       <div>{facet.displayName.ru}</div>
-                      <div className="text-[10px] text-slate-400 font-normal">
+                      <div className="text-xs text-slate-400 font-normal">
                         {facet.displayName.tg} • {facet.displayName.en}
                       </div>
                     </td>
 
                     <td className="py-3.5 px-4">
-                      <span className="inline-flex items-center gap-1 font-mono text-[11px] bg-slate-100 px-2 py-0.5 rounded-md text-slate-700">
+                      <span className="inline-flex items-center gap-1 font-mono text-xs bg-slate-100 px-2 py-0.5 rounded-md text-slate-700">
                         {facet.facetKey} = <strong>{facet.valueKey}</strong>
                       </span>
                     </td>
 
                     <td className="py-3.5 px-4">
-                      <Badge variant="outline" className="font-mono text-[10px] text-slate-600">
+                      <Badge variant="outline" className="font-mono text-xs text-slate-600">
                         {facet.categoryId}
                       </Badge>
                     </td>
@@ -383,7 +383,7 @@ export default function SuperAdminFacetsPage() {
                       <button
                         type="button"
                         onClick={() => handleToggleOwnPage(facet)}
-                        className={`inline-flex items-center px-2 py-1 rounded-full text-[10px] font-bold cursor-pointer transition-colors ${
+                        className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-bold cursor-pointer transition-colors ${
                           facet.hasOwnPage
                             ? "bg-emerald-100 text-emerald-800 hover:bg-emerald-200"
                             : "bg-slate-100 text-slate-500 hover:bg-slate-200"
@@ -398,7 +398,7 @@ export default function SuperAdminFacetsPage() {
                         type="button"
                         disabled={!facet.hasOwnPage}
                         onClick={() => handleToggleIndexable(facet)}
-                        className={`inline-flex items-center px-2 py-1 rounded-full text-[10px] font-bold transition-colors ${
+                        className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-bold transition-colors ${
                           !facet.hasOwnPage
                             ? "bg-slate-100 text-slate-400 cursor-not-allowed opacity-50"
                             : facet.indexable
@@ -507,7 +507,7 @@ export default function SuperAdminFacetsPage() {
               </p>
               <div className="grid grid-cols-3 gap-2">
                 <div>
-                  <Label className="text-[11px] text-slate-600">На русском (RU)</Label>
+                  <Label className="text-xs text-slate-600">На русском (RU)</Label>
                   <Input
                     value={nameRu}
                     onChange={(e) => setNameRu(e.target.value)}
@@ -516,7 +516,7 @@ export default function SuperAdminFacetsPage() {
                   />
                 </div>
                 <div>
-                  <Label className="text-[11px] text-slate-600">На таджикском (TG)</Label>
+                  <Label className="text-xs text-slate-600">На таджикском (TG)</Label>
                   <Input
                     value={nameTg}
                     onChange={(e) => setNameTg(e.target.value)}
@@ -525,7 +525,7 @@ export default function SuperAdminFacetsPage() {
                   />
                 </div>
                 <div>
-                  <Label className="text-[11px] text-slate-600">На английском (EN)</Label>
+                  <Label className="text-xs text-slate-600">На английском (EN)</Label>
                   <Input
                     value={nameEn}
                     onChange={(e) => setNameEn(e.target.value)}
@@ -543,7 +543,7 @@ export default function SuperAdminFacetsPage() {
               </p>
               <div className="grid grid-cols-3 gap-2">
                 <div>
-                  <Label className="text-[11px] text-slate-600">Slug RU</Label>
+                  <Label className="text-xs text-slate-600">Slug RU</Label>
                   <Input
                     value={slugRu}
                     onChange={(e) => setSlugRu(e.target.value)}
@@ -552,7 +552,7 @@ export default function SuperAdminFacetsPage() {
                   />
                 </div>
                 <div>
-                  <Label className="text-[11px] text-slate-600">Slug TG</Label>
+                  <Label className="text-xs text-slate-600">Slug TG</Label>
                   <Input
                     value={slugTg}
                     onChange={(e) => setSlugTg(e.target.value)}
@@ -561,7 +561,7 @@ export default function SuperAdminFacetsPage() {
                   />
                 </div>
                 <div>
-                  <Label className="text-[11px] text-slate-600">Slug EN</Label>
+                  <Label className="text-xs text-slate-600">Slug EN</Label>
                   <Input
                     value={slugEn}
                     onChange={(e) => setSlugEn(e.target.value)}
@@ -577,7 +577,7 @@ export default function SuperAdminFacetsPage() {
               <div className="flex items-center justify-between p-3 rounded-lg bg-slate-50 border border-slate-200">
                 <div>
                   <Label className="text-xs font-bold text-slate-900">Собственная страница</Label>
-                  <p className="text-[10px] text-slate-500">Генерирует отдельный URL посадочной</p>
+                  <p className="text-xs text-slate-500">Генерирует отдельный URL посадочной</p>
                 </div>
                 <Switch checked={hasOwnPage} onCheckedChange={setHasOwnPage} />
               </div>
@@ -585,7 +585,7 @@ export default function SuperAdminFacetsPage() {
               <div className="flex items-center justify-between p-3 rounded-lg bg-slate-50 border border-slate-200">
                 <div>
                   <Label className="text-xs font-bold text-slate-900">Индексация роботами</Label>
-                  <p className="text-[10px] text-slate-500">allowlist: robots: index, follow</p>
+                  <p className="text-xs text-slate-500">allowlist: robots: index, follow</p>
                 </div>
                 <Switch
                   checked={isIndexable}

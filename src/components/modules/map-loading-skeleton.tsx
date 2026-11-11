@@ -32,8 +32,8 @@ export function MapLoadingSkeleton() {
 
       {/* Center Spinner */}
       <div className="relative z-10 flex flex-col items-center gap-3 p-6 bg-white/90 backdrop-blur-md rounded-2xl shadow-xl border border-slate-200/80 max-w-xs text-center">
-        <div className="w-12 h-12 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center">
-          <Loader2 className="w-6 h-6 animate-spin text-emerald-600" />
+        <div className="w-12 h-12 rounded-full bg-muted text-muted-foreground flex items-center justify-center">
+          <Loader2 className="w-6 h-6 animate-spin text-foreground" />
         </div>
         <div>
           <div className="text-sm font-bold text-slate-800">

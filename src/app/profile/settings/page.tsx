@@ -26,7 +26,7 @@ import {
   Copy,
   Check,
   RefreshCw,
-  Sparkles,
+  Bot,
 } from "lucide-react";
 
 export default function ProfileSettingsPage() {
@@ -149,7 +149,7 @@ export default function ProfileSettingsPage() {
   const isConnected = Boolean(chatId && chatId.trim().length > 0);
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] text-slate-900 pb-24">
+    <div className="min-h-screen bg-background text-slate-900 pb-24">
       {/* 1. TOP HEADER */}
       <div className="bg-white border-b border-slate-200/80 px-4 sm:px-6 lg:px-8 py-5">
         <div className="max-w-4xl mx-auto">
@@ -196,13 +196,13 @@ export default function ProfileSettingsPage() {
 
           <CardContent className="p-5 grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
             <div>
-              <span className="text-slate-400 block font-semibold text-[11px]">
+              <span className="text-slate-400 block font-semibold text-xs">
                 {isTg ? "Телефон:" : "Телефон:"}
               </span>
               <span className="font-bold text-slate-800 font-mono">+992 92 777 00 22</span>
             </div>
             <div>
-              <span className="text-slate-400 block font-semibold text-[11px]">
+              <span className="text-slate-400 block font-semibold text-xs">
                 {isTg ? "Шаҳри фаъолият:" : "Город присутствия:"}
               </span>
               <span className="font-bold text-slate-800">
@@ -210,7 +210,7 @@ export default function ProfileSettingsPage() {
               </span>
             </div>
             <div>
-              <span className="text-slate-400 block font-semibold text-[11px]">
+              <span className="text-slate-400 block font-semibold text-xs">
                 {isTg ? "Нақш дар платформа:" : "Роль на платформе:"}
               </span>
               <span className="font-bold text-slate-800">
@@ -296,7 +296,7 @@ export default function ProfileSettingsPage() {
                 </div>
                 <div>
                   <span className="text-xs font-bold text-slate-800">Google Account</span>
-                  <p className="text-[11px] text-slate-500 mt-0.5">
+                  <p className="text-xs text-slate-500 mt-0.5">
                     {isTg
                       ? "Барои воридшавии зуд дар компютер ё планшет"
                       : "Для мгновенного входа на ПК или планшете"}
@@ -330,7 +330,7 @@ export default function ProfileSettingsPage() {
                 </div>
                 <div>
                   <span className="text-xs font-bold text-slate-800">Apple ID</span>
-                  <p className="text-[11px] text-slate-500 mt-0.5">
+                  <p className="text-xs text-slate-500 mt-0.5">
                     {isTg
                       ? "Воридшавӣ тавассути Face ID ва экосистемаи Apple"
                       : "Вход через Face ID и экосистему Apple"}
@@ -409,19 +409,19 @@ export default function ProfileSettingsPage() {
 
           <CardContent className="p-5 sm:p-6 space-y-6">
             {/* Step-by-step Connection instructions */}
-            <div className="rounded-xl border border-sky-100 bg-sky-50/40 p-4 space-y-3">
-              <h4 className="font-bold text-xs text-sky-950 uppercase tracking-wider flex items-center gap-1.5">
-                <Sparkles className="h-3.5 w-3.5 text-sky-600" />
+            <div className="rounded-xl border border-border/80 bg-muted/40 p-4 space-y-3">
+              <h4 className="font-semibold text-xs text-foreground uppercase tracking-wider flex items-center gap-1.5">
+                <Bot className="h-3.5 w-3.5 text-muted-foreground" />
                 {isTg ? "Дастури пайвастшавӣ дар 30 сония:" : "Инструкция по подключению за 30 секунд:"}
               </h4>
 
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs text-slate-600">
-                <div className="p-3 bg-white rounded-lg border border-sky-100/80 space-y-1.5">
-                  <div className="font-bold text-sky-700 flex items-center gap-1.5">
-                    <span className="h-5 w-5 rounded-full bg-sky-100 text-sky-800 text-[11px] font-extrabold flex items-center justify-center">1</span>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs text-muted-foreground">
+                <div className="p-3 bg-card rounded-lg border border-border/60 space-y-1.5">
+                  <div className="font-semibold text-foreground flex items-center gap-1.5">
+                    <span className="h-5 w-5 rounded-full bg-muted text-foreground text-xs font-bold flex items-center justify-center">1</span>
                     {isTg ? "Ботро фаъол созед" : "Запустите бота"}
                   </div>
-                  <p className="text-[11px] leading-relaxed">
+                  <p className="text-xs leading-relaxed">
                     {isTg
                       ? "Боти расмии платформаро дар Telegram кушоед ва тугмаи «Start»-ро пахш кунед:"
                       : "Откройте официального бота платформы в Telegram и нажмите «Start»:"}
@@ -430,7 +430,7 @@ export default function ProfileSettingsPage() {
                     href={`https://t.me/${botUsername}`}
                     target="_blank"
                     rel="noreferrer"
-                    className="inline-flex items-center gap-1 text-[11px] font-bold text-sky-600 hover:underline pt-0.5"
+                    className="inline-flex items-center gap-1 text-xs font-bold text-sky-600 hover:underline pt-0.5"
                   >
                     @{botUsername}
                     <ExternalLink className="h-3 w-3" />
@@ -439,10 +439,10 @@ export default function ProfileSettingsPage() {
 
                 <div className="p-3 bg-white rounded-lg border border-sky-100/80 space-y-1.5">
                   <div className="font-bold text-sky-700 flex items-center gap-1.5">
-                    <span className="h-5 w-5 rounded-full bg-sky-100 text-sky-800 text-[11px] font-extrabold flex items-center justify-center">2</span>
+                    <span className="h-5 w-5 rounded-full bg-sky-100 text-sky-800 text-xs font-extrabold flex items-center justify-center">2</span>
                     {isTg ? "Chat ID-ро муайян кунед" : "Узнайте Chat ID"}
                   </div>
-                  <p className="text-[11px] leading-relaxed">
+                  <p className="text-xs leading-relaxed">
                     {isTg
                       ? "Фармони /id-ро ба бот фиристед ё ба @userinfobot нависед, то ID-и худро гиред."
                       : "Отправьте команду /id боту или напишите в @userinfobot, чтобы скопировать ваш персональный ID."}
@@ -451,10 +451,10 @@ export default function ProfileSettingsPage() {
 
                 <div className="p-3 bg-white rounded-lg border border-sky-100/80 space-y-1.5">
                   <div className="font-bold text-sky-700 flex items-center gap-1.5">
-                    <span className="h-5 w-5 rounded-full bg-sky-100 text-sky-800 text-[11px] font-extrabold flex items-center justify-center">3</span>
+                    <span className="h-5 w-5 rounded-full bg-sky-100 text-sky-800 text-xs font-extrabold flex items-center justify-center">3</span>
                     {isTg ? "Гузоред ва сабт намоед" : "Вставьте и сохраните"}
                   </div>
-                  <p className="text-[11px] leading-relaxed">
+                  <p className="text-xs leading-relaxed">
                     {isTg
                       ? "Рақамро дар сатри поён гузоред, сабт кунед ва тугмаи «Санҷиш»-ро пахш намоед."
                       : "Вставьте номер в поле ниже, сохраните и нажмите кнопку «Тест» для проверки."}
@@ -468,7 +468,7 @@ export default function ProfileSettingsPage() {
               <div>
                 <Label htmlFor="chat-id" className="text-xs font-semibold text-slate-700 flex items-center justify-between">
                   <span>{isTg ? "Telegram Chat ID-и шумо *" : "Ваш Telegram Chat ID *"}</span>
-                  <span className="text-[11px] font-normal text-slate-400">
+                  <span className="text-xs font-normal text-slate-400">
                     {isTg ? "Масалан: 123456789 ё -100123456789 (барои гурӯҳ)" : "Например: 123456789 или -100123456789 (для группы)"}
                   </span>
                 </Label>
@@ -488,7 +488,7 @@ export default function ProfileSettingsPage() {
                       size="sm"
                       onClick={handleTestNotification}
                       disabled={testing || !chatId.trim()}
-                      className="h-7 px-2.5 text-[11px] font-semibold text-sky-600 hover:text-sky-700 hover:bg-sky-50 gap-1 cursor-pointer"
+                      className="h-7 px-2.5 text-xs font-medium text-foreground hover:bg-muted gap-1 cursor-pointer"
                     >
                       {testing ? <RefreshCw className="h-3 w-3 animate-spin" /> : <Send className="h-3 w-3" />}
                       {isTg ? "Санҷиш" : "Тест"}
@@ -502,8 +502,8 @@ export default function ProfileSettingsPage() {
                 <div
                   className={`p-3 rounded-xl border text-xs flex items-center gap-2 ${
                     statusMessage.type === "success"
-                      ? "bg-emerald-50 border-emerald-200 text-emerald-800"
-                      : "bg-red-50 border-red-200 text-red-800"
+                      ? "border-l-2 border-l-emerald-600 bg-muted/60 border border-border/60 text-foreground"
+                      : "border-l-2 border-l-destructive bg-destructive/10 border border-destructive/20 text-destructive"
                   }`}
                 >
                   {statusMessage.type === "success" ? (
@@ -551,7 +551,7 @@ export default function ProfileSettingsPage() {
               <h5 className="font-semibold text-xs text-slate-700">
                 {isTg ? "Намунаи огоҳинома дар Telegram:" : "Пример входящего пуша в Telegram:"}
               </h5>
-              <div className="p-3.5 rounded-xl bg-slate-900 text-slate-100 text-[11px] font-mono leading-relaxed space-y-1 shadow-sm max-w-md">
+              <div className="p-3.5 rounded-xl bg-slate-900 text-slate-100 text-xs font-mono leading-relaxed space-y-1 shadow-sm max-w-md">
                 <p className="text-emerald-400 font-bold">
                   {isTg ? "🔔 Дархости нав дар Maskani.tj!" : "🔔 Новый лид на Maskani.tj!"}
                 </p>

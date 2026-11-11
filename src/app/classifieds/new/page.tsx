@@ -7,6 +7,7 @@ import { useLanguage } from "@/lib/i18n/language-context";
 import { PhotoUploader } from "@/components/classifieds/photo-uploader";
 import { OtpVerificationV7 } from "@/components/auth/otp-verification-v7";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -379,15 +380,15 @@ export default function NewClassifiedPage() {
                 variant="outline"
                 size="sm"
                 onClick={() => setShowPreview(true)}
-                className="text-xs gap-1.5 rounded-xl border-emerald-300 text-emerald-700 hover:bg-emerald-50 cursor-pointer"
+                className="text-xs gap-1.5 rounded-xl border-border hover:bg-muted text-foreground cursor-pointer"
               >
-                <Eye className="h-3.5 w-3.5 text-emerald-600" />
+                <Eye className="h-3.5 w-3.5 text-muted-foreground" />
                 <span>{isTg ? "Пешнамоиш" : "Предпросмотр"}</span>
               </Button>
             </div>
           </div>
           {draftSavedAt && (
-            <p className="text-[11px] text-emerald-700 mt-2 font-medium">
+            <p className="text-xs text-emerald-700 mt-2 font-medium">
               ✓ {isTg ? `Сиёҳнавис сабт шуд дар ${draftSavedAt}` : `Черновик сохранён в ${draftSavedAt}`}
             </p>
           )}
@@ -838,9 +839,9 @@ export default function NewClassifiedPage() {
                   type="button"
                   variant="outline"
                   onClick={() => setShowPreview(true)}
-                  className="text-xs gap-1.5 rounded-xl border-emerald-300 text-emerald-700 hover:bg-emerald-50 cursor-pointer"
+                  className="text-xs gap-1.5 rounded-xl border-border hover:bg-muted text-foreground cursor-pointer"
                 >
-                  <Eye className="h-3.5 w-3.5 text-emerald-600" />
+                  <Eye className="h-3.5 w-3.5 text-muted-foreground" />
                   <span>{isTg ? "Пешнамоиш" : "Предпросмотр"}</span>
                 </Button>
               </div>
@@ -876,10 +877,10 @@ export default function NewClassifiedPage() {
           <div className="bg-white rounded-3xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl border border-slate-200 p-6 space-y-6">
             <div className="flex items-start justify-between gap-4 border-b border-slate-100 pb-4">
               <div>
-                <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-md">
+                <Badge variant="secondary" className="text-xs font-medium">
                   {isTg ? "Ҳолати пешнамоиш" : "Режим предпросмотра"}
-                </span>
-                <h2 className="text-xl font-black text-slate-900 mt-1">
+                </Badge>
+                <h2 className="text-xl font-bold text-slate-900 mt-1">
                   {title || (isTg ? "Бе сарлавҳа" : "Без заголовка")}
                 </h2>
                 <p className="text-xs text-slate-500 mt-0.5">
@@ -897,9 +898,9 @@ export default function NewClassifiedPage() {
             </div>
 
             {/* Price & Specs */}
-            <div className="flex items-baseline justify-between gap-4 bg-emerald-50/60 rounded-2xl p-4 border border-emerald-100">
+            <div className="flex items-baseline justify-between gap-4 bg-muted/60 rounded-2xl p-4 border border-border/60">
               <div>
-                <div className="text-2xl font-black text-emerald-700">
+                <div className="text-2xl font-bold text-foreground">
                   {priceTjs ? `${Number(priceTjs).toLocaleString()} TJS` : "—"}
                 </div>
                 <div className="text-xs text-slate-500">

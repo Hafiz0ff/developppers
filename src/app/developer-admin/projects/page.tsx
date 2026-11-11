@@ -107,7 +107,7 @@ export default function DeveloperProjectsPage() {
                 <div className="absolute bottom-2 left-2 z-10">
                   <ProjectCatalogCardBadge slug={proj.slug} />
                 </div>
-                <Badge className="absolute top-2 left-2 bg-emerald-600 text-white text-[10px]">
+                <Badge className="absolute top-2 left-2 bg-emerald-600 text-white text-xs">
                   {proj.status === "under_construction"
                     ? tDual("Строится", "Дар ҳоли сохтмон")
                     : proj.status === "ready"
@@ -123,7 +123,7 @@ export default function DeveloperProjectsPage() {
                     <h3 className="text-lg font-bold text-foreground">
                       {displayName}
                     </h3>
-                    <Badge variant="outline" className="text-[10px]">
+                    <Badge variant="outline" className="text-xs">
                       {proj.buildingClass === "business"
                         ? tDual("Бизнес-класс", "Синфи тиҷоратӣ (Бизнес)")
                         : proj.buildingClass === "comfort"

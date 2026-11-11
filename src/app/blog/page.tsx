@@ -30,7 +30,7 @@ export default function BlogIndexPage() {
   });
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] dark:bg-slate-950 pb-20">
+    <div className="min-h-screen bg-background dark:bg-slate-950 pb-20">
       {/* Top Breadcrumb Bar */}
       <div className="bg-white/80 dark:bg-slate-900/80 border-b border-slate-200/80 dark:border-slate-800 sticky top-0 z-30 backdrop-blur-md">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex items-center justify-between">
@@ -115,7 +115,7 @@ export default function BlogIndexPage() {
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   />
                   <div className="absolute top-3 left-3 z-10">
-                    <Badge className="bg-slate-900/85 backdrop-blur-md text-white text-[11px] font-bold border-none px-2.5 py-0.5 rounded-lg">
+                    <Badge className="bg-slate-900/85 backdrop-blur-md text-white text-xs font-bold border-none px-2.5 py-0.5 rounded-lg">
                       {category}
                     </Badge>
                   </div>
@@ -124,7 +124,7 @@ export default function BlogIndexPage() {
                 {/* Article Content */}
                 <div className="p-4 sm:p-5 flex-1 flex flex-col justify-between space-y-3">
                   <div className="space-y-2">
-                    <div className="flex items-center gap-3 text-[11px] text-slate-400 font-medium">
+                    <div className="flex items-center gap-3 text-xs text-slate-400 font-medium">
                       <span className="flex items-center gap-1">
                         <Calendar className="h-3 w-3" />
                         {article.publishedAt}
@@ -155,7 +155,7 @@ export default function BlogIndexPage() {
                         alt={article.author.name}
                         className="h-6 w-6 rounded-full object-cover border border-slate-200"
                       />
-                      <span className="font-medium text-slate-700 dark:text-slate-300 text-[11px] truncate max-w-[120px]">
+                      <span className="font-medium text-slate-700 dark:text-slate-300 text-xs truncate max-w-[120px]">
                         {article.author.name}
                       </span>
                     </div>

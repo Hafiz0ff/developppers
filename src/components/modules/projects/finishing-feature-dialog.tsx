@@ -136,14 +136,14 @@ export function FinishingFeatureDialog({
           /* View Mode */
           <div className="space-y-4 py-2">
             <div className="p-3.5 rounded-xl bg-muted/40 border space-y-1">
-              <span className="text-[11px] font-medium text-muted-foreground uppercase tracking-wider block">
+              <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider block">
                 {isTg ? "Сарлавҳа" : "Заголовок"}
               </span>
               <p className="text-sm font-semibold text-foreground">{title}</p>
             </div>
 
             <div className="p-3.5 rounded-xl bg-muted/40 border space-y-1.5">
-              <span className="text-[11px] font-medium text-muted-foreground uppercase tracking-wider block">
+              <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider block">
                 {isTg ? "Тавсифи муфассал" : "Подробное описание"}
               </span>
               <p className="text-xs text-foreground/90 whitespace-pre-line leading-relaxed">
@@ -167,7 +167,7 @@ export function FinishingFeatureDialog({
                   {isTg ? "Сарлавҳаи хусусият *" : "Заголовок характеристики *"}
                 </Label>
                 <span
-                  className={`text-[11px] ${
+                  className={`text-xs ${
                     title.length >= MAX_TITLE_LENGTH
                       ? "text-amber-600 font-bold"
                       : "text-muted-foreground"
@@ -185,7 +185,7 @@ export function FinishingFeatureDialog({
                 autoFocus
                 className="h-10 text-xs rounded-xl"
               />
-              <p className="text-[11px] text-muted-foreground">
+              <p className="text-xs text-muted-foreground">
                 {isTg
                   ? `Номи мухтасари хосият (то ${MAX_TITLE_LENGTH} аломат)`
                   : `Краткое емкое название опции (до ${MAX_TITLE_LENGTH} знаков)`}
@@ -199,7 +199,7 @@ export function FinishingFeatureDialog({
                   {isTg ? "Тавсифи хусусият" : "Описание характеристики"}
                 </Label>
                 <span
-                  className={`text-[11px] ${
+                  className={`text-xs ${
                     description.length >= MAX_DESCRIPTION_LENGTH
                       ? "text-amber-600 font-bold"
                       : "text-muted-foreground"
@@ -221,7 +221,7 @@ export function FinishingFeatureDialog({
                 maxLength={MAX_DESCRIPTION_LENGTH}
                 className="text-xs rounded-xl resize-none"
               />
-              <p className="text-[11px] text-muted-foreground">
+              <p className="text-xs text-muted-foreground">
                 {isTg
                   ? `Тафсилоти муфассал барои харидорон (то ${MAX_DESCRIPTION_LENGTH} аломат)`
                   : `Подробные детали для покупателей (до ${MAX_DESCRIPTION_LENGTH} знаков)`}

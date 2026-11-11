@@ -231,7 +231,7 @@ export function ProjectVisualShowcase({
               <Icon className={`h-4 w-4 ${isActive ? "text-white" : "text-emerald-600"}`} />
               <span>{item.label}</span>
               {item.badgeText && !isActive && (
-                <span className="text-[10px] py-0.5 px-1.5 rounded-md bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300 font-normal">
+                <span className="text-xs py-0.5 px-1.5 rounded-md bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300 font-normal">
                   {item.badgeText}
                 </span>
               )}

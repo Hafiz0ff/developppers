@@ -389,9 +389,9 @@ export default function BrokerAnalyticsPage() {
             onClick={handleExportCSV}
             variant="outline"
             size="sm"
-            className="gap-2 text-xs font-semibold h-9 px-3.5 border-emerald-600/30 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-50 dark:hover:bg-emerald-950/30 cursor-pointer"
+            className="gap-2 text-xs font-medium h-9 px-3.5 border-border hover:bg-muted text-foreground cursor-pointer"
           >
-            <Download className="h-3.5 w-3.5 text-emerald-600" />
+            <Download className="h-3.5 w-3.5 text-muted-foreground" />
             <span>{tDual("Экспорт в Excel (CSV)", "Экспорт ба Excel (CSV)")}</span>
           </Button>
         </div>
@@ -400,18 +400,18 @@ export default function BrokerAnalyticsPage() {
       {/* KPI METRIC CARDS */}
       <div className="grid grid-cols-2 lg:grid-cols-5 gap-3.5 sm:gap-4">
         {/* Total Views */}
-        <Card className="border-emerald-500/20 bg-gradient-to-br from-card to-emerald-500/5">
+        <Card className="bg-card border-border/60 shadow-xs">
           <CardContent className="p-4 sm:p-5 space-y-2">
             <div className="flex items-center justify-between text-xs font-medium text-muted-foreground">
               <span>{tDual("Просмотры", "Тамошоҳо")}</span>
-              <div className="h-7 w-7 rounded-lg bg-emerald-500/10 text-emerald-600 flex items-center justify-center">
+              <div className="h-7 w-7 rounded-lg bg-muted text-muted-foreground flex items-center justify-center">
                 <Eye className="h-4 w-4" />
               </div>
             </div>
             <div className="text-2xl sm:text-3xl font-extrabold text-foreground">
               {totals.views.toLocaleString()}
             </div>
-            <p className="text-[11px] text-emerald-600 font-medium flex items-center gap-1">
+            <p className="text-xs text-primary font-medium flex items-center gap-1">
               <TrendingUp className="h-3 w-3" />
               {tDual("+14.2% к прошлому периоду", "+14.2% нисбат ба давраи гузашта")}
             </p>
@@ -419,36 +419,36 @@ export default function BrokerAnalyticsPage() {
         </Card>
 
         {/* Total Leads (All channels) */}
-        <Card className="border-emerald-500/30 bg-emerald-600 text-white shadow-md shadow-emerald-600/20">
+        <Card className="bg-card border-border/60 shadow-xs">
           <CardContent className="p-4 sm:p-5 space-y-2">
-            <div className="flex items-center justify-between text-xs font-semibold text-emerald-100">
+            <div className="flex items-center justify-between text-xs font-medium text-muted-foreground">
               <span>{tDual("Всего откликов (Лиды)", "Ҳамаи муроҷиатҳо (Лидҳо)")}</span>
-              <div className="h-7 w-7 rounded-lg bg-white/20 text-white flex items-center justify-center">
+              <div className="h-7 w-7 rounded-lg bg-muted text-muted-foreground flex items-center justify-center">
                 <PhoneCall className="h-4 w-4" />
               </div>
             </div>
-            <div className="text-2xl sm:text-3xl font-extrabold text-white">
+            <div className="text-2xl sm:text-3xl font-extrabold text-foreground">
               {totals.totalLeads.toLocaleString()}
             </div>
-            <p className="text-[11px] text-emerald-100 font-medium">
+            <p className="text-xs text-muted-foreground font-medium">
               {tDual("Конверсия в контакт:", "Табдил ба тамос:")} <strong>{totals.conversion}%</strong>
             </p>
           </CardContent>
         </Card>
 
         {/* WhatsApp Clicks */}
-        <Card>
+        <Card className="bg-card border-border/60 shadow-xs">
           <CardContent className="p-4 sm:p-5 space-y-2">
             <div className="flex items-center justify-between text-xs font-medium text-muted-foreground">
               <span>{tDual("WhatsApp диалоги", "Гуфтугӯҳои WhatsApp")}</span>
-              <div className="h-7 w-7 rounded-lg bg-emerald-500/10 text-emerald-600 flex items-center justify-center">
+              <div className="h-7 w-7 rounded-lg bg-muted text-muted-foreground flex items-center justify-center">
                 <MessageCircle className="h-4 w-4" />
               </div>
             </div>
             <div className="text-2xl sm:text-3xl font-extrabold text-foreground">
               {totals.whatsapp.toLocaleString()}
             </div>
-            <p className="text-[11px] text-muted-foreground">
+            <p className="text-xs text-muted-foreground">
               {totals.totalLeads > 0
                 ? `${Math.round((totals.whatsapp / totals.totalLeads) * 100)}% ${tDual("от всех лидов", "аз тамоми лидҳо")}`
                 : tDual("Основной канал связи", "Канали асосии тамос")}
@@ -457,18 +457,18 @@ export default function BrokerAnalyticsPage() {
         </Card>
 
         {/* Phone Views */}
-        <Card>
+        <Card className="bg-card border-border/60 shadow-xs">
           <CardContent className="p-4 sm:p-5 space-y-2">
             <div className="flex items-center justify-between text-xs font-medium text-muted-foreground">
               <span>{tDual("Звонки (Показать тел.)", "Зангҳо (Нишон додани рақам)")}</span>
-              <div className="h-7 w-7 rounded-lg bg-blue-500/10 text-blue-600 flex items-center justify-center">
+              <div className="h-7 w-7 rounded-lg bg-muted text-muted-foreground flex items-center justify-center">
                 <PhoneCall className="h-4 w-4" />
               </div>
             </div>
             <div className="text-2xl sm:text-3xl font-extrabold text-foreground">
               {totals.phones.toLocaleString()}
             </div>
-            <p className="text-[11px] text-muted-foreground">
+            <p className="text-xs text-muted-foreground">
               {totals.totalLeads > 0
                 ? `${Math.round((totals.phones / totals.totalLeads) * 100)}% ${tDual("прямые звонки", "зангҳои мустақим")}`
                 : tDual("Прямые звонки", "Зангҳои мустақим")}
@@ -477,18 +477,18 @@ export default function BrokerAnalyticsPage() {
         </Card>
 
         {/* Favorites */}
-        <Card>
+        <Card className="bg-card border-border/60 shadow-xs">
           <CardContent className="p-4 sm:p-5 space-y-2">
             <div className="flex items-center justify-between text-xs font-medium text-muted-foreground">
               <span>{tDual("В избранном", "Дар писандидаҳо")}</span>
-              <div className="h-7 w-7 rounded-lg bg-rose-500/10 text-rose-600 flex items-center justify-center">
+              <div className="h-7 w-7 rounded-lg bg-muted text-muted-foreground flex items-center justify-center">
                 <Heart className="h-4 w-4" />
               </div>
             </div>
             <div className="text-2xl sm:text-3xl font-extrabold text-foreground">
               {totals.favs.toLocaleString()}
             </div>
-            <p className="text-[11px] text-muted-foreground">
+            <p className="text-xs text-muted-foreground">
               {tDual("Сохранений объектов", "Сабти амвол аз муштариён")}
             </p>
           </CardContent>
@@ -537,7 +537,7 @@ export default function BrokerAnalyticsPage() {
                     className="flex-1 flex flex-col items-center gap-1.5 h-full justify-end group relative"
                   >
                     {/* Tooltip on hover */}
-                    <div className="absolute -top-12 z-20 hidden group-hover:flex flex-col items-center bg-popover text-popover-foreground border text-[10px] py-1 px-2 rounded-md shadow-md whitespace-nowrap pointer-events-none">
+                    <div className="absolute -top-12 z-20 hidden group-hover:flex flex-col items-center bg-popover text-popover-foreground border text-xs py-1 px-2 rounded-md shadow-md whitespace-nowrap pointer-events-none">
                       <span className="font-bold">{d.date}</span>
                       <span>{d.views} {tDual("просмотров", "тамошо")}, {d.leads} {tDual("лидов", "лид")}</span>
                     </div>
@@ -554,7 +554,7 @@ export default function BrokerAnalyticsPage() {
                         className="w-1/2 bg-teal-400 group-hover:bg-teal-300 rounded-t-sm transition-all"
                       />
                     </div>
-                    <span className="text-[9px] text-muted-foreground truncate w-full text-center">
+                    <span className="text-xs text-muted-foreground truncate w-full text-center">
                       {d.date.split(" ")[0]}
                     </span>
                   </div>
@@ -654,7 +654,7 @@ export default function BrokerAnalyticsPage() {
             </div>
 
             <div className="pt-3 border-t">
-              <div className="rounded-lg bg-emerald-50 dark:bg-emerald-950/20 border border-emerald-200 dark:border-emerald-800/40 p-3 text-[11px] text-muted-foreground leading-relaxed">
+              <div className="rounded-lg bg-muted/50 border border-border/60 p-3 text-xs text-muted-foreground leading-relaxed">
                 💡 <strong>{tDual("Совет маклеру:", "Маслиҳат ба маклер:")}</strong>{" "}
                 {tDual(
                   "60%+ клиентов в Согдийской области предпочитают сразу писать в WhatsApp для получения геолокации и видео рум-тура. Держите номер WhatsApp всегда активным!",
@@ -705,7 +705,7 @@ export default function BrokerAnalyticsPage() {
         <CardContent className="p-0">
           <div className="overflow-x-auto">
             <table className="w-full text-xs text-left">
-              <thead className="bg-muted/50 border-y text-muted-foreground uppercase text-[10px] font-bold tracking-wider">
+              <thead className="bg-muted/50 border-y text-muted-foreground uppercase text-xs font-bold tracking-wider">
                 <tr>
                   <th className="py-3 px-4">{tDual("Объект недвижимости", "Амволи ғайриманқул")}</th>
                   <th className="py-3 px-4">{tDual("Город", "Шаҳр")}</th>
@@ -736,7 +736,7 @@ export default function BrokerAnalyticsPage() {
                         <div className="font-semibold text-foreground line-clamp-1 max-w-xs">
                           {title}
                         </div>
-                        <span className="text-[10px] text-muted-foreground">ID: {p.id}</span>
+                        <span className="text-xs text-muted-foreground">ID: {p.id}</span>
                       </td>
                       <td className="py-3 px-4 text-muted-foreground">{city}</td>
                       <td className="py-3 px-4 font-mono font-bold text-foreground">
@@ -755,13 +755,13 @@ export default function BrokerAnalyticsPage() {
                       <td className="py-3 px-4 text-center">
                         <Badge
                           variant="secondary"
-                          className="font-mono text-[10px] bg-emerald-50 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-300"
+                          className="font-mono text-xs font-normal"
                         >
                           {ctr}
                         </Badge>
                       </td>
                       <td className="py-3 px-4">
-                        <Badge className="bg-emerald-600 text-white text-[10px]">
+                        <Badge variant="secondary" className="text-xs font-normal">
                           {tDual("Активно", "Фаъол")}
                         </Badge>
                       </td>
@@ -794,7 +794,7 @@ export default function BrokerAnalyticsPage() {
                     "Ҳамгироӣ бо CRM-и беруна (AmoCRM, Bitrix24, 1C)"
                   )}
                 </CardTitle>
-                <Badge className="bg-emerald-600 text-white text-[10px]">
+                <Badge className="bg-emerald-600 text-white text-xs">
                   Open API v1 Active
                 </Badge>
               </div>
@@ -823,7 +823,7 @@ export default function BrokerAnalyticsPage() {
                 <span className="text-xs font-bold text-foreground block">
                   {tDual("Ваш секретный API-токен:", "Калиди махфии API-и шумо:")}
                 </span>
-                <span className="text-[11px] text-muted-foreground">
+                <span className="text-xs text-muted-foreground">
                   {tDual("Используйте в заголовке:", "Дар сарлавҳа истифода баред:")}{" "}
                   <code>Authorization: Bearer sr_live_...</code> {tDual("или", "ё")} <code>X-API-Key: ...</code>
                 </span>
@@ -872,11 +872,11 @@ export default function BrokerAnalyticsPage() {
           {/* Quick Endpoints Reference */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
             <div className="bg-background border rounded-xl p-3.5 space-y-1.5">
-              <div className="flex items-center justify-between font-mono font-bold text-[11px]">
+              <div className="flex items-center justify-between font-mono font-bold text-xs">
                 <span className="text-emerald-700 dark:text-emerald-400">GET /api/v1/external/analytics</span>
-                <Badge variant="outline" className="text-[10px]">Read</Badge>
+                <Badge variant="outline" className="text-xs">Read</Badge>
               </div>
-              <p className="text-muted-foreground text-[11px]">
+              <p className="text-muted-foreground text-xs">
                 {tDual(
                   "Получение агрегированных отчетов, просмотров, звонков и детализации по дням (поддерживает ?period=today|7d|30d|all).",
                   "Гирифтани ҳисоботҳои ҷамъбастӣ, тамошоҳо, зангҳо ва тафсилот аз рӯи рӯзҳо."
@@ -885,11 +885,11 @@ export default function BrokerAnalyticsPage() {
             </div>
 
             <div className="bg-background border rounded-xl p-3.5 space-y-1.5">
-              <div className="flex items-center justify-between font-mono font-bold text-[11px]">
+              <div className="flex items-center justify-between font-mono font-bold text-xs">
                 <span className="text-blue-700 dark:text-blue-400">POST /api/v1/external/feed/import</span>
-                <Badge variant="outline" className="text-[10px]">Write</Badge>
+                <Badge variant="outline" className="text-xs">Write</Badge>
               </div>
-              <p className="text-muted-foreground text-[11px]">
+              <p className="text-muted-foreground text-xs">
                 {tDual(
                   "Пакетный импорт и авто-публикация объектов недвижимости из вашей внешней CRM без ручного переноса.",
                   "Импорти гурӯҳӣ ва нашри худкори амвол аз CRM-и беруна бе воридкунии дастӣ."

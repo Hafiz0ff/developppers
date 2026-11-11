@@ -51,7 +51,7 @@ export function ListingAttributesView({
               <h3 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
                 <span>{sec.title}</span>
                 {isLegal && (
-                  <span className="text-[11px] font-semibold px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-800 dark:text-amber-300 border border-amber-500/30">
+                  <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-800 dark:text-amber-300 border border-amber-500/30">
                     {language === "tg" ? "Маълумоти фурӯшанда" : language === "en" ? "Seller declared" : "Заявлено продавцом"}
                   </span>
                 )}
@@ -95,7 +95,7 @@ export function ListingAttributesView({
                     key={item.code}
                     className="p-3.5 rounded-2xl bg-slate-50/70 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800 space-y-1.5 transition-all hover:bg-slate-50 dark:hover:bg-slate-800"
                   >
-                    <div className="flex items-center gap-2 text-slate-500 dark:text-slate-400 text-[11px] font-medium">
+                    <div className="flex items-center gap-2 text-slate-500 dark:text-slate-400 text-xs font-medium">
                       <ListingIcon iconKey={item.iconKey} className="h-3.5 w-3.5 shrink-0 text-emerald-600 dark:text-emerald-400" />
                       <span className="truncate">{item.label}</span>
                     </div>

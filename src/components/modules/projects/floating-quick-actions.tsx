@@ -80,7 +80,7 @@ export function FloatingQuickActions({
           )}`}
           target="_blank"
           rel="noreferrer"
-          className="h-10 px-3.5 rounded-full bg-[#25D366] hover:bg-[#20bd5a] text-white text-xs font-extrabold flex items-center gap-1.5 shadow-md btn-shimmer btn-glow-whatsapp tactile-press cursor-pointer transition-all"
+          className="h-10 px-3.5 rounded-full bg-[#25D366] hover:bg-[#20bd5a] text-white text-xs font-semibold flex items-center gap-1.5 shadow-xs cursor-pointer transition-all"
         >
           <MessageCircle className="h-4 w-4 fill-white text-transparent" />
           <span className="hidden sm:inline">WhatsApp</span>
@@ -89,10 +89,10 @@ export function FloatingQuickActions({
         {/* Phone dial button */}
         <a
           href={`tel:${phone}`}
-          className="h-10 w-10 rounded-full bg-background/80 hover:bg-background text-foreground flex items-center justify-center border border-border/60 tactile-press shadow-xs cursor-pointer transition-colors"
+          className="h-10 w-10 rounded-full bg-background/80 hover:bg-background text-foreground flex items-center justify-center border border-border/60 shadow-xs cursor-pointer transition-colors"
           title={tDual(`Позвонить: ${phone}`, `Занг задан: ${phone}`)}
         >
-          <Phone className="h-4 w-4 text-emerald-600" />
+          <Phone className="h-4 w-4 text-primary" />
         </a>
 
         {/* Scroll to top */}

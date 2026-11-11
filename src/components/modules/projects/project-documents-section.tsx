@@ -64,7 +64,7 @@ export function ProjectDocumentsSection({
 
   return (
     <section id="documents-section" className="container mx-auto px-4 py-4 space-y-6">
-      <div className="rounded-3xl border border-slate-200/80 bg-linear-to-b from-slate-50/70 via-white to-slate-50/40 dark:from-slate-900/40 dark:via-background dark:to-slate-900/20 p-6 sm:p-8 shadow-sm space-y-6">
+      <div className="rounded-3xl border border-border/80 bg-card p-6 sm:p-8 shadow-xs space-y-6">
         {/* Header with Title */}
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-6 border-b border-slate-200/60 dark:border-slate-800">
           <div className="space-y-1.5">
@@ -110,7 +110,7 @@ export function ProjectDocumentsSection({
                     </div>
 
                     {/* File Size */}
-                    <span className="text-[11px] font-mono text-muted-foreground bg-muted/60 px-2 py-0.5 rounded-md">
+                    <span className="text-xs font-mono text-muted-foreground bg-muted/60 px-2 py-0.5 rounded-md">
                       {sizeFormatted}
                     </span>
                   </div>
@@ -125,7 +125,7 @@ export function ProjectDocumentsSection({
                     </h3>
 
                     {doc.documentNumber && (
-                      <span className="text-[11px] font-mono text-muted-foreground block mt-1">
+                      <span className="text-xs font-mono text-muted-foreground block mt-1">
                         № {doc.documentNumber}
                       </span>
                     )}
@@ -134,7 +134,7 @@ export function ProjectDocumentsSection({
 
                 {/* Bottom Section: Publication Date & Action Buttons */}
                 <div className="pt-3 border-t border-slate-100 dark:border-slate-800/80 space-y-3">
-                  <div className="flex items-center justify-between text-[11px] text-muted-foreground">
+                  <div className="flex items-center justify-between text-xs text-muted-foreground">
                     <span className="flex items-center gap-1">
                       <Calendar className="h-3 w-3 text-slate-400" />
                       <span>{tDual("Дата размещения:", "Санаи нашр:")}</span>

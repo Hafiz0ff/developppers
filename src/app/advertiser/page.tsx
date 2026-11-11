@@ -194,7 +194,7 @@ export default function AdvertiserPortalPage() {
 
             <Link
               href="/super-admin"
-              className="text-slate-400 hover:text-slate-200 font-semibold flex items-center gap-1 text-[11px] px-2 py-1 rounded-md hover:bg-slate-800/80 transition-colors"
+              className="text-slate-400 hover:text-slate-200 font-semibold flex items-center gap-1 text-xs px-2 py-1 rounded-md hover:bg-slate-800/80 transition-colors"
             >
               <span>Super Admin</span>
             </Link>
@@ -211,10 +211,8 @@ export default function AdvertiserPortalPage() {
           {/* Hero Section */}
           <div className="bg-slate-900 text-white border-b border-slate-800">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 text-center relative overflow-hidden">
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
-
-          <Badge className="bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-xs font-bold px-3 py-1 rounded-full mb-4 inline-flex items-center gap-1.5">
-            <Sparkles className="h-3.5 w-3.5 text-emerald-400" />
+          <Badge variant="secondary" className="text-xs font-semibold px-3 py-1 rounded-full mb-4 inline-flex items-center gap-1.5">
+            <Sparkles className="h-3.5 w-3.5 text-primary" />
             <span>
               {isTg
                 ? "Платформаи асосии амволи вилояти Суғд"
@@ -313,11 +311,11 @@ export default function AdvertiserPortalPage() {
             ].map((p, idx) => (
               <div
                 key={idx}
-                className="p-3 rounded-xl bg-slate-50 border border-slate-200/60 text-center hover:border-emerald-300 hover:bg-emerald-50/30 transition-colors"
+                className="p-3 rounded-xl bg-card border border-border/80 text-center hover:border-primary/50 hover:bg-muted/40 transition-colors"
               >
-                <div className="font-extrabold text-xs text-slate-900">{p.name}</div>
-                <div className="text-[10px] text-slate-500 mt-0.5">{p.role}</div>
-                <Badge variant="outline" className="text-[9px] mt-1.5 border-emerald-500/30 text-emerald-700 bg-white">
+                <div className="font-extrabold text-xs text-foreground">{p.name}</div>
+                <div className="text-xs text-muted-foreground mt-0.5">{p.role}</div>
+                <Badge variant="outline" className="text-xs mt-1.5 border-border/80 text-foreground bg-muted/20">
                   {p.tag}
                 </Badge>
               </div>
@@ -328,7 +326,7 @@ export default function AdvertiserPortalPage() {
         {/* SPONSORSHIP PACKAGES */}
         <div id="packages" className="space-y-6 mb-16">
           <div className="text-center max-w-2xl mx-auto">
-            <Badge className="bg-emerald-50 text-emerald-700 border-emerald-200 text-xs font-bold px-3 py-1 rounded-full mb-2">
+            <Badge variant="secondary" className="text-xs font-semibold px-3 py-1 rounded-full mb-2">
               {isTg ? "Тарофаҳо ва шартҳо" : "Тарифные пакеты"}
             </Badge>
             <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
@@ -345,8 +343,8 @@ export default function AdvertiserPortalPage() {
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {/* Package 1: Annual Flat Sponsor */}
-            <Card className="rounded-2xl border-2 border-emerald-500/80 shadow-md relative overflow-hidden bg-linear-to-b from-white via-white to-emerald-50/30 flex flex-col justify-between">
-              <div className="absolute top-0 right-0 bg-emerald-600 text-white text-[10px] uppercase font-bold tracking-wider px-3 py-1 rounded-bl-xl shadow-xs">
+            <Card className="rounded-2xl border-2 border-primary shadow-xs relative overflow-hidden bg-card flex flex-col justify-between">
+              <div className="absolute top-0 right-0 bg-emerald-600 text-white text-xs uppercase font-bold tracking-wider px-3 py-1 rounded-bl-xl shadow-xs">
                 {isTg ? "Машҳуртарин" : "Выбор лидеров"}
               </div>
 
@@ -524,15 +522,14 @@ export default function AdvertiserPortalPage() {
         </div>
 
         {/* INTERACTIVE REACH CALCULATOR */}
-        <div className="bg-slate-900 text-white rounded-3xl p-6 sm:p-10 border border-slate-800 shadow-xl mb-16 relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-80 h-80 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
+        <div className="bg-slate-900 text-white rounded-3xl p-6 sm:p-10 border border-slate-800 shadow-xs mb-16 relative overflow-hidden">
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
             {/* Left Controls */}
             <div className="lg:col-span-7 space-y-6">
               <div>
-                <Badge className="bg-emerald-500/20 text-emerald-300 border-emerald-500/30 text-[11px] font-bold px-2.5 py-0.5 rounded-full mb-2">
-                  <Zap className="h-3 w-3 mr-1 text-emerald-400" />
+                <Badge variant="secondary" className="text-xs font-semibold px-2.5 py-0.5 rounded-full mb-2">
+                  <Zap className="h-3 w-3 mr-1 text-primary" />
                   {isTg ? "Ҳисобкунаки фарогирӣ" : "Интерактивный калькулятор охвата"}
                 </Badge>
                 <h3 className="text-2xl sm:text-3xl font-extrabold tracking-tight">
@@ -609,7 +606,7 @@ export default function AdvertiserPortalPage() {
                   <div className="text-xl font-black text-white mt-0.5">
                     {selectedImpressions.toLocaleString("ru-RU")}
                   </div>
-                  <div className="text-[10px] text-emerald-400 mt-0.5">{isTg ? "намоишҳо" : "показов"}</div>
+                  <div className="text-xs text-emerald-400 mt-0.5">{isTg ? "намоишҳо" : "показов"}</div>
                 </div>
 
                 <div className="p-3.5 rounded-xl bg-slate-900 border border-slate-800">
@@ -617,7 +614,7 @@ export default function AdvertiserPortalPage() {
                   <div className="text-xl font-black text-emerald-400 mt-0.5">
                     ~ {estimatedClicks.toLocaleString("ru-RU")}
                   </div>
-                  <div className="text-[10px] text-slate-400 mt-0.5">{isTg ? "муроҷиатҳо" : "переходов"}</div>
+                  <div className="text-xs text-slate-400 mt-0.5">{isTg ? "муроҷиатҳо" : "переходов"}</div>
                 </div>
               </div>
 
@@ -678,18 +675,18 @@ export default function AdvertiserPortalPage() {
           </div>
 
           {submitSuccess ? (
-            <div className="p-6 rounded-2xl bg-emerald-50 border border-emerald-200 text-center space-y-3">
-              <CheckCircle2 className="h-10 w-10 text-emerald-600 mx-auto" />
-              <h4 className="text-base font-bold text-emerald-950">
+            <div className="p-6 rounded-2xl bg-muted/40 border border-border/80 text-center space-y-3">
+              <CheckCircle2 className="h-10 w-10 text-primary mx-auto" />
+              <h4 className="text-base font-bold text-foreground">
                 {isTg ? "Дархости шумо қабул шуд!" : "Заявка успешно отправлена!"}
               </h4>
-              <p className="text-xs text-emerald-800">
+              <p className="text-xs text-muted-foreground">
                 {isTg
                   ? "Мо дар давоми наздиктарин бо шумо дар тамос мешавем. Ҳамчунин метавонед ба мо дар WhatsApp нависед."
                   : "Менеджер отдела партнерств Maskani.tj свяжется с вами для согласования деталей и запуска кампании."}
               </p>
               <a href={directWhatsAppUrl} target="_blank" rel="noopener noreferrer">
-                <Button className="mt-2 h-10 px-5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs gap-2">
+                <Button className="mt-2 h-10 px-5 rounded-xl font-semibold text-xs gap-2">
                   <MessageCircle className="h-4 w-4" />
                   <span>{isTg ? "Муколама дар WhatsApp" : "Написать в WhatsApp"}</span>
                 </Button>

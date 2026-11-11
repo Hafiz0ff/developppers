@@ -342,7 +342,7 @@ export function OtpVerificationV7({
       layout
       className={`relative mx-auto w-full ${
         embedded ? "max-w-full" : "max-w-[380px]"
-      } rounded-[28px] border border-white/[0.08] bg-[#111116]/95 px-6 pt-5 pb-7 text-center shadow-[0_28px_70px_-15px_rgba(0,0,0,0.85)] backdrop-blur-2xl select-none`}
+      } rounded-[28px] border border-white/[0.08] bg-slate-950/95 px-6 pt-5 pb-7 text-center shadow-[0_28px_70px_-15px_rgba(0,0,0,0.85)] backdrop-blur-2xl select-none`}
     >
       {/* Top Pill Indicator (as in IMG_5892.MP4) */}
       <div className="mx-auto mb-5 flex items-center justify-between">
@@ -373,10 +373,10 @@ export function OtpVerificationV7({
               exit={{ opacity: 0, y: -6 }}
               transition={{ duration: 0.28 }}
             >
-              <h2 className="text-[21px] font-bold tracking-tight text-[#22C55E] sm:text-[22px]">
+              <h2 className="text-[21px] font-bold tracking-tight text-emerald-500 sm:text-[22px]">
                 {tr("Успешно подтверждено", "Бо муваффақият тасдиқ шуд", "Verified Successfully")}
               </h2>
-              <p className="mt-1.5 text-xs leading-relaxed text-[#8E8E98]">
+              <p className="mt-1.5 text-xs leading-relaxed text-slate-400">
                 {tr(
                   "Ваш номер телефона успешно подтверждён.",
                   "Рақами телефони шумо тасдиқ карда шуд.",
@@ -395,7 +395,7 @@ export function OtpVerificationV7({
               <h2 className="text-[21px] font-bold tracking-tight text-white sm:text-[22px]">
                 {tr("Подтвердите ваш номер", "Рақами худро тасдиқ кунед", "Let's verify your number")}
               </h2>
-              <p className="mt-1.5 text-xs leading-relaxed text-[#8E8E98]">
+              <p className="mt-1.5 text-xs leading-relaxed text-slate-400">
                 {tr(
                   `Мы отправили 4-значный код на ${phone || "ваш телефон"}. Проверка выполнится автоматически.`,
                   `Мо рамзи 4-рақамаро ба ${phone || "телефони шумо"} фиристодем. Тафтиш худкор анҷом мешавад.`,
@@ -515,7 +515,7 @@ export function OtpVerificationV7({
                   inputRefs.current[idx]?.focus();
                 }
               }}
-              className="absolute z-20 flex h-[58px] w-[58px] items-center justify-center rounded-[14px] bg-[#17171F]"
+              className="absolute z-20 flex h-[58px] w-[58px] items-center justify-center rounded-[14px] bg-slate-900"
               style={{
                 border: isError
                   ? "1.5px solid #EF4444"
@@ -597,7 +597,7 @@ export function OtpVerificationV7({
                     key="caret"
                     animate={{ opacity: [1, 0.15, 1] }}
                     transition={{ duration: 0.95, repeat: Infinity }}
-                    className="pointer-events-none h-5 w-[1.5px] rounded-full bg-[#FF5733]"
+                    className="pointer-events-none h-5 w-[1.5px] rounded-full bg-orange-500"
                   />
                 ) : null}
               </AnimatePresence>
@@ -614,7 +614,7 @@ export function OtpVerificationV7({
                 initial={{ width: 56, height: 56, borderRadius: 15, opacity: 0.92 }}
                 animate={{ width: 174, height: 174, borderRadius: 34, opacity: 0 }}
                 transition={{ duration: 0.68, ease: "easeOut" }}
-                className="absolute border-[1.5px] border-[#22C55E]"
+                className="absolute border-[1.5px] border-emerald-500"
                 style={{ boxShadow: "0 0 24px rgba(34, 197, 94, 0.45)" }}
               />
 
@@ -623,7 +623,7 @@ export function OtpVerificationV7({
                 initial={{ width: 56, height: 56, borderRadius: 15, opacity: 0.45 }}
                 animate={{ width: 132, height: 132, borderRadius: 28, opacity: 0 }}
                 transition={{ duration: 0.85, delay: 0.08, ease: "easeOut" }}
-                className="absolute border border-[#4ADE80]/50"
+                className="absolute border border-emerald-400/50"
               />
 
               {/* 3. 42 Emerald Particles Bursting Outward */}
@@ -669,7 +669,7 @@ export function OtpVerificationV7({
                   scale: { type: "spring", stiffness: 360, damping: 20 },
                   borderColor: { duration: 0.35, delay: 0.15 },
                 }}
-                className="relative flex h-[56px] w-[56px] items-center justify-center rounded-[15px] border-[1.5px] bg-[#15201B]"
+                className="relative flex h-[56px] w-[56px] items-center justify-center rounded-[15px] border-[1.5px] bg-emerald-950/40"
                 style={{
                   boxShadow: "0 0 28px rgba(34, 197, 94, 0.28), inset 0 0 14px rgba(34, 197, 94, 0.12)",
                 }}
@@ -716,7 +716,7 @@ export function OtpVerificationV7({
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.25, delay: 0.05 }}
-              className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#22C55E]"
+              className="inline-flex items-center gap-1.5 text-xs font-semibold text-emerald-500"
             >
               <Lock className="h-3.5 w-3.5" />
               <span>
@@ -732,13 +732,13 @@ export function OtpVerificationV7({
               transition={{ duration: 0.18 }}
               className="flex flex-col items-center gap-2"
             >
-              <p className="text-xs text-[#7E7E8A]">
+              <p className="text-xs text-slate-400">
                 {tr("Не получили код?", "Код наомад?", "Didn't receive the code?")}{" "}
                 <button
                   type="button"
                   disabled={resending || resendCooldown > 0}
                   onClick={handleResendClick}
-                  className="cursor-pointer font-semibold text-white transition-colors hover:text-[#FF5733] disabled:cursor-not-allowed disabled:opacity-50"
+                  className="cursor-pointer font-semibold text-white transition-colors hover:text-orange-500 disabled:cursor-not-allowed disabled:opacity-50"
                 >
                   {resendCooldown > 0
                     ? `${tr("Повторно через", "Боз пас аз", "Resend in")} ${resendCooldown}s`
@@ -750,7 +750,7 @@ export function OtpVerificationV7({
               <button
                 type="button"
                 onClick={() => fillDemoCode(demoCodeHint || "4545")}
-                className="inline-flex cursor-pointer items-center gap-1 rounded-full border border-white/10 bg-white/[0.04] px-2.5 py-0.5 text-[10px] font-medium text-slate-400 transition-colors hover:border-emerald-500/40 hover:bg-emerald-500/10 hover:text-emerald-300"
+                className="inline-flex cursor-pointer items-center gap-1 rounded-full border border-white/10 bg-white/[0.04] px-2.5 py-0.5 text-xs font-medium text-slate-400 transition-colors hover:border-emerald-500/40 hover:bg-emerald-500/10 hover:text-emerald-300"
               >
                 <Sparkles className="h-2.5 w-2.5 text-amber-400" />
                 <span>

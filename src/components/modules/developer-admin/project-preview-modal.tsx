@@ -49,7 +49,7 @@ export function ProjectPreviewModal({
             <span className="font-bold">
               {isTg ? "Реҷаи пешнамоиши витринаи 6D" : "Режим предпросмотра 6D-витрины"}
             </span>
-            <span className="text-[11px] text-emerald-100 hidden sm:inline">
+            <span className="text-xs text-emerald-100 hidden sm:inline">
               {isTg
                 ? "(Пеш аз интишор кори ҳамаи 6 қабати интерактивиро санҷед)"
                 : "(Проверьте работу всех 6 интерактивных слоёв до публикации)"}
@@ -61,7 +61,7 @@ export function ProjectPreviewModal({
               href={`/projects/${slug}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-[11px] font-semibold underline hover:text-emerald-100 flex items-center gap-1"
+              className="text-xs font-semibold underline hover:text-emerald-100 flex items-center gap-1"
             >
               {isTg ? "Кушодани саҳифаи витрина" : "Открыть страницу витрины"}
               <ExternalLink className="h-3 w-3" />

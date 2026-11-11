@@ -199,21 +199,19 @@ export function PaymentModal({
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && resetForm()}>
-      <DialogContent className="sm:max-w-xl p-0 overflow-hidden rounded-3xl border-slate-200 shadow-2xl bg-white">
+      <DialogContent className="sm:max-w-xl p-0 overflow-hidden rounded-3xl border border-border/80 shadow-2xl bg-card text-foreground">
         {/* Top Header Banner */}
         <div className="bg-slate-900 text-white p-6 relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-48 h-48 bg-emerald-500/10 rounded-full blur-2xl pointer-events-none" />
-
           <div className="flex items-center justify-between text-xs mb-2">
-            <Badge className="bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1">
-              <Lock className="h-3 w-3 text-emerald-400" />
+            <Badge variant="secondary" className="text-xs font-semibold px-2 py-0.5 rounded-full flex items-center gap-1">
+              <Lock className="h-3 w-3 text-primary" />
               <span>{isTg ? "Пардохти амн бо рамзгузорӣ" : "Безопасный эквайринг НПЦ РТ"}</span>
             </Badge>
 
-            <span className="text-[11px] text-slate-400">Maskani FinTech Gateway</span>
+            <span className="text-xs text-slate-400">Maskani FinTech Gateway</span>
           </div>
 
-          <DialogTitle className="text-xl sm:text-2xl font-black text-white tracking-tight">
+          <DialogTitle className="text-xl sm:text-2xl font-bold text-white tracking-tight">
             {title}
           </DialogTitle>
           {subtitle && (
@@ -228,11 +226,11 @@ export function PaymentModal({
               {isTg ? "Маблағи пардохт:" : "Сумма к оплате:"}
             </span>
             <div className="flex items-baseline gap-2">
-              <span className="text-2xl sm:text-3xl font-black text-white">
+              <span className="text-2xl sm:text-3xl font-bold text-white">
                 {amountTjs.toLocaleString("ru-RU")} сомони
               </span>
-              <span className="text-xs text-emerald-400 font-semibold">
-                (~${amountUsd} USD)
+              <span className="text-xs text-slate-400 font-medium">
+                (≈${amountUsd} USD)
               </span>
             </div>
           </div>
@@ -243,7 +241,7 @@ export function PaymentModal({
           <div className="p-6 space-y-6">
             {/* Payment Systems Switcher */}
             <div className="space-y-2">
-              <label className="text-xs font-bold text-slate-700 uppercase tracking-wider block">
+              <label className="text-xs font-bold text-foreground uppercase tracking-wider block">
                 {isTg ? "Усули пардохтро интихоб кунед:" : "Выберите платежную систему РТ:"}
               </label>
 
@@ -253,28 +251,24 @@ export function PaymentModal({
                     id: "korti_milli" as PaymentProvider,
                     title: "Корти Милли",
                     badge: "НПЦ РТ",
-                    color: "border-emerald-500 bg-emerald-50/40 text-emerald-900",
                     icon: CreditCard,
                   },
                   {
                     id: "dushanbe_city" as PaymentProvider,
                     title: "Dushanbe City",
                     badge: "DC Pay QR",
-                    color: "border-amber-500 bg-amber-50/40 text-amber-900",
                     icon: Wallet,
                   },
                   {
                     id: "alif_mobi" as PaymentProvider,
                     title: "Alif Pay",
                     badge: "Салом 0%",
-                    color: "border-emerald-500 bg-emerald-50/40 text-emerald-900",
                     icon: Sparkles,
                   },
                   {
                     id: "eskhata_online" as PaymentProvider,
                     title: "Эсхата Онлайн",
                     badge: "Банк Эсхата",
-                    color: "border-blue-500 bg-blue-50/40 text-blue-900",
                     icon: Building2,
                   },
                 ].map((p) => {
@@ -288,21 +282,21 @@ export function PaymentModal({
                         setSelectedProvider(p.id);
                         setActiveTx(null);
                       }}
-                      className={`p-3 rounded-2xl border text-left transition-all relative flex flex-col justify-between ${
+                      className={`p-3 rounded-2xl border text-left transition-all relative flex flex-col justify-between cursor-pointer ${
                         isSelected
-                          ? "border-emerald-600 bg-emerald-50/50 shadow-xs ring-2 ring-emerald-500/20"
-                          : "border-slate-200 hover:border-slate-300 bg-white"
+                          ? "border-primary bg-primary/5 shadow-xs ring-2 ring-primary/20"
+                          : "border-border/80 hover:border-border bg-card"
                       }`}
                     >
                       <div className="flex items-center justify-between w-full mb-2">
                         <Icon
                           className={`h-4 w-4 ${
-                            isSelected ? "text-emerald-600" : "text-slate-400"
+                            isSelected ? "text-primary" : "text-muted-foreground"
                           }`}
                         />
                         <Badge
-                          variant="outline"
-                          className="text-[9px] px-1.5 py-0 border-slate-200 text-slate-600"
+                          variant="secondary"
+                          className="text-xs px-1.5 py-0"
                         >
                           {p.badge}
                         </Badge>
@@ -325,13 +319,13 @@ export function PaymentModal({
                     <span className="text-xs font-bold text-slate-800">
                       {isTg ? "Реквизитҳои корти миллӣ" : "Данные карты Корти Милли"}
                     </span>
-                    <Badge className="bg-emerald-100 text-emerald-800 text-[10px] font-semibold">
+                    <Badge className="bg-emerald-100 text-emerald-800 text-xs font-semibold">
                       Поддержка всех банков РТ
                     </Badge>
                   </div>
 
                   <div className="space-y-1.5">
-                    <label className="text-[11px] text-slate-500 font-medium">
+                    <label className="text-xs text-slate-500 font-medium">
                       {isTg ? "Рақами корт (16 рақам)" : "Номер карты (16 цифр)"}
                     </label>
                     <Input
@@ -346,7 +340,7 @@ export function PaymentModal({
 
                   <div className="grid grid-cols-2 gap-3">
                     <div className="space-y-1.5">
-                      <label className="text-[11px] text-slate-500 font-medium">
+                      <label className="text-xs text-slate-500 font-medium">
                         {isTg ? "Муҳлати амал" : "Срок действия"}
                       </label>
                       <Input
@@ -359,7 +353,7 @@ export function PaymentModal({
                       />
                     </div>
                     <div className="space-y-1.5">
-                      <label className="text-[11px] text-slate-500 font-medium">CVC / CVV</label>
+                      <label className="text-xs text-slate-500 font-medium">CVC / CVV</label>
                       <Input
                         required
                         type="password"
@@ -376,15 +370,15 @@ export function PaymentModal({
 
               {/* DUSHANBE CITY (DC PAY QR / WALLET) */}
               {selectedProvider === "dushanbe_city" && (
-                <div className="p-4 rounded-2xl bg-amber-50/50 border border-amber-200/80 space-y-3 text-center">
-                  <div className="h-12 w-12 rounded-xl bg-amber-500/10 text-amber-700 flex items-center justify-center mx-auto">
+                <div className="p-4 rounded-2xl bg-muted/40 border border-border/60 space-y-3 text-center">
+                  <div className="h-12 w-12 rounded-xl bg-muted text-muted-foreground flex items-center justify-center mx-auto">
                     <QrCode className="h-6 w-6" />
                   </div>
                   <div>
-                    <h4 className="text-sm font-extrabold text-amber-950">
+                    <h4 className="text-sm font-bold text-foreground">
                       {isTg ? "Пардохт бо DC Pay QR" : "Оплата через DC Pay QR"}
                     </h4>
-                    <p className="text-xs text-amber-800 mt-0.5">
+                    <p className="text-xs text-muted-foreground mt-0.5">
                       {isTg
                         ? "Замимаи DC Next ё Dushanbe City-ро кушода, QR-кодро скан кунед"
                         : "Отсканируйте QR-код в мобильном приложении DC Next или Dushanbe City"}
@@ -395,15 +389,15 @@ export function PaymentModal({
 
               {/* ALIF PAY & ALIF SALOM */}
               {selectedProvider === "alif_mobi" && (
-                <div className="p-4 rounded-2xl bg-emerald-50/50 border border-emerald-200/80 space-y-4">
+                <div className="p-4 rounded-2xl bg-muted/40 border border-border/60 space-y-4">
                   <div className="flex items-center gap-2">
                     <button
                       type="button"
                       onClick={() => setAlifSubMethod("qr")}
-                      className={`flex-1 h-9 rounded-xl text-xs font-bold transition-all ${
+                      className={`flex-1 h-9 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
                         alifSubMethod === "qr"
-                          ? "bg-emerald-600 text-white shadow-xs"
-                          : "bg-white text-slate-700 border border-slate-200"
+                          ? "bg-primary text-primary-foreground shadow-xs"
+                          : "bg-muted hover:bg-muted/80 text-foreground border border-border/60"
                       }`}
                     >
                       Alif Mobi QR
@@ -411,10 +405,10 @@ export function PaymentModal({
                     <button
                       type="button"
                       onClick={() => setAlifSubMethod("salom")}
-                      className={`flex-1 h-9 rounded-xl text-xs font-bold transition-all ${
+                      className={`flex-1 h-9 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
                         alifSubMethod === "salom"
-                          ? "bg-emerald-600 text-white shadow-xs"
-                          : "bg-white text-slate-700 border border-slate-200"
+                          ? "bg-primary text-primary-foreground shadow-xs"
+                          : "bg-muted hover:bg-muted/80 text-foreground border border-border/60"
                       }`}
                     >
                       {isTg ? "Насияи Салом 0%" : "Рассрочка Салом 0%"}
@@ -422,8 +416,8 @@ export function PaymentModal({
                   </div>
 
                   {alifSubMethod === "salom" && (
-                    <div className="space-y-2 bg-white p-3 rounded-xl border border-emerald-100">
-                      <span className="text-xs font-semibold text-slate-700 block">
+                    <div className="space-y-2 bg-card p-3 rounded-xl border border-border/60">
+                      <span className="text-xs font-semibold text-foreground block">
                         {isTg ? "Муҳлати насияи бефоизро интихоб кунед:" : "Срок рассрочки без процентов:"}
                       </span>
                       <div className="grid grid-cols-3 gap-2">
@@ -432,14 +426,14 @@ export function PaymentModal({
                             key={m}
                             type="button"
                             onClick={() => setAlifSalomMonths(m)}
-                            className={`p-2 rounded-lg border text-center transition-all ${
+                            className={`p-2 rounded-lg border text-center transition-all cursor-pointer ${
                               alifSalomMonths === m
-                                ? "border-emerald-600 bg-emerald-50 text-emerald-950 font-bold"
-                                : "border-slate-200 text-slate-600"
+                                ? "border-primary bg-primary/10 text-foreground font-semibold"
+                                : "border-border/60 text-muted-foreground hover:border-border"
                             }`}
                           >
                             <div className="text-xs">{m} {isTg ? "моҳ" : "мес"}</div>
-                            <div className="text-[10px] text-emerald-600 font-medium">
+                            <div className="text-xs text-primary font-medium">
                               {Math.round(amountTjs / m)} смн/мес
                             </div>
                           </button>
@@ -452,14 +446,14 @@ export function PaymentModal({
 
               {/* ESKHATA ONLINE */}
               {selectedProvider === "eskhata_online" && (
-                <div className="p-4 rounded-2xl bg-blue-50/50 border border-blue-200/80 space-y-2 text-center">
-                  <div className="h-12 w-12 rounded-xl bg-blue-500/10 text-blue-700 flex items-center justify-center mx-auto">
+                <div className="p-4 rounded-2xl bg-muted/40 border border-border/60 space-y-2 text-center">
+                  <div className="h-12 w-12 rounded-xl bg-muted text-muted-foreground flex items-center justify-center mx-auto">
                     <Building2 className="h-6 w-6" />
                   </div>
-                  <h4 className="text-sm font-extrabold text-blue-950">
+                  <h4 className="text-sm font-bold text-foreground">
                     Банк Эсхата Онлайн
                   </h4>
-                  <p className="text-xs text-blue-800">
+                  <p className="text-xs text-muted-foreground">
                     {isTg
                       ? "Пардохти мустақим аз замимаи «Эсхата Онлайн» бидуни фоиз"
                       : "Прямая оплата без комиссии через приложение «Эсхата Онлайн»"}
@@ -513,7 +507,7 @@ export function PaymentModal({
                   <div className="w-40 h-40 bg-white p-2 rounded-xl border border-slate-200 flex items-center justify-center mx-auto shadow-inner">
                     <QrCode className="h-32 w-32 text-slate-900" />
                   </div>
-                  <span className="text-[10px] text-slate-500 font-mono mt-2 block">
+                  <span className="text-xs text-slate-500 font-mono mt-2 block">
                     {activeTx.id}
                   </span>
                 </div>
@@ -562,7 +556,7 @@ export function PaymentModal({
                   className="h-12 rounded-xl text-center text-xl font-mono tracking-widest bg-slate-50 border-slate-300"
                 />
                 {otpError && (
-                  <p className="text-[11px] text-red-600 font-medium">{otpError}</p>
+                  <p className="text-xs text-red-600 font-medium">{otpError}</p>
                 )}
               </div>
 

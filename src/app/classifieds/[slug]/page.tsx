@@ -294,7 +294,7 @@ export default function ClassifiedDetailPage() {
   );
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] pb-24">
+    <div className="min-h-screen bg-background pb-24">
       {/* 1. TOP BREADCRUMBS & ACTIONS */}
       <div className="bg-white border-b border-slate-200/80 sticky top-0 z-20 backdrop-blur-md bg-white/95">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex items-center justify-between gap-4">
@@ -360,14 +360,14 @@ export default function ClassifiedDetailPage() {
         <div className="space-y-2">
           <div className="flex flex-wrap items-center justify-between gap-2">
             <div className="flex flex-wrap items-center gap-2">
-              <Badge className="bg-emerald-600 text-white font-medium text-xs">
+              <Badge variant="default" className="font-medium text-xs">
                 {isTg
                   ? item.dealType === "Аренда"
                     ? "Иҷора"
                     : "Фурӯш"
                   : item.dealType}
               </Badge>
-              <Badge variant="secondary" className="bg-white text-slate-800 border border-slate-200 font-medium text-xs">
+              <Badge variant="secondary" className="font-medium text-xs">
                 {isTg
                   ? item.propertyType === "Квартира"
                     ? "Хонадон"
@@ -379,19 +379,19 @@ export default function ClassifiedDetailPage() {
                   : item.propertyType}
               </Badge>
               {item.isNegotiable && (
-                <Badge variant="outline" className="text-emerald-700 border-emerald-200 bg-emerald-50 text-xs font-medium">
+                <Badge variant="outline" className="text-xs font-medium">
                   {tDual("Торг уместен", "Савдо мешавад")}
                 </Badge>
               )}
             </div>
           </div>
 
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight leading-tight">
+          <h1 className="text-2xl sm:text-3xl font-bold text-foreground tracking-tight leading-tight">
             {item.title}
           </h1>
 
-          <p className="text-xs sm:text-sm text-slate-600 flex items-center gap-1.5 font-medium">
-            <MapPin className="h-4 w-4 text-emerald-600 shrink-0" />
+          <p className="text-xs sm:text-sm text-muted-foreground flex items-center gap-1.5 font-medium">
+            <MapPin className="h-4 w-4 text-muted-foreground shrink-0" />
             <span>
               {item.city}, {item.district}
               {item.landmark ? ` (${item.landmark})` : ""}
@@ -532,9 +532,9 @@ export default function ClassifiedDetailPage() {
                     {item.features.map((f) => (
                       <span
                         key={f}
-                        className="text-xs font-medium px-3 py-1.5 rounded-lg bg-emerald-50 text-emerald-800 border border-emerald-100 flex items-center gap-1.5"
+                        className="text-xs font-medium px-3 py-1.5 rounded-lg bg-muted/60 text-foreground border border-border/60 flex items-center gap-1.5"
                       >
-                        <CheckCircle2 className="h-3.5 w-3.5 text-emerald-600" />
+                        <CheckCircle2 className="h-3.5 w-3.5 text-primary" />
                         {f}
                       </span>
                     ))}
@@ -579,7 +579,7 @@ export default function ClassifiedDetailPage() {
                   </div>
                   <div>
                     <span className="font-bold text-slate-900 block">{tDual("Водоснабжение", "Обтаъминкунӣ")}</span>
-                    <span className="text-[11px] text-slate-500">{tDual("Постоянный водопровод", "Оби доимӣ")}</span>
+                    <span className="text-xs text-slate-500">{tDual("Постоянный водопровод", "Оби доимӣ")}</span>
                   </div>
                 </div>
 
@@ -589,7 +589,7 @@ export default function ClassifiedDetailPage() {
                   </div>
                   <div>
                     <span className="font-bold text-slate-900 block">{tDual("Электричество", "Қувваи барқ")}</span>
-                    <span className="text-[11px] text-slate-500">{tDual("24/7 без перебоев", "24/7 бе қатъшавӣ")}</span>
+                    <span className="text-xs text-slate-500">{tDual("24/7 без перебоев", "24/7 бе қатъшавӣ")}</span>
                   </div>
                 </div>
 
@@ -599,7 +599,7 @@ export default function ClassifiedDetailPage() {
                   </div>
                   <div>
                     <span className="font-bold text-slate-900 block">{tDual("Отопление", "Гармидиҳӣ")}</span>
-                    <span className="text-[11px] text-slate-500">{tDual("Автономное / городское", "Мустақил / шаҳрӣ")}</span>
+                    <span className="text-xs text-slate-500">{tDual("Автономное / городское", "Мустақил / шаҳрӣ")}</span>
                   </div>
                 </div>
 
@@ -609,7 +609,7 @@ export default function ClassifiedDetailPage() {
                   </div>
                   <div>
                     <span className="font-bold text-slate-900 block">{tDual("Двор и территория", "Ҳавлӣ ва ҳудуд")}</span>
-                    <span className="text-[11px] text-slate-500">{tDual("Озеленение и благоустройство", "Кабудизоркунӣ")}</span>
+                    <span className="text-xs text-slate-500">{tDual("Озеленение и благоустройство", "Кабудизоркунӣ")}</span>
                   </div>
                 </div>
               </div>
@@ -670,9 +670,9 @@ export default function ClassifiedDetailPage() {
                     </a>
                     <Link
                       href="/map"
-                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200/60 text-xs font-semibold transition-colors"
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-muted/60 hover:bg-muted text-foreground border border-border/60 text-xs font-medium transition-colors"
                     >
-                      <ExternalLink className="w-3.5 h-3.5" />
+                      <ExternalLink className="w-3.5 h-3.5 text-muted-foreground" />
                       <span>{tDual("На карте Согда", "Дар харитаи Суғд")}</span>
                     </Link>
                   </div>
@@ -723,12 +723,12 @@ export default function ClassifiedDetailPage() {
             </div>
 
             {/* Safety & Legal Verification Banner */}
-            <div className="bg-amber-50/70 border border-amber-200/80 rounded-2xl p-5 sm:p-6 text-xs text-amber-900 space-y-2">
-              <div className="flex items-center gap-2 font-bold text-sm text-amber-800">
-                <ShieldAlert className="h-4 w-4 text-amber-600" />
+            <div className="border-l-2 border-l-amber-500 bg-muted/50 border border-border/60 rounded-2xl p-5 sm:p-6 text-xs text-foreground space-y-2">
+              <div className="flex items-center gap-2 font-bold text-sm text-foreground">
+                <ShieldAlert className="h-4 w-4 text-amber-500" />
                 {tDual("Безопасность сделки в Согде", "Бехатарии хариду фурӯш дар Суғд")}
               </div>
-              <p className="leading-relaxed">
+              <p className="leading-relaxed text-muted-foreground">
                 {tDual(
                   "Перед совершением сделки рекомендуем лично осмотреть объект, сверить оригиналы правоустанавливающих документов (сертификат БТИ, технический паспорт, справку об отсутствии обременений в нотариате). Не отправляйте предоплату на анонимные счета.",
                   "Пеш аз бастани аҳд тавсия медиҳем, ки иншоотро шахсан аз назар гузаронед ва ҳуҷҷатҳои аслии амволро (Шаҳодатномаи БТИ, шиносномаи техникӣ ва маълумотномаи нотариалӣ)-ро санҷед. Ҳаргиз ба суратҳисобҳои ношинос пешпардохт нагузаронед."
@@ -740,12 +740,12 @@ export default function ClassifiedDetailPage() {
           {/* RIGHT 1 COLUMN: STICKY ACTIONS BESIDE MAIN PHOTO & CONTENT */}
           <div className="space-y-4 lg:space-y-5 lg:sticky lg:top-20 self-start">
             {/* 1. Блок «Дата публикации и просмотры» (Размещен над блоком «Стоимость объекта», ширина равна блоку стоимости) */}
-            <div className="bg-white border border-slate-200/80 rounded-2xl px-5 py-4 shadow-xs flex items-center justify-between text-xs text-slate-600">
+            <div className="bg-card border border-border/80 rounded-2xl px-5 py-4 shadow-xs flex items-center justify-between text-xs text-muted-foreground">
               <div className="flex items-center gap-2">
-                <div className="h-7 w-7 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
+                <div className="h-7 w-7 rounded-lg bg-muted text-foreground flex items-center justify-center shrink-0">
                   <Calendar className="h-3.5 w-3.5" />
                 </div>
-                <span className="font-semibold text-slate-800">
+                <span className="font-semibold text-foreground">
                   {formatPublicationDate(item.createdAt, language, item.id || item.slug)}
                 </span>
               </div>
@@ -786,12 +786,12 @@ export default function ClassifiedDetailPage() {
                   {isCopied ? (
                     <>
                       <Check className="h-4 w-4 text-emerald-600" />
-                      <span className="text-[11px] text-emerald-700">{tDual("Скопировано", "Нусха шуд")}</span>
+                      <span className="text-xs text-emerald-700">{tDual("Скопировано", "Нусха шуд")}</span>
                     </>
                   ) : (
                     <>
                       <Share2 className="h-4 w-4 text-slate-500" />
-                      <span className="text-[11px]">{tDual("Поделиться", "Мубодила")}</span>
+                      <span className="text-xs">{tDual("Поделиться", "Мубодила")}</span>
                     </>
                   )}
                 </Button>
@@ -801,18 +801,18 @@ export default function ClassifiedDetailPage() {
                   variant="outline"
                   size="sm"
                   onClick={toggleFavorite}
-                  className={`h-10 px-2 text-xs font-semibold gap-1.5 rounded-xl border-slate-200 cursor-pointer flex flex-col justify-center items-center py-1 transition-colors ${
+                  className={`h-10 px-2 text-xs font-medium gap-1.5 rounded-xl cursor-pointer flex flex-col justify-center items-center py-1 transition-colors ${
                     isFavorite
-                      ? "bg-rose-50 text-rose-600 border-rose-200 hover:bg-rose-100"
-                      : "text-slate-700 hover:bg-slate-50"
+                      ? "bg-accent/20 text-foreground border-foreground/30"
+                      : "text-muted-foreground hover:bg-muted border-border"
                   }`}
                 >
                   <Heart
                     className={`h-4 w-4 ${
-                      isFavorite ? "fill-rose-600 text-rose-600" : "text-slate-500"
+                      isFavorite ? "fill-rose-600 text-rose-600" : "text-muted-foreground"
                     }`}
                   />
-                  <span className="text-[11px]">
+                  <span className="text-xs">
                     {isFavorite ? tDual("В избранном", "Дар писандида") : tDual("В избранное", "Ба писандида")}
                   </span>
                 </Button>
@@ -829,14 +829,14 @@ export default function ClassifiedDetailPage() {
                           toggleCompare(classifiedToCompareProperty(item));
                         }
                       }}
-                      className={`h-10 px-2 text-xs font-semibold gap-1.5 rounded-xl border-slate-200 cursor-pointer flex flex-col justify-center items-center py-1 transition-colors ${
+                      className={`h-10 px-2 text-xs font-medium gap-1.5 rounded-xl cursor-pointer flex flex-col justify-center items-center py-1 transition-colors ${
                         isCompared
-                          ? "bg-blue-50 text-blue-600 border-blue-200 hover:bg-blue-100"
-                          : "text-slate-700 hover:bg-slate-50"
+                          ? "bg-accent/20 text-foreground border-foreground/30"
+                          : "text-muted-foreground hover:bg-muted border-border"
                       }`}
                     >
-                      <ArrowLeftRight className={`h-4 w-4 ${isCompared ? "text-blue-600" : "text-slate-500"}`} />
-                      <span className="text-[11px]">
+                      <ArrowLeftRight className={`h-4 w-4 ${isCompared ? "text-primary" : "text-muted-foreground"}`} />
+                      <span className="text-xs">
                         {isCompared ? tDual("В сравнении", "Дар муқоиса") : tDual("Сравнить", "Муқоиса")}
                       </span>
                     </Button>
@@ -895,7 +895,7 @@ export default function ClassifiedDetailPage() {
                 {tDual("Написать в WhatsApp", "Навиштан дар WhatsApp")}
               </a>
 
-              <p className="text-[11px] text-slate-400 text-center">
+              <p className="text-xs text-slate-400 text-center">
                 {tDual(
                   "Скажите продавцу, что нашли объявление на Maskani.tj",
                   "Ба фурӯшанда гӯед, ки эълонро дар Maskani.tj пайдо кардед"
@@ -910,17 +910,17 @@ export default function ClassifiedDetailPage() {
               </h3>
 
               {inquirySent ? (
-                <div className="bg-emerald-50 text-emerald-800 p-4 rounded-xl border border-emerald-200 text-center space-y-1">
+                <div className="border-l-2 border-l-emerald-600 bg-muted/60 text-foreground p-4 rounded-xl border border-border/60 text-center space-y-1">
                   <CheckCircle2 className="h-6 w-6 text-emerald-600 mx-auto" />
                   <p className="font-bold text-xs">{tDual("Заявка отправлена!", "Дархост фиристода шуд!")}</p>
-                  <p className="text-[11px] text-emerald-700">
+                  <p className="text-xs text-muted-foreground">
                     {tDual("Продавец свяжется с вами в ближайшее время.", "Фурӯшанда ба наздикӣ бо шумо тамос мегирад.")}
                   </p>
                 </div>
               ) : (
                 <form onSubmit={handleInquirySubmit} className="space-y-3">
                   <div>
-                    <label className="text-[11px] font-semibold text-slate-600 block mb-1">
+                    <label className="text-xs font-semibold text-slate-600 block mb-1">
                       {tDual("Ваше имя", "Номи шумо")}
                     </label>
                     <Input
@@ -933,7 +933,7 @@ export default function ClassifiedDetailPage() {
                   </div>
 
                   <div>
-                    <label className="text-[11px] font-semibold text-slate-600 block mb-1">
+                    <label className="text-xs font-semibold text-slate-600 block mb-1">
                       {tDual("Номер телефона", "Рақами телефон")}
                     </label>
                     <Input
@@ -946,7 +946,7 @@ export default function ClassifiedDetailPage() {
                   </div>
 
                   <div>
-                    <label className="text-[11px] font-semibold text-slate-600 block mb-1">
+                    <label className="text-xs font-semibold text-slate-600 block mb-1">
                       {tDual("Сообщение", "Паём")}
                     </label>
                     <Textarea
@@ -1014,10 +1014,10 @@ export default function ClassifiedDetailPage() {
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     />
                     <div className="absolute top-2.5 left-2.5 flex gap-1.5">
-                      <Badge className="bg-emerald-600 text-white text-[10px] font-medium">
+                      <Badge className="bg-emerald-600 text-white text-xs font-medium">
                         {sim.dealType}
                       </Badge>
-                      <Badge variant="secondary" className="bg-white/90 text-slate-800 text-[10px] font-medium">
+                      <Badge variant="secondary" className="bg-white/90 text-slate-800 text-xs font-medium">
                         {sim.propertyType}
                       </Badge>
                     </div>
@@ -1032,7 +1032,7 @@ export default function ClassifiedDetailPage() {
                         {sim.title}
                       </h4>
                     </Link>
-                    <p className="text-[11px] text-slate-500 flex items-center gap-1">
+                    <p className="text-xs text-slate-500 flex items-center gap-1">
                       <MapPin className="h-3 w-3 text-emerald-600 shrink-0" />
                       <span className="truncate">{sim.city}, {sim.district}</span>
                     </p>

@@ -144,7 +144,7 @@ export default function DevelopersDirectoryPage() {
                     <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/30 to-transparent" />
                     <div className="absolute top-3 right-3">
                       {dev.isVerified && (
-                        <Badge variant="emerald" className="rounded-xl px-2.5 py-1 text-[11px] gap-1 font-bold">
+                        <Badge variant="emerald" className="rounded-xl px-2.5 py-1 text-xs gap-1 font-bold">
                           <ShieldCheck className="h-3 w-3" />
                           {tDual("Проверен", "Тасдиқшуда")}
                         </Badge>
@@ -186,7 +186,7 @@ export default function DevelopersDirectoryPage() {
                     {/* Stats Grid */}
                     <div className="grid grid-cols-3 gap-2 p-2.5 bg-muted/40 rounded-xl text-center">
                       <div>
-                        <div className="text-[10px] text-muted-foreground">
+                        <div className="text-xs text-muted-foreground">
                           {tDual("Опыт", "Таҷриба")}
                         </div>
                         <div className="text-xs font-extrabold text-foreground mt-0.5">
@@ -194,7 +194,7 @@ export default function DevelopersDirectoryPage() {
                         </div>
                       </div>
                       <div>
-                        <div className="text-[10px] text-muted-foreground">
+                        <div className="text-xs text-muted-foreground">
                           {tDual("Сдано ЖК", "МИ супорида")}
                         </div>
                         <div className="text-xs font-extrabold text-foreground mt-0.5">
@@ -202,7 +202,7 @@ export default function DevelopersDirectoryPage() {
                         </div>
                       </div>
                       <div>
-                        <div className="text-[10px] text-muted-foreground">
+                        <div className="text-xs text-muted-foreground">
                           {tDual("В стройке", "Дар сохтмон")}
                         </div>
                         <div className="text-xs font-extrabold text-emerald-600 mt-0.5">
@@ -214,7 +214,7 @@ export default function DevelopersDirectoryPage() {
                     {/* Active Complexes Preview Chips */}
                     {devProjects.length > 0 && (
                       <div className="space-y-1.5 pt-1">
-                        <div className="text-[11px] font-semibold text-muted-foreground">
+                        <div className="text-xs font-semibold text-muted-foreground">
                           {tDual("Жилые комплексы:", "Маҷмааҳои истиқоматӣ:")}
                         </div>
                         <div className="flex flex-wrap gap-1.5">
@@ -222,13 +222,13 @@ export default function DevelopersDirectoryPage() {
                             <Link
                               key={p.id}
                               href={`/projects/${p.slug}`}
-                              className="text-[11px] px-2 py-0.5 rounded-md bg-muted text-foreground hover:bg-emerald-50 hover:text-emerald-700 dark:hover:bg-emerald-950/60 dark:hover:text-emerald-300 transition-colors truncate max-w-[170px]"
+                              className="text-xs px-2 py-0.5 rounded-md bg-muted text-foreground hover:bg-accent hover:text-accent-foreground transition-colors truncate max-w-[170px]"
                             >
                               {isTg && p.nameTg ? p.nameTg : p.name}
                             </Link>
                           ))}
                           {devProjects.length > 3 && (
-                            <span className="text-[11px] px-1.5 py-0.5 text-muted-foreground">
+                            <span className="text-xs px-1.5 py-0.5 text-muted-foreground">
                               +{devProjects.length - 3}
                             </span>
                           )}
@@ -280,7 +280,7 @@ export default function DevelopersDirectoryPage() {
         </div>
 
         {/* TRUST BANNER */}
-        <div className="bg-gradient-to-br from-emerald-950 to-slate-900 text-white rounded-3xl p-8 sm:p-10 shadow-lg border border-emerald-900/60 mt-12">
+        <div className="bg-slate-900 text-white rounded-3xl p-8 sm:p-10 shadow-xs border border-slate-800 mt-12">
           <div className="max-w-3xl space-y-4">
             <Badge className="bg-emerald-500 text-slate-950 font-bold text-xs px-2.5 py-1">
               {tDual("ПРЯМЫЕ ЦЕНЫ ОТ ДЕВЕЛОПЕРОВ", "НАРХҲОИ МУСТАҚИМ АЗ СОХТМОНЧӢ")}

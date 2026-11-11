@@ -80,22 +80,22 @@ export function StorageChessboardModal({
     switch (status) {
       case "available":
         return (
-          <Badge variant="outline" className="bg-emerald-50 text-emerald-700 border-emerald-300 dark:bg-emerald-950/40 dark:text-emerald-300 text-[11px] font-semibold">
-            <CheckCircle2 className="h-3 w-3 mr-1" />
+          <Badge variant="secondary" className="inline-flex items-center gap-1.5 shadow-xs text-xs font-medium">
+            <span className="w-1.5 h-1.5 rounded-full bg-primary" />
             {tDual("Свободно", "Дастрас")}
           </Badge>
         );
       case "reserved":
         return (
-          <Badge variant="outline" className="bg-amber-50 text-amber-700 border-amber-300 dark:bg-amber-950/40 dark:text-amber-300 text-[11px] font-semibold">
-            <Clock className="h-3 w-3 mr-1" />
+          <Badge variant="outline" className="inline-flex items-center gap-1.5 shadow-xs text-muted-foreground text-xs font-medium">
+            <span className="w-1.5 h-1.5 rounded-full bg-amber-500" />
             {tDual("Бронь", "Бандшуда")}
           </Badge>
         );
       case "sold":
         return (
-          <Badge variant="outline" className="bg-slate-100 text-slate-500 border-slate-300 dark:bg-slate-800 dark:text-slate-400 text-[11px] font-semibold">
-            <Ban className="h-3 w-3 mr-1" />
+          <Badge variant="outline" className="inline-flex items-center gap-1.5 shadow-xs text-muted-foreground opacity-60 text-xs font-medium">
+            <span className="w-1.5 h-1.5 rounded-full bg-muted-foreground" />
             {tDual("Продано", "Фурӯхташуда")}
           </Badge>
         );
@@ -165,7 +165,7 @@ export function StorageChessboardModal({
             <button
               type="button"
               onClick={() => setSelectedStatus("all")}
-              className={`px-2.5 py-1 rounded-md text-[11px] font-semibold cursor-pointer ${
+              className={`px-2.5 py-1 rounded-md text-xs font-semibold cursor-pointer ${
                 selectedStatus === "all" ? "bg-foreground text-background" : "bg-muted text-muted-foreground hover:text-foreground"
               }`}
             >
@@ -174,8 +174,8 @@ export function StorageChessboardModal({
             <button
               type="button"
               onClick={() => setSelectedStatus("available")}
-              className={`px-2.5 py-1 rounded-md text-[11px] font-semibold cursor-pointer ${
-                selectedStatus === "available" ? "bg-emerald-600 text-white" : "bg-emerald-50 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-300"
+              className={`px-2.5 py-1 rounded-md text-xs font-medium cursor-pointer transition-colors ${
+                selectedStatus === "available" ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground hover:bg-muted/80"
               }`}
             >
               {tDual("Свободно", "Дастрас")} ({availableCount})
@@ -183,8 +183,8 @@ export function StorageChessboardModal({
             <button
               type="button"
               onClick={() => setSelectedStatus("reserved")}
-              className={`px-2.5 py-1 rounded-md text-[11px] font-semibold cursor-pointer ${
-                selectedStatus === "reserved" ? "bg-amber-600 text-white" : "bg-amber-50 text-amber-700 dark:bg-amber-950/40 dark:text-amber-300"
+              className={`px-2.5 py-1 rounded-md text-xs font-medium cursor-pointer transition-colors ${
+                selectedStatus === "reserved" ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground hover:bg-muted/80"
               }`}
             >
               {tDual("Бронь", "Банд")} ({reservedCount})
@@ -192,8 +192,8 @@ export function StorageChessboardModal({
             <button
               type="button"
               onClick={() => setSelectedStatus("sold")}
-              className={`px-2.5 py-1 rounded-md text-[11px] font-semibold cursor-pointer ${
-                selectedStatus === "sold" ? "bg-slate-600 text-white" : "bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400"
+              className={`px-2.5 py-1 rounded-md text-xs font-medium cursor-pointer transition-colors ${
+                selectedStatus === "sold" ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground hover:bg-muted/80"
               }`}
             >
               {tDual("Продано", "Фурӯхта")} ({soldCount})
@@ -226,11 +226,11 @@ export function StorageChessboardModal({
                       className={`relative p-3.5 rounded-2xl border transition-all select-none flex flex-col justify-between gap-2.5 text-xs ${
                         isAvailable
                           ? isSelected
-                            ? "border-emerald-600 ring-2 ring-emerald-500/30 bg-emerald-50/50 dark:bg-emerald-950/40 shadow-md cursor-pointer scale-102"
-                            : "border-slate-200 dark:border-slate-800 bg-card hover:border-emerald-400 hover:shadow-md cursor-pointer hover:scale-101"
+                            ? "border-primary ring-2 ring-primary/20 bg-accent/20 shadow-xs cursor-pointer"
+                            : "border-border bg-card hover:border-foreground/40 hover:shadow-xs cursor-pointer"
                           : unit.status === "reserved"
-                          ? "border-amber-200 dark:border-amber-900/40 bg-amber-50/30 dark:bg-amber-950/20 opacity-80 cursor-not-allowed"
-                          : "border-slate-200 dark:border-slate-800/60 bg-muted/40 opacity-50 cursor-not-allowed"
+                          ? "border-border/60 bg-muted/40 text-muted-foreground opacity-80 cursor-not-allowed"
+                          : "border-transparent bg-muted/70 text-muted-foreground/60 opacity-50 cursor-not-allowed"
                       }`}
                     >
                       {/* Top Header of Card */}
@@ -239,13 +239,13 @@ export function StorageChessboardModal({
                           <Archive className="h-3.5 w-3.5 text-emerald-600" />
                           {unit.number}
                         </span>
-                        <Badge variant="secondary" className="text-[10px] py-0 px-1.5 font-medium">
+                        <Badge variant="secondary" className="text-xs py-0 px-1.5 font-medium">
                           {unit.area} м²
                         </Badge>
                       </div>
 
                       {/* Area & Level */}
-                      <div className="space-y-0.5 text-[11px] text-muted-foreground">
+                      <div className="space-y-0.5 text-xs text-muted-foreground">
                         <div className="flex items-center justify-between">
                           <span>{tDual("Площадь:", "Масоҳат:")}</span>
                           <strong className="text-foreground">{unit.area} м²</strong>
@@ -300,11 +300,11 @@ export function StorageChessboardModal({
                     <span className="text-muted-foreground">{tDual("Уровень расположения:", "Ошёна:")}</span>
                     <strong className="text-foreground">{activeUnit.level}</strong>
                   </div>
-                  <div className="py-1 text-[11px] text-muted-foreground space-y-1">
+                  <div className="py-1 text-xs text-muted-foreground space-y-1">
                     <span className="font-semibold text-foreground block">{tDual("Комплектация:", "Таҷҳизот:")}</span>
                     <div className="flex flex-wrap gap-1">
                       {(language === "tg" && activeUnit.featuresTg ? activeUnit.featuresTg : activeUnit.features || []).map((feat, i) => (
-                        <span key={i} className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-muted text-[10px] text-foreground">
+                        <span key={i} className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-muted text-xs text-foreground">
                           <CheckCircle2 className="h-2.5 w-2.5 text-emerald-600" />
                           {feat}
                         </span>
@@ -367,7 +367,7 @@ export function StorageChessboardModal({
                       href={buildWhatsappBookingUrl(activeUnit)}
                       target="_blank"
                       rel="noreferrer"
-                      className="w-full inline-flex items-center justify-center gap-2 h-10 px-4 rounded-xl border border-emerald-500/30 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-50 font-semibold text-xs transition-colors cursor-pointer"
+                      className="w-full inline-flex items-center justify-center gap-2 h-10 px-4 rounded-xl border border-border hover:bg-muted font-medium text-xs transition-colors cursor-pointer"
                     >
                       <MessageCircle className="h-4 w-4" />
                       <span>{tDual("Забронировать в WhatsApp", "Банд кардан дар WhatsApp")}</span>

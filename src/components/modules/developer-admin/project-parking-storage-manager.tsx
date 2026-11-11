@@ -380,8 +380,8 @@ export function ProjectParkingStorageManager({
 
         <div className="flex items-center gap-2">
           {savedSuccess && (
-            <div className="flex items-center gap-1.5 text-xs font-semibold text-emerald-600 bg-emerald-50 dark:bg-emerald-950/40 px-3 py-1.5 rounded-lg border border-emerald-300">
-              <CheckCircle2 className="h-4 w-4" />
+            <div className="flex items-center gap-1.5 text-xs font-medium text-foreground bg-muted/60 px-3 py-1.5 rounded-lg border border-border/60">
+              <CheckCircle2 className="h-4 w-4 text-emerald-600" />
               <span>{tDual("Настройки сохранены!", "Танзимот сабт шуд!")}</span>
             </div>
           )}
@@ -410,7 +410,7 @@ export function ProjectParkingStorageManager({
         >
           <Car className="h-4 w-4" />
           <span>{tDual("Блок «Паркинг»", "Бахши «Таваққуфгоҳ»")}</span>
-          <Badge variant="outline" className={`text-[10px] py-0 px-1.5 ${parkingEnabled ? "bg-emerald-500/20 text-white border-transparent" : "opacity-60"}`}>
+          <Badge variant="outline" className={`text-xs py-0 px-1.5 ${parkingEnabled ? "bg-emerald-500/20 text-white border-transparent" : "opacity-60"}`}>
             {parkingEnabled ? tDual("Включён", "Фаъол") : tDual("Выкл", "Хомӯш")}
           </Badge>
         </button>
@@ -426,7 +426,7 @@ export function ProjectParkingStorageManager({
         >
           <Archive className="h-4 w-4" />
           <span>{tDual("Блок «Кладовые»", "Бахши «Анборхонаҳо»")}</span>
-          <Badge variant="outline" className={`text-[10px] py-0 px-1.5 ${storageEnabled ? "bg-emerald-500/20 text-white border-transparent" : "opacity-60"}`}>
+          <Badge variant="outline" className={`text-xs py-0 px-1.5 ${storageEnabled ? "bg-emerald-500/20 text-white border-transparent" : "opacity-60"}`}>
             {storageEnabled ? tDual("Включён", "Фаъол") : tDual("Выкл", "Хомӯш")}
           </Badge>
         </button>
@@ -496,7 +496,7 @@ export function ProjectParkingStorageManager({
               <div className="space-y-1.5">
                 <div className="flex justify-between items-center text-xs">
                   <Label>{tDual("Описание паркинга (RU)", "Шарҳи таваққуфгоҳ (RU)")}</Label>
-                  <span className={`text-[11px] font-mono ${isParkingDescRuValid ? "text-muted-foreground" : "text-rose-600 font-bold"}`}>
+                  <span className={`text-xs font-mono ${isParkingDescRuValid ? "text-muted-foreground" : "text-rose-600 font-bold"}`}>
                     {parkingDescRu.length} / 400 {tDual("символов", "аломат")}
                   </span>
                 </div>
@@ -511,7 +511,7 @@ export function ProjectParkingStorageManager({
               <div className="space-y-1.5">
                 <div className="flex justify-between items-center text-xs">
                   <Label>{tDual("Описание паркинга (TG)", "Шарҳи таваққуфгоҳ (TG)")}</Label>
-                  <span className={`text-[11px] font-mono ${isParkingDescTgValid ? "text-muted-foreground" : "text-rose-600 font-bold"}`}>
+                  <span className={`text-xs font-mono ${isParkingDescTgValid ? "text-muted-foreground" : "text-rose-600 font-bold"}`}>
                     {parkingDescTg.length} / 400 {tDual("символов", "аломат")}
                   </span>
                 </div>
@@ -549,7 +549,7 @@ export function ProjectParkingStorageManager({
                   <div key={idx} className="relative rounded-2xl border p-2 bg-muted/20 space-y-2">
                     <div className="relative h-32 rounded-xl overflow-hidden bg-slate-100">
                       <img src={img} alt={`Паркинг ${idx + 1}`} className="w-full h-full object-cover" />
-                      <Badge className="absolute top-2 left-2 bg-black/60 text-white text-[10px]">
+                      <Badge className="absolute top-2 left-2 bg-black/60 text-white text-xs">
                         {idx === 0 ? tDual("Главное фото", "Акси асосӣ") : `${tDual("Фото", "Акси")} ${idx + 1}`}
                       </Badge>
                     </div>
@@ -642,8 +642,8 @@ export function ProjectParkingStorageManager({
             </CardHeader>
             <CardContent className="space-y-4">
               {!spotUniqueness.isValid && (
-                <div className="p-3 rounded-xl bg-rose-50 text-rose-800 dark:bg-rose-950/40 dark:text-rose-300 border border-rose-200 text-xs flex items-center gap-2">
-                  <AlertCircle className="h-4 w-4 shrink-0 text-rose-600" />
+                <div className="p-3 rounded-xl border-l-2 border-l-destructive bg-destructive/10 border border-destructive/20 text-xs text-destructive flex items-center gap-2">
+                  <AlertCircle className="h-4 w-4 shrink-0" />
                   <span>
                     {tDual("Обнаружены дубликаты номеров машино-мест:", "Дубликати рақамҳо ёфт шуд:")}{" "}
                     <strong>{spotUniqueness.duplicates.join(", ")}</strong>
@@ -656,7 +656,7 @@ export function ProjectParkingStorageManager({
                 <span className="text-xs font-bold block">{tDual("Добавить новое машино-место", "Иловаи ҷойи нави мошин")}</span>
                 <div className="grid grid-cols-2 sm:grid-cols-5 gap-2.5 text-xs">
                   <div className="space-y-1">
-                    <Label className="text-[11px]">{tDual("Номер", "Рақам")}</Label>
+                    <Label className="text-xs">{tDual("Номер", "Рақам")}</Label>
                     <Input
                       placeholder="№ 39"
                       value={newSpotNumber}
@@ -664,14 +664,14 @@ export function ProjectParkingStorageManager({
                     />
                   </div>
                   <div className="space-y-1">
-                    <Label className="text-[11px]">{tDual("Уровень", "Ошёна")}</Label>
+                    <Label className="text-xs">{tDual("Уровень", "Ошёна")}</Label>
                     <Input
                       value={newSpotLevel}
                       onChange={(e) => setNewSpotLevel(e.target.value)}
                     />
                   </div>
                   <div className="space-y-1">
-                    <Label className="text-[11px]">{tDual("Тип", "Намуд")}</Label>
+                    <Label className="text-xs">{tDual("Тип", "Намуд")}</Label>
                     <select
                       value={newSpotType}
                       onChange={(e) => setNewSpotType(e.target.value as ParkingType)}
@@ -684,7 +684,7 @@ export function ProjectParkingStorageManager({
                     </select>
                   </div>
                   <div className="space-y-1">
-                    <Label className="text-[11px]">{tDual("Площадь м²", "Масоҳат м²")}</Label>
+                    <Label className="text-xs">{tDual("Площадь м²", "Масоҳат м²")}</Label>
                     <Input
                       type="number"
                       step="0.5"
@@ -693,7 +693,7 @@ export function ProjectParkingStorageManager({
                     />
                   </div>
                   <div className="space-y-1">
-                    <Label className="text-[11px]">{tDual("Цена USD", "Нарх USD")}</Label>
+                    <Label className="text-xs">{tDual("Цена USD", "Нарх USD")}</Label>
                     <Input
                       type="number"
                       value={newSpotPriceUsd}
@@ -732,7 +732,7 @@ export function ProjectParkingStorageManager({
                       <button
                         type="button"
                         onClick={() => handleToggleSpotStatus(spot.id)}
-                        className={`px-2.5 py-1 rounded-md text-[11px] font-semibold transition-all cursor-pointer ${
+                        className={`px-2.5 py-1 rounded-md text-xs font-semibold transition-all cursor-pointer ${
                           spot.status === "available"
                             ? "bg-emerald-100 text-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-300"
                             : spot.status === "reserved"
@@ -829,7 +829,7 @@ export function ProjectParkingStorageManager({
               <div className="space-y-1.5">
                 <div className="flex justify-between items-center text-xs">
                   <Label>{tDual("Описание кладовых (RU)", "Шарҳи анборхонаҳо (RU)")}</Label>
-                  <span className={`text-[11px] font-mono ${isStorageDescRuValid ? "text-muted-foreground" : "text-rose-600 font-bold"}`}>
+                  <span className={`text-xs font-mono ${isStorageDescRuValid ? "text-muted-foreground" : "text-rose-600 font-bold"}`}>
                     {storageDescRu.length} / 400 {tDual("символов", "аломат")}
                   </span>
                 </div>
@@ -844,7 +844,7 @@ export function ProjectParkingStorageManager({
               <div className="space-y-1.5">
                 <div className="flex justify-between items-center text-xs">
                   <Label>{tDual("Описание кладовых (TG)", "Шарҳи анборхонаҳо (TG)")}</Label>
-                  <span className={`text-[11px] font-mono ${isStorageDescTgValid ? "text-muted-foreground" : "text-rose-600 font-bold"}`}>
+                  <span className={`text-xs font-mono ${isStorageDescTgValid ? "text-muted-foreground" : "text-rose-600 font-bold"}`}>
                     {storageDescTg.length} / 400 {tDual("символов", "аломат")}
                   </span>
                 </div>
@@ -934,8 +934,8 @@ export function ProjectParkingStorageManager({
             </CardHeader>
             <CardContent className="space-y-4">
               {!unitUniqueness.isValid && (
-                <div className="p-3 rounded-xl bg-rose-50 text-rose-800 dark:bg-rose-950/40 dark:text-rose-300 border border-rose-200 text-xs flex items-center gap-2">
-                  <AlertCircle className="h-4 w-4 shrink-0 text-rose-600" />
+                <div className="p-3 rounded-xl border-l-2 border-l-destructive bg-destructive/10 border border-destructive/20 text-xs text-destructive flex items-center gap-2">
+                  <AlertCircle className="h-4 w-4 shrink-0" />
                   <span>
                     {tDual("Обнаружены дубликаты номеров кладовых:", "Дубликати рақамҳо ёфт шуд:")}{" "}
                     <strong>{unitUniqueness.duplicates.join(", ")}</strong>
@@ -948,7 +948,7 @@ export function ProjectParkingStorageManager({
                 <span className="text-xs font-bold block">{tDual("Добавить новую кладовую", "Иловаи анборхонаи нав")}</span>
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 text-xs">
                   <div className="space-y-1">
-                    <Label className="text-[11px]">{tDual("Номер", "Рақам")}</Label>
+                    <Label className="text-xs">{tDual("Номер", "Рақам")}</Label>
                     <Input
                       placeholder="К-17"
                       value={newUnitNumber}
@@ -956,14 +956,14 @@ export function ProjectParkingStorageManager({
                     />
                   </div>
                   <div className="space-y-1">
-                    <Label className="text-[11px]">{tDual("Уровень", "Ошёна")}</Label>
+                    <Label className="text-xs">{tDual("Уровень", "Ошёна")}</Label>
                     <Input
                       value={newUnitLevel}
                       onChange={(e) => setNewUnitLevel(e.target.value)}
                     />
                   </div>
                   <div className="space-y-1">
-                    <Label className="text-[11px]">{tDual("Площадь м²", "Масоҳат м²")}</Label>
+                    <Label className="text-xs">{tDual("Площадь м²", "Масоҳат м²")}</Label>
                     <Input
                       type="number"
                       step="0.1"
@@ -972,7 +972,7 @@ export function ProjectParkingStorageManager({
                     />
                   </div>
                   <div className="space-y-1">
-                    <Label className="text-[11px]">{tDual("Цена USD", "Нарх USD")}</Label>
+                    <Label className="text-xs">{tDual("Цена USD", "Нарх USD")}</Label>
                     <Input
                       type="number"
                       value={newUnitPriceUsd}
@@ -1011,7 +1011,7 @@ export function ProjectParkingStorageManager({
                       <button
                         type="button"
                         onClick={() => handleToggleUnitStatus(unit.id)}
-                        className={`px-2.5 py-1 rounded-md text-[11px] font-semibold transition-all cursor-pointer ${
+                        className={`px-2.5 py-1 rounded-md text-xs font-semibold transition-all cursor-pointer ${
                           unit.status === "available"
                             ? "bg-emerald-100 text-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-300"
                             : unit.status === "reserved"

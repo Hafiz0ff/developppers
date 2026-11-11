@@ -457,7 +457,7 @@ export default async function DynamicSeoPage({ params, searchParams }: DynamicSe
     );
 
     return (
-      <div className="min-h-screen bg-[#F8FAFC] pb-24">
+      <div className="min-h-screen bg-background pb-24">
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(seo.breadcrumbJsonLd) }}
@@ -627,7 +627,7 @@ export default async function DynamicSeoPage({ params, searchParams }: DynamicSe
       ];
 
       return (
-        <div className="min-h-screen bg-[#F8FAFC] pb-24">
+        <div className="min-h-screen bg-background pb-24">
           <div className="bg-white border-b border-slate-200/80 sticky top-0 z-20 backdrop-blur-md bg-white/95">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex items-center justify-between">
               <div className="flex items-center gap-2 text-xs text-slate-500 truncate">
@@ -644,7 +644,7 @@ export default async function DynamicSeoPage({ params, searchParams }: DynamicSe
                   </React.Fragment>
                 ))}
               </div>
-              <Badge variant="outline" className="border-emerald-200 text-emerald-800 bg-emerald-50 text-xs">
+              <Badge variant="secondary" className="text-xs font-medium">
                 {cityName}
               </Badge>
             </div>
@@ -717,10 +717,10 @@ export default async function DynamicSeoPage({ params, searchParams }: DynamicSe
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     />
                     <div className="absolute top-2.5 left-2.5 flex items-center gap-1.5">
-                      <Badge className="bg-slate-900/80 backdrop-blur-md text-white text-[11px] font-semibold border-none">
+                      <Badge className="bg-slate-900/80 backdrop-blur-md text-white text-xs font-semibold border-none">
                         {isTg ? (item.dealType === "Аренда" ? "Иҷора" : "Фурӯш") : item.dealType}
                       </Badge>
-                      <Badge className="bg-emerald-600/90 backdrop-blur-md text-white text-[11px] font-semibold border-none">
+                      <Badge className="bg-emerald-600/90 backdrop-blur-md text-white text-xs font-semibold border-none">
                         {isTg ? "Тиҷоратӣ" : "Коммерция"}
                       </Badge>
                     </div>
@@ -769,7 +769,7 @@ export default async function DynamicSeoPage({ params, searchParams }: DynamicSe
       );
 
       return (
-        <div className="min-h-screen bg-[#F8FAFC] pb-24">
+        <div className="min-h-screen bg-background pb-24">
           <div className="bg-white border-b border-slate-200/80 sticky top-0 z-20 backdrop-blur-md bg-white/95">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex items-center justify-between">
               <div className="flex items-center gap-2 text-xs text-slate-500 truncate">
@@ -783,7 +783,7 @@ export default async function DynamicSeoPage({ params, searchParams }: DynamicSe
                 <span>/</span>
                 <span className="text-slate-800 font-semibold">{isTg ? "Риелторон" : "Риелторы"}</span>
               </div>
-              <Badge variant="outline" className="border-emerald-200 text-emerald-800 bg-emerald-50 text-xs">
+              <Badge variant="secondary" className="text-xs font-medium">
                 {cityName}
               </Badge>
             </div>
@@ -815,12 +815,12 @@ export default async function DynamicSeoPage({ params, searchParams }: DynamicSe
                         <div className="flex items-center gap-1">
                           <h3 className="font-bold text-slate-900 text-sm">{isTg ? rlt.nameTg : rlt.name}</h3>
                           {rlt.isVerified && (
-                            <Badge className="bg-emerald-50 text-emerald-700 border border-emerald-200 text-[10px] px-1 py-0">
+                            <Badge variant="secondary" className="text-xs px-1 py-0">
                               ✓
                             </Badge>
                           )}
                         </div>
-                        <p className="text-[11px] text-slate-500">{isTg && rlt.agencyNameTg ? rlt.agencyNameTg : rlt.agencyName}</p>
+                        <p className="text-xs text-slate-500">{isTg && rlt.agencyNameTg ? rlt.agencyNameTg : rlt.agencyName}</p>
                         <p className="text-xs font-semibold text-amber-500 flex items-center gap-1 mt-0.5">
                           ★ {rlt.rating} <span className="text-slate-400 font-normal">({rlt.reviewsCount})</span>
                         </p>
@@ -829,7 +829,7 @@ export default async function DynamicSeoPage({ params, searchParams }: DynamicSe
 
                     <div className="text-xs text-slate-600 bg-slate-50 rounded-xl p-2.5 space-y-1">
                       <p className="font-medium text-slate-800">{isTg ? rlt.specializationTg : rlt.specialization}</p>
-                      <p className="text-[11px] text-slate-500">
+                      <p className="text-xs text-slate-500">
                         {isTg ? `${rlt.dealsCount} аҳди басташуда • ${rlt.experienceYears} соли таҷриба` : `${rlt.dealsCount} успешных сделок • ${rlt.experienceYears} лет стажа`}
                       </p>
                     </div>
@@ -850,7 +850,7 @@ export default async function DynamicSeoPage({ params, searchParams }: DynamicSe
                       href={`https://wa.me/${rlt.whatsapp.replace(/\D/g, "")}`}
                       target="_blank"
                       rel="noreferrer"
-                      className="h-8 w-8 rounded-xl bg-emerald-50 text-emerald-600 hover:bg-emerald-600 hover:text-white flex items-center justify-center transition-colors border border-emerald-200"
+                      className="h-8 w-8 rounded-xl bg-muted text-foreground hover:bg-primary hover:text-primary-foreground flex items-center justify-center transition-colors border border-border/80 shadow-xs cursor-pointer"
                     >
                       <MessageCircle className="h-4 w-4" />
                     </a>
@@ -869,7 +869,7 @@ export default async function DynamicSeoPage({ params, searchParams }: DynamicSe
       );
 
       return (
-        <div className="min-h-screen bg-[#F8FAFC] pb-24">
+        <div className="min-h-screen bg-background pb-24">
           <div className="bg-white border-b border-slate-200/80 sticky top-0 z-20 backdrop-blur-md bg-white/95">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex items-center justify-between">
               <div className="flex items-center gap-2 text-xs text-slate-500 truncate">
@@ -883,7 +883,7 @@ export default async function DynamicSeoPage({ params, searchParams }: DynamicSe
                 <span>/</span>
                 <span className="text-slate-800 font-semibold">{isTg ? "Хизматрасониҳо" : "Услуги"}</span>
               </div>
-              <Badge variant="outline" className="border-emerald-200 text-emerald-800 bg-emerald-50 text-xs">
+              <Badge variant="secondary" className="text-xs font-medium">
                 {cityName}
               </Badge>
             </div>
@@ -912,7 +912,7 @@ export default async function DynamicSeoPage({ params, searchParams }: DynamicSe
                         className="w-full h-full object-cover"
                       />
                       <div className="absolute top-2.5 left-2.5">
-                        <Badge className="bg-slate-900/80 text-white text-[10px] font-bold border-none">
+                        <Badge className="bg-slate-900/80 text-white text-xs font-bold border-none">
                           {isTg ? srv.categoryTg : srv.category}
                         </Badge>
                       </div>
@@ -923,7 +923,7 @@ export default async function DynamicSeoPage({ params, searchParams }: DynamicSe
                       <p className="text-xs text-slate-500 line-clamp-2">{isTg ? srv.shortDescriptionTg : srv.shortDescription}</p>
 
                       <div className="pt-2 text-xs">
-                        <span className="text-slate-400 block text-[10px] uppercase font-bold tracking-wider">{isTg ? "Нарх" : "Стоимость"}</span>
+                        <span className="text-slate-400 block text-xs uppercase font-bold tracking-wider">{isTg ? "Нарх" : "Стоимость"}</span>
                         <span className="font-extrabold text-emerald-700 text-base">
                           {isTg ? `Аз ${srv.priceStartingFromTjs} TJS` : `от ${srv.priceStartingFromTjs} TJS`}
                         </span>
@@ -933,12 +933,12 @@ export default async function DynamicSeoPage({ params, searchParams }: DynamicSe
                   </div>
 
                   <div className="p-4 pt-0 border-t border-slate-100 mt-2 flex items-center justify-between gap-2">
-                    <span className="text-[11px] font-medium text-slate-600 truncate">{isTg ? srv.providerNameTg : srv.providerName}</span>
+                    <span className="text-xs font-medium text-slate-600 truncate">{isTg ? srv.providerNameTg : srv.providerName}</span>
                     <a
                       href={`https://wa.me/${srv.whatsapp.replace(/\D/g, "")}`}
                       target="_blank"
                       rel="noreferrer"
-                      className="py-1 px-3 rounded-lg bg-emerald-50 text-emerald-700 text-xs font-bold hover:bg-emerald-100 transition-colors"
+                      className="py-1 px-3 rounded-lg bg-muted text-foreground text-xs font-semibold hover:bg-muted/80 transition-colors border border-border/60"
                     >
                       WhatsApp
                     </a>
@@ -1108,7 +1108,7 @@ export default async function DynamicSeoPage({ params, searchParams }: DynamicSe
   };
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] pb-24">
+    <div className="min-h-screen bg-background pb-24">
       {/* Explicit Search Engine Robots Meta for Under-threshold Districts or Non-indexable Facets */}
       {((facetConfig && !facetConfig.indexable) || isDistrictUnderThreshold) && (
         <meta name="robots" content="noindex, follow" />
@@ -1141,7 +1141,7 @@ export default async function DynamicSeoPage({ params, searchParams }: DynamicSe
             ))}
           </div>
 
-          <Badge variant="outline" className="border-emerald-200 text-emerald-800 bg-emerald-50 text-xs">
+          <Badge variant="secondary" className="text-xs font-medium">
             {cityName}
           </Badge>
         </div>
@@ -1201,7 +1201,7 @@ export default async function DynamicSeoPage({ params, searchParams }: DynamicSe
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   />
                   <div className="absolute top-2.5 left-2.5 flex items-center gap-1.5">
-                    <Badge className="bg-slate-900/80 backdrop-blur-md text-white text-[11px] font-semibold border-none">
+                    <Badge className="bg-slate-900/80 backdrop-blur-md text-white text-xs font-semibold border-none">
                       {locale === "tg"
                         ? item.dealType === "Аренда" ? "Иҷора" : "Фурӯш"
                         : item.dealType}

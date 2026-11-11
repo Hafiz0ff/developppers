@@ -241,7 +241,7 @@ export default function SuperAdminCategoriesPage() {
             onClick={handleRunAudit}
             disabled={auditLoading}
             variant="outline"
-            className="h-10 px-4 rounded-xl border-emerald-500/30 text-emerald-700 bg-emerald-50/50 hover:bg-emerald-100 font-semibold text-xs shadow-xs gap-2 cursor-pointer"
+            className="h-10 px-4 rounded-xl border border-border hover:bg-muted text-foreground font-medium text-xs shadow-xs gap-2 cursor-pointer"
           >
             <RefreshCw className={`h-4 w-4 ${auditLoading ? "animate-spin" : ""}`} />
             <span>{auditLoading ? "Анализирую..." : "Запустить DRY RUN"}</span>
@@ -259,69 +259,69 @@ export default function SuperAdminCategoriesPage() {
 
       {/* KPI Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <Card className="rounded-2xl border-slate-200/80 dark:border-slate-800 shadow-xs">
+        <Card className="rounded-2xl border border-border/80 shadow-xs bg-card">
           <CardContent className="p-5 space-y-2">
             <div className="flex items-center justify-between">
-              <span className="text-xs text-slate-500 font-medium">Всего категорий</span>
-              <div className="h-8 w-8 rounded-lg bg-emerald-500/10 text-emerald-600 flex items-center justify-center font-bold">
+              <span className="text-xs text-muted-foreground font-medium">Всего категорий</span>
+              <div className="h-8 w-8 rounded-lg bg-muted text-muted-foreground flex items-center justify-center font-bold">
                 <Layers className="h-4 w-4" />
               </div>
             </div>
-            <div className="text-2xl font-black text-slate-900 dark:text-white">
+            <div className="text-2xl font-bold text-foreground">
               {categories.length}
             </div>
-            <p className="text-[11px] text-slate-500 font-medium">
+            <p className="text-xs text-muted-foreground font-medium">
               3 сделки · 5 типов объектов
             </p>
           </CardContent>
         </Card>
 
-        <Card className="rounded-2xl border-slate-200/80 dark:border-slate-800 shadow-xs bg-linear-to-b from-emerald-50/30 via-white to-white">
+        <Card className="rounded-2xl border border-border/80 shadow-xs bg-card">
           <CardContent className="p-5 space-y-2">
             <div className="flex items-center justify-between">
-              <span className="text-xs text-slate-500 font-medium">Индексируемые (Allowlist)</span>
-              <div className="h-8 w-8 rounded-lg bg-blue-500/10 text-blue-600 flex items-center justify-center">
+              <span className="text-xs text-muted-foreground font-medium">Индексируемые (Allowlist)</span>
+              <div className="h-8 w-8 rounded-lg bg-muted text-muted-foreground flex items-center justify-center">
                 <ShieldCheck className="h-4 w-4" />
               </div>
             </div>
-            <div className="text-2xl font-black text-emerald-700">
+            <div className="text-2xl font-bold text-foreground">
               {categories.filter((c) => c.indexable).length}
             </div>
-            <p className="text-[11px] text-emerald-600 font-semibold">
+            <p className="text-xs text-primary font-medium">
               Только качественные посадочные страницы
             </p>
           </CardContent>
         </Card>
 
-        <Card className="rounded-2xl border-slate-200/80 dark:border-slate-800 shadow-xs">
+        <Card className="rounded-2xl border border-border/80 shadow-xs bg-card">
           <CardContent className="p-5 space-y-2">
             <div className="flex items-center justify-between">
-              <span className="text-xs text-slate-500 font-medium">Локали URL</span>
-              <div className="h-8 w-8 rounded-lg bg-purple-500/10 text-purple-600 flex items-center justify-center font-bold">
+              <span className="text-xs text-muted-foreground font-medium">Локали URL</span>
+              <div className="h-8 w-8 rounded-lg bg-muted text-muted-foreground flex items-center justify-center font-bold">
                 <Globe className="h-4 w-4" />
               </div>
             </div>
-            <div className="text-2xl font-black text-slate-900 dark:text-white">
+            <div className="text-2xl font-bold text-foreground">
               RU · TG · EN
             </div>
-            <p className="text-[11px] text-slate-500 font-medium">
+            <p className="text-xs text-muted-foreground font-medium">
               RU без префикса, TG /tg/, EN /en/
             </p>
           </CardContent>
         </Card>
 
-        <Card className="rounded-2xl border-slate-200/80 dark:border-slate-800 shadow-xs">
+        <Card className="rounded-2xl border border-border/80 shadow-xs bg-card">
           <CardContent className="p-5 space-y-2">
             <div className="flex items-center justify-between">
-              <span className="text-xs text-slate-500 font-medium">Режим генерации</span>
-              <div className="h-8 w-8 rounded-lg bg-amber-500/10 text-amber-600 flex items-center justify-center font-bold">
+              <span className="text-xs text-muted-foreground font-medium">Режим генерации</span>
+              <div className="h-8 w-8 rounded-lg bg-muted text-muted-foreground flex items-center justify-center font-bold">
                 <Sparkles className="h-4 w-4" />
               </div>
             </div>
-            <div className="text-2xl font-black text-slate-900 dark:text-white">
+            <div className="text-2xl font-bold text-foreground">
               Zero Manual SEO
             </div>
-            <p className="text-[11px] text-amber-700 font-semibold">
+            <p className="text-xs text-muted-foreground font-medium">
               Партнёры заполняют только бизнес-данные
             </p>
           </CardContent>
@@ -350,7 +350,7 @@ export default function SuperAdminCategoriesPage() {
         >
           <span>Пакетный аудит DRY RUN</span>
           {auditReport && (
-            <span className="px-1.5 py-0.2 rounded-full text-[10px] bg-emerald-500 text-white">
+            <span className="px-1.5 py-0.2 rounded-full text-xs bg-emerald-500 text-white">
               {auditReport.totalListingsEvaluated}
             </span>
           )}
@@ -390,15 +390,15 @@ export default function SuperAdminCategoriesPage() {
                     <tr key={cat.id} className="hover:bg-slate-50/60 dark:hover:bg-slate-800/40">
                       <td className="py-3 px-4 font-mono font-medium text-slate-900 dark:text-white">
                         <div>{cat.code}</div>
-                        <div className="text-[10px] text-slate-400">{cat.id}</div>
+                        <div className="text-xs text-slate-400">{cat.id}</div>
                       </td>
                       <td className="py-3 px-4">
                         <div className="font-bold text-slate-900 dark:text-white">{cat.name.ru}</div>
-                        <div className="text-[11px] text-slate-500">
+                        <div className="text-xs text-slate-500">
                           {cat.name.tg} · <span className="italic">{cat.name.en}</span>
                         </div>
                       </td>
-                      <td className="py-3 px-4 font-mono text-[11px]">
+                      <td className="py-3 px-4 font-mono text-xs">
                         <div className="text-emerald-700 font-semibold">/{cat.slug.ru}/</div>
                         <div className="text-slate-400">
                           /tg/.../{cat.slug.tg}/ · /en/.../{cat.slug.en}/
@@ -406,26 +406,22 @@ export default function SuperAdminCategoriesPage() {
                       </td>
                       <td className="py-3 px-4 text-center">
                         <Badge
-                          variant="outline"
-                          className={`text-[10px] uppercase font-bold ${
-                            cat.slugMode === "AUTO"
-                              ? "bg-blue-50 text-blue-700 border-blue-200"
-                              : "bg-slate-100 text-slate-700 border-slate-200"
-                          }`}
+                          variant="secondary"
+                          className="text-xs uppercase font-medium"
                         >
                           {cat.slugMode}
                         </Badge>
                       </td>
                       <td className="py-3 px-4 text-center">
                         {cat.indexable ? (
-                          <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
-                            <CheckCircle2 className="h-3 w-3" />
+                          <Badge variant="secondary" className="inline-flex items-center gap-1.5 text-xs font-medium">
+                            <span className="w-1.5 h-1.5 rounded-full bg-primary" />
                             <span>Allowlist</span>
-                          </span>
+                          </Badge>
                         ) : (
-                          <span className="inline-flex items-center text-[11px] text-slate-400 bg-slate-100 px-2 py-0.5 rounded-full">
+                          <Badge variant="outline" className="text-xs text-muted-foreground">
                             noindex
-                          </span>
+                          </Badge>
                         )}
                       </td>
                       <td className="py-3 px-4 text-right">
@@ -486,24 +482,24 @@ export default function SuperAdminCategoriesPage() {
                 <Card className="p-4 rounded-xl border-slate-200">
                   <div className="text-xs text-slate-500 font-medium">Объявлений проверено</div>
                   <div className="text-2xl font-black text-slate-900">{auditReport.totalListingsEvaluated}</div>
-                  <div className="text-[10px] text-emerald-600 font-medium">Фактические данные каталога</div>
+                  <div className="text-xs text-emerald-600 font-medium">Фактические данные каталога</div>
                 </Card>
                 <Card className="p-4 rounded-xl border-slate-200">
                   <div className="text-xs text-slate-500 font-medium">Новые канонические URL</div>
                   <div className="text-2xl font-black text-emerald-600">{auditReport.totalUrlsChanged}</div>
-                  <div className="text-[10px] text-slate-500 font-medium">Будут защищены 301-алиасами</div>
+                  <div className="text-xs text-slate-500 font-medium">Будут защищены 301-алиасами</div>
                 </Card>
                 <Card className="p-4 rounded-xl border-slate-200">
                   <div className="text-xs text-slate-500 font-medium">Коллизии URL</div>
                   <div className="text-2xl font-black text-slate-900">
                     {auditReport.collisionsDetected.length}
                   </div>
-                  <div className="text-[10px] text-slate-500 font-medium">0 конфликтов маршрутов</div>
+                  <div className="text-xs text-slate-500 font-medium">0 конфликтов маршрутов</div>
                 </Card>
                 <Card className="p-4 rounded-xl border-slate-200">
                   <div className="text-xs text-slate-500 font-medium">Время аудита</div>
                   <div className="text-2xl font-black text-slate-900">{auditReport.durationMs} мс</div>
-                  <div className="text-[10px] text-emerald-600 font-medium">Высокая производительность</div>
+                  <div className="text-xs text-emerald-600 font-medium">Высокая производительность</div>
                 </Card>
               </div>
 
@@ -551,14 +547,14 @@ export default function SuperAdminCategoriesPage() {
                             {diff.title}
                           </td>
                           <td className="py-2 px-3">
-                            <Badge variant="outline" className="text-[10px]">
+                            <Badge variant="outline" className="text-xs">
                               {diff.categoryCode}
                             </Badge>
                           </td>
-                          <td className="py-2 px-3 font-mono text-[11px] text-amber-700 bg-amber-50/30">
+                          <td className="py-2 px-3 font-mono text-xs text-muted-foreground line-through bg-muted/30">
                             {diff.oldUrl}
                           </td>
-                          <td className="py-2 px-3 font-mono text-[11px] text-emerald-700 bg-emerald-50/30 font-semibold">
+                          <td className="py-2 px-3 font-mono text-xs text-foreground bg-muted/60 font-semibold">
                             {diff.newUrl}
                           </td>
                         </tr>
@@ -603,7 +599,7 @@ export default function SuperAdminCategoriesPage() {
               <div className="space-y-1">
                 <div className="flex items-center justify-between">
                   <Label className="text-xs font-bold">Режим Slug</Label>
-                  <Badge variant="outline" className="text-[10px]">
+                  <Badge variant="outline" className="text-xs">
                     {slugMode}
                   </Badge>
                 </div>
@@ -613,7 +609,7 @@ export default function SuperAdminCategoriesPage() {
                     size="sm"
                     variant={slugMode === "AUTO" ? "default" : "outline"}
                     onClick={() => setSlugMode("AUTO")}
-                    className="h-7 text-[11px] px-2.5 cursor-pointer"
+                    className="h-7 text-xs px-2.5 cursor-pointer"
                   >
                     AUTO
                   </Button>
@@ -622,12 +618,12 @@ export default function SuperAdminCategoriesPage() {
                     size="sm"
                     variant={slugMode === "MANUAL" ? "default" : "outline"}
                     onClick={() => setSlugMode("MANUAL")}
-                    className="h-7 text-[11px] px-2.5 cursor-pointer"
+                    className="h-7 text-xs px-2.5 cursor-pointer"
                   >
                     MANUAL
                   </Button>
                 </div>
-                <p className="text-[10px] text-slate-400">
+                <p className="text-xs text-slate-400">
                   {slugMode === "AUTO"
                     ? "Slug пересчитывается из названия"
                     : "Slug зафиксирован, смена названия не меняет URL"}
@@ -642,7 +638,7 @@ export default function SuperAdminCategoriesPage() {
                     onCheckedChange={setIsIndexable}
                   />
                 </div>
-                <p className="text-[10px] text-slate-400 pt-1">
+                <p className="text-xs text-slate-400 pt-1">
                   {isIndexable
                     ? "Категория включена в Allowlist и sitemap.xml"
                     : "Категория закрыта от поисковиков (noindex)"}
@@ -655,7 +651,7 @@ export default function SuperAdminCategoriesPage() {
               <Label className="text-xs font-bold">Отображаемые названия (Label)</Label>
               <div className="grid grid-cols-3 gap-2">
                 <div>
-                  <span className="text-[10px] text-slate-400">RU</span>
+                  <span className="text-xs text-slate-400">RU</span>
                   <Input
                     value={nameRu}
                     onChange={(e) => {
@@ -669,7 +665,7 @@ export default function SuperAdminCategoriesPage() {
                   />
                 </div>
                 <div>
-                  <span className="text-[10px] text-slate-400">TG</span>
+                  <span className="text-xs text-slate-400">TG</span>
                   <Input
                     value={nameTg}
                     onChange={(e) => setNameTg(e.target.value)}
@@ -678,7 +674,7 @@ export default function SuperAdminCategoriesPage() {
                   />
                 </div>
                 <div>
-                  <span className="text-[10px] text-slate-400">EN</span>
+                  <span className="text-xs text-slate-400">EN</span>
                   <Input
                     value={nameEn}
                     onChange={(e) => setNameEn(e.target.value)}
@@ -693,13 +689,13 @@ export default function SuperAdminCategoriesPage() {
             <div className="space-y-2">
               <div className="flex items-center justify-between">
                 <Label className="text-xs font-bold">SEO URL-slug</Label>
-                <span className="text-[10px] text-emerald-600 font-mono">
+                <span className="text-xs text-emerald-600 font-mono">
                   /{slugRu || "..."}/
                 </span>
               </div>
               <div className="grid grid-cols-3 gap-2">
                 <div>
-                  <span className="text-[10px] text-slate-400">RU slug</span>
+                  <span className="text-xs text-slate-400">RU slug</span>
                   <Input
                     value={slugRu}
                     onChange={(e) => setSlugRu(e.target.value)}
@@ -708,7 +704,7 @@ export default function SuperAdminCategoriesPage() {
                   />
                 </div>
                 <div>
-                  <span className="text-[10px] text-slate-400">TG slug</span>
+                  <span className="text-xs text-slate-400">TG slug</span>
                   <Input
                     value={slugTg}
                     onChange={(e) => setSlugTg(e.target.value)}
@@ -717,7 +713,7 @@ export default function SuperAdminCategoriesPage() {
                   />
                 </div>
                 <div>
-                  <span className="text-[10px] text-slate-400">EN slug</span>
+                  <span className="text-xs text-slate-400">EN slug</span>
                   <Input
                     value={slugEn}
                     onChange={(e) => setSlugEn(e.target.value)}
@@ -732,7 +728,7 @@ export default function SuperAdminCategoriesPage() {
             {!isNewCategory && (
               <div className="pt-2 border-t border-slate-100">
                 <div className="flex items-center justify-between mb-2">
-                  <span className="text-[11px] font-bold text-slate-700">
+                  <span className="text-xs font-bold text-slate-700">
                     Проверка влияния на опубликованные URL:
                   </span>
                   <Button
@@ -741,7 +737,7 @@ export default function SuperAdminCategoriesPage() {
                     variant="outline"
                     onClick={handleCheckPreview}
                     disabled={previewLoading}
-                    className="h-7 text-[11px] px-2.5 rounded-lg border-slate-300 cursor-pointer"
+                    className="h-7 text-xs px-2.5 rounded-lg border-slate-300 cursor-pointer"
                   >
                     <Eye className="h-3 w-3 mr-1" />
                     <span>{previewLoading ? "Расчёт..." : "Предпросмотр миграции"}</span>
@@ -749,15 +745,15 @@ export default function SuperAdminCategoriesPage() {
                 </div>
 
                 {previewData && (
-                  <div className="p-3 bg-amber-50/50 border border-amber-200 rounded-xl space-y-2">
-                    <div className="flex items-center gap-1.5 text-xs font-bold text-amber-800">
+                  <div className="p-3 border-l-2 border-l-amber-500 bg-muted/50 border border-border/60 rounded-xl space-y-2">
+                    <div className="flex items-center gap-1.5 text-xs font-bold text-foreground">
                       <AlertTriangle className="h-3.5 w-3.5" />
                       <span>
                         Затрагивает {previewData.affectedListingsCount} опубликованных объявлений
                       </span>
                     </div>
                     {previewData.redirectPlan.length > 0 && (
-                      <div className="text-[10px] text-slate-600 space-y-1">
+                      <div className="text-xs text-slate-600 space-y-1">
                         <div className="font-semibold text-slate-700">План редиректов (301):</div>
                         {previewData.redirectPlan.slice(0, 3).map((r, i) => (
                           <div key={i} className="font-mono truncate">

@@ -133,7 +133,7 @@ export function ResponsiveTooltip({
             </div>
 
             {/* Body */}
-            <div className="text-xs text-muted-foreground leading-relaxed sm:text-[11px]">
+            <div className="text-xs text-muted-foreground leading-relaxed sm:text-xs">
               {content}
             </div>
 

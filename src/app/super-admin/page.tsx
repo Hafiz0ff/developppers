@@ -193,7 +193,7 @@ export default function SuperAdminOverviewPage() {
         {/* Controls */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
           <div>
-            <label className="text-[11px] font-semibold text-slate-500 block mb-1">
+            <label className="text-xs font-semibold text-slate-500 block mb-1">
               Геолокация пользователя (Город Согда)
             </label>
             <select
@@ -211,7 +211,7 @@ export default function SuperAdminOverviewPage() {
           </div>
 
           <div>
-            <label className="text-[11px] font-semibold text-slate-500 block mb-1">
+            <label className="text-xs font-semibold text-slate-500 block mb-1">
               Категория недвижимости
             </label>
             <select
@@ -227,7 +227,7 @@ export default function SuperAdminOverviewPage() {
           </div>
 
           <div>
-            <label className="text-[11px] font-semibold text-slate-500 block mb-1">
+            <label className="text-xs font-semibold text-slate-500 block mb-1">
               Язык интерфейса
             </label>
             <select
@@ -277,7 +277,7 @@ export default function SuperAdminOverviewPage() {
                 {simulatedBanner.badgeText && (
                   <span
                     style={{ backgroundColor: simulatedBanner.accentColorHex }}
-                    className="inline-block px-2.5 py-0.5 rounded-md text-slate-950 font-bold text-[10px] uppercase tracking-wider mb-1"
+                    className="inline-block px-2.5 py-0.5 rounded-md text-slate-950 font-bold text-xs uppercase tracking-wider mb-1"
                   >
                     {simulatedBanner.badgeText}
                   </span>
@@ -341,7 +341,7 @@ export default function SuperAdminOverviewPage() {
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs">
             <thead>
-              <tr className="border-b border-slate-100 dark:border-slate-800 text-slate-400 font-semibold uppercase text-[10px] tracking-wider">
+              <tr className="border-b border-slate-100 dark:border-slate-800 text-slate-400 font-semibold uppercase text-xs tracking-wider">
                 <th className="py-3 px-3">Компания / Бренд</th>
                 <th className="py-3 px-3">Отрасль</th>
                 <th className="py-3 px-3">Тип пакета</th>
@@ -356,7 +356,7 @@ export default function SuperAdminOverviewPage() {
                     <div className="font-bold text-slate-900 dark:text-white text-sm">
                       {adv.brandName}
                     </div>
-                    <div className="text-[11px] text-slate-400 font-mono">
+                    <div className="text-xs text-slate-400 font-mono">
                       {adv.companyName}
                     </div>
                   </td>
@@ -373,11 +373,11 @@ export default function SuperAdminOverviewPage() {
                   </td>
                   <td className="py-3.5 px-3">
                     {adv.tier === "sponsor_annual" ? (
-                      <Badge className="bg-emerald-100 text-emerald-800 border-emerald-200 text-[10px] font-bold">
+                      <Badge className="bg-emerald-100 text-emerald-800 border-emerald-200 text-xs font-bold">
                         Годовой спонсор 365д
                       </Badge>
                     ) : (
-                      <Badge variant="outline" className="text-slate-600 border-slate-300 text-[10px]">
+                      <Badge variant="outline" className="text-slate-600 border-slate-300 text-xs">
                         Аукцион ставок
                       </Badge>
                     )}

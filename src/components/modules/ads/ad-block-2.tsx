@@ -44,7 +44,7 @@ export function AdBlock2({ seed, className = "" }: AdBlock2Props) {
         <div className="absolute top-2.5 right-2.5 z-20">
           <Badge
             variant="secondary"
-            className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 backdrop-blur-md bg-black/40 text-white border-0 shadow-xs"
+            className="text-xs uppercase font-bold tracking-wider px-2 py-0.5 backdrop-blur-md bg-black/40 text-white border-0 shadow-xs"
           >
             {tDual("Реклама", "Реклама")}
           </Badge>
@@ -82,10 +82,10 @@ export function AdBlock2({ seed, className = "" }: AdBlock2Props) {
             {/* Bottom Key Features & CTA */}
             <div className="relative z-10 p-4 pt-0 space-y-3">
               <div className="flex flex-wrap gap-1.5">
-                <span className="text-[10px] font-semibold px-2 py-0.5 rounded-md bg-white/20 backdrop-blur-md text-white border border-white/20">
+                <span className="text-xs font-semibold px-2 py-0.5 rounded-md bg-white/20 backdrop-blur-md text-white border border-white/20">
                   {tDual("Официальная гарантия 3 года", "Кафолати расмии 3 сол")}
                 </span>
-                <span className="text-[10px] font-semibold px-2 py-0.5 rounded-md bg-white/20 backdrop-blur-md text-white border border-white/20">
+                <span className="text-xs font-semibold px-2 py-0.5 rounded-md bg-white/20 backdrop-blur-md text-white border border-white/20">
                   {tDual("Доставка по Согду", "Бобури ба тамоми Суғд")}
                 </span>
               </div>

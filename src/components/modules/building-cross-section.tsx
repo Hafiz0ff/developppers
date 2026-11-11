@@ -166,7 +166,7 @@ export function BuildingCrossSection({
               key={r.id}
               type="button"
               onClick={() => setSelectedRooms(r.id)}
-              className={`h-7 px-2.5 rounded-md text-[11px] font-semibold transition-all cursor-pointer ${
+              className={`h-7 px-2.5 rounded-md text-xs font-semibold transition-all cursor-pointer ${
                 selectedRooms === r.id
                   ? "bg-slate-900 text-white dark:bg-white dark:text-slate-900"
                   : "bg-muted/40 hover:bg-muted text-muted-foreground"
@@ -184,19 +184,19 @@ export function BuildingCrossSection({
           <div className="flex items-center gap-1.5">
             <span className="h-3 w-3 rounded-full bg-emerald-500 shadow-xs" />
             <span className="font-semibold text-foreground">{tDual("Продаётся", "Барои фурӯш")}</span>
-            <span className="text-muted-foreground text-[11px]">({statusStats.available})</span>
+            <span className="text-muted-foreground text-xs">({statusStats.available})</span>
           </div>
 
           <div className="flex items-center gap-1.5">
             <span className="h-3 w-3 rounded-full bg-amber-500 shadow-xs" />
             <span className="font-semibold text-foreground">{tDual("Бронь", "Брон")}</span>
-            <span className="text-muted-foreground text-[11px]">({statusStats.reserved})</span>
+            <span className="text-muted-foreground text-xs">({statusStats.reserved})</span>
           </div>
 
           <div className="flex items-center gap-1.5">
             <span className="h-3 w-3 rounded-full bg-slate-400 dark:bg-slate-600 shadow-xs" />
             <span className="font-semibold text-foreground">{tDual("Продано", "Фурӯхта шудааст")}</span>
-            <span className="text-muted-foreground text-[11px]">({statusStats.sold})</span>
+            <span className="text-muted-foreground text-xs">({statusStats.sold})</span>
           </div>
         </div>
 
@@ -222,7 +222,7 @@ export function BuildingCrossSection({
             <div className="text-xs font-bold text-slate-100 flex items-center gap-1.5">
               <span>{tDual("Инсоляция фасада и стороны света", "Равшании табиии фасад ва самтҳои олам")}</span>
             </div>
-            <div className="text-[11px] text-slate-400">
+            <div className="text-xs text-slate-400">
               {tDual(
                 "Двигайте бегунок времени для оценки естественного освещения квартир",
                 "Барои арзёбии равшании табиии хонаҳо бегуноки вақтро ҳаракат диҳед"
@@ -293,10 +293,10 @@ export function BuildingCrossSection({
                           `Хонадони №${unit.unitNumber} (${unit.roomsCount}-ҳуҷр., ${unit.totalArea} м²)`
                         )}
                       >
-                        <div className="text-[11px] font-bold leading-tight truncate">
+                        <div className="text-xs font-bold leading-tight truncate">
                           №{unit.unitNumber} • {unit.roomsCount}{language === "tg" ? "ҳ" : "к"}
                         </div>
-                        <div className="text-[10px] font-medium opacity-85 leading-none">
+                        <div className="text-xs font-medium opacity-85 leading-none">
                           {unit.totalArea} м²
                         </div>
                       </button>
@@ -347,13 +347,13 @@ export function BuildingCrossSection({
               {/* Price & Area Highlights */}
               <div className="grid grid-cols-2 gap-3 p-4 rounded-xl bg-muted/40 border">
                 <div>
-                  <div className="text-[11px] text-muted-foreground">{tDual("Общая стоимость:", "Арзиши умумӣ:")}</div>
+                  <div className="text-xs text-muted-foreground">{tDual("Общая стоимость:", "Арзиши умумӣ:")}</div>
                   <div className="text-lg font-extrabold text-emerald-600">
                     {formatPrice(activeUnit.priceTjs, activeUnit.priceUsd)}
                   </div>
                 </div>
                 <div>
-                  <div className="text-[11px] text-muted-foreground">{tDual("Площадь и цена м²:", "Масоҳат ва нархи м²:")}</div>
+                  <div className="text-xs text-muted-foreground">{tDual("Площадь и цена м²:", "Масоҳат ва нархи м²:")}</div>
                   <div className="text-sm font-bold text-foreground">
                     {activeUnit.totalArea} м² (
                     {formatPrice(activeUnit.pricePerMeterTjs, activeUnit.pricePerMeterUsd)}/м²)
@@ -364,13 +364,13 @@ export function BuildingCrossSection({
               {/* Additional specs */}
               <div className="grid grid-cols-2 gap-2 text-xs">
                 <div className="p-2.5 rounded-lg bg-card border">
-                  <span className="text-muted-foreground text-[10px] block">{tDual("Тип жилья:", "Навъи манзил:")}</span>
+                  <span className="text-muted-foreground text-xs block">{tDual("Тип жилья:", "Навъи манзил:")}</span>
                   <span className="font-semibold text-foreground">
                     {activeUnit.type === "studio" ? tDual("Студия", "Студия") : tDual("Квартира", "Хонадон")}
                   </span>
                 </div>
                 <div className="p-2.5 rounded-lg bg-card border">
-                  <span className="text-muted-foreground text-[10px] block">{tDual("Балкон / Лоджия:", "Балкон / Айвон:")}</span>
+                  <span className="text-muted-foreground text-xs block">{tDual("Балкон / Лоджия:", "Балкон / Айвон:")}</span>
                   <span className="font-semibold text-foreground">
                     {activeUnit.hasBalcony ? tDual("Есть балкон", "Балкон дорад") : tDual("Без балкона", "Бе балкон")}
                   </span>
@@ -408,7 +408,7 @@ export function BuildingCrossSection({
                       )}`}
                       target="_blank"
                       rel="noreferrer"
-                      className="w-full inline-flex items-center justify-center gap-2 h-10 px-4 rounded-xl border border-emerald-500/30 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-50 font-semibold text-xs transition-colors"
+                      className="w-full inline-flex items-center justify-center gap-2 h-10 px-4 rounded-xl border border-border hover:bg-muted font-medium text-xs transition-colors"
                     >
                       <MessageCircle className="h-4 w-4" />
                       {tDual("Забронировать в WhatsApp", "Брон кардан дар WhatsApp")}

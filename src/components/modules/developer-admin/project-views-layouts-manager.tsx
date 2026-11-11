@@ -112,7 +112,7 @@ export function ProjectViewsLayoutsManager() {
 
       <CardContent className="p-4 space-y-5">
         {mappedNotification && (
-          <div className="p-3 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-300 text-emerald-800 dark:text-emerald-300 text-xs font-semibold flex items-center gap-2">
+          <div className="p-3 rounded-xl border-l-2 border-l-emerald-600 bg-muted/60 border border-border/60 text-xs text-foreground flex items-center gap-2">
             <CheckCircle2 className="h-4 w-4 shrink-0" />
             <span>{mappedNotification}</span>
           </div>
@@ -127,14 +127,14 @@ export function ProjectViewsLayoutsManager() {
                 ? "Пайвасткунии оммавии нақша ба пули хонаҳо"
                 : "Массовая привязка планировки к пулу квартир"}
             </span>
-            <Badge className="bg-emerald-600 text-white text-[10px]">
+            <Badge className="bg-emerald-600 text-white text-xs">
               {isTg ? "Сарфаи вақт" : "Экономия времени"}
             </Badge>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-4 gap-3 text-xs">
             <div className="space-y-1">
-              <Label className="text-[11px] font-semibold">
+              <Label className="text-xs font-semibold">
                 {isTg ? "Нақшаро интихоб кунед" : "Выберите планировку"}
               </Label>
               <select
@@ -155,7 +155,7 @@ export function ProjectViewsLayoutsManager() {
             </div>
 
             <div className="space-y-1">
-              <Label className="text-[11px] font-semibold">
+              <Label className="text-xs font-semibold">
                 {isTg ? "Даромадгоҳ / Бахш" : "Подъезд / Секция"}
               </Label>
               <select
@@ -170,7 +170,7 @@ export function ProjectViewsLayoutsManager() {
             </div>
 
             <div className="space-y-1">
-              <Label className="text-[11px] font-semibold">
+              <Label className="text-xs font-semibold">
                 {isTg ? "Фосилаи ошёнаҳо" : "Диапазон этажей"}
               </Label>
               <select
@@ -221,13 +221,13 @@ export function ProjectViewsLayoutsManager() {
               >
                 <div className="h-28 w-full relative bg-slate-900">
                   <img src={wv.imageUrl} alt={wv.title} className="w-full h-full object-cover" />
-                  <Badge className="absolute bottom-2 left-2 bg-black/70 backdrop-blur-md text-white text-[10px]">
+                  <Badge className="absolute bottom-2 left-2 bg-black/70 backdrop-blur-md text-white text-xs">
                     {wv.direction}
                   </Badge>
                 </div>
                 <div className="p-3 space-y-1">
                   <div className="text-xs font-bold text-foreground leading-tight">{wv.title}</div>
-                  <div className="text-[11px] text-muted-foreground">
+                  <div className="text-xs text-muted-foreground">
                     {wv.section} • {wv.floors}
                   </div>
                 </div>
@@ -255,14 +255,14 @@ export function ProjectViewsLayoutsManager() {
                       ? lay.name.replace("комнатная квартира", "ҳуҷрагӣ").replace("Тип", "Намуди")
                       : lay.name}
                   </span>
-                  <Badge variant="outline" className="text-[10px] text-emerald-600 border-emerald-300">
+                  <Badge variant="outline" className="text-xs text-emerald-600 border-emerald-300">
                     {lay.area} м²
                   </Badge>
                 </div>
                 <div className="h-24 w-full rounded-lg overflow-hidden border bg-muted">
                   <img src={lay.imageUrl} alt={lay.name} className="w-full h-full object-cover" />
                 </div>
-                <div className="text-[11px] text-muted-foreground">
+                <div className="text-xs text-muted-foreground">
                   {isTg
                     ? "Бахшҳо: Ошхона, Меҳмонхона, Хоби калон, Ҳаммом, Айвон"
                     : "Экспликация: Кухня, Гостиная, Спальня, Санузел, Лоджия"}
