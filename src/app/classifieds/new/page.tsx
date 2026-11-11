@@ -73,8 +73,19 @@ export default function NewClassifiedPage() {
   const [showPreview, setShowPreview] = useState(false);
   const [draftSavedAt, setDraftSavedAt] = useState<string | null>(null);
 
-  // Restore draft on mount
+  // Restore draft and query params on mount
   useEffect(() => {
+    try {
+      if (typeof window !== "undefined") {
+        const params = new URLSearchParams(window.location.search);
+        const deal = params.get("deal");
+        if (deal === "rent") setDealType("rent_long");
+        if (deal === "sale") setDealType("sale");
+      }
+    } catch {
+      // ignore
+    }
+
     try {
       const saved = localStorage.getItem("maskani_classified_draft");
       if (saved) {

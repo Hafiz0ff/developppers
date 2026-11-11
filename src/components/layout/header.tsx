@@ -415,11 +415,7 @@ export function Header() {
               >
                 <DropdownMenuItem
                   onClick={() => {
-                    if (!session) {
-                      handleOpenAuth("login");
-                    } else {
-                      window.location.href = "/classifieds/new?deal=sale";
-                    }
+                    window.location.href = "/classifieds/new?deal=sale";
                   }}
                   className="cursor-pointer text-xs flex items-center justify-between px-3 py-2.5 rounded-xl font-semibold text-white/90 hover:text-white hover:bg-white/15 focus:text-white focus:bg-white/15 transition-all"
                 >
@@ -432,11 +428,7 @@ export function Header() {
 
                 <DropdownMenuItem
                   onClick={() => {
-                    if (!session) {
-                      handleOpenAuth("login");
-                    } else {
-                      window.location.href = "/classifieds/new?deal=rent";
-                    }
+                    window.location.href = "/classifieds/new?deal=rent";
                   }}
                   className="cursor-pointer text-xs flex items-center justify-between px-3 py-2.5 rounded-xl font-semibold text-white/90 hover:text-white hover:bg-white/15 focus:text-white focus:bg-white/15 transition-all mt-1"
                 >
