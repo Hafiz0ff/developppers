@@ -186,7 +186,7 @@ export function ElevatorIcon(props: SvgIconProps) {
   );
 }
 
-/** 9. Парковка (Rounded square with bold letter P inside) */
+/** 9. Парковка общая (Rounded square with bold letter P inside) */
 export function ParkingIcon(props: SvgIconProps) {
   return (
     <svg
@@ -200,6 +200,85 @@ export function ParkingIcon(props: SvgIconProps) {
     >
       <rect x="3.5" y="3.5" width="17" height="17" rx="4.5" />
       <path d="M9 17V7h4.2a3 3 0 0 1 0 6H9" />
+    </svg>
+  );
+}
+
+/** 9a. Открытая парковка (Open parking: car in open parking stall with bay markings) */
+export function ParkingOpenIcon(props: SvgIconProps) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2.2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      {...props}
+    >
+      {/* Open ground line */}
+      <line x1="2" y1="20" x2="22" y2="20" />
+      {/* Stall boundary markings */}
+      <line x1="3" y1="11" x2="3" y2="20" />
+      <line x1="21" y1="11" x2="21" y2="20" />
+      {/* Car silhouette front profile */}
+      <path d="M7.5 11l1.5-4h6l1.5 4" />
+      <rect x="5.5" y="11" width="13" height="6" rx="2" />
+      <circle cx="8" cy="14" r="0.8" fill="currentColor" stroke="none" />
+      <circle cx="16" cy="14" r="0.8" fill="currentColor" stroke="none" />
+      <line x1="10.5" y1="14.5" x2="13.5" y2="14.5" />
+      <rect x="6.5" y="17" width="2" height="3" rx="0.5" />
+      <rect x="15.5" y="17" width="2" height="3" rx="0.5" />
+    </svg>
+  );
+}
+
+/** 9b. Крытая парковка (Covered parking: protective carport canopy roof over P bay) */
+export function ParkingCoveredIcon(props: SvgIconProps) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2.2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      {...props}
+    >
+      {/* Protective carport canopy roof */}
+      <path d="M2 8.5 12 3.5l10 5" />
+      <line x1="4" y1="9.5" x2="20" y2="9.5" />
+      {/* Canopy support columns */}
+      <line x1="4.5" y1="9.5" x2="4.5" y2="20.5" />
+      <line x1="19.5" y1="9.5" x2="19.5" y2="20.5" />
+      {/* Ground level */}
+      <line x1="2" y1="20.5" x2="22" y2="20.5" />
+      {/* Bold letter P sheltered under roof */}
+      <path d="M10 17.5v-6h3.8a2 2 0 0 1 0 4H10" />
+    </svg>
+  );
+}
+
+/** 9c. Подземная парковка (Underground parking: ground slab on top, subterranean room with P & down arrow) */
+export function ParkingUndergroundIcon(props: SvgIconProps) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2.2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      {...props}
+    >
+      {/* Ground surface slab on top */}
+      <line x1="2" y1="4" x2="22" y2="4" />
+      {/* Subterranean chamber walls and foundation floor */}
+      <path d="M4 4v16a1.5 1.5 0 0 0 1.5 1.5h13a1.5 1.5 0 0 0 1.5-1.5V4" />
+      {/* Bold letter P */}
+      <path d="M8 16.5v-7h3.8a2.2 2.2 0 0 1 0 4.4H8" />
+      {/* Subterranean level down arrow */}
+      <path d="M16 8.5v7.5m-2.2-2.2 2.2 2.2 2.2-2.2" />
     </svg>
   );
 }
@@ -647,9 +726,10 @@ const ICON_COMPONENT_MAP: Record<AllowedIconKey, React.ComponentType<SvgIconProp
   "construction-crane": ConstructionCraneIcon,
   "ceiling-height": CeilingHeightIcon,
   "building-material": BuildingMaterialIcon,
-  "parking-open": ParkingIcon,
-  "parking-covered": ParkingIcon,
-  "parking-underground": ParkingIcon,
+  "parking-open": ParkingOpenIcon,
+  "parking-covered": ParkingCoveredIcon,
+  "parking-underground": ParkingUndergroundIcon,
+  parking: ParkingIcon,
   stairs: StairsIcon,
   "building-floors": BuildingFloorsIcon,
   "apartment-doors": ApartmentDoorsIcon,

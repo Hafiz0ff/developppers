@@ -108,6 +108,7 @@ export const ALLOWED_ICON_KEYS = [
   "parking-open",
   "parking-covered",
   "parking-underground",
+  "parking",
   "stairs",
   "building-floors",
   "apartment-doors",
