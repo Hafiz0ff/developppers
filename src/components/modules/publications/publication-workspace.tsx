@@ -597,11 +597,11 @@ export function PublicationWorkspace({ forcedRole }: PublicationWorkspaceProps) 
         <div className="lg:col-span-7 space-y-5">
           {/* Error Message Alert */}
           {errorMessage && (
-            <div className="p-4 rounded-xl bg-amber-50 border border-amber-200/80 text-amber-900 text-xs flex items-start gap-3">
-              <AlertCircle className="h-5 w-5 text-amber-600 shrink-0 mt-0.5" />
-              <div className="space-y-1">
+            <div className="p-3.5 rounded-lg border-l-2 border-l-amber-500 bg-muted/40 border border-border/60 text-foreground text-xs flex items-start gap-3">
+              <AlertCircle className="h-4 w-4 text-amber-500 shrink-0 mt-0.5" />
+              <div className="space-y-0.5">
                 <p className="font-bold">{tDual("Внимание при подготовке", "Огоҳӣ ҳангоми омодасозӣ")}</p>
-                <p>{errorMessage}</p>
+                <p className="text-muted-foreground">{errorMessage}</p>
               </div>
             </div>
           )}
@@ -646,7 +646,7 @@ export function PublicationWorkspace({ forcedRole }: PublicationWorkspaceProps) 
                 </div>
 
                 {material.images.length === 0 ? (
-                  <div className="p-3 rounded-xl bg-amber-50 border border-amber-200 text-amber-800 text-xs">
+                  <div className="p-3 rounded-lg border-l-2 border-l-amber-500 bg-muted/40 border border-border/60 text-foreground text-xs">
                     {tDual(
                       "У этого объекта нет загруженных фотографий. Для отправки в Telegram требуется хотя бы одна фотография.",
                       "Барои ин амвол акс нест. Барои нашр дар Telegram ҳадди аққал як акс лозим аст."
@@ -705,15 +705,15 @@ export function PublicationWorkspace({ forcedRole }: PublicationWorkspaceProps) 
                     <span
                       className={`font-mono text-xs font-bold px-2 py-0.5 rounded-md border ${
                         charCounts.isOverLimit
-                          ? "bg-rose-50 text-rose-700 border-rose-300 animate-pulse"
+                          ? "bg-destructive/10 text-destructive border-destructive/30"
                           : charCounts.remainingChars < 50
-                          ? "bg-amber-50 text-amber-700 border-amber-300"
-                          : "bg-slate-100 text-slate-700 border-slate-200"
+                          ? "bg-amber-500/10 text-amber-600 border-amber-500/30"
+                          : "bg-muted text-foreground border-border/80"
                       }`}
                     >
                       {charCounts.totalVisibleChars} / 1024
                     </span>
-                    <span className="text-[11px] text-slate-400">
+                    <span className="text-xs text-muted-foreground">
                       ({tDual("осталось:", "боқӣ:")} {charCounts.remainingChars})
                     </span>
                   </div>
@@ -721,8 +721,8 @@ export function PublicationWorkspace({ forcedRole }: PublicationWorkspaceProps) 
 
                 {/* Over Limit Warning */}
                 {charCounts.isOverLimit && (
-                  <div className="p-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-800 text-xs flex items-center gap-2">
-                    <AlertCircle className="h-4 w-4 shrink-0 text-rose-600" />
+                  <div className="p-3 rounded-lg border-l-2 border-l-destructive bg-muted/40 border border-border/60 text-foreground text-xs flex items-center gap-2">
+                    <AlertCircle className="h-4 w-4 shrink-0 text-destructive" />
                     <span>
                       {tDual(
                         `Превышен лимит Telegram на ${Math.abs(charCounts.remainingChars)} символов. Пожалуйста, сократите описание.`,
@@ -909,11 +909,11 @@ export function PublicationWorkspace({ forcedRole }: PublicationWorkspaceProps) 
 
               {/* Error Alert */}
               {publishError && (
-                <div className="p-4 rounded-xl bg-rose-50 border border-rose-300 text-rose-950 text-xs flex items-start gap-3">
-                  <AlertCircle className="h-5 w-5 text-rose-600 shrink-0 mt-0.5" />
-                  <div className="space-y-1">
+                <div className="p-3.5 rounded-lg border-l-2 border-l-destructive bg-muted/40 border border-border/60 text-foreground text-xs flex items-start gap-3">
+                  <AlertCircle className="h-5 w-5 text-destructive shrink-0 mt-0.5" />
+                  <div className="space-y-0.5">
                     <p className="font-bold">{tDual("Не удалось опубликовать в Telegram", "Нашр дар Telegram ноком шуд")}</p>
-                    <p>{publishError}</p>
+                    <p className="text-muted-foreground">{publishError}</p>
                   </div>
                 </div>
               )}

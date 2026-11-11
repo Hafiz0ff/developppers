@@ -103,18 +103,18 @@ export function AdBlock1({ seed, className = "" }: AdBlock1Props) {
 
         {/* VARIANT 2 (30%): BANK ESKHATA MORTGAGE */}
         {variant === "eskhata_mortgage" && (
-          <div className="w-full h-full p-5 flex flex-col justify-between bg-gradient-to-br from-white via-rose-50/40 to-red-50/70 border-t-4 border-t-[#B71C1C]">
+          <div className="w-full h-full p-5 flex flex-col justify-between bg-card border-t-2 border-t-destructive">
             <div className="space-y-4">
               {/* Brand Header */}
               <div className="flex items-center gap-2.5">
-                <div className="w-9 h-9 rounded-xl bg-[#B71C1C] text-white flex items-center justify-center font-bold text-sm shadow-sm">
-                  <Building className="w-5 h-5 text-white" />
+                <div className="w-9 h-9 rounded-xl bg-destructive text-destructive-foreground flex items-center justify-center font-bold text-sm shadow-xs">
+                  <Building className="w-5 h-5" />
                 </div>
                 <div>
-                  <h4 className="font-extrabold text-[#B71C1C] text-sm tracking-tight leading-none">
+                  <h4 className="font-extrabold text-foreground text-sm tracking-tight leading-none">
                     БАНК ЭСХАТА
                   </h4>
-                  <span className="text-[10px] text-slate-500 font-medium">
+                  <span className="text-xs text-muted-foreground font-medium">
                     {tDual("Надёжный банк Таджикистана", "Бонки боэътимоди Тоҷикистон")}
                   </span>
                 </div>
@@ -122,10 +122,10 @@ export function AdBlock1({ seed, className = "" }: AdBlock1Props) {
 
               {/* Headline */}
               <div>
-                <h3 className="text-lg font-extrabold text-slate-900 tracking-tight leading-tight">
+                <h3 className="text-lg font-extrabold text-foreground tracking-tight leading-tight">
                   {tDual("Станьте владельцем своего дома", "Соҳиби хонаи худ шавед")}
                 </h3>
-                <p className="text-xs text-slate-600 mt-1 leading-snug">
+                <p className="text-xs text-muted-foreground mt-1 leading-snug">
                   {tDual(
                     "Выгодная ипотека для покупки квартир и домов на вторичном рынке.",
                     "Ипотекаи мусоид барои хариди хонаҳо дар бозори дуюмдараҷа."
@@ -135,28 +135,28 @@ export function AdBlock1({ seed, className = "" }: AdBlock1Props) {
 
               {/* Terms Pillars */}
               <div className="space-y-2 pt-1 text-xs">
-                <div className="flex items-center justify-between p-2.5 rounded-xl bg-white border border-rose-100 shadow-2xs">
-                  <span className="text-slate-600 flex items-center gap-1.5 font-medium">
-                    <Percent className="w-3.5 h-3.5 text-[#B71C1C]" />
+                <div className="flex items-center justify-between p-2.5 rounded-xl bg-muted/40 border border-border/60 shadow-2xs">
+                  <span className="text-muted-foreground flex items-center gap-1.5 font-medium">
+                    <Percent className="w-3.5 h-3.5 text-primary" />
                     {tDual("Ставка:", "Меъёр:")}
                   </span>
-                  <span className="font-bold text-slate-900 text-sm">16% годовых</span>
+                  <span className="font-bold text-foreground text-sm">16% годовых</span>
                 </div>
 
-                <div className="flex items-center justify-between p-2.5 rounded-xl bg-white border border-rose-100 shadow-2xs">
-                  <span className="text-slate-600 flex items-center gap-1.5 font-medium">
-                    <Wallet className="w-3.5 h-3.5 text-[#B71C1C]" />
+                <div className="flex items-center justify-between p-2.5 rounded-xl bg-muted/40 border border-border/60 shadow-2xs">
+                  <span className="text-muted-foreground flex items-center gap-1.5 font-medium">
+                    <Wallet className="w-3.5 h-3.5 text-primary" />
                     {tDual("Сумма кредита:", "Маблағи қарз:")}
                   </span>
-                  <span className="font-bold text-slate-900">до 500 000 сомони</span>
+                  <span className="font-bold text-foreground">до 500 000 сомони</span>
                 </div>
 
-                <div className="flex items-center justify-between p-2.5 rounded-xl bg-white border border-rose-100 shadow-2xs">
-                  <span className="text-slate-600 flex items-center gap-1.5 font-medium">
-                    <Calendar className="w-3.5 h-3.5 text-[#B71C1C]" />
+                <div className="flex items-center justify-between p-2.5 rounded-xl bg-muted/40 border border-border/60 shadow-2xs">
+                  <span className="text-muted-foreground flex items-center gap-1.5 font-medium">
+                    <Calendar className="w-3.5 h-3.5 text-primary" />
                     {tDual("Срок ипотеки:", "Мӯҳлати ипотека:")}
                   </span>
-                  <span className="font-bold text-slate-900">до 10 лет</span>
+                  <span className="font-bold text-foreground">до 10 лет</span>
                 </div>
               </div>
             </div>
@@ -169,7 +169,7 @@ export function AdBlock1({ seed, className = "" }: AdBlock1Props) {
                 rel="noreferrer"
                 className="block"
               >
-                <Button className="w-full bg-[#B71C1C] hover:bg-[#991414] text-white font-bold text-xs h-10 rounded-[10px] shadow-sm gap-2">
+                <Button className="w-full font-bold text-xs h-10 rounded-xl shadow-xs gap-2">
                   <span>{tDual("Рассчитать ипотеку", "Ҳисоб кардани ипотека")}</span>
                   <ArrowRight className="w-3.5 h-3.5" />
                 </Button>
@@ -180,12 +180,12 @@ export function AdBlock1({ seed, className = "" }: AdBlock1Props) {
 
         {/* VARIANT 3 (30%): ESKHATA INSURANCE */}
         {variant === "eskhata_insurance" && (
-          <div className="w-full h-full p-5 flex flex-col justify-between bg-gradient-to-br from-white via-blue-50/40 to-sky-50/70 border-t-4 border-t-[#0277BD]">
+          <div className="w-full h-full p-5 flex flex-col justify-between bg-card border-t-2 border-t-primary">
             <div className="space-y-4">
               {/* Brand Header */}
               <div className="flex items-center gap-2.5">
-                <div className="w-9 h-9 rounded-xl bg-[#0277BD] text-white flex items-center justify-center font-bold text-sm shadow-sm">
-                  <ShieldCheck className="w-5 h-5 text-white" />
+                <div className="w-9 h-9 rounded-xl bg-primary text-primary-foreground flex items-center justify-center font-bold text-sm shadow-xs">
+                  <ShieldCheck className="w-5 h-5" />
                 </div>
                 <div>
                   <h4 className="font-extrabold text-[#0277BD] text-sm tracking-tight leading-none">

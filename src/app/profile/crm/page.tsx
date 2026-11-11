@@ -81,41 +81,36 @@ interface CollectionItem {
   createdAt: string;
 }
 
-const COLUMNS: { id: LeadStatus; title: string; titleTg: string; color: string; badgeColor: string }[] = [
+const COLUMNS: { id: LeadStatus; title: string; titleTg: string; dotColor: string }[] = [
   {
     id: "new",
     title: "Новые отклики",
     titleTg: "Дархостҳои нав",
-    color: "border-sky-200 bg-sky-50/40",
-    badgeColor: "bg-sky-100 text-sky-800 border-sky-200",
+    dotColor: "bg-primary",
   },
   {
     id: "contacted",
     title: "В работе / Звонок",
     titleTg: "Дар коркард / Занг",
-    color: "border-amber-200 bg-amber-50/40",
-    badgeColor: "bg-amber-100 text-amber-800 border-amber-200",
+    dotColor: "bg-amber-500",
   },
   {
     id: "showing",
     title: "Назначен показ",
     titleTg: "Нишондиҳӣ таъин шуд",
-    color: "border-purple-200 bg-purple-50/40",
-    badgeColor: "bg-purple-100 text-purple-800 border-purple-200",
+    dotColor: "bg-blue-500",
   },
   {
     id: "deal",
     title: "Успешная сделка",
     titleTg: "Муомилаи бобарор",
-    color: "border-emerald-200 bg-emerald-50/40",
-    badgeColor: "bg-emerald-100 text-emerald-800 border-emerald-200",
+    dotColor: "bg-primary",
   },
   {
     id: "closed",
     title: "Архив / Отказ",
     titleTg: "Бойгонӣ / Рад шуд",
-    color: "border-slate-200 bg-slate-50/40",
-    badgeColor: "bg-slate-100 text-slate-700 border-slate-200",
+    dotColor: "bg-muted-foreground/50",
   },
 ];
 
@@ -445,80 +440,80 @@ export default function BrokerCrmPage() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 space-y-6">
         {/* 2. SUMMARY METRICS WIDGET (FINANCIAL PIPELINE) */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <Card className="bg-white border-slate-200/80 shadow-xs">
+          <Card className="bg-card border-border/60 shadow-xs">
             <CardContent className="p-4 flex items-center justify-between">
               <div>
-                <p className="text-xs font-semibold text-slate-500">
+                <p className="text-xs font-semibold text-muted-foreground">
                   {isTg ? "Муомилаҳо дар коркард" : "Сделок в работе"}
                 </p>
-                <div className="text-2xl font-extrabold text-slate-900 mt-1">
+                <div className="text-2xl font-extrabold text-foreground mt-1">
                   {metrics.activeCount}{" "}
-                  <span className="text-xs font-normal text-slate-400">
+                  <span className="text-xs font-normal text-muted-foreground">
                     {isTg ? "мизоҷ" : "клиентов"}
                   </span>
                 </div>
-                <p className="text-[11px] text-emerald-600 font-medium mt-0.5">
+                <p className="text-xs text-primary font-medium mt-0.5">
                   +{metrics.newCount} {isTg ? "нав имрӯз" : "новых сегодня"}
                 </p>
               </div>
-              <div className="h-11 w-11 rounded-xl bg-sky-50 text-sky-600 flex items-center justify-center">
+              <div className="h-10 w-10 rounded-xl bg-muted text-muted-foreground flex items-center justify-center shrink-0">
                 <Users className="h-5 w-5" />
               </div>
             </CardContent>
           </Card>
 
-          <Card className="bg-white border-slate-200/80 shadow-xs">
+          <Card className="bg-card border-border/60 shadow-xs">
             <CardContent className="p-4 flex items-center justify-between">
               <div>
-                <p className="text-xs font-semibold text-slate-500">
+                <p className="text-xs font-semibold text-muted-foreground">
                   {isTg ? "Ҳаҷми муомилаҳо дар гардиш" : "Объем сделок в пайплайне"}
                 </p>
-                <div className="text-2xl font-extrabold text-slate-900 mt-1">
+                <div className="text-2xl font-extrabold text-foreground mt-1">
                   ${metrics.totalActiveVolume.toLocaleString()}
                 </div>
-                <p className="text-[11px] text-slate-400 font-medium mt-0.5">
+                <p className="text-xs text-muted-foreground font-medium mt-0.5">
                   ≈ {(metrics.totalActiveVolume * 10.95).toLocaleString()} TJS
                 </p>
               </div>
-              <div className="h-11 w-11 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center">
+              <div className="h-10 w-10 rounded-xl bg-muted text-muted-foreground flex items-center justify-center shrink-0">
                 <Building className="h-5 w-5" />
               </div>
             </CardContent>
           </Card>
 
-          <Card className="bg-white border-slate-200/80 shadow-xs">
+          <Card className="bg-card border-border/60 shadow-xs">
             <CardContent className="p-4 flex items-center justify-between">
               <div>
-                <p className="text-xs font-semibold text-slate-500">
+                <p className="text-xs font-semibold text-muted-foreground">
                   {isTg ? "Ҳаққи хизмати пешбинишуда" : "Ожидаемая комиссия"}
                 </p>
-                <div className="text-2xl font-extrabold text-emerald-600 mt-1">
+                <div className="text-2xl font-extrabold text-foreground mt-1">
                   ${metrics.potentialCommission.toLocaleString()}
                 </div>
-                <p className="text-[11px] text-emerald-700 font-medium mt-0.5">
+                <p className="text-xs text-muted-foreground font-medium mt-0.5">
                   {isTg ? "бо меъёри даллалӣ ~2%" : "при ставке маклера ~2%"}
                 </p>
               </div>
-              <div className="h-11 w-11 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
+              <div className="h-10 w-10 rounded-xl bg-muted text-muted-foreground flex items-center justify-center shrink-0">
                 <Sparkles className="h-5 w-5" />
               </div>
             </CardContent>
           </Card>
 
-          <Card className="bg-white border-slate-200/80 shadow-xs">
+          <Card className="bg-card border-border/60 shadow-xs">
             <CardContent className="p-4 flex items-center justify-between">
               <div>
-                <p className="text-xs font-semibold text-slate-500">
+                <p className="text-xs font-semibold text-muted-foreground">
                   {isTg ? "Даромад дар ин моҳ" : "Заработано в этом месяце"}
                 </p>
-                <div className="text-2xl font-extrabold text-slate-900 mt-1">
+                <div className="text-2xl font-extrabold text-foreground mt-1">
                   ${metrics.earnedThisMonth.toLocaleString()}
                 </div>
-                <p className="text-[11px] text-emerald-600 font-medium mt-0.5">
+                <p className="text-xs text-primary font-medium mt-0.5">
                   {isTg ? "аз рӯи муомилаҳои анҷомёфта" : "по закрытым сделкам"}
                 </p>
               </div>
-              <div className="h-11 w-11 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center">
+              <div className="h-10 w-10 rounded-xl bg-muted text-muted-foreground flex items-center justify-center shrink-0">
                 <DollarSign className="h-5 w-5" />
               </div>
             </CardContent>
@@ -529,9 +524,9 @@ export default function BrokerCrmPage() {
         {activeTab === "kanban" && (
           <div className="space-y-4">
             {/* Search and filters bar */}
-            <div className="flex flex-col sm:flex-row items-center justify-between gap-3 bg-white p-3 rounded-xl border border-slate-200/80">
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-3 bg-card p-3 rounded-xl border border-border/80">
               <div className="relative w-full sm:w-80">
-                <Search className="h-4 w-4 absolute left-3 top-2.5 text-slate-400" />
+                <Search className="h-4 w-4 absolute left-3 top-2.5 text-muted-foreground" />
                 <Input
                   placeholder={
                     isTg
@@ -540,12 +535,12 @@ export default function BrokerCrmPage() {
                   }
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-9 h-9 text-xs border-slate-200 bg-slate-50 focus:bg-white"
+                  className="pl-9 h-9 text-xs"
                 />
               </div>
 
-              <div className="text-xs text-slate-500 font-medium">
-                💡 <span className="text-slate-700 font-semibold">{isTg ? "Маслиҳат:" : "Подсказка:"}</span>{" "}
+              <div className="text-xs text-muted-foreground font-medium">
+                💡 <span className="text-foreground font-semibold">{isTg ? "Маслиҳат:" : "Подсказка:"}</span>{" "}
                 {isTg
                   ? "Барои иваз кардани вазъи муомила, кортҳоро байни сутунҳо бо муш кашед."
                   : "Перетаскивайте карточки мышкой между колонками для смены статуса сделки."}
@@ -563,20 +558,21 @@ export default function BrokerCrmPage() {
                     key={col.id}
                     onDragOver={handleDragOver}
                     onDrop={(e) => handleDrop(e, col.id)}
-                    className={`rounded-2xl border ${col.color} p-3 flex flex-col min-h-[500px] transition-colors`}
+                    className="rounded-2xl border border-border/60 bg-muted/20 p-3 flex flex-col min-h-[500px] transition-colors"
                   >
                     {/* Column Header */}
                     <div className="flex items-center justify-between mb-3 px-1">
-                      <div className="flex items-center gap-1.5">
-                        <span className="font-bold text-xs text-slate-900 tracking-tight">
+                      <div className="flex items-center gap-2">
+                        <span className={`h-2 w-2 rounded-full ${col.dotColor}`} />
+                        <span className="font-bold text-xs text-foreground tracking-tight">
                           {isTg ? col.titleTg || col.title : col.title}
                         </span>
-                        <Badge className={`${col.badgeColor} text-[10px] px-1.5 py-0 h-4 font-bold`}>
+                        <Badge variant="secondary" className="text-xs px-1.5 py-0 h-4 font-bold">
                           {columnLeads.length}
                         </Badge>
                       </div>
 
-                      <span className="text-[10px] font-mono text-slate-500 font-medium">
+                      <span className="text-xs font-mono text-muted-foreground font-medium">
                         ${colSumBudget.toLocaleString()}
                       </span>
                     </div>

@@ -170,17 +170,17 @@ export default function ProfileSettingsPage() {
 
       <main className="max-w-4xl mx-auto px-4 sm:px-6 pt-6 sm:pt-8 space-y-6">
         {/* 2. USER OVERVIEW CARD */}
-        <Card className="bg-white border-slate-200/80 shadow-xs rounded-2xl overflow-hidden">
-          <CardHeader className="p-5 pb-3 border-b border-slate-100 flex flex-row items-center justify-between">
+        <Card className="bg-card border-border/80 shadow-xs rounded-2xl overflow-hidden">
+          <CardHeader className="p-5 pb-3 border-b border-border/60 flex flex-row items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="h-12 w-12 rounded-xl bg-emerald-100 text-emerald-800 font-bold flex items-center justify-center text-base">
+              <div className="h-12 w-12 rounded-xl bg-muted text-foreground font-bold flex items-center justify-center text-base">
                 РА
               </div>
               <div>
-                <CardTitle className="text-base font-bold text-slate-900">
+                <CardTitle className="text-base font-bold text-foreground">
                   Рустам Аҳмедов
                 </CardTitle>
-                <CardDescription className="text-xs text-slate-500">
+                <CardDescription className="text-xs text-muted-foreground">
                   {isTg
                     ? "Мутахассиси амвол • Агентии «Суғд-Инвест» (ш. Хуҷанд)"
                     : "Риелтор • Агентство «Сугд-Инвест» (г. Худжанд)"}
@@ -188,8 +188,8 @@ export default function ProfileSettingsPage() {
               </div>
             </div>
 
-            <Badge className="bg-emerald-50 text-emerald-700 border-emerald-200 text-xs font-semibold gap-1">
-              <ShieldCheck className="h-3.5 w-3.5 text-emerald-600" />
+            <Badge variant="secondary" className="text-xs font-semibold gap-1">
+              <ShieldCheck className="h-3.5 w-3.5 text-primary" />
               {isTg ? "Тасдиқшуда" : "Верифицирован"}
             </Badge>
           </CardHeader>
@@ -221,23 +221,23 @@ export default function ProfileSettingsPage() {
         </Card>
 
         {/* 2.5. LINKED SOCIAL ACCOUNTS (GOOGLE & APPLE) AS COMPLEMENT TO PHONE */}
-        <Card className="bg-white border-slate-200/80 shadow-xs rounded-2xl overflow-hidden">
-          <CardHeader className="p-5 sm:p-6 pb-4 border-b border-slate-100 bg-gradient-to-r from-emerald-50/40 via-white to-white">
+        <Card className="bg-card border-border/80 shadow-xs rounded-2xl overflow-hidden">
+          <CardHeader className="p-5 sm:p-6 pb-4 border-b border-border/60 bg-muted/20">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
               <div className="flex items-center gap-3">
-                <div className="h-11 w-11 rounded-xl bg-emerald-600 text-white flex items-center justify-center shadow-md shadow-emerald-600/20">
+                <div className="h-10 w-10 rounded-xl bg-primary text-primary-foreground flex items-center justify-center shadow-xs">
                   <ShieldCheck className="h-5 w-5" />
                 </div>
                 <div>
                   <div className="flex items-center gap-2">
-                    <CardTitle className="text-lg font-bold text-slate-900">
+                    <CardTitle className="text-lg font-bold text-foreground">
                       {isTg ? "Пайвасти ҳисобҳо (Google & Apple)" : "Связанные аккаунты (Google & Apple)"}
                     </CardTitle>
-                    <Badge className="bg-emerald-50 text-emerald-700 border-emerald-200 text-[10px] font-bold">
+                    <Badge variant="secondary" className="text-xs font-semibold">
                       {isTg ? "Иловагӣ" : "Дополнение к номеру"}
                     </Badge>
                   </div>
-                  <CardDescription className="text-xs text-slate-500 mt-0.5">
+                  <CardDescription className="text-xs text-muted-foreground mt-0.5">
                     {isTg
                       ? "Пайвасти ҳисобҳо ҳамчун усули иловагӣ барои воридшавии зуд дар дигар дастгоҳҳо хизмат мекунад. Рақами асосӣ барои эълонҳо тағйирнопазир мемонад."
                       : "Дополнительные способы авторизации для быстрого входа. Основным идентификатором для размещения объявлений всегда остаётся ваш подтверждённый номер."}
@@ -249,20 +249,20 @@ export default function ProfileSettingsPage() {
 
           <CardContent className="p-5 sm:p-6 space-y-4">
             {/* Primary Verified Phone Row */}
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3.5 rounded-xl border border-emerald-100 bg-emerald-50/30">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3.5 rounded-xl border border-border/60 bg-muted/20">
               <div className="flex items-center gap-3">
-                <div className="h-9 w-9 rounded-lg bg-emerald-100 text-emerald-800 flex items-center justify-center shrink-0">
+                <div className="h-9 w-9 rounded-lg bg-muted text-muted-foreground flex items-center justify-center shrink-0">
                   <Smartphone className="h-4 w-4" />
                 </div>
                 <div>
                   <div className="flex items-center gap-2">
-                    <span className="text-xs font-bold text-slate-900 font-mono">+992 92 777 00 22</span>
-                    <Badge className="bg-emerald-600 text-white border-transparent text-[10px] font-semibold gap-1">
-                      <CheckCircle2 className="h-3 w-3" />
+                    <span className="text-xs font-bold text-foreground font-mono">+992 92 777 00 22</span>
+                    <Badge variant="secondary" className="text-xs font-semibold gap-1">
+                      <CheckCircle2 className="h-3 w-3 text-primary" />
                       {isTg ? "Асосӣ (Тасдиқшуда)" : "Основной (Подтверждён)"}
                     </Badge>
                   </div>
-                  <p className="text-[11px] text-slate-500 mt-0.5">
+                  <p className="text-xs text-muted-foreground mt-0.5">
                     {isTg
                       ? "Ҳамаи эълонҳо ва тамосҳо ба ин рақам сабт мешаванд"
                       : "Все объявления и контакты привязаны к этому номеру"}
@@ -357,25 +357,25 @@ export default function ProfileSettingsPage() {
         </Card>
 
         {/* 3. TELEGRAM INTEGRATION CARD */}
-        <Card className="bg-white border-slate-200/80 shadow-xs rounded-2xl overflow-hidden">
-          <CardHeader className="p-5 sm:p-6 pb-4 border-b border-slate-100 bg-gradient-to-r from-sky-50/50 via-white to-white">
+        <Card className="bg-card border-border/80 shadow-xs rounded-2xl overflow-hidden">
+          <CardHeader className="p-5 sm:p-6 pb-4 border-b border-border/60 bg-muted/20">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
               <div className="flex items-center gap-3">
-                <div className="h-11 w-11 rounded-xl bg-sky-500 text-white flex items-center justify-center shadow-md shadow-sky-500/20">
+                <div className="h-10 w-10 rounded-xl bg-muted text-muted-foreground flex items-center justify-center">
                   <Send className="h-5 w-5" />
                 </div>
                 <div>
                   <div className="flex items-center gap-2">
-                    <CardTitle className="text-lg font-bold text-slate-900">
+                    <CardTitle className="text-lg font-bold text-foreground">
                       {isTg ? "Огоҳиномаҳои фаврии Telegram" : "Мгновенные Telegram-уведомления"}
                     </CardTitle>
                     {isConnected ? (
-                      <Badge className="bg-emerald-50 text-emerald-700 border-emerald-200 text-[10px] font-bold gap-1">
-                        <CheckCircle2 className="h-3 w-3 text-emerald-600" />
+                      <Badge variant="secondary" className="text-xs font-semibold gap-1">
+                        <CheckCircle2 className="h-3 w-3 text-primary" />
                         {isTg ? "Пайваст шуд" : "Подключено"}
                       </Badge>
                     ) : (
-                      <Badge variant="secondary" className="bg-slate-100 text-slate-600 text-[10px] font-semibold">
+                      <Badge variant="secondary" className="text-xs font-semibold">
                         {isTg ? "Танзим нашудааст" : "Не настроено"}
                       </Badge>
                     )}

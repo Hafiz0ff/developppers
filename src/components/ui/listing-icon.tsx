@@ -822,22 +822,20 @@ export function AmenityTile({
       {/* Squircle Card Container */}
       <div
         className={cn(
-          "w-20 h-20 sm:w-24 sm:h-24 rounded-2xl sm:rounded-3xl bg-white dark:bg-slate-900",
+          "w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-card",
           "flex items-center justify-center p-3 relative transition-all duration-200 select-none",
-          // Soft, diffused ambient drop shadow as shown in reference design
-          "shadow-[0_12px_28px_-6px_rgba(0,0,0,0.06),0_8px_16px_-8px_rgba(0,0,0,0.04)]",
-          "border border-slate-100/90 dark:border-slate-800",
+          "shadow-xs border border-border/80",
           selectable && [
-            "hover:shadow-[0_16px_32px_-6px_rgba(0,0,0,0.1)] hover:-translate-y-0.5 active:translate-y-0",
+            "hover:shadow-md hover:-translate-y-0.5 active:translate-y-0",
             selected
-              ? "ring-2 ring-emerald-500 border-emerald-400/80 bg-emerald-50/20 dark:bg-emerald-950/20 shadow-emerald-500/10"
-              : "hover:border-slate-200 dark:hover:border-slate-700",
+              ? "ring-2 ring-primary border-primary/80 bg-primary/5"
+              : "hover:border-border",
           ]
         )}
       >
         {/* Selection checkmark badge in top-right corner */}
         {selectable && selected && (
-          <div className="absolute top-1.5 right-1.5 sm:top-2 sm:right-2 h-5 w-5 rounded-full bg-emerald-600 text-white flex items-center justify-center shadow-xs animate-in zoom-in-75 duration-150">
+          <div className="absolute top-1.5 right-1.5 sm:top-2 sm:right-2 h-5 w-5 rounded-full bg-primary text-primary-foreground flex items-center justify-center shadow-xs animate-in zoom-in-75 duration-150">
             <Check className="h-3 w-3 stroke-[3]" />
           </div>
         )}
@@ -851,8 +849,8 @@ export function AmenityTile({
           className={cn(
             "w-9 h-9 sm:w-11 sm:h-11 transition-colors",
             selected
-              ? "text-emerald-700 dark:text-emerald-400"
-              : "text-[#0F172A] dark:text-slate-100 group-hover:text-emerald-600"
+              ? "text-primary"
+              : "text-foreground group-hover:text-primary"
           )}
         />
       </div>
@@ -860,10 +858,10 @@ export function AmenityTile({
       {/* Label Text Centered Underneath */}
       <span
         className={cn(
-          "mt-2 sm:mt-2.5 text-xs sm:text-[13px] font-medium text-center leading-snug line-clamp-2 max-w-[84px] sm:max-w-[104px] transition-colors",
+          "mt-2 sm:mt-2.5 text-xs font-medium text-center leading-snug line-clamp-2 max-w-[84px] sm:max-w-[104px] transition-colors",
           selected
-            ? "text-emerald-900 dark:text-emerald-300 font-semibold"
-            : "text-slate-700 dark:text-slate-200 group-hover:text-slate-900 dark:group-hover:text-white"
+            ? "text-primary font-semibold"
+            : "text-muted-foreground group-hover:text-foreground"
         )}
       >
         {label}

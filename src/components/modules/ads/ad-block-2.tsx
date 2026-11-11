@@ -107,18 +107,18 @@ export function AdBlock2({ seed, className = "" }: AdBlock2Props) {
 
         {/* VARIANT 2 (60%): ARTEL APPLIANCES + MORTGAGE/FURNISHING COMBO */}
         {variant === "artel_mortgage_bundle" && (
-          <div className="w-full h-full p-5 flex flex-col justify-between bg-gradient-to-br from-white via-emerald-50/30 to-teal-50/60 border-t-4 border-t-emerald-700">
+          <div className="w-full h-full p-5 flex flex-col justify-between bg-card border-t-2 border-t-primary">
             <div className="space-y-4">
               {/* Brand Header */}
               <div className="flex items-center gap-2.5">
-                <div className="w-9 h-9 rounded-xl bg-emerald-700 text-white flex items-center justify-center font-bold text-sm shadow-sm">
-                  <Sparkles className="w-5 h-5 text-white" />
+                <div className="w-9 h-9 rounded-xl bg-primary text-primary-foreground flex items-center justify-center font-bold text-sm shadow-xs">
+                  <Sparkles className="w-5 h-5" />
                 </div>
                 <div>
-                  <h4 className="font-extrabold text-emerald-800 text-sm tracking-tight leading-none font-mono">
+                  <h4 className="font-extrabold text-foreground text-sm tracking-tight leading-none font-mono">
                     ARTEL · ТАДЖИКИСТАН
                   </h4>
-                  <span className="text-[10px] text-slate-500 font-medium">
+                  <span className="text-xs text-muted-foreground font-medium">
                     {tDual("Бытовая техника для каждого", "Техникаи маишӣ барои ҳар як оила")}
                   </span>
                 </div>
@@ -126,13 +126,13 @@ export function AdBlock2({ seed, className = "" }: AdBlock2Props) {
 
               {/* Headline */}
               <div>
-                <h3 className="text-base font-extrabold text-slate-900 tracking-tight leading-tight">
+                <h3 className="text-base font-extrabold text-foreground tracking-tight leading-tight">
                   {tDual(
                     "Обустройте квартиру выгодно: техника + ипотека",
                     "Хонаро бо манфиат обод кунед: техника + ипотека"
                   )}
                 </h3>
-                <p className="text-xs text-slate-600 mt-1 leading-snug">
+                <p className="text-xs text-muted-foreground mt-1 leading-snug">
                   {tDual(
                     "Специальная программа для покупателей вторичного жилья с партнёрскими банками.",
                     "Барномаи махсус барои харидорони амвол бо бонкҳои шарик."
@@ -142,33 +142,33 @@ export function AdBlock2({ seed, className = "" }: AdBlock2Props) {
 
               {/* Special Partner Terms */}
               <div className="space-y-2 text-xs">
-                <div className="flex items-center justify-between p-2 rounded-xl bg-white border border-emerald-100 shadow-2xs">
-                  <span className="text-slate-600 flex items-center gap-1.5 font-medium">
-                    <Percent className="w-3.5 h-3.5 text-emerald-700" />
+                <div className="flex items-center justify-between p-2 rounded-xl bg-muted/40 border border-border/60 shadow-2xs">
+                  <span className="text-muted-foreground flex items-center gap-1.5 font-medium">
+                    <Percent className="w-3.5 h-3.5 text-primary" />
                     {tDual("Ипотека / кредит:", "Ипотека / қарз:")}
                   </span>
-                  <span className="font-bold text-slate-900">16% годовых</span>
+                  <span className="font-bold text-foreground">16% годовых</span>
                 </div>
 
-                <div className="flex items-center justify-between p-2 rounded-xl bg-white border border-emerald-100 shadow-2xs">
-                  <span className="text-slate-600 flex items-center gap-1.5 font-medium">
-                    <Wallet className="w-3.5 h-3.5 text-emerald-700" />
+                <div className="flex items-center justify-between p-2 rounded-xl bg-muted/40 border border-border/60 shadow-2xs">
+                  <span className="text-muted-foreground flex items-center gap-1.5 font-medium">
+                    <Wallet className="w-3.5 h-3.5 text-primary" />
                     {tDual("Лимит:", "Маблағ:")}
                   </span>
-                  <span className="font-bold text-slate-900">до 500 000 сомони</span>
+                  <span className="font-bold text-foreground">до 500 000 сомони</span>
                 </div>
 
-                <div className="flex items-center justify-between p-2 rounded-xl bg-white border border-emerald-100 shadow-2xs">
-                  <span className="text-slate-600 flex items-center gap-1.5 font-medium">
-                    <Calendar className="w-3.5 h-3.5 text-emerald-700" />
+                <div className="flex items-center justify-between p-2 rounded-xl bg-muted/40 border border-border/60 shadow-2xs">
+                  <span className="text-muted-foreground flex items-center gap-1.5 font-medium">
+                    <Calendar className="w-3.5 h-3.5 text-primary" />
                     {tDual("Срок:", "Мӯҳлат:")}
                   </span>
-                  <span className="font-bold text-slate-900">до 10 лет</span>
+                  <span className="font-bold text-foreground">до 10 лет</span>
                 </div>
               </div>
 
-              <div className="flex items-center gap-2 text-[11px] text-emerald-800 font-medium bg-emerald-50/80 p-2 rounded-lg border border-emerald-100">
-                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+              <div className="flex items-center gap-2 text-xs text-primary font-medium bg-primary/10 p-2 rounded-lg border border-primary/20">
+                <CheckCircle2 className="w-3.5 h-3.5 text-primary shrink-0" />
                 <span>{tDual("Скидка до 15% на комплект техники для новосёлов", "Тахфифи то 15% барои маҷмӯи техника")}</span>
               </div>
             </div>
@@ -181,7 +181,7 @@ export function AdBlock2({ seed, className = "" }: AdBlock2Props) {
                 rel="noreferrer"
                 className="block"
               >
-                <Button className="w-full bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs h-10 rounded-[10px] shadow-sm gap-2">
+                <Button className="w-full font-bold text-xs h-10 rounded-xl shadow-xs gap-2">
                   <span>{tDual("Каталог техники Artel", "Каталоги техникаи Artel")}</span>
                   <ArrowRight className="w-3.5 h-3.5" />
                 </Button>

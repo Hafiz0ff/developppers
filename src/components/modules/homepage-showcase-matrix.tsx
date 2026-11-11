@@ -64,17 +64,13 @@ export function HomepageShowcaseMatrix({ activeCity = "khujand" }: ShowcaseSecti
               href={item.href}
               className="group flex flex-col items-center select-none snap-start focus:outline-none"
             >
-              {/* Tahoe Live Tile Card: Exactly W: 156px, H: 213px, Radius: 33px, Padding: 12px (AC-02) */}
+              {/* Tahoe Live Tile Card: Exactly W: 156px, H: 213px, Radius: 24px, Padding: 12px (AC-02) */}
               <motion.div
-                whileHover={{ y: -6, scale: 1.02 }}
+                whileHover={{ y: -4, scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 transition={{ type: "spring", stiffness: 350, damping: 25 }}
-                className="relative w-[156px] h-[213px] rounded-[33px] p-[12px] glass-card flex flex-col items-center justify-between overflow-hidden cursor-pointer transition-colors duration-300 group-hover:border-emerald-500/40 group-hover:shadow-[0_20px_40px_-10px_rgba(16,185,129,0.18)]"
+                className="relative w-[156px] h-[213px] rounded-2xl p-3 bg-card border border-border/80 shadow-xs flex flex-col items-center justify-between overflow-hidden cursor-pointer transition-all duration-200 hover:border-border hover:shadow-md"
               >
-                {/* Ambient Soft Color Light on Hover */}
-                <div
-                  className={`absolute -top-12 -right-12 w-28 h-28 rounded-full bg-gradient-to-br ${item.accentGlow} blur-2xl pointer-events-none group-hover:scale-150 transition-transform duration-500`}
-                />
 
                 {/* 3D Illustration: Centered, Exactly 76 × 76 px (AC-02, AC-03) */}
                 <div className="w-[76px] h-[76px] relative z-10 my-auto flex items-center justify-center">

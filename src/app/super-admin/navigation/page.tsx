@@ -177,17 +177,17 @@ export default function SuperAdminNavigationPage() {
   const getTypeBadge = (itemType: MenuItemType) => {
     switch (itemType) {
       case "group-header":
-        return <Badge className="bg-amber-100 text-amber-800 border-amber-300">Заголовок группы</Badge>;
+        return <Badge variant="secondary" className="text-xs font-medium">Заголовок группы</Badge>;
       case "link-to-category":
-        return <Badge className="bg-emerald-100 text-emerald-800 border-emerald-300">Категория</Badge>;
+        return <Badge variant="secondary" className="text-xs font-medium">Категория</Badge>;
       case "link-to-facet":
-        return <Badge className="bg-blue-100 text-blue-800 border-blue-300">Фасет</Badge>;
+        return <Badge variant="secondary" className="text-xs font-medium">Фасет</Badge>;
       case "link-to-catalog":
-        return <Badge className="bg-purple-100 text-purple-800 border-purple-300">Каталог</Badge>;
+        return <Badge variant="secondary" className="text-xs font-medium">Каталог</Badge>;
       case "action-button":
-        return <Badge className="bg-rose-100 text-rose-800 border-rose-300">CTA Кнопка</Badge>;
+        return <Badge variant="secondary" className="text-xs font-medium">CTA Кнопка</Badge>;
       default:
-        return <Badge variant="outline">Ссылка</Badge>;
+        return <Badge variant="outline" className="text-xs font-medium">Ссылка</Badge>;
     }
   };
 

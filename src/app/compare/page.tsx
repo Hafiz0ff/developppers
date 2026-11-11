@@ -183,7 +183,7 @@ export default function ComparePage() {
             <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
               {isTg ? "Муқоисаи амволи ғайриманқул" : "Сравнение объектов недвижимости"}
             </h1>
-            <Badge className="bg-blue-600 hover:bg-blue-600 text-white font-bold text-xs px-2.5 py-0.5 rounded-full">
+            <Badge variant="secondary" className="font-semibold text-xs px-2.5 py-0.5 rounded-full">
               {compareCount} / {maxItems}
             </Badge>
           </div>
@@ -197,7 +197,7 @@ export default function ComparePage() {
         {/* Toolbar Controls */}
         <div className="flex flex-wrap items-center gap-2.5 w-full lg:w-auto">
           {/* Difference Switch */}
-          <div className="flex items-center gap-2 bg-slate-100/90 rounded-xl px-3 py-1.5 border border-slate-200 text-xs font-medium text-slate-800">
+          <div className="flex items-center gap-2 bg-muted/60 rounded-xl px-3 py-1.5 border border-border/60 text-xs font-medium text-foreground">
             <Switch
               size="sm"
               checked={onlyDifferences}
@@ -208,9 +208,9 @@ export default function ComparePage() {
               {isTg ? "Танҳо фарқиятҳо" : "Только различия"}
             </label>
             {onlyDifferences && (
-              <span className="bg-blue-100 text-blue-700 font-bold text-[10px] px-1.5 py-0.5 rounded-md">
+              <Badge variant="secondary" className="font-bold text-xs px-1.5 py-0.5 rounded-md">
                 {differingKeys.size}
-              </span>
+              </Badge>
             )}
           </div>
 
@@ -318,17 +318,17 @@ export default function ComparePage() {
                   {/* Badges for Best Values */}
                   <div className="flex flex-wrap gap-1 mb-2">
                     {isLowestPrice && (
-                      <Badge className="bg-emerald-500/15 text-emerald-700 border border-emerald-300/80 text-[10px] font-bold">
+                      <Badge variant="secondary" className="text-xs font-semibold">
                         ★ {isTg ? "Нархи беҳтарин" : "Лучшая цена"}
                       </Badge>
                     )}
                     {isLowestPpm && (
-                      <Badge className="bg-blue-500/15 text-blue-700 border border-blue-300/80 text-[10px] font-bold">
+                      <Badge variant="secondary" className="text-xs font-semibold">
                         ✦ {isTg ? "Барои 1 м² арзон" : "Выгодный м²"}
                       </Badge>
                     )}
                     {isLargestArea && (
-                      <Badge className="bg-purple-500/15 text-purple-700 border border-purple-300/80 text-[10px] font-bold">
+                      <Badge variant="secondary" className="text-xs font-semibold">
                         ⚑ {isTg ? "Масоҳати калонтарин" : "Макс. площадь"}
                       </Badge>
                     )}
@@ -453,8 +453,8 @@ export default function ComparePage() {
                 <span
                   className={`inline-flex items-center gap-1 text-xs font-semibold px-2 py-0.5 rounded-md ${
                     item.isNegotiable
-                      ? "bg-emerald-50 text-emerald-700 border border-emerald-200"
-                      : "bg-slate-100 text-slate-600"
+                      ? "bg-primary/10 text-primary border border-primary/20"
+                      : "bg-muted text-muted-foreground"
                   }`}
                 >
                   {item.isNegotiable
@@ -771,7 +771,7 @@ function TableRow({
   return (
     <>
       {/* Parameter label cell */}
-      <div className="flex items-center text-xs font-semibold text-slate-600 bg-slate-50/70 rounded-xl px-3 py-2.5 border border-slate-100">
+      <div className="flex items-center text-xs font-semibold text-muted-foreground bg-muted/40 rounded-xl px-3 py-2.5 border border-border/60">
         <span>{label}</span>
       </div>
 
@@ -779,7 +779,7 @@ function TableRow({
       {items.map((item) => (
         <div
           key={item.id}
-          className="flex items-center bg-white rounded-xl px-3 py-2.5 border border-slate-200/70 shadow-2xs"
+          className="flex items-center bg-card rounded-xl px-3 py-2.5 border border-border/60 shadow-2xs text-foreground"
         >
           {render(item)}
         </div>

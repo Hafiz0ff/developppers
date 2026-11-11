@@ -508,7 +508,7 @@ export function ProjectConstructionTimeline({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.3 }}
-            className="relative border-l-2 border-emerald-500/30 dark:border-emerald-500/25 ml-4 sm:ml-6 pl-6 sm:pl-8 space-y-8 my-4"
+            className="relative border-l border-border/80 ml-4 sm:ml-6 pl-6 sm:pl-8 space-y-8 my-4"
           >
             {allChronologicalReports.map((report, idx) => {
               const repTitle = isTg && report.titleTg ? report.titleTg : report.title;
@@ -516,21 +516,21 @@ export function ProjectConstructionTimeline({
 
               return (
                 <div key={idx} className="relative group">
-                  {/* Glowing Milestone Marker Node (uiverse inspired) */}
-                  <div className="absolute -left-[35px] sm:-left-[43px] top-1.5 flex h-6 w-6 sm:h-7 sm:w-7 items-center justify-center rounded-full bg-white dark:bg-slate-900 border-2 border-emerald-500 shadow-[0_0_12px_rgba(16,185,129,0.5)] text-emerald-600 transition-transform group-hover:scale-125 z-10">
-                    <div className="h-2 w-2 rounded-full bg-emerald-500" />
+                  {/* Clean Milestone Marker Node */}
+                  <div className="absolute -left-[31px] sm:-left-[39px] top-2 flex h-5 w-5 sm:h-6 sm:w-6 items-center justify-center rounded-full bg-background border-2 border-primary text-primary transition-transform group-hover:scale-110 z-10 shadow-xs">
+                    <div className="h-2 w-2 rounded-full bg-primary" />
                   </div>
 
-                  {/* Report Glass Card */}
-                  <div className="glass-card rounded-2xl p-5 sm:p-6 space-y-4 hover:border-emerald-500/40 hover:shadow-[0_16px_36px_-10px_rgba(16,185,129,0.15)] transition-all duration-300">
+                  {/* Report Card */}
+                  <div className="bg-card rounded-2xl p-5 sm:p-6 space-y-4 border border-border/80 shadow-xs hover:border-border hover:shadow-md transition-all duration-200">
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                       <div className="flex items-center gap-2 flex-wrap">
-                        <Badge variant="frostedLight" className="rounded-xl px-2.5 py-1 text-xs font-mono font-bold">
-                          <Calendar className="h-3 w-3 mr-1 text-emerald-600" />
+                        <Badge variant="secondary" className="rounded-lg px-2.5 py-1 text-xs font-mono font-semibold">
+                          <Calendar className="h-3 w-3 mr-1 text-muted-foreground" />
                           {report.date}
                         </Badge>
                         {report.percentage && (
-                          <Badge variant="emerald" className="rounded-xl px-2 py-0.5 text-[11px] font-bold">
+                          <Badge variant="outline" className="rounded-lg px-2 py-0.5 text-xs font-semibold">
                             {report.percentage}% {tDual("готовности", "омодагӣ")}
                           </Badge>
                         )}

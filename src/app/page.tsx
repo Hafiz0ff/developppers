@@ -418,13 +418,13 @@ export default function HomePage() {
             </p>
           </div>
 
-          {/* 2. APPLE-STYLE LIQUID GLASS SEARCH CARD (Luminous Transparent Glass: 2.5% Opacity + Crisp Glowing Edges) */}
+          {/* 2. SEARCH CARD (Tier 2/3 Clean Material & Strict Hierarchy) */}
           <div className="relative mx-auto w-full max-w-5xl">
-            <div className="bg-white/[0.025] backdrop-blur-2xl backdrop-saturate-150 border border-white/20 rounded-3xl p-5 sm:p-6 shadow-[0_20px_50px_rgba(0,0,0,0.20),inset_0_1px_1.5px_rgba(255,255,255,0.35)]">
-              {/* Segment Tabs (Apple Liquid Glass Style with Dynamic Word-Length Underline & Forward Scale) */}
+            <div className="bg-card/95 backdrop-blur-xl border border-border/80 rounded-3xl p-5 sm:p-6 shadow-xl text-foreground">
+              {/* Segment Tabs */}
               <div
                 onMouseLeave={() => setHoveredSearchTab(null)}
-                className="flex items-center gap-1 sm:gap-2 overflow-x-auto overflow-y-hidden [scrollbar-width:none] [&::-webkit-scrollbar]:hidden pb-1 mb-5 border-b border-white/20 select-none"
+                className="flex items-center gap-1 sm:gap-2 overflow-x-auto overflow-y-hidden [scrollbar-width:none] [&::-webkit-scrollbar]:hidden pb-1 mb-5 border-b border-border/60 select-none"
               >
                 {[
                   { id: "new", label: t.catalog.tabNew, icon: Building2 },
@@ -449,33 +449,29 @@ export default function HomePage() {
                       <motion.div
                         whileHover={{ scale: 1.05, y: -1 }}
                         transition={{ type: "spring", stiffness: 450, damping: 25 }}
-                        className="relative z-10 flex items-center gap-2 text-sm font-semibold whitespace-nowrap text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]"
+                        className={`relative z-10 flex items-center gap-2 text-sm font-semibold whitespace-nowrap transition-colors ${
+                          isHighlighted ? "text-primary font-bold" : "text-muted-foreground hover:text-foreground"
+                        }`}
                       >
-                        <Icon
-                          className={`h-4 w-4 transition-colors ${
-                            isHighlighted
-                              ? "text-emerald-300 drop-shadow-[0_0_8px_rgba(52,211,153,0.9)]"
-                              : "text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]"
-                          }`}
-                        />
-                        <span className="drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]">{tab.label}</span>
+                        <Icon className="h-4 w-4" />
+                        <span>{tab.label}</span>
                       </motion.div>
 
-                      {/* Soft Glass Hover Backing */}
+                      {/* Soft Hover Backing */}
                       {isHovered && (
                         <motion.div
                           layoutId="search-tab-hover-bg"
                           transition={{ type: "spring", stiffness: 450, damping: 32 }}
-                          className="absolute inset-0 rounded-xl bg-white/15 dark:bg-slate-800/40 backdrop-blur-md border border-white/25 -z-0"
+                          className="absolute inset-0 rounded-xl bg-muted/60 -z-0"
                         />
                       )}
 
-                      {/* Apple-Style Dynamic Glowing Underline adapting to exact word length */}
+                      {/* Dynamic Clean Underline */}
                       {isHighlighted && (
                         <motion.div
                           layoutId="search-tab-underline"
                           transition={{ type: "spring", stiffness: 450, damping: 32 }}
-                          className="absolute -bottom-1 left-2.5 right-2.5 h-[3px] rounded-full bg-gradient-to-r from-emerald-400 via-teal-300 to-emerald-400 shadow-[0_0_12px_rgba(52,211,153,0.9),0_2px_4px_rgba(0,0,0,0.3)] z-20"
+                          className="absolute -bottom-1 left-2.5 right-2.5 h-[2px] rounded-full bg-primary z-20"
                         />
                       )}
                     </button>
@@ -483,16 +479,16 @@ export default function HomePage() {
                 })}
               </div>
 
-              {/* Filter Inputs Grid - Unified Sleek Height h-[38px] & Header-Style Animated Dropdown */}
+              {/* Filter Inputs Grid - Unified Sleek Height h-[38px] */}
               <div className="grid grid-cols-1 items-start gap-3 sm:grid-cols-2 lg:grid-cols-[minmax(180px,1fr)_minmax(220px,1.2fr)_minmax(200px,1.1fr)_minmax(190px,1.1fr)]">
-                {/* 1. City / Region - Header-Style Animated Dropdown & Clean Frosted Glass */}
+                {/* 1. City / Region */}
                 <div className="flex flex-col min-w-0">
-                  <label className="h-5 flex items-center text-xs font-bold text-white mb-2 tracking-wide select-none drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]">
+                  <label className="h-5 flex items-center text-xs font-semibold text-muted-foreground mb-2 tracking-wide select-none">
                     {t.catalog.city}
                   </label>
                   <DropdownMenu>
-                    <DropdownMenuTrigger className="flex h-[38px] w-full items-center justify-between gap-1.5 rounded-2xl border border-white/15 bg-white/[0.05] hover:bg-white/10 active:bg-white/15 backdrop-blur-xl px-4 text-white text-xs font-semibold shadow-[inset_0_1px_1px_rgba(255,255,255,0.3)] transition-all cursor-pointer outline-hidden select-none box-border">
-                      <span className="truncate drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]">
+                    <DropdownMenuTrigger className="flex h-[38px] w-full items-center justify-between gap-1.5 rounded-xl border border-border/80 bg-background hover:bg-muted text-foreground text-xs font-semibold shadow-2xs transition-all cursor-pointer outline-hidden select-none box-border px-4">
+                      <span className="truncate">
                         {selectedCity === "all"
                           ? t.catalog.allCities
                           : (() => {
@@ -500,23 +496,23 @@ export default function HomePage() {
                               return language === "tg" ? c?.nameTj : language === "en" ? (c?.nameEn || c?.nameRu) : c?.nameRu || "Худжанд";
                             })()}
                       </span>
-                      <ChevronDown className="h-3.5 w-3.5 text-white shrink-0 drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]" />
+                      <ChevronDown className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
                     </DropdownMenuTrigger>
                     <DropdownMenuContent
                       align="start"
                       sideOffset={6}
-                      className="w-64 max-h-80 overflow-y-auto p-1.5 rounded-2xl glass-dropdown-panel z-50 text-white ring-0 [scrollbar-width:thin] [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-thumb]:bg-white/20 [&::-webkit-scrollbar-thumb]:rounded-full"
+                      className="w-64 max-h-80 overflow-y-auto p-1.5 rounded-xl border border-border/80 bg-background shadow-lg z-50 text-foreground ring-0"
                     >
                       <DropdownMenuItem
                         onClick={() => setSelectedCity("all")}
-                        className={`cursor-pointer text-xs flex items-center justify-between px-3 py-2 rounded-xl transition-all ${
+                        className={`cursor-pointer text-xs flex items-center justify-between px-3 py-2 rounded-lg transition-all ${
                           selectedCity === "all"
-                            ? "text-white bg-emerald-500/25 border border-emerald-400/50 font-bold shadow-[0_0_12px_rgba(16,185,129,0.35),inset_0_1px_1px_rgba(255,255,255,0.3)]"
-                            : "text-white/90 hover:text-white hover:bg-white/15 focus:text-white focus:bg-white/15 font-semibold"
+                            ? "text-primary bg-primary/10 font-bold"
+                            : "text-muted-foreground hover:text-foreground hover:bg-muted font-medium"
                         }`}
                       >
-                        <span className="drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]">{t.catalog.allCities}</span>
-                        {selectedCity === "all" && <Check className="h-3.5 w-3.5 text-emerald-300 drop-shadow-[0_0_6px_rgba(52,211,153,0.9)]" />}
+                        <span>{t.catalog.allCities}</span>
+                        {selectedCity === "all" && <Check className="h-3.5 w-3.5 text-primary" />}
                       </DropdownMenuItem>
                       {SOGD_CITIES.map((c) => {
                         const isCitySelected = selectedCity === c.value;
@@ -524,16 +520,16 @@ export default function HomePage() {
                           <DropdownMenuItem
                             key={c.value}
                             onClick={() => setSelectedCity(c.value)}
-                            className={`cursor-pointer text-xs flex items-center justify-between px-3 py-2 rounded-xl transition-all mt-0.5 ${
+                            className={`cursor-pointer text-xs flex items-center justify-between px-3 py-2 rounded-lg transition-all mt-0.5 ${
                               isCitySelected
-                                ? "text-white bg-emerald-500/25 border border-emerald-400/50 font-bold shadow-[0_0_12px_rgba(16,185,129,0.35),inset_0_1px_1px_rgba(255,255,255,0.3)]"
-                                : "text-white/90 hover:text-white hover:bg-white/15 focus:text-white focus:bg-white/15 font-semibold"
+                                ? "text-primary bg-primary/10 font-bold"
+                                : "text-muted-foreground hover:text-foreground hover:bg-muted font-medium"
                             }`}
                           >
-                            <span className="drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]">
+                            <span>
                               {language === "tg" ? c.nameTj : language === "en" ? (c.nameEn || c.nameRu) : c.nameRu}
                             </span>
-                            {isCitySelected && <Check className="h-3.5 w-3.5 text-emerald-300 drop-shadow-[0_0_6px_rgba(52,211,153,0.9)]" />}
+                            {isCitySelected && <Check className="h-3.5 w-3.5 text-primary" />}
                           </DropdownMenuItem>
                         );
                       })}
@@ -541,21 +537,21 @@ export default function HomePage() {
                   </DropdownMenu>
                 </div>
 
-                {/* 2. Room Buttons - Unified Height h-[38px] */}
+                {/* 2. Room Buttons */}
                 <div className="flex flex-col min-w-0">
-                  <label className="h-5 flex items-center text-xs font-bold text-white mb-2 tracking-wide select-none drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]">
+                  <label className="h-5 flex items-center text-xs font-semibold text-muted-foreground mb-2 tracking-wide select-none">
                     {t.catalog.roomsCount}
                   </label>
-                  <div className="flex h-[38px] w-full box-border min-w-0 items-center gap-1 rounded-2xl border border-white/15 bg-white/[0.05] backdrop-blur-xl p-1 shadow-[inset_0_1px_1px_rgba(255,255,255,0.3)]">
+                  <div className="flex h-[38px] w-full box-border min-w-0 items-center gap-1 rounded-xl border border-border/80 bg-background p-1 shadow-2xs">
                     {roomOptions.map((opt) => (
                       <button
                         key={opt.id}
                         type="button"
                         onClick={() => setSelectedRooms(opt.id)}
-                        className={`h-full flex-1 rounded-xl px-2 text-xs transition-all cursor-pointer select-none ${
+                        className={`h-full flex-1 rounded-lg px-2 text-xs transition-all cursor-pointer select-none font-semibold ${
                           selectedRooms === opt.id
-                            ? "bg-emerald-500/80 text-white shadow-[0_0_14px_rgba(16,185,129,0.55),inset_0_1px_1px_rgba(255,255,255,0.4)] border border-emerald-300/60 font-bold backdrop-blur-md drop-shadow-[0_1px_2px_rgba(0,0,0,0.5)]"
-                            : "text-white hover:bg-white/10 font-semibold drop-shadow-[0_1px_2px_rgba(0,0,0,0.5)]"
+                            ? "bg-primary text-primary-foreground font-bold shadow-2xs"
+                            : "text-muted-foreground hover:text-foreground hover:bg-muted"
                         }`}
                       >
                         {opt.label}
@@ -564,9 +560,9 @@ export default function HomePage() {
                   </div>
                 </div>
 
-                {/* 3. Price Range From - To - Unified Height h-[38px] */}
+                {/* 3. Price Range From - To */}
                 <div className="flex flex-col min-w-0">
-                  <label className="h-5 flex items-center text-xs font-bold text-white mb-2 tracking-wide select-none drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]">
+                  <label className="h-5 flex items-center text-xs font-semibold text-muted-foreground mb-2 tracking-wide select-none">
                     {t.catalog.priceRange}
                   </label>
                   <div className="flex h-[38px] w-full box-border items-center gap-2">
@@ -574,30 +570,29 @@ export default function HomePage() {
                       placeholder={t.common.from}
                       value={priceFrom}
                       onChange={(e) => setPriceFrom(e.target.value)}
-                      className="h-[38px] flex-1 min-w-0 box-border rounded-2xl border border-white/15 bg-white/[0.05] hover:bg-white/10 focus:bg-white/15 backdrop-blur-xl px-3 text-sm font-semibold text-white placeholder:text-white/60 shadow-[inset_0_1px_1px_rgba(255,255,255,0.3)] outline-none focus:border-emerald-400/80 transition-all text-center drop-shadow-[0_1px_2px_rgba(0,0,0,0.5)]"
+                      className="h-[38px] flex-1 min-w-0 box-border rounded-xl border border-border/80 bg-background hover:bg-muted/40 focus:bg-background px-3 text-sm font-semibold text-foreground placeholder:text-muted-foreground shadow-2xs outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-center"
                     />
                     <Input
                       placeholder={t.common.to}
                       value={priceTo}
                       onChange={(e) => setPriceTo(e.target.value)}
-                      className="h-[38px] flex-1 min-w-0 box-border rounded-2xl border border-white/15 bg-white/[0.05] hover:bg-white/10 focus:bg-white/15 backdrop-blur-xl px-3 text-sm font-semibold text-white placeholder:text-white/60 shadow-[inset_0_1px_1px_rgba(255,255,255,0.3)] outline-none focus:border-emerald-400/80 transition-all text-center drop-shadow-[0_1px_2px_rgba(0,0,0,0.5)]"
+                      className="h-[38px] flex-1 min-w-0 box-border rounded-xl border border-border/80 bg-background hover:bg-muted/40 focus:bg-background px-3 text-sm font-semibold text-foreground placeholder:text-muted-foreground shadow-2xs outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-center"
                     />
                   </div>
                 </div>
 
-                {/* 4. Action Button - Unified Height h-[38px] Frosted Emerald Glass */}
+                {/* 4. Action Button */}
                 <div className="flex flex-col min-w-0">
                   <div className="h-5 mb-2 select-none pointer-events-none hidden sm:block" aria-hidden="true" />
                   <motion.button
-                    whileHover={{ scale: 1.03, y: -1 }}
-                    whileTap={{ scale: 0.97 }}
-                    transition={{ type: "spring", stiffness: 400, damping: 25 }}
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
                     type="button"
                     onClick={handleSearchSubmit}
-                    className="flex h-[38px] w-full box-border items-center justify-center gap-2 rounded-2xl bg-emerald-500/25 hover:bg-emerald-500/40 active:bg-emerald-500/50 backdrop-blur-xl border border-emerald-400/50 text-white font-bold text-xs shadow-[0_8px_24px_rgba(16,185,129,0.30),inset_0_1px_1.5px_rgba(255,255,255,0.45)] transition-all cursor-pointer select-none drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]"
+                    className="flex h-[38px] w-full box-border items-center justify-center gap-2 rounded-xl bg-primary hover:bg-primary/90 active:scale-[0.98] text-primary-foreground font-bold text-xs shadow-xs transition-all cursor-pointer select-none"
                   >
-                    <Search className="h-3.5 w-3.5 text-emerald-300 drop-shadow-[0_0_8px_rgba(52,211,153,0.9)]" />
-                    <span className="drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]">
+                    <Search className="h-3.5 w-3.5" />
+                    <span>
                       {activeTab === "new"
                         ? t.catalog.searchProjects.replace("{count}", String(filteredProjects.length))
                         : t.catalog.searchProperties}
@@ -606,11 +601,10 @@ export default function HomePage() {
                 </div>
               </div>
 
-              {/* Quick Filter Chips - iOS 18 Control Center Liquid Glass (Compact -1pt) */}
-              <div className="mt-4 pt-3 border-t border-white/20 flex flex-wrap items-center gap-2 text-xs">
-                {/* Frosted Glass Badge for "Быстрый выбор" (Reduced by 1 step) */}
-                <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-white/[0.06] backdrop-blur-xl border border-white/20 text-white text-[10px] font-bold tracking-wider uppercase shadow-[inset_0_1px_1px_rgba(255,255,255,0.35)] drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)] select-none">
-                  <Sparkles className="h-3 w-3 text-emerald-300 animate-pulse" />
+              {/* Quick Filter Chips */}
+              <div className="mt-4 pt-3 border-t border-border/60 flex flex-wrap items-center gap-2 text-xs">
+                <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-muted border border-border/80 text-foreground text-xs font-semibold tracking-wider uppercase select-none">
+                  <Sparkles className="h-3 w-3 text-primary" />
                   <span>{t.catalog.quickFilters}</span>
                 </div>
 
@@ -626,32 +620,22 @@ export default function HomePage() {
                     <motion.button
                       key={chip.id}
                       type="button"
-                      whileHover={{ scale: 1.05, y: -1 }}
-                      whileTap={{ scale: 0.96 }}
-                      transition={{ type: "spring", stiffness: 450, damping: 25 }}
+                      whileHover={{ scale: 1.03 }}
+                      whileTap={{ scale: 0.97 }}
                       onClick={() => {
                         setActiveQuickChip(isActive ? null : chip.id);
                         const el = document.getElementById("new-buildings");
                         if (el) el.scrollIntoView({ behavior: "smooth" });
                       }}
-                      className={`relative inline-flex items-center rounded-xl border px-2.5 py-1 text-[11px] transition-all cursor-pointer select-none backdrop-blur-xl ${
+                      className={`relative inline-flex items-center rounded-xl border px-3 py-1.5 text-xs transition-all cursor-pointer select-none ${
                         isActive
-                          ? "bg-emerald-500/25 border-emerald-400/60 text-white font-bold shadow-[0_0_14px_rgba(16,185,129,0.45),inset_0_1px_1.5px_rgba(255,255,255,0.4)]"
-                          : "border-white/15 bg-white/[0.05] hover:bg-white/10 active:bg-white/15 text-white font-medium shadow-[inset_0_1px_1px_rgba(255,255,255,0.25)]"
+                          ? "bg-primary/10 border-primary/40 text-primary font-bold shadow-2xs"
+                          : "border-border/80 bg-background hover:bg-muted text-foreground font-medium shadow-2xs"
                       }`}
                     >
-                      <span className="relative z-10 text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]">
+                      <span className="relative z-10">
                         {language === "en" ? chip.en : language === "tg" ? chip.tg : chip.ru}
                       </span>
-
-                      {/* Apple-Style Dynamic Glowing Underline for Active Quick Filter Chip */}
-                      {isActive && (
-                        <motion.div
-                          layoutId="quick-chip-underline"
-                          transition={{ type: "spring", stiffness: 450, damping: 30 }}
-                          className="absolute -bottom-0.5 left-2 right-2 h-[2px] rounded-full bg-gradient-to-r from-emerald-300 via-teal-200 to-emerald-300 shadow-[0_0_8px_rgba(52,211,153,1)] z-20"
-                        />
-                      )}
                     </motion.button>
                   );
                 })}
@@ -659,29 +643,28 @@ export default function HomePage() {
                 {/* Reset Active Filter */}
                 {activeQuickChip && (
                   <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
+                    whileHover={{ scale: 1.03 }}
+                    whileTap={{ scale: 0.97 }}
                     type="button"
                     onClick={() => setActiveQuickChip(null)}
-                    className="inline-flex items-center gap-1 px-2.5 py-1 rounded-xl bg-red-500/15 hover:bg-red-500/25 border border-red-400/30 text-white text-[10px] font-bold backdrop-blur-xl transition-all cursor-pointer select-none shadow-[inset_0_1px_1px_rgba(255,255,255,0.25)] drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]"
+                    className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-xl bg-destructive/10 hover:bg-destructive/20 border border-destructive/20 text-destructive text-xs font-semibold transition-all cursor-pointer select-none shadow-2xs"
                   >
-                    <X className="h-2.5 w-2.5 text-white" />
+                    <X className="h-3 w-3" />
                     <span>{language === "en" ? "Reset" : isTg ? "Тоза кардан" : "Сбросить"}</span>
                   </motion.button>
                 )}
 
-                {/* Map Link - iOS Control Center Frosted Glass Pill (Reduced by 1 step & renamed to "Показать на карте") */}
+                {/* Map Link */}
                 <motion.div
-                  whileHover={{ scale: 1.04, y: -1 }}
-                  whileTap={{ scale: 0.96 }}
-                  transition={{ type: "spring", stiffness: 450, damping: 25 }}
+                  whileHover={{ scale: 1.03 }}
+                  whileTap={{ scale: 0.97 }}
                   className="ml-auto"
                 >
                   <Link
                     href="/map"
-                    className="inline-flex items-center gap-1.5 rounded-xl border border-white/20 bg-white/[0.06] hover:bg-white/15 active:bg-white/20 text-white font-bold px-2.5 py-1 text-[11px] transition-all shadow-[inset_0_1px_1px_rgba(255,255,255,0.35)] backdrop-blur-xl hover:border-emerald-400/60 hover:shadow-[0_0_16px_rgba(16,185,129,0.35)] select-none drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]"
+                    className="inline-flex items-center gap-1.5 rounded-xl border border-border/80 bg-background hover:bg-muted text-foreground font-semibold px-3 py-1.5 text-xs transition-all shadow-2xs"
                   >
-                    <MapPin className="h-3 w-3 text-emerald-300 drop-shadow-[0_0_6px_rgba(52,211,153,0.8)]" />
+                    <MapPin className="h-3.5 w-3.5 text-primary" />
                     <span>{t.catalog.showOnMap}</span>
                   </Link>
                 </motion.div>
@@ -691,19 +674,19 @@ export default function HomePage() {
         </div>
 
         {/* 2. FULL-WIDTH CONTINUOUS MARQUEE TICKER (At bottom boundary of Khujand Panorama) */}
-        <div className="w-full overflow-hidden bg-black/25 backdrop-blur-md border-t border-white/15 py-2 select-none relative z-10 shadow-[0_-2px_12px_rgba(0,0,0,0.2)]">
+        <div className="w-full overflow-hidden bg-background/80 backdrop-blur-md border-t border-border/60 py-2.5 select-none relative z-10 text-muted-foreground">
           <div className="flex whitespace-nowrap animate-marquee">
             {[0, 1].map((i) => (
               <span
                 key={i}
-                className="inline-flex items-center gap-6 px-6 text-[11px] font-semibold tracking-widest uppercase text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]"
+                className="inline-flex items-center gap-6 px-6 text-xs font-semibold tracking-widest uppercase text-foreground/80"
               >
-                <span><span className="text-emerald-400 drop-shadow-[0_0_6px_rgba(52,211,153,0.9)] mr-2">✦</span>{t.marquee.portalTitle}</span>
-                <span><span className="text-emerald-400 drop-shadow-[0_0_6px_rgba(52,211,153,0.9)] mr-2">✦</span>{t.marquee.directDev}</span>
-                <span><span className="text-emerald-400 drop-shadow-[0_0_6px_rgba(52,211,153,0.9)] mr-2">✦</span>{t.marquee.chessboards}</span>
-                <span><span className="text-emerald-400 drop-shadow-[0_0_6px_rgba(52,211,153,0.9)] mr-2">✦</span>{t.marquee.resaleHomes}</span>
-                <span><span className="text-emerald-400 drop-shadow-[0_0_6px_rgba(52,211,153,0.9)] mr-2">✦</span>{t.marquee.dualCurrency}</span>
-                <span><span className="text-emerald-400 drop-shadow-[0_0_6px_rgba(52,211,153,0.9)] mr-2">✦</span>{t.marquee.b2bCrm}</span>
+                <span><span className="text-primary mr-2">✦</span>{t.marquee.portalTitle}</span>
+                <span><span className="text-primary mr-2">✦</span>{t.marquee.directDev}</span>
+                <span><span className="text-primary mr-2">✦</span>{t.marquee.chessboards}</span>
+                <span><span className="text-primary mr-2">✦</span>{t.marquee.resaleHomes}</span>
+                <span><span className="text-primary mr-2">✦</span>{t.marquee.dualCurrency}</span>
+                <span><span className="text-primary mr-2">✦</span>{t.marquee.b2bCrm}</span>
               </span>
             ))}
           </div>

@@ -92,73 +92,73 @@ export default function SuperAdminOverviewPage() {
       {/* 4 Financial & Traffic KPI Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {/* Card 1: Annual Sponsorship Contracts */}
-        <Card className="rounded-2xl border-slate-200/80 dark:border-slate-800 shadow-xs bg-linear-to-b from-emerald-50/40 via-white to-white dark:from-emerald-950/20 dark:via-slate-900 dark:to-slate-900">
+        <Card className="rounded-xl border border-border/80 bg-card shadow-xs">
           <CardContent className="p-5 space-y-2">
             <div className="flex items-center justify-between">
-              <span className="text-xs text-slate-500 font-medium">Годовые спонсоры</span>
-              <div className="h-8 w-8 rounded-lg bg-emerald-500/10 text-emerald-600 flex items-center justify-center font-bold">
+              <span className="text-xs text-muted-foreground font-medium">Годовые спонсоры</span>
+              <div className="h-8 w-8 rounded-lg bg-muted text-muted-foreground flex items-center justify-center font-bold">
                 <Award className="h-4 w-4" />
               </div>
             </div>
-            <div className="text-2xl font-black text-slate-900 dark:text-white">
+            <div className="text-2xl font-black text-foreground">
               {analytics?.totalAnnualContractValueTjs?.toLocaleString() || "305 000"} сомони
             </div>
-            <p className="text-[11px] text-emerald-700 dark:text-emerald-400 font-semibold flex items-center gap-1">
+            <p className="text-xs text-primary font-semibold flex items-center gap-1">
               <span>≈ ${analytics?.totalAnnualContractValueUsd?.toLocaleString() || "27 980"} в год</span>
-              <span className="text-slate-400 font-normal">• 3 генеральных партнера</span>
+              <span className="text-muted-foreground font-normal">• 3 партнера</span>
             </p>
           </CardContent>
         </Card>
 
         {/* Card 2: Active Advertisers */}
-        <Card className="rounded-2xl border-slate-200/80 dark:border-slate-800 shadow-xs">
+        <Card className="rounded-xl border border-border/80 bg-card shadow-xs">
           <CardContent className="p-5 space-y-2">
             <div className="flex items-center justify-between">
-              <span className="text-xs text-slate-500 font-medium">Рекламодатели</span>
-              <div className="h-8 w-8 rounded-lg bg-blue-500/10 text-blue-600 flex items-center justify-center">
+              <span className="text-xs text-muted-foreground font-medium">Рекламодатели</span>
+              <div className="h-8 w-8 rounded-lg bg-muted text-muted-foreground flex items-center justify-center">
                 <Users className="h-4 w-4" />
               </div>
             </div>
-            <div className="text-2xl font-black text-slate-900 dark:text-white">
+            <div className="text-2xl font-black text-foreground">
               {analytics?.totalAdvertisers || 6} брендов
             </div>
-            <p className="text-[11px] text-slate-500">
-              Эсхата, МегаФон, Tcell, Фаровон, Сомон Сохтмон
+            <p className="text-xs text-muted-foreground">
+              Эсхата, МегаФон, Tcell, Фаровон
             </p>
           </CardContent>
         </Card>
 
         {/* Card 3: Total Impressions */}
-        <Card className="rounded-2xl border-slate-200/80 dark:border-slate-800 shadow-xs">
+        <Card className="rounded-xl border border-border/80 bg-card shadow-xs">
           <CardContent className="p-5 space-y-2">
             <div className="flex items-center justify-between">
-              <span className="text-xs text-slate-500 font-medium">Показы баннеров</span>
-              <div className="h-8 w-8 rounded-lg bg-purple-500/10 text-purple-600 flex items-center justify-center">
+              <span className="text-xs text-muted-foreground font-medium">Показы баннеров</span>
+              <div className="h-8 w-8 rounded-lg bg-muted text-muted-foreground flex items-center justify-center">
                 <Eye className="h-4 w-4" />
               </div>
             </div>
-            <div className="text-2xl font-black text-slate-900 dark:text-white">
+            <div className="text-2xl font-black text-foreground">
               {analytics?.totalImpressions?.toLocaleString() || "64 340"}
             </div>
-            <p className="text-[11px] text-slate-500">
+            <p className="text-xs text-muted-foreground">
               Каталог, поиск, брендовые блоки
             </p>
           </CardContent>
         </Card>
 
         {/* Card 4: Clicks & CTR */}
-        <Card className="rounded-2xl border-slate-200/80 dark:border-slate-800 shadow-xs">
+        <Card className="rounded-xl border border-border/80 bg-card shadow-xs">
           <CardContent className="p-5 space-y-2">
             <div className="flex items-center justify-between">
-              <span className="text-xs text-slate-500 font-medium">Клики и средний CTR</span>
-              <div className="h-8 w-8 rounded-lg bg-amber-500/10 text-amber-600 flex items-center justify-center">
+              <span className="text-xs text-muted-foreground font-medium">Клики и средний CTR</span>
+              <div className="h-8 w-8 rounded-lg bg-muted text-muted-foreground flex items-center justify-center">
                 <MousePointerClick className="h-4 w-4" />
               </div>
             </div>
-            <div className="text-2xl font-black text-slate-900 dark:text-white">
+            <div className="text-2xl font-black text-foreground">
               {analytics?.totalClicks?.toLocaleString() || "3 350"} кликов
             </div>
-            <p className="text-[11px] text-amber-700 dark:text-amber-400 font-semibold">
+            <p className="text-xs text-primary font-semibold">
               CTR: {analytics?.averageCtr || "5.21%"} (высокая вовлеченность)
             </p>
           </CardContent>
