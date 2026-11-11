@@ -6,7 +6,7 @@ import {
   ListingAttributeDefinition,
 } from "@/lib/classifieds/attributes";
 import { Language } from "@/lib/i18n/translations";
-import { ListingIcon } from "@/components/ui/listing-icon";
+import { ListingIcon, AmenityTile } from "@/components/ui/listing-icon";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Check, AlertCircle, Info } from "lucide-react";
@@ -168,48 +168,29 @@ export function AttributeFormSection({
         </div>
       )}
 
-      {/* Boolean Toggles Grid */}
+      {/* Boolean Toggles Grid — Unified Squircle Amenity Tiles */}
       {booleanAttrs.length > 0 && (
-        <div className="space-y-2">
+        <div className="space-y-3 pt-1">
           {complexAttrs.length > 0 && (
             <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">
               {language === "tg" ? "Иловагӣ" : language === "en" ? "Options" : "Дополнительные удобства"}
             </span>
           )}
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2.5">
+          <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-y-6 gap-x-3 sm:gap-x-4 justify-items-center py-2">
             {booleanAttrs.map((attr) => {
               const isChecked = values[attr.code] === true;
-              const error = errors[attr.code];
               const label = attr.labels[language] || attr.labels.ru;
 
               return (
-                <button
+                <AmenityTile
                   key={attr.code}
-                  type="button"
+                  iconKey={attr.iconKey}
+                  label={label}
+                  selected={isChecked}
+                  selectable
                   onClick={() => onChange(attr.code, !isChecked)}
-                  aria-pressed={isChecked}
-                  className={`flex items-center gap-2.5 px-3 py-2.5 rounded-xl border text-xs font-medium text-left transition-all cursor-pointer ${
-                    isChecked
-                      ? "bg-emerald-500/10 dark:bg-emerald-500/20 text-emerald-800 dark:text-emerald-300 border-emerald-400/60 shadow-2xs"
-                      : "bg-slate-50/70 dark:bg-slate-800/40 hover:bg-slate-100/70 text-slate-700 dark:text-slate-300 border-slate-200/80 dark:border-slate-700/80"
-                  }`}
-                >
-                  <div
-                    className={`h-6 w-6 rounded-lg flex items-center justify-center shrink-0 transition-colors ${
-                      isChecked
-                        ? "bg-emerald-600 text-white"
-                        : "bg-slate-200/70 dark:bg-slate-700 text-slate-500 dark:text-slate-400"
-                    }`}
-                  >
-                    {isChecked ? (
-                      <Check className="h-3.5 w-3.5 stroke-[3]" />
-                    ) : (
-                      <ListingIcon iconKey={attr.iconKey} className="h-3.5 w-3.5" />
-                    )}
-                  </div>
-                  <span className="truncate min-w-0">{label}</span>
-                </button>
+                />
               );
             })}
           </div>
