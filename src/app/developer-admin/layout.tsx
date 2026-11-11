@@ -3,11 +3,9 @@
 import React, { Suspense } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useSession } from "@/lib/auth-client";
 import { useLanguage } from "@/context/language-context";
 import { Badge } from "@/components/ui/badge";
 import {
-  Building2,
   LayoutDashboard,
   FolderKanban,
   PlusCircle,
@@ -79,9 +77,9 @@ function AdminNavList() {
           <Link
             key={item.href}
             href={item.href}
-            className={`flex items-center justify-between px-3 py-2 rounded-lg text-xs font-semibold transition-all ${
+            className={`flex items-center justify-between px-3 py-2 rounded-lg text-xs font-medium transition-all ${
               active
-                ? "bg-emerald-600 text-white shadow-xs"
+                ? "bg-primary/10 text-primary font-bold shadow-2xs"
                 : "text-muted-foreground hover:text-foreground hover:bg-muted"
             }`}
           >
@@ -90,15 +88,12 @@ function AdminNavList() {
               <span>{item.title}</span>
             </div>
             {"badge" in item && item.badge && (
-              <span
-                className={`text-[9px] font-bold px-1.5 py-0.2 rounded ${
-                  active
-                    ? "bg-white/20 text-white"
-                    : "bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300"
-                }`}
+              <Badge
+                variant="outline"
+                className="text-xs font-semibold px-1.5 py-0.2 rounded"
               >
                 {item.badge}
-              </span>
+              </Badge>
             )}
           </Link>
         );
@@ -116,14 +111,14 @@ export default function DeveloperAdminLayout({
   const developer = INITIAL_DEVELOPERS[0];
 
   return (
-    <div className="min-h-screen bg-muted/20 flex flex-col">
+    <div className="min-h-screen bg-background flex flex-col">
       {/* Top Admin Notice Bar */}
-      <div className="bg-emerald-950 text-white text-xs py-1.5 px-4 flex items-center justify-between border-b border-emerald-900">
+      <div className="bg-card text-foreground text-xs py-2 px-4 flex items-center justify-between border-b border-border/80">
         <div className="flex items-center gap-2">
-          <Badge className="bg-emerald-500 text-slate-950 font-bold text-[10px] px-1.5">
+          <Badge variant="secondary" className="font-semibold text-xs px-2 py-0.5">
             {tDual("КАБИНЕТ ЗАСТРОЙЩИКА", "КАБИНЕТИ СОХТМОНЧӢ")}
           </Badge>
-          <span className="text-emerald-200">
+          <span className="text-muted-foreground">
             {tDual(
               `Кабинет застройщика: ${developer.name} (г. Гулистон / Согд)`,
               `Кабинети сохтмончӣ: ${developer.name} (ш. Гулистон / Суғд)`
@@ -133,7 +128,7 @@ export default function DeveloperAdminLayout({
         <div className="flex items-center gap-3">
           <Link
             href={`/developers/${developer.slug}`}
-            className="hover:text-emerald-300 flex items-center gap-1 transition-colors text-emerald-200"
+            className="text-muted-foreground hover:text-foreground flex items-center gap-1 transition-colors"
           >
             {tDual("Публичная витрина", "Витринаи кушод")}
             <ArrowUpRight className="h-3 w-3" />
@@ -143,21 +138,21 @@ export default function DeveloperAdminLayout({
 
       <div className="flex-1 flex flex-col md:flex-row">
         {/* SIDEBAR */}
-        <aside className="w-full md:w-64 bg-card border-r flex flex-col shrink-0">
-          <div className="p-4 border-b">
+        <aside className="w-full md:w-64 bg-card border-r border-border/80 flex flex-col shrink-0">
+          <div className="p-4 border-b border-border/80">
             <Link href={`/developers/${developer.slug}`} className="flex items-center gap-3 group">
-              <div className="h-10 w-10 rounded-xl overflow-hidden bg-white border border-slate-200 shrink-0 shadow-xs">
+              <div className="h-10 w-10 rounded-xl overflow-hidden bg-muted border border-border/80 shrink-0 shadow-2xs">
                 <img
                   src={developer.logoUrl}
                   alt={developer.name}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform"
+                  className="h-full w-full object-cover group-hover:scale-105 transition-transform"
                 />
               </div>
               <div className="flex flex-col min-w-0">
-                <span className="font-bold text-sm text-foreground leading-tight truncate group-hover:text-emerald-600 transition-colors">
+                <span className="font-bold text-sm text-foreground leading-tight truncate group-hover:text-primary transition-colors">
                   {developer.name}
                 </span>
-                <span className="text-[11px] text-emerald-600 flex items-center gap-1 font-medium">
+                <span className="text-xs text-primary flex items-center gap-1 font-medium">
                   <ShieldCheck className="h-3.5 w-3.5" />
                   {tDual("Верифицирован", "Тасдиқшуда")}
                 </span>
@@ -171,8 +166,8 @@ export default function DeveloperAdminLayout({
           </Suspense>
 
           {/* Sidebar Footer */}
-          <div className="p-4 border-t bg-muted/30 text-xs space-y-2">
-            <div className="text-[11px] text-muted-foreground">
+          <div className="p-4 border-t border-border/80 bg-muted/20 text-xs space-y-2">
+            <div className="text-xs text-muted-foreground">
               {tDual("Отдел продаж в Согде:", "Шуъбаи фурӯш дар Суғд:")}
             </div>
             <div className="font-mono font-semibold text-foreground text-xs">
@@ -180,7 +175,7 @@ export default function DeveloperAdminLayout({
             </div>
             <Link
               href="/"
-              className="text-xs text-emerald-600 hover:underline flex items-center gap-1 font-medium pt-1"
+              className="text-xs text-primary hover:underline flex items-center gap-1 font-medium pt-1"
             >
               {tDual("Вернуться на главный портал", "Бозгашт ба саҳифаи аслӣ")}
               <ChevronRight className="h-3 w-3" />

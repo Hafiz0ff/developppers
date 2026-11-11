@@ -9,20 +9,15 @@ import { Button } from "@/components/ui/button";
 import {
   Users,
   TrendingUp,
-  Settings,
   PlusCircle,
   Home,
-  Briefcase,
-  ChevronRight,
-  ShieldCheck,
   Send,
   Share2,
 } from "lucide-react";
 
 export function ProfileNav() {
   const pathname = usePathname();
-  const { language, tDual } = useLanguage();
-  const isTg = language === "tg";
+  const { tDual } = useLanguage();
 
   const navItems = [
     {
@@ -50,10 +45,10 @@ export function ProfileNav() {
   return (
     <div className="space-y-4 mb-6">
       {/* Top Banner / Breadcrumb */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-border/80">
         <div className="space-y-1">
           <div className="flex items-center gap-2">
-            <Badge className="bg-emerald-600 text-white font-semibold text-[10px] px-2 py-0.5">
+            <Badge variant="secondary" className="font-semibold text-xs px-2 py-0.5">
               {tDual("КАБИНЕТ МАКЛЕРА", "КАБИНЕТИ МАКЛЕР")}
             </Badge>
             <span className="text-xs text-muted-foreground">
@@ -67,7 +62,7 @@ export function ProfileNav() {
 
         <div className="flex items-center gap-2 self-start sm:self-auto">
           <Link href="/classifieds/new">
-            <Button size="sm" className="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs gap-1.5 shadow-xs">
+            <Button size="sm" className="font-semibold text-xs gap-1.5 shadow-xs">
               <PlusCircle className="h-4 w-4" />
               <span>{tDual("Подать объявление", "Иловаи эълон")}</span>
             </Button>
@@ -91,10 +86,10 @@ export function ProfileNav() {
             <Link
               key={item.href}
               href={item.href}
-              className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all ${
+              className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs transition-all whitespace-nowrap ${
                 active
-                  ? "bg-emerald-600 text-white shadow-xs"
-                  : "bg-card border text-muted-foreground hover:text-foreground hover:bg-muted"
+                  ? "bg-primary text-primary-foreground shadow-xs font-semibold"
+                  : "bg-card border border-border/80 text-muted-foreground hover:text-foreground hover:bg-muted font-medium"
               }`}
             >
               <Icon className="h-3.5 w-3.5 shrink-0" />

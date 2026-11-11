@@ -33,7 +33,7 @@ export function LanguageSwitcher({ className = "" }: LanguageSwitcherProps) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger
-        className={`flex h-8 box-border items-center gap-1 px-2.5 rounded-xl border border-white/15 bg-white/[0.05] hover:bg-white/10 active:bg-white/15 backdrop-blur-xl text-white text-xs font-bold shadow-[inset_0_1px_1px_rgba(255,255,255,0.3)] drop-shadow-[0_1px_2px_rgba(0,0,0,0.7)] transition-all outline-hidden cursor-pointer shrink-0 ${className}`}
+        className={`flex h-8 box-border items-center gap-1.5 px-2.5 rounded-lg border border-border/80 bg-background hover:bg-muted active:bg-muted/80 text-foreground text-xs font-semibold shadow-2xs transition-all outline-hidden cursor-pointer shrink-0 ${className}`}
         aria-label={
           language === "ru"
             ? "Русский язык"
@@ -43,52 +43,52 @@ export function LanguageSwitcher({ className = "" }: LanguageSwitcherProps) {
         }
       >
         <span className="text-base leading-none select-none">{getFlag(language)}</span>
-        <ChevronDown className="h-3 w-3 text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.7)]" />
+        <ChevronDown className="h-3 w-3 text-muted-foreground" />
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-40 p-1.5 rounded-2xl glass-dropdown-panel z-50 text-white ring-0">
+      <DropdownMenuContent align="end" className="w-40 p-1.5 rounded-xl border border-border/80 bg-background shadow-lg z-50 text-foreground ring-0">
         <DropdownMenuItem
           onClick={() => setLanguage("ru")}
-          className={`cursor-pointer text-xs flex items-center justify-between px-3 py-2 rounded-xl font-semibold transition-all ${
+          className={`cursor-pointer text-xs flex items-center justify-between px-3 py-2 rounded-lg font-medium transition-all ${
             language === "ru"
-              ? "text-white bg-emerald-500/25 border border-emerald-400/50 font-bold shadow-[0_0_12px_rgba(16,185,129,0.35),inset_0_1px_1px_rgba(255,255,255,0.3)]"
-              : "text-white/90 hover:text-white hover:bg-white/15 focus:text-white focus:bg-white/15"
+              ? "text-primary bg-primary/10 font-bold"
+              : "text-muted-foreground hover:text-foreground hover:bg-muted focus:text-foreground focus:bg-muted"
           }`}
         >
           <div className="flex items-center gap-2">
             <span className="text-base leading-none">🇷🇺</span>
-            <span className="drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]">Русский</span>
+            <span>Русский</span>
           </div>
-          {language === "ru" && <Check className="h-3.5 w-3.5 text-emerald-300 drop-shadow-[0_0_6px_rgba(52,211,153,0.9)]" />}
+          {language === "ru" && <Check className="h-3.5 w-3.5 text-primary" />}
         </DropdownMenuItem>
 
         <DropdownMenuItem
           onClick={() => setLanguage("tg")}
-          className={`cursor-pointer text-xs flex items-center justify-between px-3 py-2 rounded-xl font-semibold transition-all mt-1 ${
+          className={`cursor-pointer text-xs flex items-center justify-between px-3 py-2 rounded-lg font-medium transition-all mt-1 ${
             language === "tg"
-              ? "text-white bg-emerald-500/25 border border-emerald-400/50 font-bold shadow-[0_0_12px_rgba(16,185,129,0.35),inset_0_1px_1px_rgba(255,255,255,0.3)]"
-              : "text-white/90 hover:text-white hover:bg-white/15 focus:text-white focus:bg-white/15"
+              ? "text-primary bg-primary/10 font-bold"
+              : "text-muted-foreground hover:text-foreground hover:bg-muted focus:text-foreground focus:bg-muted"
           }`}
         >
           <div className="flex items-center gap-2">
             <span className="text-base leading-none">🇹🇯</span>
-            <span className="drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]">Тоҷикӣ</span>
+            <span>Тоҷикӣ</span>
           </div>
-          {language === "tg" && <Check className="h-3.5 w-3.5 text-emerald-300 drop-shadow-[0_0_6px_rgba(52,211,153,0.9)]" />}
+          {language === "tg" && <Check className="h-3.5 w-3.5 text-primary" />}
         </DropdownMenuItem>
 
         <DropdownMenuItem
           onClick={() => setLanguage("en")}
-          className={`cursor-pointer text-xs flex items-center justify-between px-3 py-2 rounded-xl font-semibold transition-all mt-1 ${
+          className={`cursor-pointer text-xs flex items-center justify-between px-3 py-2 rounded-lg font-medium transition-all mt-1 ${
             language === "en"
-              ? "text-white bg-emerald-500/25 border border-emerald-400/50 font-bold shadow-[0_0_12px_rgba(16,185,129,0.35),inset_0_1px_1px_rgba(255,255,255,0.3)]"
-              : "text-white/90 hover:text-white hover:bg-white/15 focus:text-white focus:bg-white/15"
+              ? "text-primary bg-primary/10 font-bold"
+              : "text-muted-foreground hover:text-foreground hover:bg-muted focus:text-foreground focus:bg-muted"
           }`}
         >
           <div className="flex items-center gap-2">
             <span className="text-base leading-none">🇬🇧</span>
-            <span className="drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]">English</span>
+            <span>English</span>
           </div>
-          {language === "en" && <Check className="h-3.5 w-3.5 text-emerald-300 drop-shadow-[0_0_6px_rgba(52,211,153,0.9)]" />}
+          {language === "en" && <Check className="h-3.5 w-3.5 text-primary" />}
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
