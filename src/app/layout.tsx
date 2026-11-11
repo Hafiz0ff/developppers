@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { Header } from "@/components/layout/header";
 import { AmbientAuroraBackground } from "@/components/layout/ambient-background";
+import { ThemeProvider } from "@/components/theme-provider";
 import { CurrencyProvider } from "@/context/currency-context";
 import { LanguageProvider } from "@/context/language-context";
 import { CompareProvider } from "@/context/compare-context";
@@ -9,7 +10,10 @@ import { FloatingCompareBar } from "@/components/modules/compare/floating-compar
 import { PwaInstallPrompt } from "@/components/modules/pwa-install-prompt";
 
 export const viewport: Viewport = {
-  themeColor: "#0D9488",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#F8FAFC" },
+    { media: "(prefers-color-scheme: dark)", color: "#0B0F17" },
+  ],
   width: "device-width",
   initialScale: 1,
   maximumScale: 5,
@@ -44,7 +48,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ru" className="h-full antialiased font-sans">
+    <html lang="ru" className="h-full antialiased font-sans" suppressHydrationWarning>
       <head>
         <link rel="manifest" href="/manifest.webmanifest" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -52,17 +56,19 @@ export default function RootLayout({
         <meta name="apple-mobile-web-app-title" content="Maskani" />
       </head>
       <body className="min-h-full flex flex-col text-foreground font-sans relative selection:bg-emerald-500 selection:text-white">
-        <AmbientAuroraBackground />
-        <LanguageProvider>
-          <CurrencyProvider>
-            <CompareProvider>
-              <Header />
-              <main className="flex-1">{children}</main>
-              <FloatingCompareBar />
-              <PwaInstallPrompt />
-            </CompareProvider>
-          </CurrencyProvider>
-        </LanguageProvider>
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+          <AmbientAuroraBackground />
+          <LanguageProvider>
+            <CurrencyProvider>
+              <CompareProvider>
+                <Header />
+                <main className="flex-1">{children}</main>
+                <FloatingCompareBar />
+                <PwaInstallPrompt />
+              </CompareProvider>
+            </CurrencyProvider>
+          </LanguageProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

@@ -86,14 +86,14 @@ rg "variant: '(emerald|neon|gradient)'" src/components/ui/
 ---
 
 ### 🟢 Этап 0: Фундамент и архитектура дизайн-системы (P0)
-- [ ] **Токен `--primary` в `globals.css`:** Перепривязан к фирменному изумрудному `hsl(158 64% 40%)` для светлой темы и `hsl(158 60% 50%)` для темной темы.
-- [ ] **Семантическая нейтральная шкала:** Обновлены токены `--background`, `--foreground`, `--card`, `--border`, `--muted`, `--ring`.
-- [ ] **Активация Dark Mode в `layout.tsx`:** Внедрен `ThemeProvider` с поддержкой класса `.dark` и `suppressHydrationWarning`.
-- [ ] **Мета-теги тем:** Настроены `themeColor` для light и dark режимов в `layout.tsx` и `manifest.ts`.
-- [ ] **Ликвидация 43 `!important`:** Все директивы `!important` удалены из `globals.css`.
-- [ ] **Нейтральный Frosted Glass:** Правила `.glass` переписаны на нейтральный полупрозрачный фон без зеленых рамок и цветных ховеров.
-- [ ] **Единые дизайн-константы:** Создан файл `src/lib/tokens.ts` со статусами и стилями.
-- [ ] **Верификация этапа:** Прогон `pnpm test` и `pnpm build`.
+- [x] **Токен `--primary` в `globals.css`:** Перепривязан к фирменному изумрудному `hsl(158 64% 40%)` для светлой темы и `hsl(158 60% 50%)` для темной темы.
+- [x] **Семантическая нейтральная шкала:** Обновлены токены `--background`, `--foreground`, `--card`, `--border`, `--muted`, `--ring`.
+- [x] **Активация Dark Mode в `layout.tsx`:** Внедрен `ThemeProvider` с поддержкой класса `.dark` и `suppressHydrationWarning`.
+- [x] **Мета-теги тем:** Настроены `themeColor` для light и dark режимов в `layout.tsx` и `manifest.ts`.
+- [x] **Ликвидация 43 `!important`:** Все директивы `!important` удалены из `globals.css`.
+- [x] **Нейтральный Frosted Glass:** Правила `.glass` переписаны на нейтральный полупрозрачный фон без зеленых рамок и цветных ховеров.
+- [x] **Единые дизайн-константы:** Создан файл `src/lib/tokens.ts` со статусами и стилями.
+- [x] **Верификация этапа:** Прогон `pnpm test` и `pnpm build`.
 
 ---
 
