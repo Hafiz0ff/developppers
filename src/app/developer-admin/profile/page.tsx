@@ -209,7 +209,12 @@ export default function DeveloperProfilePage() {
                   }}
                 >
                   <SelectTrigger className="w-full text-xs">
-                    <SelectValue />
+                    <SelectValue>
+                      {(() => {
+                        const found = SOGD_CITIES.find((c) => c.value === city);
+                        return found ? (isTg ? found.nameTj || found.nameRu : found.nameRu) : city;
+                      })()}
+                    </SelectValue>
                   </SelectTrigger>
                   <SelectContent>
                     {SOGD_CITIES.map((c) => (

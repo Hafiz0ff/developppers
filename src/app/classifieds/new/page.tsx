@@ -42,6 +42,25 @@ import {
 import { ListingAttributesView } from "@/components/classifieds/listing-attributes-view";
 import type { Language } from "@/lib/i18n/translations";
 
+const DEAL_TYPE_LABELS: Record<string, { ru: string; tg: string }> = {
+  sale: { ru: "Продажа", tg: "Фурӯш" },
+  rent_long: { ru: "Долгосрочная аренда", tg: "Иҷораи дарозмуддат" },
+  rent_daily: { ru: "Посуточная аренда", tg: "Иҷораи рӯзона" },
+};
+
+const PROPERTY_TYPE_LABELS: Record<string, { ru: string; tg: string }> = {
+  apartment: { ru: "Квартира", tg: "Хонадон" },
+  house: { ru: "Дом / Ҳавлӣ", tg: "Ҳавлӣ / Хонаи заминӣ" },
+  commercial: { ru: "Коммерческая недвижимость", tg: "Амволи тиҷоратӣ" },
+  land: { ru: "Земельный участок", tg: "Қитъаи замин" },
+  garage: { ru: "Гараж / Паркоместо", tg: "Гараж / Ҷойи таваққуфгоҳ" },
+};
+
+const getCityLabel = (val: string, isTg: boolean) => {
+  const found = SOGD_CITIES.find((c) => c.value === val);
+  return found ? (isTg ? found.nameTj || found.nameRu : found.nameRu) : val;
+};
+
 export default function NewClassifiedPage() {
   const router = useRouter();
   const { language } = useLanguage();
@@ -412,7 +431,9 @@ export default function NewClassifiedPage() {
                       onValueChange={(val) => setDealType(val as "sale" | "rent_long" | "rent_daily")}
                     >
                       <SelectTrigger className="w-full text-xs">
-                        <SelectValue />
+                        <SelectValue>
+                          {isTg ? DEAL_TYPE_LABELS[dealType]?.tg : DEAL_TYPE_LABELS[dealType]?.ru || dealType}
+                        </SelectValue>
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="sale">{isTg ? "Фурӯш" : "Продажа"}</SelectItem>
@@ -431,7 +452,11 @@ export default function NewClassifiedPage() {
                       }
                     >
                       <SelectTrigger className="w-full text-xs">
-                        <SelectValue />
+                        <SelectValue>
+                          {isTg
+                            ? PROPERTY_TYPE_LABELS[propertyType]?.tg
+                            : PROPERTY_TYPE_LABELS[propertyType]?.ru || propertyType}
+                        </SelectValue>
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="apartment">{isTg ? "Хонадон" : "Квартира"}</SelectItem>
@@ -494,7 +519,7 @@ export default function NewClassifiedPage() {
                     <Label className="text-xs">{isTg ? "Шаҳр / Ноҳия" : "Город / Район"}</Label>
                     <Select value={city} onValueChange={(val) => val && setCity(val)}>
                       <SelectTrigger className="w-full text-xs">
-                        <SelectValue />
+                        <SelectValue>{getCityLabel(city, isTg)}</SelectValue>
                       </SelectTrigger>
                       <SelectContent>
                         {SOGD_CITIES.map((c) => (
@@ -858,7 +883,7 @@ export default function NewClassifiedPage() {
                   {title || (isTg ? "Бе сарлавҳа" : "Без заголовка")}
                 </h2>
                 <p className="text-xs text-slate-500 mt-0.5">
-                  {city}, {district || address}
+                  {getCityLabel(city, isTg)}, {district || address}
                 </p>
               </div>
               <button

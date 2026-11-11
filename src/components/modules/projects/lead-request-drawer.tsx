@@ -533,7 +533,11 @@ export function LeadRequestDrawer({
                         }}
                       >
                         <SelectTrigger className="h-9 text-xs bg-card">
-                          <SelectValue />
+                          <SelectValue>
+                            {scheduledDay === "tomorrow"
+                              ? tDual("Завтра", "Фардо")
+                              : tDual("Сегодня", "Имрӯз")}
+                          </SelectValue>
                         </SelectTrigger>
                         <SelectContent className="z-60">
                           <SelectItem value="today">{tDual("Сегодня", "Имрӯз")}</SelectItem>

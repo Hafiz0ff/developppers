@@ -254,7 +254,17 @@ export default function NewProjectPage() {
                   }}
                 >
                   <SelectTrigger className="w-full text-xs">
-                    <SelectValue />
+                    <SelectValue>
+                      {buildingClass === "economy"
+                        ? (isTg ? "Синфи эконом" : "Эконом-класс")
+                        : buildingClass === "comfort"
+                        ? (isTg ? "Синфи бароҳат (комфорт)" : "Комфорт-класс")
+                        : buildingClass === "business"
+                        ? (isTg ? "Синфи тиҷоратӣ (бизнес)" : "Бизнес-класс")
+                        : buildingClass === "premium"
+                        ? (isTg ? "Премиум / Элитӣ" : "Премиум / Элит")
+                        : buildingClass}
+                    </SelectValue>
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="economy">
@@ -284,7 +294,15 @@ export default function NewProjectPage() {
                   }}
                 >
                   <SelectTrigger className="w-full text-xs">
-                    <SelectValue />
+                    <SelectValue>
+                      {finishing === "rough"
+                        ? (isTg ? "Пардози аввалия (қуттӣ)" : "Черновая (коробка)")
+                        : finishing === "pre_finishing"
+                        ? (isTg ? "Пардози пешакӣ (қуттии сафед)" : "Предчистовая (белый каркас)")
+                        : finishing === "turnkey"
+                        ? (isTg ? "Бо таъмири пурра («калид дар даст»)" : "С ремонтом под ключ")
+                        : finishing}
+                    </SelectValue>
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="rough">
@@ -357,7 +375,12 @@ export default function NewProjectPage() {
                   }}
                 >
                   <SelectTrigger className="w-full text-xs">
-                    <SelectValue />
+                    <SelectValue>
+                      {(() => {
+                        const found = SOGD_CITIES.find((c) => c.value === city);
+                        return found ? (isTg ? found.nameTj || found.nameRu : found.nameRu) : city;
+                      })()}
+                    </SelectValue>
                   </SelectTrigger>
                   <SelectContent>
                     {SOGD_CITIES.map((c) => (
@@ -458,7 +481,11 @@ export default function NewProjectPage() {
                   }}
                 >
                   <SelectTrigger className="w-full text-xs">
-                    <SelectValue />
+                    <SelectValue>
+                      {deadlineQuarter
+                        ? (isTg ? `Семоҳаи ${deadlineQuarter}` : `${deadlineQuarter} квартал`)
+                        : undefined}
+                    </SelectValue>
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="1">{isTg ? "Семоҳаи 1" : "1 квартал"}</SelectItem>

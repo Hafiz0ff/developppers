@@ -30,12 +30,45 @@ export function ClassifiedsFilters() {
     (k) => params.get(k) && params.get(k) !== "all"
   );
 
+  const currentCity = params.get("city") || "all";
+  const currentPropertyType = params.get("propertyType") || "all";
+  const currentDealType = params.get("dealType") || "all";
+  const currentRooms = params.get("rooms") || "all";
+
+  const getCityLabel = (val: string) => {
+    if (val === "all") return isTg ? "Ҳамаи шаҳрҳо" : "Все города";
+    const found = SOGD_CITIES.find((c) => c.value === val);
+    return found ? (isTg ? found.nameTj || found.nameRu : found.nameRu) : val;
+  };
+
+  const propertyLabels: Record<string, { ru: string; tg: string }> = {
+    all: { ru: "Все типы", tg: "Ҳамаи намудҳо" },
+    apartment: { ru: "Квартира", tg: "Хонадон" },
+    house: { ru: "Дом / Ҳавлӣ", tg: "Ҳавлӣ / Хона" },
+    commercial: { ru: "Коммерция", tg: "Амволи тиҷоратӣ" },
+    land: { ru: "Участок", tg: "Қитъаи замин" },
+  };
+
+  const dealLabels: Record<string, { ru: string; tg: string }> = {
+    all: { ru: "Продажа и аренда", tg: "Фурӯш ва иҷора" },
+    sale: { ru: "Продажа", tg: "Фурӯш" },
+    rent_long: { ru: "Аренда", tg: "Иҷора" },
+  };
+
+  const roomLabels: Record<string, { ru: string; tg: string }> = {
+    all: { ru: "Комнаты", tg: "Ҳамаи ҳуҷраҳо" },
+    "1": { ru: "1 комната", tg: "1 ҳуҷра" },
+    "2": { ru: "2 комнаты", tg: "2 ҳуҷра" },
+    "3": { ru: "3 комнаты", tg: "3 ҳуҷра" },
+    "4+": { ru: "4+ комнат", tg: "4+ ҳуҷра" },
+  };
+
   return (
     <div className="glass-card p-3 rounded-2xl border border-slate-200/70 dark:border-white/10 shadow-xs">
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2.5">
-        <Select value={params.get("city") || "all"} onValueChange={(v) => setParam("city", v ?? "all")}>
+        <Select value={currentCity} onValueChange={(v) => setParam("city", v ?? "all")}>
           <SelectTrigger className="h-10 rounded-xl bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm border-slate-200/80 dark:border-white/15 hover:border-emerald-500/50 transition-all text-xs font-medium">
-            <SelectValue placeholder={isTg ? "Шаҳр" : "Город"} />
+            <SelectValue placeholder={isTg ? "Шаҳр" : "Город"}>{getCityLabel(currentCity)}</SelectValue>
           </SelectTrigger>
           <SelectContent className="rounded-xl border-slate-200/80 dark:border-white/15 backdrop-blur-xl">
             <SelectItem value="all">{isTg ? "Ҳамаи шаҳрҳо" : "Все города"}</SelectItem>
@@ -48,11 +81,13 @@ export function ClassifiedsFilters() {
         </Select>
 
         <Select
-          value={params.get("propertyType") || "all"}
+          value={currentPropertyType}
           onValueChange={(v) => setParam("propertyType", v ?? "all")}
         >
           <SelectTrigger className="h-10 rounded-xl bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm border-slate-200/80 dark:border-white/15 hover:border-emerald-500/50 transition-all text-xs font-medium">
-            <SelectValue placeholder={isTg ? "Намуди амвол" : "Тип"} />
+            <SelectValue placeholder={isTg ? "Намуди амвол" : "Тип"}>
+              {isTg ? propertyLabels[currentPropertyType]?.tg : propertyLabels[currentPropertyType]?.ru || currentPropertyType}
+            </SelectValue>
           </SelectTrigger>
           <SelectContent className="rounded-xl border-slate-200/80 dark:border-white/15 backdrop-blur-xl">
             <SelectItem value="all">{isTg ? "Ҳамаи намудҳо" : "Все типы"}</SelectItem>
@@ -64,11 +99,13 @@ export function ClassifiedsFilters() {
         </Select>
 
         <Select
-          value={params.get("dealType") || "all"}
+          value={currentDealType}
           onValueChange={(v) => setParam("dealType", v ?? "all")}
         >
           <SelectTrigger className="h-10 rounded-xl bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm border-slate-200/80 dark:border-white/15 hover:border-emerald-500/50 transition-all text-xs font-medium">
-            <SelectValue placeholder={isTg ? "Муомила" : "Сделка"} />
+            <SelectValue placeholder={isTg ? "Муомила" : "Сделка"}>
+              {isTg ? dealLabels[currentDealType]?.tg : dealLabels[currentDealType]?.ru || currentDealType}
+            </SelectValue>
           </SelectTrigger>
           <SelectContent className="rounded-xl border-slate-200/80 dark:border-white/15 backdrop-blur-xl">
             <SelectItem value="all">{isTg ? "Фурӯш ва иҷора" : "Продажа и аренда"}</SelectItem>
@@ -77,9 +114,11 @@ export function ClassifiedsFilters() {
           </SelectContent>
         </Select>
 
-        <Select value={params.get("rooms") || "all"} onValueChange={(v) => setParam("rooms", v ?? "all")}>
+        <Select value={currentRooms} onValueChange={(v) => setParam("rooms", v ?? "all")}>
           <SelectTrigger className="h-10 rounded-xl bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm border-slate-200/80 dark:border-white/15 hover:border-emerald-500/50 transition-all text-xs font-medium">
-            <SelectValue placeholder={isTg ? "Ҳуҷраҳо" : "Комнаты"} />
+            <SelectValue placeholder={isTg ? "Ҳуҷраҳо" : "Комнаты"}>
+              {isTg ? roomLabels[currentRooms]?.tg : roomLabels[currentRooms]?.ru || currentRooms}
+            </SelectValue>
           </SelectTrigger>
           <SelectContent className="rounded-xl border-slate-200/80 dark:border-white/15 backdrop-blur-xl">
             <SelectItem value="all">{isTg ? "Ҳамаи ҳуҷраҳо" : "Комнаты"}</SelectItem>
