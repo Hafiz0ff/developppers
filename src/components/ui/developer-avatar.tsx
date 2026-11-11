@@ -44,7 +44,7 @@ export function DeveloperAvatar({
   return (
     <div
       className={cn(
-        "relative shrink-0 rounded-xl overflow-hidden border border-emerald-500/20 bg-emerald-50/50 dark:bg-emerald-950/20 flex items-center justify-center aspect-square shadow-xs",
+        "relative shrink-0 rounded-xl overflow-hidden border border-border/80 bg-muted/60 flex items-center justify-center aspect-square shadow-xs",
         sizeClasses[size],
         className
       )}
@@ -55,10 +55,10 @@ export function DeveloperAvatar({
           alt={name}
           referrerPolicy="no-referrer"
           onError={() => setHasError(true)}
-          className="w-full h-full object-contain p-1.5 transition-transform duration-300 hover:scale-105"
+          className="w-full h-full object-contain p-1.5 transition-transform duration-200 hover:scale-105"
         />
       ) : (
-        <div className="w-full h-full bg-gradient-to-tr from-emerald-600 to-teal-500 text-white flex flex-col items-center justify-center font-bold tracking-tight select-none">
+        <div className="w-full h-full bg-primary/10 text-primary border border-primary/20 flex flex-col items-center justify-center font-bold tracking-tight select-none">
           {initials.length > 0 ? (
             <span>{initials}</span>
           ) : (

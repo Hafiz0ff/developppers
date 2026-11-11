@@ -25,13 +25,13 @@ function Card({
 
   const variantStyles = {
     default:
-      "group/card flex flex-col gap-(--card-spacing) overflow-hidden rounded-xl bg-card py-(--card-spacing) text-sm text-card-foreground ring-1 ring-foreground/10 [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl",
+      "group/card flex flex-col gap-(--card-spacing) overflow-hidden rounded-xl bg-card py-(--card-spacing) text-sm text-card-foreground border border-border/60 shadow-xs [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl",
     glass:
-      "glass-card rounded-2xl overflow-hidden text-card-foreground transition-all duration-300",
+      "glass-card rounded-2xl overflow-hidden text-card-foreground transition-all duration-200",
     glassHover:
-      "glass-card rounded-2xl overflow-hidden text-card-foreground transition-all duration-300 hover:-translate-y-1",
+      "glass-card rounded-2xl overflow-hidden text-card-foreground transition-all duration-200 hover:-translate-y-0.5",
     flat:
-      "rounded-2xl overflow-hidden bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-white/10 text-card-foreground shadow-xs transition-all duration-200",
+      "rounded-2xl overflow-hidden bg-card border border-border/60 text-card-foreground shadow-xs transition-all duration-150",
   };
 
   return (
